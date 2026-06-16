@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "starlight": {
+      "source": "modelscope.cn",
+      "sourceType": "well-known",
+      "computedHash": "a7e7f5fb09ea19dd954c6f1a4e8d32eceb836562c966318d6521c2aefb5cf744"
+    }
+  }
+}
