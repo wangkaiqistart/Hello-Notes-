@@ -1,0 +1,4 @@
+name: starlight
+description: Starlight - Astro 官方文档主题。配置站点、侧边栏、内置组件、样式定制、页面和 frontmatter。
+version: "1.0.0"
+paradigm: navigator

@@ -8,12 +8,15 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Hello, Notes!',
+			logo: {
+				src: './src/assets/logo.png',
+			},
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/wangkaiqistart/Hello-Notes-' },
 			],
-			editLink: {
-				baseUrl: 'https://github.com/wangkaiqistart/Hello-Notes-/edit/main/',
-			},
+			// editLink: {
+			// 	baseUrl: 'https://github.com/wangkaiqistart/Hello-Notes-/edit/main/',
+			// },
 			sidebar: [
 				{
 					label: 'Guides',
