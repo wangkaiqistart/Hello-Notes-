@@ -7,7 +7,7 @@ export default defineConfig({
 	site: 'https://notes.wwkq.top',
 	integrations: [
 		starlight({
-			title: 'Hello, AI!',
+			title: 'Hello, Agent!',
 			logo: {
 				src: './src/assets/logo.png',
 			},
