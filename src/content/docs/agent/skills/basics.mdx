@@ -371,9 +371,129 @@ templates/quarterly_report.md   docs/misc.md
 
 ---
 
-## Skills vs Function Calling vs MCP
+## Skill 设计的四种模式
 
-| 维度 | Function Calling | MCP | Agent Skills |
+### 模式概览
+
+| 模式 | 解决的问题 | 核心手段 |
+|------|-----------|----------|
+| **模板驱动** | 输出不稳定 | `templates/` 统一格式 |
+| **脚本增强** | 结果不稳定 | `scripts/` 确定性执行 |
+| **知识分层** | 上下文膨胀 | 渐进加载 + 契约引用 |
+| **工具隔离** | 越权风险 | `allowed-tools` 最小权限 |
+
+生产级 Skill 通常组合多种模式，按需叠加。
+
+### 模板驱动
+
+适用报告生成、文档输出等需要格式一致的场景。模板负责**呈现**，不负责决策，逻辑应放在 SKILL.md。
+
+```
+report-generating/
+├── SKILL.md              # 路由 + 流程
+└── templates/
+    ├── weekly_report.md   # 周报模板
+    ├── incident.md        # 事故报告模板
+    └── review.md          # 评审报告模板
+```
+
+```markdown
+## Output Rules
+- ALWAYS use the template from `templates/` that matches the request type
+- Fill ALL placeholders — do not leave {placeholder} unfilled
+- Do NOT add sections beyond what the template defines
+```
+
+反模式警告：
+- 模板超过 100 行 → 职责混乱，应拆分
+- 模板含逻辑判断 → 边界被打破，逻辑移入 SKILL.md
+
+### 脚本增强
+
+适用公式计算、正则匹配、指标统计等确定性场景。把概率型推理替换为确定性执行。
+
+```
+data-analyzing/
+├── SKILL.md              # 路由 + 流程
+└── scripts/
+    ├── parse_csv.py       # 数据解析
+    ├── calculate.py       # 指标计算
+    └── visualize.py       # 生成图表 HTML
+```
+
+脚本规则：
+- 优先使用标准库，有外部依赖须明确声明
+- 不包含交互式输入，一次性可执行
+- 只放确定性、可验证的逻辑；判断和策略决策留给 Claude
+
+### 知识分层
+
+适用规则多、领域复杂的 Skill（SKILL.md 超过 500 行时）。通过渐进加载控制认知复杂度。
+
+```
+security-reviewing/
+├── SKILL.md              # 核心检查清单（~200 行，80% 请求够用）
+├── QUICKREF.md           # 常见漏洞速查（中频）
+├── reference/
+│   ├── xss.md           # XSS 防护详解（按需）
+│   ├── sqli.md          # SQL 注入详解（按需）
+│   └── auth.md          # 认证问题详解（按需）
+└── examples/
+    └── bad_patterns.md   # 反模式示例（按需）
+```
+
+分层策略：SKILL.md 内联高频内容（80/20 法则）→ 契约式引用中频内容 → 文件名描述性命名供按需加载。
+
+### 工具隔离（allowed-tools）
+
+`allowed-tools` 的核心价值在于明确**不能做什么**，把安全约束前置为结构设计：
+
+```yaml
+# 审计类：只读
+allowed-tools: [Read, Grep, Glob]
+
+# 生成类：只写不改
+allowed-tools: [Read, Grep, Glob, Write]
+
+# 分析类：只读 + 脚本
+allowed-tools: [Read, Grep, Glob, Bash(python:*)]
+
+# 执行类：受控执行
+allowed-tools: [Read, Bash(npm test:*), Bash(pytest:*)]
+```
+
+### 模式组合决策树
+
+```
+你的 Skill 需要……
+│
+├─ 标准化输出格式？ → 加 templates/（模板驱动）
+├─ 确定性计算/匹配？ → 加 scripts/（脚本增强）
+├─ 知识量 > 500 行？ → 拆分 reference/（知识分层）
+└─ 安全边界控制？ → 配置 allowed-tools（工具隔离）
+```
+
+---
+
+![](https://my-website1.oss-cn-chengdu.aliyuncs.com/%E6%88%AA%E5%B1%8F2026-06-20%2018.29.09.png)
+
+## Skills 能力进化的三个阶段
+
+| 阶段 | 名称 | 特征 | 适用场景 |
+|------|------|------|---------|
+| 第一级 | SOP | 单一 SKILL.md，流程清晰 | 标准化、可复现的操作 |
+| 第二级 | 专家系统 | 知识库 + 模板 + 脚本 + 权限控制 | 复杂变体处理 |
+| 第三级 | 组织智能 | 多 Skills + SubAgents + Hooks | 大规模多智能体协作 |
+
+<Aside type="tip">
+大多数项目在**第二级**就能满足需求，不需要为了"高级"而过度设计。
+</Aside>
+
+---
+
+
+
+| 维度 | Tool / Function Calling | MCP | Agent Skills |
 |------|-----------------|-----|--------------|
 | 核心定义 | 代码级接口（JSON Schema） | 通讯协议标准 | 业务逻辑封装（Markdown） |
 | 擅长 | 单点执行、精确动作 | 稳定接入外部系统 | 组织工作流、封装判断 |
@@ -382,7 +502,7 @@ templates/quarterly_report.md   docs/misc.md
 | 适用人群 | 后端工程师 | 全栈工程师 | 技术与非技术人员均可 |
 
 <Aside type="note" title="三者不是互斥关系">
-Skill 更像策略层/工作流层，MCP 更像能力源和接入层，Function Calling 更像执行层。成熟系统往往组合使用：高层工作流用 Skill，底层精确操作用 Function Calling，跨平台能力用 MCP。
+Skill 更像策略层/工作流层，MCP 更像能力源和接入层，Tool（Function Calling）更像执行层。成熟系统往往组合使用：高层工作流用 Skill，底层精确操作用 Tool，跨平台能力用 MCP。
 </Aside>
 
 
@@ -392,7 +512,7 @@ Skill 更像策略层/工作流层，MCP 更像能力源和接入层，Function 
     优先 Agent Skills — Markdown 编写，修改即生效，低门槛
   </Card>
   <Card title="精确控制" icon="magnifier">
-    优先 Function Calling — 确定性执行，结构化数据，可监控
+    优先 Tool（Function Calling）— 确定性执行，结构化数据，可监控
   </Card>
   <Card title="生产级跨平台集成" icon="setting">
     优先 MCP — 标准化协议，稳定可复用
@@ -517,6 +637,12 @@ Agent 进入 Skill 时并不自动感知环境。如果 Workflow 不明确要求
 | **参数语义化** | 提示含义（[commit message]） | 无意义提示（[args]） |
 | **权限最小化** | 只授权必需的工具/命令 | 授权所有权限 |
 | **显式错误处理** | Workflow 中写明失败路径 | 只写正常流程 |
+
+### 三条核心认知
+
+1. **创建完成 ≠ 好用，创建只完成了 20%** — 一个写完的 Skill 只解决了表层触发问题，真正耗时的价值在后续评估与迭代
+2. **宁缺毋滥，Skills 不是越多越好** — 触发冲突增加、维护成本上升、用户信任下降。5 个精调的 Skill 优于 20 个没打磨的
+3. **SKILL.md 是指挥官，不是士兵** — SKILL.md 负责指挥流程，代码/模板/参考资料应放在各自的层次，Skill 才可维护
 
 ### 错误处理
 
