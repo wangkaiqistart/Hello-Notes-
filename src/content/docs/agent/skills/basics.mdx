@@ -214,6 +214,7 @@ description: 在实现任何功能或修复 bug 前，先编写测试用例
 | `name` | 让能力可被识别和引用 | kebab-case，简洁唯一 |
 | `description` | 决定触发语义是否清晰 | 动词开头，说明适用场景和边界（做什么、什么时候用、什么时候不用） |
 
+
 ### 控制层：SKILL.md body
 
 body 决定 Agent 进入 Skill 后如何执行（怎么做）。不是普通文档，而是可执行的流程规范。
@@ -253,6 +254,7 @@ Workflow 要写具体可执行的步骤，不要写模糊建议。分支逻辑�
 → 识别函数签名 → 设计正常/空数组/负数三组用例 → 编写测试 → 验证通过
 ```
 
+
 ### 支撑层：可选资源目录
 
 | 目录 | 放什么 | 解决什么问题 |
@@ -264,6 +266,45 @@ Workflow 要写具体可执行的步骤，不要写模糊建议。分支逻辑�
 <Aside type="caution">
 没有支撑层的 Skill 在复杂任务里容易退回泛化回答。资源层越完善，Skill 越接近可复用的领域能力。
 </Aside>
+
+#### 契约式引用
+
+引用辅助文件时，不要只写路径——要写**契约**，告诉 Claude 何时加载、加载后得到什么：
+
+```markdown
+# ❌ 弱引用（Claude 不知道何时加载）
+See `reference/revenue.md` for more details.
+
+# ✅ 契约式引用
+## 收入分析
+当用户询问收入增长、ARPU 或收入构成时：
+→ 加载 `reference/revenue.md` 获取计算公式和行业基准
+```
+
+三要素：**触发条件**（什么情况下）+ **文件路径**（去哪里找）+ **内容预期**（加载后得到什么）。
+
+#### 文件命名原则
+
+Claude 根据**文件名**判断是否需要加载，命名要有描述性：
+
+```
+# 好的命名              # 差的命名
+reference/revenue.md   reference/ref1.md
+templates/quarterly_report.md   docs/misc.md
+```
+
+#### 脚本适用场景
+
+脚本适合封装**确定性逻辑**，让 Claude 执行而不需要"理解"，节省 token：
+
+```
+# 适合脚本              # 不适合脚本
+财务比率计算（公式固定）  开放性分析（需要判断）
+数据格式转换（规则明确）  创意性任务（需要灵活性）
+文件批量处理（重复性高）  交互式决策（需要反馈）
+```
+
+脚本还能生成可视化 HTML，Claude 只需知道"运行什么命令"（10 tokens），而非"如何生成 HTML"（2000+ tokens）——这是渐进式披露的极致形态。
 
 ### 三层协同：不同场景下的配合
 
@@ -357,6 +398,31 @@ Skill 更像策略层/工作流层，MCP 更像能力源和接入层，Function 
     优先 MCP — 标准化协议，稳定可复用
   </Card>
 </CardGrid>
+
+---
+
+## Skills × Tools 协作关系
+
+Skills（知识/经验）和 Tools（执行手段）之间有三层关系：
+
+| 关系 | 说明 | 实现方式 |
+|------|------|----------|
+| **Skills 约束 Tools** | 最小权限原则 | `allowed-tools` 精确到操作类型 |
+| **Skills 编排 Tools** | 脚本是预编译的 Tool 调用序列 | `scripts/` 固化确定性逻辑，Claude 执行但不理解 |
+| **Tools 反哺 Skills** | Tool 输出在 Skill 加载前注入上下文 | `` !`command` `` 语法预处理 |
+
+```markdown
+# Tools 反哺 Skills 示例
+---
+name: pr-summary
+---
+
+## Context
+- PR diff: !`gh pr diff`
+- Changed files: !`git diff --name-only`
+```
+
+Shell 命令在 Skill 加载之前执行，Claude 收到的是**已包含实时数据的知识**——这就是动态上下文注入的底层机制。
 
 ---
 
