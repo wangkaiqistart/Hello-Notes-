@@ -1,0 +1,180 @@
+---
+title: Python 工程基础
+description: 学习 AI 应用开发前需要掌握的 Python 语法、环境、代码组织与文件处理基础
+sidebar:
+  label: 总览
+  order: 1
+---
+
+import { Aside, Card, CardGrid, Steps } from '@astrojs/starlight/components';
+
+Python 工程基础是学习 AI 应用开发前必须补齐的一层能力。AI 可以帮忙生成代码，但如果不理解 Python 的基本语法、运行流程、代码组织和文件处理，就很难判断代码是否可靠，也很难把 Demo 变成可维护的项目。
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  AI 能写代码，但人要能管代码。学 Python 不是为了和 AI 比谁写得快，而是为了看懂、定位、修改、验收 AI 生成的代码。
+</Aside>
+
+## 核心认知
+
+<CardGrid>
+  <Card title="AI 开发离不开 Python" icon="information">
+    大模型调用、RAG、Agent、文档解析、向量检索和后端服务，很多生态都优先支持 Python。
+  </Card>
+  <Card title="要能接管 AI 代码" icon="approve-check">
+    AI 给出的代码只是初稿，人要能看懂它、改对它、调通它，并判断能不能放进项目。
+  </Card>
+  <Card title="真正贵的是可控性" icon="setting">
+    工程价值不只是代码能跑一次，而是代码可控、可维护、可扩展。
+  </Card>
+  <Card title="只会提问还不够" icon="puzzle">
+    如果不理解代码，只能不断让 AI 猜问题，越改越容易失控。
+  </Card>
+</CardGrid>
+
+只让 AI 生成代码，最容易卡在三个地方：
+
+| 场景 | 表现 | 本质问题 |
+| --- | --- | --- |
+| 看不懂代码如何运行 | AI 给了代码，但不知道入口、流程和变量变化 | 缺少代码执行流程意识 |
+| 表面修好了，又引入新 bug | 只让 AI 按报错改，没有判断影响范围 | 缺少调试和验收能力 |
+| 代码无法接入真实项目 | 单文件能跑，但放进项目就乱 | 缺少模块化和工程结构意识 |
+
+## Python 是什么
+
+Python 是一种高级编程语言，特点是语法简洁、生态丰富、适合快速开发。对 AI 应用开发来说，它最大的价值是：能把模型调用、数据处理、接口服务和自动化流程串起来。
+
+<CardGrid>
+  <Card title="高级编程语言" icon="information">
+    更接近人的表达方式，适合快速描述业务逻辑、数据处理流程和 AI 调用流程。
+  </Card>
+  <Card title="解释型语言" icon="terminal">
+    写完代码就可以运行，不需要提前编译，适合快速试错和调试。
+  </Card>
+  <Card title="面向对象" icon="puzzle">
+    可以把功能拆成模块、类和对象，方便组织复杂项目。
+  </Card>
+  <Card title="动态类型" icon="random">
+    写起来更灵活，但也要求开发者理解数据结构和参数校验，避免运行时出错。
+  </Card>
+</CardGrid>
+
+## Python 的优势
+
+<CardGrid>
+  <Card title="语法简洁易读" icon="open-book">
+    上手快，适合用最少的代码完成清晰的逻辑表达。
+  </Card>
+  <Card title="生态丰富" icon="setting">
+    AI、数据处理、Web 服务、自动化脚本都有成熟库可以直接调用。
+  </Card>
+  <Card title="跨平台兼容强" icon="random">
+    同一套代码通常可以在 macOS、Linux、Windows 上运行，适合项目部署和协作。
+  </Card>
+  <Card title="社区活跃" icon="approve-check">
+    问题资料多，报错信息更容易查到解决方案，也方便 AI 辅助排查。
+  </Card>
+</CardGrid>
+
+## 常见应用场景
+
+<CardGrid>
+  <Card title="AI 应用 / Agent 开发" icon="rocket">
+    调用大模型、编排工具、构建 RAG、开发智能体流程。
+  </Card>
+  <Card title="自动化脚本" icon="terminal">
+    处理文件、批量任务、办公自动化、数据清洗和简单流程编排。
+  </Card>
+  <Card title="数据处理与分析" icon="chart">
+    读取数据、清洗数据、统计分析，并为模型或业务系统提供输入。
+  </Card>
+  <Card title="Web 服务与接口开发" icon="puzzle">
+    使用 FastAPI 等框架开发 API，把 AI 能力封装成可调用服务。
+  </Card>
+</CardGrid>
+
+## 关键模型
+
+几乎所有 Python 程序都可以先按一个简单模型理解：**输入 → 处理 → 输出**。
+
+| 环节 | 常见形式 | 关注点 |
+| --- | --- | --- |
+| 输入 | 文本、文件、接口参数、数据库记录 | 数据从哪里来，格式是否正确 |
+| 处理 | 数据清洗、逻辑计算、模型调用、规则判断 | 中间过程是否清楚，边界是否处理 |
+| 输出 | 打印结果、写入文件、返回接口、保存数据 | 结果给谁用，格式是否稳定 |
+
+<Aside type="note" title="理解方式">
+  初学时不要急着背语法细节，先问这段代码的输入是什么、处理了什么、输出到哪里。
+</Aside>
+
+## 最小闭环 Demo
+
+比如做一个词频统计，可以先用最小代码理解完整流程：
+
+```python
+text = "python is good python is easy"
+
+words = text.split()
+counts = {}
+
+for word in words:
+    counts[word] = counts.get(word, 0) + 1
+
+print(counts)
+```
+
+这段代码覆盖了“输入 → 处理 → 输出”的完整逻辑：
+
+<CardGrid>
+  <Card title="输入" icon="information">
+    `text` 是原始文本，也可以换成文件内容或接口参数。
+  </Card>
+  <Card title="处理" icon="setting">
+    `split()` 拆分单词，`for` 循环逐个统计，`dict` 保存词频。
+  </Card>
+  <Card title="输出" icon="approve-check">
+    `print(counts)` 把统计结果输出，后续也可以改成写入文件或返回接口。
+  </Card>
+</CardGrid>
+
+## 学习路径
+
+<Steps>
+
+1. **基础入门**：理解基本语法，能运行 Python 程序，学会排查报错，并能写出“输入 → 处理 → 输出”的最小脚本。
+
+2. **小项目实践**：能做小项目，掌握函数封装、虚拟环境、包管理、模块拆分和基础测试。
+
+3. **工程化开发**：能写 API 与服务，理解 Web 框架、数据库、接口设计和工程开发思路。
+
+</Steps>
+
+<Aside type="tip" title="学习方法" icon="rocket">
+  核心方法是边学边练。每学一个语法点，都要问它能解决什么小任务，最好能写出一个最小可运行例子。
+</Aside>
+
+## 迁移学习法
+
+如果已经学过 JavaScript 或其他语言，可以用迁移学习法快速建立直觉：先找共同点，再抓差异点。
+
+| 学习维度 | 对比重点 | 学习目标 |
+| --- | --- | --- |
+| 基础语法 | 缩进、变量、条件、循环、函数 | 知道 Python 和已有语言写法哪里不同 |
+| 数据类型 | 字符串、列表、字典、集合、元组 | 能处理接口数据、文本数据和中间结果 |
+| 独有特性 | 解释型、动态类型、包管理、虚拟环境 | 理解 Python 项目为什么这样组织 |
+| 案例练习 | 词频统计、文件处理、接口请求 | 把知识点放进真实小任务里 |
+
+学习时可以用这种输出结构：**基础语法 → 数据类型 → 独有特性 → 案例 → 学习建议**。内容保持简洁干货，必要时用表格做对比。
+
+## 章节规划
+
+| 模块 | 重点内容 | 学完后能做什么 |
+| --- | --- | --- |
+| [开发环境](/basics/python-foundation/environment-and-deps/) | Python 安装、虚拟环境、依赖安装、版本锁定 | 能独立搭建干净可复现的开发环境 |
+| [基础语法与代码组织](/basics/python-foundation/syntax-basics/) | 缩进、变量、控制流、函数、模块包、异常处理 | 能看懂脚本运行流程，并把零散代码组织起来 |
+| [常用数据类型](/basics/python-foundation/data-types/) | 字符串、列表、字典、集合、元组 | 能处理接口数据、文档内容和中间结果 |
+| [代码组织](/basics/python-foundation/code-organization-and-utils/) | 函数封装、工具层、目录结构、通用方法抽离 | 能把零散脚本整理成可维护模块 |
+| 文件处理 | 文件读写、PDF、Word、图片、音频解析 | 能为 RAG 和知识库准备原始资料 |
+
+<Aside type="note" title="速记" icon="star">
+  Python 工程基础 = 看懂运行流程、定位 bug、改成需要的样子、验收 AI 生成结果。
+</Aside>

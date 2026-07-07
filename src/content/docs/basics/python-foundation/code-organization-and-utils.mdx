@@ -1,0 +1,191 @@
+---
+title: Python 函数封装与工具层设计
+description: Python 可复用函数封装、单一职责、utils 工具层与 __init__.py 预导入笔记
+sidebar:
+  label: 函数封装与工具层
+  order: 5
+---
+
+import { Aside, Card, CardGrid, FileTree, Steps } from '@astrojs/starlight/components';
+
+代码能跑只是第一步。真正进入项目开发后，更重要的是让代码好改、好读、好复用。函数封装和工具层设计，就是把重复逻辑收起来，把通用能力沉到稳定的位置，让业务代码保持清晰。
+
+<Aside type="tip" title="核心目标" icon="rocket">
+  从“能运行”走向“好维护”：重复逻辑抽成函数，通用函数放进 `utils`，业务入口只保留业务流程。
+</Aside>
+
+## 为什么代码越写越乱
+
+多数难维护的代码，不一定是语法写错了，而是一开始没有设计好结构。
+
+<CardGrid>
+  <Card title="重复逻辑越来越多" icon="copy">
+    同一段判断、清洗、转换逻辑在多个地方重复出现，后面越写越难统一。
+  </Card>
+  <Card title="改需求要改很多处" icon="setting">
+    逻辑散落在不同位置，规则一变就要到处找，漏改一处就可能产生 bug。
+  </Card>
+  <Card title="不敢动旧代码" icon="warning">
+    代码之间耦合太重，看不清影响范围，改一行可能牵动很多地方。
+  </Card>
+</CardGrid>
+
+<Aside type="note" title="核心判断">
+  多数“难维护的代码”不是写错了，而是设计错了。能复用的逻辑没有抽出来，通用能力没有放到稳定的位置。
+</Aside>
+
+## 函数封装
+
+函数封装的本质，是把一段有明确输入、处理、输出的逻辑，变成一个可以反复调用的单元。
+
+反例：同一类长度校验重复写，后面规则一变就要改多处。
+
+```python
+user = input("输入用户名：")
+if len(user) < 3:
+    print("用户名太短")
+
+password = input("输入密码：")
+if len(password) < 6:
+    print("密码太短")
+```
+
+改法：把重复逻辑封装成函数，变化点变成参数。
+
+```python
+def check_len(val: str, limit: int, tag: str) -> bool:
+    if len(val.strip()) < limit:
+        print(f"{tag}长度不足")
+        return False
+    return True
+
+
+user = input("输入用户名：")
+check_len(user, 3, "用户名")
+
+password = input("输入密码：")
+check_len(password, 6, "密码")
+```
+
+这样做的价值：
+
+| 改造点 | 带来的好处 |
+| --- | --- |
+| 逻辑只写一次 | 减少重复代码 |
+| 变化点变参数 | 规则变化时更好改 |
+| 函数名表达意图 | 代码更容易阅读 |
+| 返回值明确 | 调用方更容易判断下一步 |
+
+## 高质量函数的 4 个原则
+
+<CardGrid>
+  <Card title="单一职责" icon="approve-check">
+    一个函数只做一件事，拒绝把校验、读取、转换、保存全塞进一个函数。
+  </Card>
+  <Card title="命名清晰" icon="tag">
+    函数名尽量使用“动词 + 名词”，例如 `read_json`、`normalize_text`、`validate_age`。
+  </Card>
+  <Card title="输入输出清楚" icon="setting">
+    参数表示输入，返回值表示输出。必要时加类型注解，降低阅读和调用成本。
+  </Card>
+  <Card title="少副作用" icon="puzzle">
+    函数尽量只做核心处理，不随便修改外部变量、打印、读写文件或发请求。
+  </Card>
+</CardGrid>
+
+更推荐的校验函数，可以只返回判断结果，把打印提示交给外层业务流程：
+
+```python
+def validate_name(name: str) -> bool:
+    return 1 <= len(name.strip()) <= 20
+
+
+def validate_age(age: int) -> bool:
+    return 0 <= age <= 150
+```
+
+<Aside type="note" title="写函数前先问">
+  这段逻辑以后有没有可能复用？如果会复用，就优先封装成函数；如果函数开始变大，就继续拆成更小的单一职责函数。
+</Aside>
+
+## 从函数到工具层
+
+当函数越来越多时，不应该全部堆在 `main.py` 里。入口文件应该表达业务流程，通用、可复用、无业务含义的函数，适合放进 `utils` 工具层。
+
+<Steps>
+
+1. **先发现重复逻辑**：比如字符串清洗、文件读取、字段校验、格式转换。
+
+2. **再封装成函数**：让逻辑只写一次，把变化点做成参数。
+
+3. **最后放进工具层**：如果函数不依赖具体业务，就移动到 `utils` 包里统一管理。
+
+</Steps>
+
+一句话定义：
+
+<Aside type="tip" title="utils 是什么">
+  `utils` = 不含业务逻辑的工具函数集合。它解决的是复用问题，不承载具体业务流程。
+</Aside>
+
+## 什么适合放进 utils
+
+| 适合放进 `utils` | 不适合放进 `utils` |
+| --- | --- |
+| 字符串清洗、大小写统一、空格归一化 | 用户注册、订单创建、面试报告生成 |
+| 文件读写、JSON 读取、路径处理 | 直接操作业务数据库并修改业务状态 |
+| 通用字段校验、格式校验 | 混合多个业务步骤的大函数 |
+| 时间格式转换、金额格式化 | 依赖页面、接口、具体业务上下文的逻辑 |
+
+<Aside type="caution" title="边界提醒">
+  工具函数应该尽量“纯”：输入什么、处理什么、返回什么。只要开始依赖业务规则，就更适合放到业务模块，而不是 `utils`。
+</Aside>
+
+## utils 目录结构
+
+一个简单项目可以这样组织：
+
+<FileTree>
+
+- project/ 项目根目录
+  - main.py 程序入口，保留业务流程
+  - utils/ 工具包
+    - \_\_init\_\_.py 统一导出常用工具函数
+    - string_utils.py 字符串处理工具
+    - file_utils.py 文件操作工具
+    - validators.py 数据校验工具
+
+</FileTree>
+
+示例：把字符串归一化逻辑放进工具层。
+
+```python title="utils/string_utils.py"
+def normalize(text: str) -> str:
+    return " ".join(text.strip().split()).lower()
+```
+
+通过 `utils/__init__.py` 做预导入，让业务文件里的导入更短、更统一。
+
+```python title="utils/__init__.py"
+from .string_utils import normalize
+```
+
+业务入口只负责调用，不关心工具函数内部怎么实现。
+
+```python title="main.py"
+from utils import normalize
+
+
+text = "  Python   is   great  "
+print(normalize(text))  # python is great
+```
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  写函数前先问：这段逻辑以后会不会复用？
+
+  函数命名用“动词 + 名词”，函数职责保持单一，参数和返回值要清楚。
+
+  `utils` 只放通用工具函数，不放业务流程。入口文件管流程，工具层管复用。
+</Aside>

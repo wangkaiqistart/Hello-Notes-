@@ -1,0 +1,368 @@
+---
+title: Python 常用数据类型
+description: Python 字符串、列表、元组、字典、集合的核心特性、常用操作和易错点笔记
+sidebar:
+  label: 常用数据类型
+  order: 4
+---
+
+import { Aside, Card, CardGrid, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Python 写业务代码时，最常打交道的就是这五类数据：`str`、`list`、`tuple`、`dict`、`set`。先记住它们各自适合装什么数据，再去记常用方法，会比死背 API 更稳。
+
+<Aside type="tip" title="核心口诀" icon="rocket">
+  字符串处理文本，列表保存一组数据，元组表示固定结构，字典组织键值映射，集合负责去重和集合运算。
+</Aside>
+
+## 先会选择类型
+
+<CardGrid>
+  <Card title="一段文本" icon="open-book">
+    用 `str`。重点掌握 `strip()`、`split()`、`join()`、`replace()` 和 `f-string`。
+  </Card>
+  <Card title="多条记录" icon="puzzle">
+    用 `list`。需要按顺序保存、遍历、排序、增删改查时，列表最常见。
+  </Card>
+  <Card title="固定结构" icon="setting">
+    用 `tuple`。例如坐标、固定配置、函数返回的多个值。
+  </Card>
+  <Card title="结构化对象" icon="information">
+    用 `dict`。接口数据、用户信息、配置项、计数统计都优先想到字典。
+  </Card>
+  <Card title="去重与关系判断" icon="random">
+    用 `set`。成员判断、交集、并集、差集都很适合。
+  </Card>
+</CardGrid>
+
+## 总览对比
+
+| 类型 | 顺序特点 | 是否可变 | 核心特点 | 常见场景 |
+| --- | --- | --- | --- | --- |
+| `str` | 有序 | 不可变 | 文本序列，支持索引、切片、遍历 | 文本清洗、提示词、日志、接口字段 |
+| `list` | 有序 | 可变 | 最常用容器，可增删改查 | 存放一组记录、批量处理数据 |
+| `tuple` | 有序 | 不可变 | 固定结构，可解包 | 坐标、固定配置、函数多返回值 |
+| `dict` | 保留插入顺序 | 可变 | `key: value` 映射 | JSON、用户信息、配置、统计计数 |
+| `set` | 无序 | 可变 | 元素唯一，自动去重 | 去重、成员判断、交并差运算 |
+
+<Aside type="note" title="先看两个维度">
+  学一个容器，先问两件事：它怎么取数据？它能不能原地修改？`str`、`list`、`tuple` 可以按位置取；`dict` 按 key 取；`set` 只能判断成员和做集合运算。
+</Aside>
+
+## str：处理文本
+
+字符串是文本数据，也是不可变序列。任何看起来像“修改字符串”的操作，本质上都是生成一个新字符串。
+
+```python
+s = "Python"
+
+print(len(s))      # 6
+print(s[0])        # P
+print(s[1:4])      # yth
+print(s[::-1])     # nohtyP
+```
+
+### 常用方法
+
+| 场景 | 方法 | 记忆点 |
+| --- | --- | --- |
+| 去空格 | `strip()` / `lstrip()` / `rstrip()` | 清理输入和文件内容常用 |
+| 替换 | `replace(old, new)` | 返回新字符串，不改原字符串 |
+| 拆分 | `split(sep)` | 不传参数时按空白分割 |
+| 拼接 | `"sep".join(items)` | 比循环里反复 `+` 更常用 |
+| 大小写 | `lower()` / `upper()` / `title()` | 统一格式、做匹配判断 |
+| 判断 | `startswith()` / `endswith()` / `isdigit()` | 做输入校验和格式判断 |
+
+```python
+raw = "  a,b,c  "
+parts = raw.strip().split(",")
+
+print(parts)                 # ['a', 'b', 'c']
+print("-".join(parts))       # a-b-c
+print("hello".replace("l", "L"))  # heLLo
+```
+
+格式化字符串优先用 `f-string`：
+
+```python
+name = "Tom"
+age = 18
+
+print(f"姓名={name}, 年龄={age}")
+print(f"明年年龄={age + 1}")
+print(f"保留两位小数：{3.14159:.2f}")
+```
+
+常见坑：
+
+| 坑点 | 原因 | 处理方式 |
+| --- | --- | --- |
+| `s[0] = "X"` 报错 | 字符串不可变 | 用切片或 `replace()` 生成新字符串 |
+| `"1" + 2` 报错 | 字符串和数字不能直接相加 | 用 `int()` 或 `str()` 转换 |
+| `split()` 结果不对 | 默认按空白分割 | 逗号分隔要写 `split(",")` |
+
+## list：保存一组数据
+
+列表是有序、可变的容器，适合保存一组同类数据。虽然 Python 列表可以混放不同类型，但项目里尽量保持同类，代码会更清晰。
+
+```python
+nums = [10, 20, 30, 40, 50]
+
+print(nums[0])     # 10
+print(nums[-1])    # 50
+print(nums[1:4])   # [20, 30, 40]
+print(nums[::2])   # [10, 30, 50]
+```
+
+### 增删改查
+
+| 操作 | 写法 | 注意点 |
+| --- | --- | --- |
+| 追加 | `append(x)` | 加到末尾 |
+| 插入 | `insert(index, x)` | 插入指定位置 |
+| 合并 | `extend(items)` | 把另一组元素展开加进来 |
+| 删除值 | `remove(x)` | 删除第一个匹配值，不存在会报错 |
+| 弹出 | `pop()` / `pop(index)` | 删除并返回元素 |
+| 删除索引 | `del a[index]` | 直接删除指定位置 |
+| 修改 | `a[index] = value` | 列表可原地修改 |
+
+```python
+a = [1, 2, 3]
+
+a.append(4)
+a.insert(1, 99)
+a.extend([5, 6])
+
+a.remove(99)
+x = a.pop()
+del a[0]
+
+a[0] = 100
+print(a, x)
+```
+
+排序时要记住返回值：
+
+```python
+nums = [3, 1, 2]
+nums.sort()
+print(nums)  # [1, 2, 3]
+
+nums2 = sorted([3, 1, 2], reverse=True)
+print(nums2) # [3, 2, 1]
+```
+
+| 写法 | 是否修改原列表 | 返回值 |
+| --- | --- | --- |
+| `list.sort()` | 是 | `None` |
+| `sorted(list)` | 否 | 新列表 |
+| `list.reverse()` | 是 | `None` |
+
+遍历时常用 `enumerate()` 拿到下标和值：
+
+```python
+nums = [10, 20, 30]
+
+for i, v in enumerate(nums):
+    print(i, v)
+
+print(sum(nums), min(nums), max(nums))
+```
+
+## tuple：表示固定结构
+
+元组和列表很像，但元组不可变，适合表达“这个结构不应该被修改”。
+
+```python
+t1 = (1, 2, 3)
+t2 = (4,)     # 单元素元组必须带逗号
+t3 = 5, 6, 7  # 也可以省略括号
+```
+
+常用操作：
+
+```python
+t = (10, 20, 20, 30)
+
+print(t[0])
+print(t[1:3])
+print(t.count(20))
+print(t.index(30))
+```
+
+解包很常用：
+
+```python
+a, b = (1, 2)
+x, y = y, x
+```
+
+常见坑：
+
+| 坑点 | 原因 | 记法 |
+| --- | --- | --- |
+| `(4)` 不是元组 | 括号只改变优先级 | 单元素元组必须写 `(4,)` |
+| 不能 `append()` | 元组不可变 | 要修改就用列表 |
+| 元组能做字典 key | 元组不可变、可哈希 | 前提是内部元素也可哈希 |
+
+## dict：组织键值映射
+
+字典是 Python 里组织结构化数据的核心。接口返回的 JSON、用户信息、配置项、统计结果，通常都会用字典表示。
+
+```python
+user = {"name": "Tom", "age": 18}
+
+print(user["name"])          # 键不存在会 KeyError
+print(user.get("score", 0))  # 推荐安全访问
+```
+
+### 增删改查
+
+```python
+user = {"name": "Tom", "age": 18}
+
+user["score"] = 95
+user["age"] = 19
+user.update({"city": "SZ"})
+
+del user["city"]
+score = user.pop("score")
+
+print(user, score)
+```
+
+遍历字典时，业务代码里最常用的是 `items()`：
+
+```python
+user = {"name": "Tom", "age": 18}
+
+for key in user:
+    print(key, user[key])
+
+for value in user.values():
+    print(value)
+
+for key, value in user.items():
+    print(key, value)
+```
+
+Python 3.9+ 可以用 `|` 合并字典：
+
+```python
+a = {"x": 1}
+b = {"y": 2}
+c = a | b
+
+print(c)  # {'x': 1, 'y': 2}
+```
+
+常见坑：
+
+| 坑点 | 原因 | 处理方式 |
+| --- | --- | --- |
+| `user["missing"]` 报错 | 键不存在会 `KeyError` | 用 `get()` 或先判断 `key in user` |
+| `list` / `dict` 不能当 key | key 必须可哈希 | 常用 `str`、`int`、`tuple` 当 key |
+| 字典不是“对象属性” | `user.name` 不等于 `user["name"]` | 普通字典用中括号访问 |
+
+## set：去重和集合运算
+
+集合只保存唯一元素，适合去重、成员测试、交集、并集、差集。
+
+```python
+s1 = {1, 2, 2, 3}
+print(s1)  # {1, 2, 3}
+
+empty_set = set()  # {} 是空字典，不是空集合
+```
+
+增删元素：
+
+```python
+s = {1, 2, 3}
+
+s.add(4)
+s.remove(2)    # 不存在会 KeyError
+s.discard(99)  # 不存在也不报错
+```
+
+集合运算：
+
+```python
+old_users = {"a", "b", "c"}
+new_users = {"b", "c", "d"}
+
+print(old_users & new_users)  # 交集：{'b', 'c'}
+print(old_users | new_users)  # 并集：{'a', 'b', 'c', 'd'}
+print(new_users - old_users)  # 新增：{'d'}
+print(old_users - new_users)  # 流失：{'a'}
+```
+
+常见坑：
+
+| 坑点 | 原因 | 记法 |
+| --- | --- | --- |
+| `{}` 不是空集合 | `{}` 表示空字典 | 空集合写 `set()` |
+| set 不能按索引取值 | set 无序 | 需要顺序就用 `list` |
+| set 不能存列表 | 元素必须可哈希 | 可存字符串、数字、元组 |
+
+## 常见操作速记
+
+<Tabs>
+  <TabItem label="索引与切片" icon="open-book">
+    `str`、`list`、`tuple` 都是有序序列，可以用索引和切片。
+
+    ```python
+    items = [10, 20, 30, 40]
+
+    print(items[0])
+    print(items[-1])
+    print(items[1:3])
+    ```
+
+    `dict` 和 `set` 不按位置取数据。
+  </TabItem>
+  <TabItem label="可变与不可变" icon="setting">
+    `list`、`dict`、`set` 可以原地修改；`str`、`tuple` 不可变。
+
+    ```python
+    a = [1, 2]
+    a.append(3)
+
+    s = "hi"
+    s = s.upper()
+    ```
+
+    不可变不是不能得到新值，而是不能原地改原对象。
+  </TabItem>
+  <TabItem label="拷贝问题" icon="warning">
+    `b = a` 不是拷贝，只是多了一个变量名指向同一个对象。
+
+    ```python
+    a = [1, 2]
+    b = a
+    b.append(3)
+
+    print(a)  # [1, 2, 3]
+    ```
+
+    一层列表或字典可以用 `copy()`；嵌套结构要了解 `copy.deepcopy()`。
+  </TabItem>
+  <TabItem label="推导式" icon="rocket">
+    推导式适合从旧数据生成新数据。
+
+    ```python
+    squares = [x * x for x in range(1, 6)]
+    evens = [x for x in range(1, 11) if x % 2 == 0]
+    names = {user["name"] for user in users}
+    ```
+
+    逻辑简单时用推导式，逻辑复杂时用普通循环。
+  </TabItem>
+</Tabs>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  `str` 管文本，`list` 管一组数据，`tuple` 管固定结构，`dict` 管键值映射，`set` 管去重和集合关系。
+
+  写代码时先判断数据形态：一段文本用 `str`，多条记录用 `list`，结构化对象用 `dict`，不想重复用 `set`，不想被改用 `tuple`。
+</Aside>

@@ -1,0 +1,283 @@
+---
+title: Hermes Agent 实操笔记
+description: Hermes Agent 的环境准备、安装配置、模型切换、Docker 部署、消息平台接入、常用命令与应用场景
+sidebar:
+  label: 实操笔记
+  order: 4
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Hermes Agent 上手时，重点可以概括为：**装好环境、配好模型、跑通网关、接入场景、持续沉淀能力**。
+
+它可以按两种方式使用：一类是零代码 / 轻代码，适合快速部署、命令行交互、技能安装和消息平台接入；另一类是 Python 二次开发，适合把 Agent 能力集成进 Web 应用、自动化流水线或自定义业务系统。
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  先用轻量方式跑通安装、模型、网关和常用命令，再进入 Python 二次开发。先把运行边界摸清楚，再做深度集成会更稳。
+</Aside>
+
+<CardGrid>
+  <Card title="快速上手" icon="approve-check">
+    通过一键安装、命令行配置和交互式终端，快速验证 Hermes 是否能正常工作。
+  </Card>
+  <Card title="生产运行" icon="setting">
+    使用 Docker、配置目录和网关常驻运行，让 Agent 能稳定接入真实平台。
+  </Card>
+  <Card title="持续扩展" icon="random">
+    通过模型切换、Skills、消息平台和记忆管理，把 Hermes 用到开发、办公、数据和知识管理场景。
+  </Card>
+</CardGrid>
+
+## 前置准备
+
+<CardGrid>
+  <Card title="运行环境" icon="information">
+    支持 Linux、macOS、WSL2 和 Android Termux。Windows 用户建议先准备 WSL2。
+  </Card>
+  <Card title="基础依赖" icon="setting">
+    至少提前安装 Git；其他依赖通常由安装脚本自动配置。
+  </Card>
+  <Card title="硬件建议" icon="rocket">
+    基础使用门槛较低；如果要本地跑大模型，需要额外准备足够显存。
+  </Card>
+  <Card title="API 密钥" icon="key">
+    至少准备一个模型提供商密钥。国内环境可优先考虑智谱、Kimi、豆包、DeepSeek 等平台。
+  </Card>
+</CardGrid>
+
+| 提供商 | 适合场景 |
+| --- | --- |
+| 智谱 AI | 数学、编程、推理 |
+| Kimi / 月之暗面 | 长文本处理 |
+| 豆包 / 火山方舟 | 通用任务、创意生成、办公协作 |
+| DeepSeek | 代码生成、技术咨询、逻辑推理 |
+
+## 安装与初始化
+
+<Tabs>
+  <TabItem label="一键安装" icon="rocket">
+    适合第一次上手，安装脚本会自动配置 Python、Node.js、ripgrep、ffmpeg 等依赖。
+
+    ```bash
+    curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+    source ~/.bashrc
+    hermes --version && hermes doctor
+    ```
+  </TabItem>
+  <TabItem label="手动安装" icon="setting">
+    适合需要自定义依赖、调试源码或做二次开发的场景。
+
+    ```bash
+    git clone --recurse-submodules https://github.com/NousResearch/hermes-agent.git
+    cd hermes-agent
+    uv pip install -e ".[all]"
+    hermes --version
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside type="note" title="安装后先做诊断">
+  安装完成后优先运行 `hermes doctor` 或 `hermes doctor --fix`。先确认环境健康，再继续配置模型和网关。
+</Aside>
+
+## API 密钥配置
+
+<Tabs>
+  <TabItem label="命令行配置" icon="terminal">
+    适合单个密钥快速配置，命令更直接。
+
+    ```bash
+    hermes config set ZHIPUAI_API_KEY 你的智谱API密钥
+    hermes config set KIMI_API_KEY 你的Kimi密钥
+    hermes config set OPENROUTER_API_KEY sk-or-v1-你的OpenRouter密钥
+    ```
+  </TabItem>
+  <TabItem label="环境文件配置" icon="open-book">
+    适合一次性配置多个模型提供商。
+
+    ```bash
+    nano ~/.hermes/.env
+    ```
+
+    ```bash
+    ZHIPUAI_API_KEY=你的智谱API密钥
+    KIMI_API_KEY=你的Kimi密钥
+    OPENROUTER_API_KEY=sk-or-v1-你的OpenRouter密钥
+    OPENAI_API_KEY=你的OpenAI密钥
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside type="caution" title="密钥安全">
+  `.env` 里会保存 API 密钥，建议执行 `chmod 600 ~/.hermes/.env`，避免被其他用户读取。
+</Aside>
+
+## 模型选择与启动
+
+<Steps>
+
+1. **选择模型**：执行 `hermes model`，按交互式向导选择模型提供商和具体模型。
+
+2. **确认上下文长度**：优先选择支持较长上下文的模型，避免复杂任务中频繁触发上下文不足。
+
+3. **启动交互终端**：执行 `hermes`，进入持续对话和任务执行模式。
+
+4. **一次性查询验证**：执行 `hermes chat -q "你的问题"`，快速确认模型调用是否正常。
+
+</Steps>
+
+常用命令：
+
+```bash
+hermes model
+hermes
+hermes chat -q "列出你能提供的运维相关帮助"
+hermes setup
+```
+
+会话中也可以快速切换模型：
+
+```text
+/model claude-sonnet-4
+/model openrouter:anthropic/claude
+/model custom:qwen-2.5
+```
+
+## Docker 生产部署
+
+生产环境更推荐 Docker 方式：配置目录独立、容器可重启、迁移和恢复更清晰。
+
+<Steps>
+
+1. **创建配置目录**：
+
+   ```bash
+   mkdir -p ~/.hermes
+   ```
+
+2. **初始化 Docker 配置**：
+
+   ```bash
+   docker run -it --rm -v ~/.hermes:/opt/data nousresearch/hermes-agent setup
+   ```
+
+3. **后台常驻运行**：
+
+   ```bash
+   docker run -d \
+     --name hermes \
+     --restart unless-stopped \
+     -v ~/.hermes:/opt/data \
+     nousresearch/hermes-agent gateway run
+   ```
+
+</Steps>
+
+如果需要浏览器自动化能力，可以额外分配共享内存：
+
+```bash
+docker run -d \
+  --name hermes \
+  --restart unless-stopped \
+  --shm-size=1g \
+  -v ~/.hermes:/opt/data \
+  nousresearch/hermes-agent gateway run
+```
+
+## 接入消息平台
+
+Hermes 可以通过网关接入飞书、钉钉、企业微信等平台，让 Agent 从命令行走进团队协作场景。
+
+```bash
+hermes gateway setup
+hermes gateway
+hermes gateway install
+hermes gateway start
+hermes gateway status
+```
+
+| 平台 | 配置重点 |
+| --- | --- |
+| 飞书 | 创建企业自建应用，开启事件订阅和机器人能力，记录 App ID、App Secret、Verification Token |
+| 钉钉 | 创建企业应用，启用机器人 Webhook，配置访问白名单 |
+| 企业微信 | 创建机器人，记录 Bot ID 和 Secret，可通过 WebSocket 连接 |
+
+## 常用命令速查
+
+| 功能 | 命令 | 用途 |
+| --- | --- | --- |
+| 查看版本 | `hermes --version` | 验证安装是否成功 |
+| 环境诊断 | `hermes doctor --fix` | 自动检测并尝试修复环境问题 |
+| 启动终端 | `hermes` | 进入交互式 Agent |
+| 一次性查询 | `hermes chat -q "查询内容"` | 不进入终端直接提问 |
+| 设置密钥 | `hermes config set 变量名 密钥` | 写入模型 API 密钥 |
+| 查看配置 | `hermes config` | 查看当前配置 |
+| 编辑配置 | `hermes config edit` | 打开主配置文件 |
+| 检查配置 | `hermes config check` | 找出缺失配置 |
+| 选择模型 | `hermes model` | 交互式选择模型 |
+| 配置网关 | `hermes gateway setup` | 接入消息平台 |
+| 查看日志 | `hermes logs -f` | 排查运行异常 |
+| 导出调试信息 | `hermes dump` | 输出完整调试信息 |
+| 压缩上下文 | `/compress` | 解决上下文过长 |
+| 框架迁移 | `hermes claw migrate` | 从 OpenClaw 等框架迁移数据 |
+
+## 典型应用场景
+
+<Tabs>
+  <TabItem label="开发运维" icon="terminal">
+    适合代码审查、Bug 修复、CI/CD 监控和自动化脚本生成。
+
+    可以这样用：让 Hermes 检查代码漏洞、说明原因并给出修复方案；或者定期检查流水线状态，失败时推送到团队群。
+  </TabItem>
+  <TabItem label="办公协作" icon="puzzle">
+    适合接入飞书、钉钉、企业微信后的智能问答、会议纪要和文件批处理。
+
+    可以这样用：整理群聊会议要点，按待办事项、决策结果、讨论焦点输出 Markdown 文档。
+  </TabItem>
+  <TabItem label="数据分析" icon="chart">
+    适合定期报告生成、数据趋势分析和格式转换。
+
+    可以这样用：每周采集销售数据，分析品类增长趋势，生成图表和报告。
+  </TabItem>
+  <TabItem label="知识管理" icon="open-book">
+    适合个人知识库构建、专业知识学习和资料归纳。
+
+    可以这样用：将资料和笔记沉淀到知识库，后续提问时自动引用相关内容。
+  </TabItem>
+</Tabs>
+
+## 常见问题
+
+| 问题 | 常见原因 | 处理思路 |
+| --- | --- | --- |
+| `hermes` 命令找不到 | 环境变量未刷新或安装路径未加入 PATH | 执行 `source ~/.bashrc`，检查 `~/.local/bin` 是否在 PATH 中 |
+| API 密钥配置后不可用 | 密钥错误、过期、模型和提供商不匹配 | 核对密钥、账户余额和当前模型提供商 |
+| HTTP 400 错误 | 模型名称不匹配或上下文长度不足 | 重新执行 `hermes model`，选择匹配的长上下文模型 |
+| 消息平台收不到消息 | 配置项错误、白名单未设置或网关未启动 | 核对平台配置，重启网关，查看 `hermes logs -f` |
+| Docker 容器无法连接 | Docker 未运行或权限不足 | 检查 `docker info`、容器状态和用户权限 |
+| 本地模型卡顿 | 显存不足或 Ollama 未启动 | 检查显存，重启 Ollama，换用更小模型 |
+
+## 使用注意事项
+
+<CardGrid>
+  <Card title="安全防护" icon="warning">
+    API 密钥要放在受保护的配置文件中，避免泄露到仓库、日志或公开截图里。
+  </Card>
+  <Card title="成本控制" icon="information">
+    云模型适合快速使用，但要关注自动化任务频率；本地模型可降低 API 成本，但需要显存支持。
+  </Card>
+  <Card title="技能拓展" icon="random">
+    可以通过技能商店或社区技能包扩展能力，避免所有能力都从零实现。
+  </Card>
+  <Card title="记忆管理" icon="open-book">
+    Hermes 会沉淀环境事实、经验教训和用户偏好，可以通过工作区界面查看和维护。
+  </Card>
+</CardGrid>
+
+## 总结
+
+<Aside type="tip" title="速记" icon="star">
+  Hermes 上手可以按四步记：先装环境，再配模型，然后跑网关，最后沉淀场景。
+
+  命令行适合快速验证，Docker 适合生产常驻，消息平台适合团队协作，Skills 和记忆系统负责把一次性任务变成可复用能力。
+</Aside>

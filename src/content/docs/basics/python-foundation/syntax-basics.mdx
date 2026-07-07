@@ -1,0 +1,348 @@
+---
+title: Python 基础语法与代码组织
+description: Python 缩进、变量、控制流、数据结构、函数、模块包、文件读写与异常处理笔记
+sidebar:
+  label: 基础语法
+  order: 3
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+这一页只记 Python 开发里最常用、最容易影响项目理解的语法点。目标不是背完整语法手册，而是能看懂脚本怎么运行，知道数据怎么流动，遇到常见报错能快速定位。
+
+<Aside type="tip" title="核心口诀" icon="rocket">
+  Python 先抓 7 件事：缩进定结构，变量存数据，分支做判断，循环批处理，函数做封装，模块包做组织，异常兜住错误。
+</Aside>
+
+## 先抓住语法骨架
+
+<CardGrid>
+  <Card title="缩进" icon="setting">
+    Python 用缩进表示代码层级，常用 4 个空格。同一层级必须一致，冒号 `:` 后面通常要跟缩进块。
+  </Card>
+  <Card title="注释" icon="open-book">
+    `#` 写单行注释；文档字符串 `"""..."""` 用来说明模块、函数或类，可被 `help()` 读取。
+  </Card>
+  <Card title="变量命名" icon="information">
+    变量不用提前声明类型，赋值时绑定对象。命名推荐 `snake_case`，不要用关键字。
+  </Card>
+  <Card title="类型转换" icon="random">
+    `input()` 得到的一定是字符串，需要数字时要用 `int()`、`float()` 显式转换。
+  </Card>
+</CardGrid>
+
+```python
+x = 5
+
+if x > 0:
+    print("正数")
+    print("仍在 if 块中")
+
+print("离开 if 块")
+```
+
+最常见的基础类型：
+
+| 类型 | 含义 | 示例 |
+| --- | --- | --- |
+| `int` | 整数 | `18` |
+| `float` | 浮点数 | `1.75` |
+| `str` | 字符串 | `"hello"` |
+| `bool` | 布尔值 | `True` / `False` |
+| `None` | 空值 | `None` |
+
+<Aside type="note" title="真值判断">
+  `0`、`0.0`、`""`、`[]`、`{}`、`set()`、`None` 在条件判断中都视为 `False`，其他大多视为 `True`。
+</Aside>
+
+## 运算符怎么记
+
+| 类型 | 常用写法 | 记忆点 |
+| --- | --- | --- |
+| 算术 | `+ - * / // % **` | `/` 得到浮点；`//` 整除；`%` 取余；`**` 幂 |
+| 比较 | `== != > < >= <=` | Python 支持链式比较：`80 <= score < 90` |
+| 逻辑 | `and or not` | 支持短路求值：`a or "默认值"` |
+| 成员 | `in` / `not in` | 判断元素是否存在 |
+| 身份 | `is` / `is not` | 判断是否同一个对象，常用于 `None` |
+
+```python
+score = 88
+print(80 <= score < 90)
+
+x = None
+if x is None:
+    print("x 为空")
+```
+
+## 控制流：让代码按条件和次数执行
+
+<Tabs>
+  <TabItem label="if 分支" icon="approve-check">
+    ```python
+    score = 88
+
+    if score >= 90:
+        print("优秀")
+    elif 80 <= score < 90:
+        print("良好")
+    elif 60 <= score < 80:
+        print("及格")
+    else:
+        print("不及格")
+    ```
+
+    `elif` 必须跟在 `if` 后面，`else` 可选。
+  </TabItem>
+  <TabItem label="match 分支" icon="puzzle">
+    ```python
+    cmd = "start"
+
+    match cmd:
+        case "start":
+            print("启动")
+        case "stop":
+            print("停止")
+        case _:
+            print("未知命令")
+    ```
+
+    `match / case` 适合命令分发、状态判断和结构化数据匹配，要求 Python 3.10+。
+  </TabItem>
+  <TabItem label="for 循环" icon="random">
+    ```python
+    for i in range(1, 5):
+        print(i)  # 1,2,3,4
+
+    user = {"name": "Tom", "age": 18}
+    for k, v in user.items():
+        print(k, v)
+    ```
+
+    `range` 左闭右开；遍历字典时 `items()` 最常用。
+  </TabItem>
+  <TabItem label="while 循环" icon="terminal">
+    ```python
+    count = 0
+    while count < 3:
+        print(count)
+        count += 1
+    ```
+
+    `while` 适合次数不确定的循环，必须更新条件，避免死循环。
+  </TabItem>
+</Tabs>
+
+循环控制：
+
+| 关键字 | 作用 |
+| --- | --- |
+| `break` | 立刻终止整个循环 |
+| `continue` | 跳过本轮，进入下一轮 |
+| `pass` | 占位，语法需要但暂时不写逻辑 |
+
+## 推导式：简单转换可以一行写完
+
+推导式适合用一行生成新数据结构。转换或过滤逻辑很简单时用它；逻辑一复杂，就改回普通循环，代码更容易读。
+
+```python
+squares = [i * i for i in range(1, 6)]
+evens = [i for i in range(1, 11) if i % 2 == 0]
+
+square_map = {i: i * i for i in range(1, 4)}
+even_set = {i for i in range(10) if i % 2 == 0}
+```
+
+## 常用数据结构：看数据怎么装
+
+| 结构 | 特点 | 常用场景 |
+| --- | --- | --- |
+| `str` | 字符串，不可变 | 文本处理、接口字段、提示词 |
+| `list` | 有序、可变 | 存一组数据，最常用容器 |
+| `tuple` | 有序、不可变 | 坐标、固定配置、可作为字典 key |
+| `dict` | 键值对映射 | JSON、接口数据、对象属性 |
+| `set` | 无序、去重 | 去重、交集、并集、差集 |
+
+<Tabs>
+  <TabItem label="str" icon="open-book">
+    ```python
+    raw = "  a,b,c  "
+    parts = raw.strip().split(",")
+
+    print("-".join(parts))
+    print("hello".replace("l", "L"))
+    ```
+
+    字符串不可变，`replace()` 会返回新字符串，不会修改原字符串。
+  </TabItem>
+  <TabItem label="list" icon="puzzle">
+    ```python
+    nums = [3, 1, 2]
+    nums.append(4)
+    nums.sort()
+
+    print(nums)
+    print(sorted(nums))
+    ```
+
+    `sort()` 和 `reverse()` 修改原列表并返回 `None`；`sorted()` 返回新列表。
+  </TabItem>
+  <TabItem label="dict" icon="setting">
+    ```python
+    user = {"name": "Tom", "age": 18}
+
+    print(user.get("score", 0))
+    user["score"] = 95
+
+    for k, v in user.items():
+        print(k, v)
+    ```
+
+    访问不确定存在的键时，优先用 `get(key, default)`。
+  </TabItem>
+  <TabItem label="set" icon="random">
+    ```python
+    s1 = {1, 2, 3}
+    s2 = {3, 4, 5}
+
+    print(s1 & s2)
+    print(s1 | s2)
+    print(s1 - s2)
+    ```
+
+    集合适合去重和集合运算。
+  </TabItem>
+</Tabs>
+
+<Aside type="caution" title="可变对象引用">
+  `b = a` 不是拷贝，而是让两个变量指向同一个对象。列表、字典这类可变对象修改时要特别小心；一层拷贝可用 `copy()`，嵌套结构需要了解 `copy.deepcopy()`。
+</Aside>
+
+## 函数、模块与包：把代码组织起来
+
+<CardGrid>
+  <Card title="函数" icon="rocket">
+    函数用来封装可复用代码。常见参数顺序是：位置参数 → 默认参数 → `*args` → `**kwargs`。
+  </Card>
+  <Card title="模块" icon="open-book">
+    一个 `.py` 文件就是一个模块。常见导入方式：`import math`、`import math as m`、`from math import sqrt`。
+  </Card>
+  <Card title="包" icon="puzzle">
+    包是组织多个模块的目录，通常包含 `__init__.py`，适合管理中大型项目代码。
+  </Card>
+</CardGrid>
+
+```python
+def add(a, b=0):
+    """返回 a+b"""
+    return a + b
+
+
+def main():
+    print(add(1, 2))
+
+
+if __name__ == "__main__":
+    main()
+```
+
+`if __name__ == "__main__"` 的作用：只有文件被直接运行时才执行入口；被别的文件 `import` 时不会自动执行，避免导入副作用。
+
+包结构示例：
+
+```text
+project/
+├─ main.py
+└─ mypkg/
+   ├─ __init__.py
+   ├─ calc.py
+   └─ utils.py
+```
+
+导入和运行建议：
+
+```python
+from mypkg.calc import add
+```
+
+```bash
+python -m mypkg.calc
+```
+
+推荐在项目根目录用 `python -m ...` 运行模块，这样更不容易遇到导入路径问题。
+
+## 基础 I/O：输入、输出、读写文件
+
+| 能力 | 写法 | 重点 |
+| --- | --- | --- |
+| 输出 | `print("a", "b", sep="-")` | `sep` 控制分隔符，`end` 控制结尾 |
+| 输入 | `input("请输入：")` | 永远返回字符串，需要手动转换 |
+| 文件读取 | `with open(..., "r", encoding="utf-8")` | 推荐 `with + encoding` |
+| 文件写入 | `with open(..., "w", encoding="utf-8")` | `"w"` 覆盖写，`"a"` 追加写 |
+
+```python
+with open("test.txt", "w", encoding="utf-8") as f:
+    f.write("第一行\n")
+
+with open("test.txt", "r", encoding="utf-8") as f:
+    content = f.read()
+    print(content)
+```
+
+## 异常处理
+
+异常处理的目的不是把错误藏起来，而是让程序“可控地失败”。输入转换、文件读取、接口调用这类不稳定场景，都应该考虑异常处理。
+
+```python
+try:
+    x = int("12x")
+except ValueError as e:
+    print("转换失败：", e)
+else:
+    print("没有异常才会执行")
+finally:
+    print("无论如何都会执行")
+```
+
+常见异常：
+
+| 异常 | 常见原因 |
+| --- | --- |
+| `ZeroDivisionError` | 除数为 0 |
+| `IndexError` | 列表索引越界 |
+| `KeyError` | 字典键不存在 |
+| `TypeError` | 类型不匹配 |
+| `ValueError` | 值不合法，常见于类型转换 |
+| `FileNotFoundError` | 文件不存在 |
+
+主动抛出异常：
+
+```python
+def withdraw(balance, amount):
+    if amount < 0:
+        raise ValueError("amount 不能为负数")
+    if amount > balance:
+        raise ValueError("余额不足")
+    return balance - amount
+```
+
+<Aside type="note" title="异常处理原则">
+  优先捕获具体异常，不要随意 `except Exception`；输出异常对象 `e` 有助于定位问题；文件操作尽量用 `with`。
+</Aside>
+
+## 常见报错怎么查
+
+| 报错 | 常见原因 | 处理方式 |
+| --- | --- | --- |
+| `IndentationError` | 缩进不一致、冒号后缺代码块、Tab/空格混用 | 统一 4 空格，显示空白字符 |
+| `ModuleNotFoundError` | 运行目录不对、模块名拼错、包结构不对 | 在项目根目录运行，必要时用 `python -m ...` |
+| `ValueError` | `int("abc")` 这类值不合法 | 输入校验，使用 `try/except` |
+| `IndexError` / `KeyError` | 索引越界或键不存在 | 用 `len()`、`dict.get()`、`key in dict` |
+| `TypeError` | 类型不匹配，比如 `"1" + 2` | 做类型转换，检查变量是否为 `None` |
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  Python 基础语法 = 缩进看结构，类型看数据，分支看条件，循环看批处理，函数看复用，模块包看组织，异常看兜底。
+
+  遇到报错先看三件事：缩进是否对、运行目录是否对、数据类型是否对。
+</Aside>

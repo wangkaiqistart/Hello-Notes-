@@ -1,0 +1,211 @@
+---
+title: Harness Engineering 驾驭工程
+description: 用规则、流程、上下文和检查机制管控 AI 智能体的系统化方法
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+AI 正在从“回答问题的工具”变成“参与执行的智能体”。它可以参与开发、整理资料、拆解任务、调用工具、检查结果，甚至完成一整套工作。能力越强，越需要一套方法来管住方向、过程和结果。
+
+Harness Engineering，也可以理解为**驾驭工程**：为 AI 智能体提前设计目标边界、资料供给、执行流程、行为约束和验收标准，让它在可控环境中稳定完成任务。
+
+<Aside type="tip" title="一句话理解" icon="rocket">
+  人掌方向，AI 执行；工程系统负责约束过程、检查结果、沉淀经验。
+</Aside>
+
+<CardGrid>
+  <Card title="驾驭谁" icon="rocket">
+    驾驭的是 **AI 智能体**。它不只是回答问题，而是会参与任务执行，所以需要被引导、约束和验收。
+  </Card>
+  <Card title="怎么驾驭" icon="setting">
+    通过目标、资料、流程、规则、环境和检查标准，把 AI 的执行过程纳入一套系统化方法。
+  </Card>
+  <Card title="解决什么" icon="warning">
+    解决 AI 急于求成、提前收尾、缺少验证、模仿坏模式等复杂任务中的失控问题。
+  </Card>
+  <Card title="不是什么" icon="information">
+    它不是替代 Prompt 或 Context，而是把提示词、上下文、工具和检查机制组织成可执行的工作系统。
+  </Card>
+</CardGrid>
+
+<CardGrid stagger>
+  <Card title="管方向" icon="setting">
+    人类负责目标、边界、优先级和关键决策，避免 AI 只顾执行却偏离真实需求。
+  </Card>
+  <Card title="管过程" icon="random">
+    用流程拆解、上下文供给和行为约束，让 AI 按稳定路径推进复杂任务。
+  </Card>
+  <Card title="管结果" icon="approve-check">
+    通过测试、构建、Review 和验收清单确认结果可用，而不是只听 AI 自评。
+  </Card>
+</CardGrid>
+
+<Aside type="note" title="速记框架">
+  先讲定义：Harness 是管控 AI 智能体执行过程的工程体系；再讲关系：它不替代 Prompt 和 Context，而是把二者放进流程、规则和检查机制里；最后讲落地：通过划界、投料、拆流、互审和交付，让 AI 从“能回答”变成“能稳定完成任务”。
+</Aside>
+
+## 为什么需要驾驭工程
+
+单次对话里的 AI 很容易显得“能说会道”，但复杂任务真正考验的是**过程稳定性**。
+
+<CardGrid>
+  <Card title="边界不清" icon="warning">
+    任务还没定义完整，AI 就开始执行，最后容易做出方向正确但不完整的半成品。
+  </Card>
+  <Card title="半途收尾" icon="warning">
+    完成局部内容后就判断任务结束，忽略测试、交付说明或关键边界条件。
+  </Card>
+  <Card title="缺少验证" icon="warning">
+    代码、文档或方案看似完整，但没有经过运行、构建、预览或人工检查。
+  </Card>
+  <Card title="错误继承" icon="warning">
+    盲目模仿已有项目中的坏模式，把旧问题继续放大。
+  </Card>
+</CardGrid>
+
+驾驭工程的价值在于：把这些依赖“自觉”的环节，改造成可重复执行的流程和规则。
+
+也就是说，不要只期待 AI 自己记得先确认需求、做完后主动测试、交付前检查遗漏；而是提前把这些动作写进工作流程里。这样每次任务都会按同一套标准执行，结果更稳定，也更容易排查问题。
+
+## 三层能力递进
+
+驾驭工程不是提示词工程、上下文工程的替代品，而是更上一层的管控体系。
+
+<Tabs>
+  <TabItem label="提示词工程" icon="open-book">
+    关注**指令表达**：让 AI 知道要回答什么、按什么格式回答、需要避开什么。
+
+    关键词：角色、任务、约束、示例、输出格式。
+  </TabItem>
+  <TabItem label="上下文工程" icon="magnifier">
+    关注**信息供给**：让 AI 拿到正确背景、项目资料、代码上下文和业务规则。
+
+    关键词：资料整理、检索、压缩、动态上下文、记忆。
+  </TabItem>
+  <TabItem label="驾驭工程" icon="rocket">
+    关注**执行系统**：让 AI 按流程做事，并能被检查、纠偏和复用。
+
+    关键词：流程、规则、环境、互审、验收、沉淀。
+  </TabItem>
+</Tabs>
+
+## 核心组成
+
+<CardGrid>
+  <Card title="目标边界" icon="information">
+    明确做什么、不做什么、完成标准是什么。典型产物是任务说明和验收清单。
+  </Card>
+  <Card title="资料供给" icon="open-book">
+    提供稳定可信的信息来源，例如文档、接口说明、业务规则和示例。
+  </Card>
+  <Card title="行为约束" icon="setting">
+    限制 AI 的执行方式和禁止动作，例如编码规范、目录规范和安全规则。
+  </Card>
+  <Card title="流程编排" icon="puzzle">
+    把复杂任务拆成可执行步骤，设置阶段性检查点。
+  </Card>
+  <Card title="自动检查" icon="approve-check">
+    用测试、构建、Lint、类型检查等系统手段验证结果，而不是只靠 AI 自评。
+  </Card>
+  <Card title="经验沉淀" icon="random">
+    把高频有效做法固化为模板、脚本、Skill 或 AGENTS.md。
+  </Card>
+</CardGrid>
+
+## 四类管控方法
+
+<Tabs>
+  <TabItem label="规范资料" icon="open-book">
+    把业务规则、接口说明、代码约定、运行方式整理清楚，减少 AI 在信息不足时自行猜测。
+
+    适合沉淀的资料包括：项目背景、核心术语、目录结构、接口协议、常见问题、禁止行为和安全边界。
+  </TabItem>
+  <TabItem label="统一约束" icon="setting">
+    固定项目结构、命名规范、代码风格和交付格式，让 AI 在同一套轨道上工作。
+
+    约束最好能落到可执行机制里，例如格式化工具、Lint 规则、测试命令和 CI 检查。
+  </TabItem>
+  <TabItem label="自动检查" icon="approve-check">
+    让结果经过外部验证，而不是只听 AI 说“已经完成”。
+
+    常见检查方式包括单元测试、集成测试、类型检查、Lint、构建验证、预览检查和人工 Review。
+  </TabItem>
+  <TabItem label="定期优化" icon="random">
+    驾驭规则本身也需要维护。过期文档、冗余上下文、失效脚本和重复规则都会降低 AI 的执行质量。
+
+    好的 Harness 应该越用越清晰，而不是越积越厚。
+  </TabItem>
+</Tabs>
+
+## 七步落地流程
+
+<Steps>
+
+1. **划界**：明确工作内容和边界，先回答“这次任务到底交付什么，不包含什么？”
+
+2. **筑底**：准备运行和验证环境，确保 AI 能安装、运行、测试和预览。
+
+3. **投料**：提供可靠上下文，标出哪些资料必须看，哪些资料不能直接信。
+
+4. **拆流**：把复杂任务拆成可顺序执行的小任务，设置阶段性验收点。
+
+5. **互审**：用检查清单、测试、构建或多个智能体交叉验证结果。
+
+6. **提纯**：沉淀高频流程，把有效经验固化成模板、脚本或 Skill。
+
+7. **交付**：完成上线、部署、说明和最终验收，让用户能确认结果可用。
+
+</Steps>
+
+<Aside type="tip" title="七步口诀">
+  **划、筑、投、拆、互、提、交**：划边界，筑环境，投资料，拆任务，互检查，提流程，交成果。
+</Aside>
+
+## 最小可用 Harness
+
+一个项目不需要一开始就设计得很重。先搭出最小版本，就能明显提升 AI 的稳定性。
+
+<CardGrid>
+  <Card title="项目说明" icon="information">
+    写清目标、技术栈、目录结构和运行命令。
+  </Card>
+  <Card title="任务规则" icon="setting">
+    写清做事顺序、禁止行为和验收标准。
+  </Card>
+  <Card title="检查命令" icon="approve-check">
+    准备测试、构建、格式化或预览命令。
+  </Card>
+  <Card title="沉淀入口" icon="rocket">
+    把反复出现的流程写进文档、脚本或 Skill。
+  </Card>
+</CardGrid>
+
+<Aside type="note" title="判断信号">
+  当 AI 经常在同一类任务上犯错时，不一定是模型不够强，也可能是 Harness 没有把边界、资料和检查机制设计清楚。
+</Aside>
+
+## 开发者角色变化
+
+<CardGrid>
+  <Card title="任务设计者" icon="puzzle">
+    把模糊需求拆成可执行、可验证的任务。
+  </Card>
+  <Card title="系统搭建者" icon="setting">
+    为 AI 准备资料、工具、流程和检查机制。
+  </Card>
+  <Card title="质量监督者" icon="approve-check">
+    判断结果是否可靠，并把经验沉淀回系统。
+  </Card>
+</CardGrid>
+
+## 总结
+
+<Aside type="tip" title="最终结论" icon="star">
+  驾驭工程的核心不是让 AI 更自由，而是让 AI 更可靠。它通过目标边界、资料供给、行为约束、流程编排和自动检查，让 AI 从“能回答”走向“能稳定交付”。
+</Aside>
+
+<Aside type="note" title="速记内容" icon="rocket">
+  Harness Engineering 是一套驾驭 AI 智能体的工程方法。它不是单纯写 Prompt，也不是只给上下文，而是提前设计目标边界、资料供给、行为约束、执行流程和检查标准，让 AI 能在可控环境中稳定完成复杂任务。
+
+  速记：**人掌方向，AI 执行，系统护航**。
+</Aside>

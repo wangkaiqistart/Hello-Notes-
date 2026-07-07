@@ -1,0 +1,155 @@
+---
+title: Hermes Agent：构建会成长的智能体
+description: Hermes Agent 的核心理念、学习循环、记忆系统、MCP、A2A、Skills 与平台能力
+sidebar:
+  label: 核心能力
+  order: 1
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Hermes Agent 的核心不是“做一个能聊天的助手”，而是构建一个**会长期记忆、会持续学习、会协作、会沉淀经验的智能体系统**。
+
+它更像一套面向真实业务落地的 Agent 产品化方案：用 Harness 约束执行过程，用 Hermes 提供记忆、协议、协作、Skills 和工具平台能力。
+
+<Aside type="tip" title="核心定位" icon="rocket">
+  Hermes Agent 是会成长的智能体：在交互中进化，在陪伴中更懂用户。
+</Aside>
+
+<CardGrid>
+  <Card title="面向终端用户" icon="information">
+    使用越久，输出越精准；因为系统能持续记住偏好、任务经验和关键背景。
+  </Card>
+  <Card title="面向系统开发者" icon="setting">
+    降低开发门槛，把记忆、工具、协作和技能复用变成可组合能力。
+  </Card>
+  <Card title="系统核心定位" icon="rocket">
+    开发高效、功能闭环、持续进化，让智能体从一次性执行走向长期运行。
+  </Card>
+</CardGrid>
+
+## 为什么 AI 项目难落地
+
+很多 AI 项目不是 Demo 做不出来，而是真正落地后会遇到持续运行的问题。
+
+<CardGrid>
+  <Card title="记不住" icon="open-book">
+    缺少持久化存储，信息容易丢失，用户每次都要重新解释背景。
+  </Card>
+  <Card title="接不通" icon="puzzle">
+    工具、数据库、文件和第三方系统没有统一接口，适配成本很高。
+  </Card>
+  <Card title="不会协作" icon="random">
+    多个智能体之间缺少标准协作协议，任务委派、状态同步和结果汇总都不稳定。
+  </Card>
+  <Card title="不长进" icon="warning">
+    缺少经验沉淀机制，每次任务都像从零开始，能力很难复用和进化。
+  </Card>
+</CardGrid>
+
+Hermes 要解决的正是这些问题：让智能体不只会执行一次任务，而是能记住、接入、协作，并把经验转化成后续能力。
+
+## 核心理念
+
+<Aside type="note" title="黄金组合">
+  **Harness + Hermes = 稳定 / 自主进化智能体**。
+
+  Harness 负责规则、流程和检查标准，让智能体稳定做事；Hermes 负责记忆、学习、协作和技能沉淀，让智能体持续成长。
+</Aside>
+
+可以把二者的关系理解成：
+
+| 组成 | 关注点 | 作用 |
+| --- | --- | --- |
+| Harness | 规则、流程、约束、验收 | 让 AI 做事更稳定 |
+| Hermes | 记忆、学习、协议、Skills | 让 Agent 能持续成长 |
+| 组合效果 | 稳定执行 + 自主进化 | 更接近可商用的智能体系统 |
+
+## 学习循环
+
+Hermes Agent 的自主进化，核心依赖一条持续运转的学习循环。
+
+<Steps>
+
+1. **筛选记忆**：从交互、任务和结果中筛选出有价值的信息，写入持久记忆。
+
+2. **优化技能**：评估已有技能的使用效果，发现流程低效、步骤缺失或结果不稳定的问题。
+
+3. **打磨技能**：把成熟技能继续调优，让它在重复任务中执行得更快、更稳。
+
+4. **创建技能**：当出现新的高频任务时，生成新的 Skill，把经验沉淀成可复用能力。
+
+</Steps>
+
+<Aside type="tip" title="循环关键词" icon="random">
+  闭环驱动，持续进化，自主成长。
+</Aside>
+
+## 五大核心模块
+
+<Tabs>
+  <TabItem label="结构化记忆" icon="open-book">
+    结构化记忆让 Hermes 从“临时对话”走向“长期理解”。
+
+    它可以分成三层：短期会话记忆、核心常驻记忆、长期持久记忆。短期记忆支撑当前任务，常驻记忆保存稳定偏好和关键身份信息，长期记忆沉淀业务经验、历史任务和可复用知识。
+  </TabItem>
+  <TabItem label="MCP 协议" icon="puzzle">
+    MCP 是智能体连接外部世界的“万能插头”。
+
+    它把本地文件、数据库、第三方工具和外部服务统一接入，让 Agent 不必为每个系统单独写一套适配逻辑。对开发者来说，MCP 的价值是降低跨数据源适配成本。
+  </TabItem>
+  <TabItem label="A2A 协议" icon="random">
+    A2A 是智能体之间的“团队协作群”。
+
+    它通过标准化通信规则，让多个 Agent 能进行任务委派、消息传递和协同执行。复杂任务可以拆给不同子 Agent，再把结果汇总回来。
+  </TabItem>
+  <TabItem label="Skills 系统" icon="approve-check">
+    Skills 是 Hermes 的可生长经验库。
+
+    Skill 以独立 Markdown 文件形式存在，透明、可编辑、可复用。它的来源可以是内置基础技能、智能体自动创建的技能，也可以来自社区安装。
+  </TabItem>
+  <TabItem label="工具与平台" icon="setting">
+    工具与平台能力让 Hermes 能进入真实工作场景。
+
+    内置工具集覆盖执行、信息、媒体、记忆等场景；多平台网关可以打通钉钉、飞书、微信等渠道，实现跨平台记忆互通和响应。
+  </TabItem>
+</Tabs>
+
+## 模块对比
+
+| 模块 | 解决的问题 | 开发者价值 |
+| --- | --- | --- |
+| 学习循环 | 智能体不会持续进步 | 让能力从任务经验中沉淀 |
+| 结构化记忆 | 信息容易丢失 | 沉淀个性化知识和业务经验 |
+| MCP 协议 | 工具和数据源难接入 | 统一接口，降低适配成本 |
+| A2A 协议 | 多智能体难协作 | 快速搭建协作顺畅的 Agent 团队 |
+| Skills 系统 | 能力不可复用 | 把经验变成可扩展技能 |
+| 工具与平台 | Agent 难进入真实场景 | 打通执行工具和多平台入口 |
+
+## 能力总览
+
+<CardGrid>
+  <Card title="学习循环" icon="random">
+    自主进化的核心，让 Agent 能从任务反馈中持续优化。
+  </Card>
+  <Card title="三层记忆" icon="open-book">
+    支撑结构化关联和长期留存，让 Agent 越用越懂用户。
+  </Card>
+  <Card title="MCP 协议" icon="puzzle">
+    统一数据接入，把文件、工具、数据库和外部服务接起来。
+  </Card>
+  <Card title="A2A 协议" icon="rocket">
+    支撑智能体高效协作，让复杂任务可以被拆解、委派和汇总。
+  </Card>
+  <Card title="Skills 系统" icon="approve-check">
+    可复用、可扩展、可成长，把经验沉淀为长期能力。
+  </Card>
+</CardGrid>
+
+## 总结
+
+<Aside type="tip" title="速记" icon="star">
+  Hermes Agent 的核心是学习循环，能力底座是记忆、MCP、A2A 和 Skills。
+
+  Harness 让智能体稳定执行，Hermes 让智能体持续成长；两者组合起来，才更接近可商用的智能体开发方案。
+</Aside>

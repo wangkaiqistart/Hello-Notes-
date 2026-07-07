@@ -22,6 +22,7 @@ export default defineConfig({
 						{ label: '提示词工程', items: [{ autogenerate: { directory: 'basics/prompt-engineering' } }] },
 						{ label: '模型接入', items: [{ autogenerate: { directory: 'basics/model-access' } }] },
 						{ label: 'Embedding', items: [{ autogenerate: { directory: 'basics/embedding' } }] },
+						{ label: 'Python 工程基础', items: [{ autogenerate: { directory: 'basics/python-foundation' } }] },
 					],
 				},
 				{
@@ -46,6 +47,7 @@ export default defineConfig({
 					label: '智能体开发',
 					items: [
 						{ label: 'Agent 基础', items: [{ autogenerate: { directory: 'agent/fundamentals' } }] },
+						{ label: 'Hermes', items: [{ autogenerate: { directory: 'agent/hermes' } }] },
 						{ label: 'Skills 架构', items: [{ autogenerate: { directory: 'agent/skills' } }] },
 						{ label: '记忆系统', items: [{ autogenerate: { directory: 'agent/memory' } }] },
 						{ label: '上下文工程', items: [{ autogenerate: { directory: 'agent/context-engineering' } }] },
@@ -58,6 +60,12 @@ export default defineConfig({
 						{ label: '接口设计', items: [{ autogenerate: { directory: 'deployment/api-design' } }] },
 						{ label: '容器化', items: [{ autogenerate: { directory: 'deployment/containerization' } }] },
 						{ label: '微调与私有化', items: [{ autogenerate: { directory: 'deployment/fine-tuning' } }] },
+					],
+				},
+				{
+					label: '工具指南',
+					items: [
+						{ label: 'Codex', items: [{ autogenerate: { directory: 'tools/codex' } }] },
 					],
 				},
 				{

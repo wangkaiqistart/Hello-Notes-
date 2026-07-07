@@ -1,0 +1,145 @@
+---
+title: Python 开发环境与依赖管理
+description: Python 项目中虚拟环境、pip、requirements 与依赖版本管理的基础笔记
+sidebar:
+  label: 环境与依赖管理
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps } from '@astrojs/starlight/components';
+
+Python 项目能不能稳定运行，很多时候不只取决于代码本身，还取决于运行环境是否一致。开发环境与依赖管理，就是为了让每个项目都有干净、独立、可复现的运行空间。
+
+<Aside type="tip" title="核心目标" icon="rocket">
+  能为每个 Python 项目创建独立虚拟环境，用 `pip` 管理依赖，并用 `requirements.txt` 锁定版本，让项目换一台机器也能跑起来。
+</Aside>
+
+## 为什么必须管理环境
+
+很多 Python 项目问题，不是代码写错了，而是运行环境不一致。
+
+<CardGrid>
+  <Card title="版本冲突" icon="random">
+    多个项目使用同一个全局环境，一个项目升级库版本，另一个项目可能马上报错。
+  </Card>
+  <Card title="库更新报错" icon="warning">
+    代码没有变，但依赖库更新后接口变化，也可能导致原本能跑的程序出错。
+  </Card>
+  <Card title="别人跑不起来" icon="puzzle">
+    自己电脑能运行，不代表别人电脑也能运行。缺少依赖记录时，复现成本会很高。
+  </Card>
+  <Card title="环境不一致" icon="setting">
+    Python 版本、依赖版本、系统环境不同，都可能让同一段代码出现不同结果。
+  </Card>
+</CardGrid>
+
+一句话：很多问题不在代码，而在**运行环境不一致**。
+
+## 三个核心概念
+
+<CardGrid>
+  <Card title="项目依赖" icon="open-book">
+    项目依赖就是项目调用的第三方工具包，比如请求接口、处理文件、连接数据库、调用模型等。
+  </Card>
+  <Card title="虚拟环境" icon="puzzle">
+    虚拟环境是项目自己的独立运行空间，用来隔离不同项目的依赖，避免互相污染。
+  </Card>
+  <Card title="版本锁定" icon="approve-check">
+    版本锁定是把当前使用的库和版本记录下来，让别人或未来的自己能复现同样的运行环境。
+  </Card>
+</CardGrid>
+
+## venv 实操
+
+`venv` 是 Python 自带的虚拟环境工具，适合入门阶段先掌握。
+
+<Steps>
+
+1. **创建虚拟环境**
+
+   ```bash
+   python -m venv .venv
+   ```
+
+2. **激活虚拟环境：macOS / Linux**
+
+   ```bash
+   source .venv/bin/activate
+   ```
+
+3. **激活虚拟环境：Windows**
+
+   ```powershell
+   .\.venv\Scripts\Activate.ps1
+   ```
+
+4. **退出虚拟环境**
+
+   ```bash
+   deactivate
+   ```
+
+</Steps>
+
+<Aside type="note" title="命名习惯">
+  虚拟环境目录常用 `.venv`，表示这是当前项目内部使用的环境目录，一般不提交到代码仓库。
+</Aside>
+
+## pip 必会命令
+
+`pip` 是 Python 常用的依赖管理工具，先掌握这 5 个命令就够用了。
+
+| 场景 | 命令 | 作用 |
+| --- | --- | --- |
+| 安装依赖 | `pip install requests` | 安装指定第三方库 |
+| 查看依赖 | `pip list` | 查看当前环境已安装的库 |
+| 卸载依赖 | `pip uninstall requests` | 删除不再需要的库 |
+| 生成依赖文件 | `pip freeze > requirements.txt` | 记录当前环境的依赖和版本 |
+| 从文件安装 | `pip install -r requirements.txt` | 根据依赖文件复现环境 |
+
+## 推荐流程
+
+一个新 Python 项目，可以按这个顺序处理环境：
+
+<Steps>
+
+1. **进入项目目录**：先确认当前终端位置是在项目根目录。
+
+2. **创建虚拟环境**：执行 `python -m venv .venv`。
+
+3. **激活虚拟环境**：macOS / Linux 使用 `source .venv/bin/activate`，Windows 使用 `.\.venv\Scripts\Activate.ps1`。
+
+4. **安装项目依赖**：例如 `pip install requests`。
+
+5. **锁定依赖版本**：执行 `pip freeze > requirements.txt`。
+
+6. **复现环境**：换机器或协作开发时，执行 `pip install -r requirements.txt`。
+
+</Steps>
+
+## 最终验收
+
+环境搭好之后，不是只看命令有没有执行成功，而是要用一个最小脚本验证。
+
+<CardGrid>
+  <Card title="干净环境" icon="approve-check">
+    当前项目使用独立 `.venv`，不依赖全局 Python 环境里的包。
+  </Card>
+  <Card title="依赖可查看" icon="open-book">
+    能通过 `pip list` 看见当前环境安装了哪些库。
+  </Card>
+  <Card title="版本可复现" icon="setting">
+    能用 `requirements.txt` 记录依赖，并在新环境中重新安装。
+  </Card>
+  <Card title="脚本能运行" icon="terminal">
+    词频统计这类最小脚本能在当前虚拟环境下成功运行。
+  </Card>
+</CardGrid>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  Python 环境管理 = 每个项目一个虚拟环境，依赖用 `pip` 管，版本用 `requirements.txt` 锁。
+
+  目标不是多记命令，而是让项目在自己电脑、别人电脑和未来环境里都能稳定运行。
+</Aside>
