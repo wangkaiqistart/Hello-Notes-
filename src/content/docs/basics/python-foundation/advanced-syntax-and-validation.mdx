@@ -1,0 +1,275 @@
+---
+title: Python 进阶语法与参数校验
+description: Python 类型注解、推导式、装饰器、面向对象和 Pydantic 参数校验笔记
+sidebar:
+  label: 进阶语法与校验
+  order: 7
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+这一页记录 Python 从“能写脚本”走向“写得更清楚、更安全、更好维护”的几个关键语法点：类型注解、推导式、装饰器、面向对象和 Pydantic 校验。
+
+<Aside type="tip" title="核心路径" icon="rocket">
+  类型注解提升可读性，推导式让代码更简洁，装饰器复用横切逻辑，OOP 封装复杂对象，Pydantic 负责强制校验外部数据。
+</Aside>
+
+## 先看解决什么问题
+
+<CardGrid>
+  <Card title="代码可读性差" icon="open-book">
+    变量和函数参数类型不清楚，别人接手时要靠猜。
+  </Card>
+  <Card title="重复代码多" icon="copy">
+    日志、计时、权限控制、参数校验等逻辑容易在多个函数里重复出现。
+  </Card>
+  <Card title="数据类型不安全" icon="warning">
+    接口参数、用户输入、外部文件数据都可能类型不对或缺字段。
+  </Card>
+</CardGrid>
+
+学习顺序可以按这条线走：
+
+<Steps>
+
+1. **类型注解**：先让代码读起来更清楚。
+
+2. **推导式**：把简单循环写得更简洁。
+
+3. **装饰器**：把可复用的附加逻辑抽出来。
+
+4. **面向对象**：把复杂数据和逻辑封装在一起。
+
+5. **Pydantic 校验**：让外部输入先过规则，再进入业务逻辑。
+
+</Steps>
+
+## 类型注解
+
+类型注解是给变量、函数参数和返回值贴上类型标签。它主要解决“猜类型”的问题，让代码更容易读，也方便编辑器提示。
+
+```python
+name: str = "张三"
+age: int = 18
+score: float = 95.5
+is_student: bool = True
+
+scores: list[int] = [90, 85, 95]
+user_info: dict[str, int] = {"id": 1, "age": 18}
+phone: str | None = None
+
+
+def add(a: int, b: int = 0) -> int:
+    return a + b
+```
+
+要点：
+
+| 写法 | 作用 |
+| --- | --- |
+| `name: str = "张三"` | 变量注解 |
+| `scores: list[int]` | 标注列表内部元素类型 |
+| `dict[str, int]` | 标注字典 key / value 类型 |
+| `str \| None` | 表示可能是字符串，也可能是空值 |
+| `def add(a: int) -> int` | 标注函数参数和返回值 |
+
+<Aside type="note" title="注意">
+  类型注解本身不是强制校验。`age: int = "18"` 仍然可能运行，注解主要用于可读性、编辑器提示和静态检查。真正强制校验需要 Pydantic 这类工具。
+</Aside>
+
+## 推导式
+
+推导式适合把简单循环压缩成一行，让数据处理更简洁。
+
+普通写法：
+
+```python
+nums = []
+for x in range(10):
+    if x % 2 == 0:
+        nums.append(x * 2)
+
+print(nums)  # [0, 4, 8, 12, 16]
+```
+
+推导式写法：
+
+```python
+nums = [x * 2 for x in range(10) if x % 2 == 0]
+print(nums)  # [0, 4, 8, 12, 16]
+```
+
+核心结构：
+
+```python
+[表达式 for 变量 in 可迭代对象 if 条件]
+```
+
+可以按三步理解：**遍历 → 筛选 → 生成目标值**。
+
+<Aside type="caution" title="使用边界">
+  推导式适合简单转换和过滤。逻辑一旦出现多层嵌套、复杂判断或副作用，就改回普通循环，代码更容易维护。
+</Aside>
+
+## 闭包与装饰器
+
+装饰器的基础是闭包。闭包就是：内部函数引用外部函数的变量，并且外部函数返回内部函数。
+
+```python
+def outer(msg):
+    def inner():
+        print(f"收到消息：{msg}")
+    return inner
+
+
+func = outer("Hello 闭包")
+func()
+```
+
+装饰器可以在不修改原函数代码的前提下，给函数动态添加功能，比如日志、计时、权限控制。
+
+```python
+def logger(func):
+    def wrapper(*args, **kwargs):
+        print(f"【日志】函数 {func.__name__} 开始执行")
+        result = func(*args, **kwargs)
+        print(f"【日志】函数 {func.__name__} 执行结束")
+        return result
+    return wrapper
+
+
+@logger
+def greet(name: str) -> None:
+    print(f"Hello, {name}!")
+
+
+greet("张三")
+```
+
+关键点：
+
+| 概念 | 作用 |
+| --- | --- |
+| `wrapper` | 包装原函数，添加额外逻辑 |
+| `*args` | 接收任意位置参数 |
+| `**kwargs` | 接收任意关键字参数 |
+| `return result` | 返回原函数结果，保持调用行为一致 |
+| `@logger` | 等价于 `greet = logger(greet)` |
+
+<Aside type="note" title="记忆方式">
+  装饰器 = 函数套函数。外层负责接收原函数，内层负责增强逻辑，最后返回增强后的函数。
+</Aside>
+
+## 面向对象 OOP
+
+面向对象适合把复杂程序里的数据和逻辑打包在一起。类像设计图，实例是具体对象，`self` 表示实例本身。
+
+```python
+class Student:
+    def __init__(self, name: str, age: int, score: float = 60):
+        self.name = name
+        self.age = age
+        self.score = score
+
+    def say_hi(self) -> None:
+        print(f"我是{self.name}，成绩 {self.score} 分")
+
+    def update_score(self, new_score: float) -> None:
+        if 0 <= new_score <= 100:
+            self.score = new_score
+            print(f"成绩更新为：{self.score} 分")
+        else:
+            print("成绩必须在 0-100 之间")
+
+
+student = Student("张三", 18)
+student.say_hi()
+student.update_score(90)
+```
+
+核心概念：
+
+| 概念 | 记忆点 |
+| --- | --- |
+| 类 | 设计图纸，例如 `Student` |
+| 实例 | 按类创建出来的具体对象 |
+| 属性 | 对象保存的数据，例如 `name`、`score` |
+| 方法 | 对象能执行的动作，例如 `update_score()` |
+| `self` | 实例本身，实例方法的第一个参数 |
+
+适合使用 OOP 的场景：
+
+<CardGrid>
+  <Card title="数据和行为强相关" icon="puzzle">
+    比如学生有姓名、年龄、成绩，也有更新成绩、判断及格等动作。
+  </Card>
+  <Card title="对象状态会变化" icon="setting">
+    需要在多次调用中维护同一份状态时，类会比零散函数更清楚。
+  </Card>
+  <Card title="复杂事物管理" icon="information">
+    用户、商品、订单、任务、会话这类对象，通常适合用类封装。
+  </Card>
+</CardGrid>
+
+## Pydantic 参数校验
+
+Pydantic 是基于类型注解的数据校验工具。它可以把“手写 if/else 校验”变成结构化规则，常用于接口参数、用户输入和外部数据校验。
+
+安装：
+
+```bash
+pip install pydantic
+```
+
+示例：
+
+```python
+from pydantic import BaseModel, Field, ValidationError
+
+
+class Student(BaseModel):
+    name: str = Field(min_length=2, max_length=10)
+    age: int = Field(ge=18, le=30)
+    score: float = Field(default=60, gt=0, lt=100)
+
+
+def get_student_info(params: dict) -> str:
+    try:
+        valid_data = Student(**params)
+        return f"校验通过：{valid_data.model_dump()}"
+    except ValidationError as e:
+        return f"校验失败：{e.errors()}"
+
+
+print(get_student_info({"name": "张三", "age": "20", "score": "90.5"}))
+```
+
+常用规则：
+
+| 规则 | 作用 |
+| --- | --- |
+| `min_length` / `max_length` | 字符串长度限制 |
+| `ge` / `le` | 大于等于 / 小于等于 |
+| `gt` / `lt` | 大于 / 小于 |
+| `default` | 设置默认值 |
+| `ValidationError` | 捕获校验失败信息 |
+
+<Aside type="tip" title="适用场景">
+  只要数据来自外部，就应该先校验再使用。典型场景包括 API 参数、表单输入、配置文件、Agent 工具入参。
+</Aside>
+
+## 总览速记
+
+| 知识点 | 核心作用 | 应用场景 |
+| --- | --- | --- |
+| 类型注解 | 变量和函数贴类型标签，提升可读性 | 团队协作、大型项目 |
+| 推导式 | 精简循环，简化代码 | 数据筛选、列表生成 |
+| 装饰器 | 复用附加逻辑，动态扩展函数 | 日志、计时、权限控制 |
+| 面向对象 | 封装数据和逻辑，便于维护 | 用户、商品、订单等复杂对象 |
+| Pydantic | 强制校验，保障数据安全 | API 参数、用户输入、工具入参 |
+
+<Aside type="tip" title="速记" icon="star">
+  进阶语法的主线：可读、简洁、复用、封装、安全。
+
+  类型注解解决“看不懂类型”，推导式解决“循环太啰嗦”，装饰器解决“重复附加逻辑”，OOP 解决“复杂对象管理”，Pydantic 解决“外部数据不可信”。
+</Aside>
