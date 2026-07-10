@@ -1,0 +1,171 @@
+---
+title: Hermes Agent vs OpenClaw
+description: Hermes Agent 与 OpenClaw 在技术哲学、记忆、技能、协作、Token、安全和选型场景上的差异
+sidebar:
+  label: OpenClaw 对比
+  order: 3
+---
+
+import { Aside, Card, CardGrid, TabItem, Tabs } from '@astrojs/starlight/components';
+
+OpenClaw 和 Hermes Agent 都是面向智能体落地的框架，但它们解决问题的路径不同。
+
+OpenClaw 更像一个**调度中控系统**：强调统一接入、统一调度、跨设备协同和技能开箱即用。Hermes Agent 更像一个**自主进化式智能体引擎**：强调长期记忆、经验沉淀、技能自生长和持续成长。
+
+<Aside type="tip" title="核心结论" icon="star">
+  OpenClaw 追求调度效率，Hermes Agent 追求进化深度。前者更适合快速连接和统一分发，后者更适合长期使用、复杂探索和持续成长。
+</Aside>
+
+<CardGrid>
+  <Card title="OpenClaw" icon="puzzle">
+    连接一切，统一调度。核心价值是让多设备、多技能、多平台能被稳定编排起来。
+  </Card>
+  <Card title="Hermes Agent" icon="rocket">
+    自主进化，持续成长。核心价值是让智能体在任务中学习，并把经验沉淀成后续能力。
+  </Card>
+</CardGrid>
+
+## 为什么需要这场对比
+
+两者经常被放在一起讨论，是因为它们都试图回答同一个问题：**智能体如何真正进入复杂工作场景？**
+
+但它们的发力点不同。
+
+<CardGrid>
+  <Card title="OpenClaw 的优势" icon="approve-check">
+    生态热度高，覆盖范围广，适合做跨设备助理和统一调度入口。
+  </Card>
+  <Card title="Hermes 的优势" icon="random">
+    强调低 Token 消耗、长期记忆和自我进化，更适合高价值、长周期、探索性任务。
+  </Card>
+  <Card title="核心洞察" icon="information">
+    OpenClaw 赢在“广度”，Hermes Agent 赢在“深度与粘性”。
+  </Card>
+</CardGrid>
+
+## 核心哲学
+
+<Tabs>
+  <TabItem label="OpenClaw" icon="puzzle">
+    OpenClaw 的定位更接近 **Assistant Control Plane**，也就是智能体的网关、路由和分发层。
+
+    它的逻辑是静态执行：根据预设规则，把任务精准分配给合适的工具、技能或设备。它追求的是稳定、可控和调度效率。
+  </TabItem>
+  <TabItem label="Hermes Agent" icon="rocket">
+    Hermes Agent 的定位更接近 **Integrated Agent Runtime**，也就是带进化能力的智能体运行环境。
+
+    它的逻辑是闭环进化：执行任务后观察结果，再进行反思和沉淀。它追求的是自动积累经验和持续提升进化深度。
+  </TabItem>
+</Tabs>
+
+可以把两条路线简化成一句话：
+
+| 路线 | 核心动作 | 追求目标 |
+| --- | --- | --- |
+| OpenClaw | 执行与调度 | 把任务分发得更准、更快、更稳 |
+| Hermes Agent | 执行、观察、反思、沉淀 | 让智能体越用越懂、越用越强 |
+
+## 关键能力对比
+
+| 维度 | OpenClaw | Hermes Agent |
+| --- | --- | --- |
+| 技术路线 | 调度中控 | 自主进化 |
+| 核心价值 | 统一接入、统一调度 | 长期记忆、持续成长 |
+| 记忆系统 | 更像全局共享记事本，偏存储 | 分层记忆引擎，强调理解与利用 |
+| 技能系统 | 静态技能库，偏人工维护 | 自生长技能库，任务后可沉淀新技能 |
+| 多智能体协作 | 中心调度模式 | 分布式进化与自主组队 |
+| Token 成本 | 单次执行成本清晰 | 前期有反思成本，长期复用后成本下降 |
+| 安全设计 | 风险集中在中控层 | 强调风险分散与纵深防御 |
+| 适合场景 | 快速搭建跨设备助理、海量技能开箱即用 | 长期个人助手、复杂探索、隐私隔离、持续进化 |
+
+## 记忆系统
+
+<CardGrid>
+  <Card title="OpenClaw：全局共享记事本" icon="open-book">
+    更强调 Markdown 存储和跨设备同步，记忆偏“记录下来”。如果缺少分析和调用机制，容易变成被动资料库。
+  </Card>
+  <Card title="Hermes：分层记忆引擎" icon="rocket">
+    强调即时记忆、长期记忆和永久记忆分层，并能根据任务自动检索、理解和使用记忆。
+  </Card>
+</CardGrid>
+
+<Aside type="note" title="差异核心">
+  记忆不是只看能不能存，而是看能不能在任务中被理解和利用。OpenClaw 偏 Store，Hermes 偏 Use。
+</Aside>
+
+## 技能系统
+
+<CardGrid>
+  <Card title="OpenClaw：静态技能库" icon="puzzle">
+    技能库丰富，适合开箱即用；但技能逻辑相对固定，后续迭代更依赖人工维护。
+  </Card>
+  <Card title="Hermes：自生长技能库" icon="random">
+    任务成功后可以自动打包流程、生成新技能，并在重复任务中继续优化。
+  </Card>
+</CardGrid>
+
+技能系统的关键差异在于：能力库到底主要由“人”驱动维护，还是能由“系统自主”沉淀和更新。
+
+## 多智能体协作
+
+<Tabs>
+  <TabItem label="OpenClaw" icon="setting">
+    OpenClaw 更像中心调度模式：统一网关负责分发任务，实例之间相对隔离，协作方式更依赖预设规则。
+  </TabItem>
+  <TabItem label="Hermes Agent" icon="rocket">
+    Hermes 更像分布式进化模式：通过动态任务总线和子智能体弹性分裂，支持目标驱动的自主组队和沙箱演进。
+  </TabItem>
+</Tabs>
+
+<Aside type="tip" title="选择建议">
+  团队协作、统一调度优先看 OpenClaw；单点进化、任务隔离和长期成长优先看 Hermes Agent。
+</Aside>
+
+## Token 成本
+
+Token 成本不能只看单次任务，还要看长期复用。
+
+<CardGrid>
+  <Card title="OpenClaw：单次成本" icon="information">
+    每次执行都需要消耗 Token。如果缺少学习优化机制，重复任务很难越用越省。
+  </Card>
+  <Card title="Hermes：反思成本" icon="random">
+    单次任务可能会有额外反思消耗，但这部分成本是为后续技能优化和复用支付的。
+  </Card>
+  <Card title="长期优势" icon="approve-check">
+    当技能固化并持续迭代后，重复任务的 Token 消耗有机会下降，边际成本逐步降低。
+  </Card>
+</CardGrid>
+
+<Aside type="note" title="场景判断">
+  短期高频简单任务，可以优先看 OpenClaw；长期深度复用和复杂任务，可以优先看 Hermes。
+</Aside>
+
+## 安全设计
+
+<CardGrid>
+  <Card title="OpenClaw：中心化架构" icon="warning">
+    优点是统一管理，缺点是风险更容易集中在核心逻辑和算力中枢。
+  </Card>
+  <Card title="Hermes：纵深防御" icon="approve-check">
+    强调全链路管控、风险分散、端侧实例隔离和关键操作确认，更适合追求数据隐私和鲁棒性的场景。
+  </Card>
+</CardGrid>
+
+安全上的关键取舍是：要不要为了更强的隔离性和鲁棒性，接受更复杂的系统设计。
+
+## 选型指南
+
+| 如果你需要 | 推荐 |
+| --- | --- |
+| 快速搭建跨设备助理，海量技能开箱即用 | OpenClaw |
+| 个人长期使用，希望助手越用越懂你 | Hermes Agent |
+| 处理复杂探索性任务，例如科研、学习、项目管理 | Hermes Agent |
+| 注重数据隐私，希望记忆本地隔离 | Hermes Agent |
+| 追求前沿技术，对自进化机制感兴趣 | Hermes Agent |
+
+<Aside type="tip" title="最终判断" icon="star">
+  OpenClaw 是“调度中控”的路线，Hermes Agent 是“自主进化”的路线。
+
+  两者不是简单替代关系，更像当下配置与未来方向的差异：OpenClaw 适合把现有能力连接起来，Hermes 更适合让智能体在长期任务中自己长出来。
+</Aside>

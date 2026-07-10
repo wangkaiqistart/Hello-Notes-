@@ -1,0 +1,160 @@
+---
+title: 学面通 AI：AI 辅助开发流程
+description: 学面通 AI 项目中使用 Codex、Cursor、Claude Code 辅助 Vue3 + FastAPI 开发的协作流程
+sidebar:
+  label: AI 辅助开发流程
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+这篇笔记关注的是如何用 Codex、Cursor、Claude Code 辅助 Vue3 + FastAPI 项目开发。重点不是“让 AI 直接写完所有代码”，而是建立一套**规则先行、任务拆解、范围控制、测试闭环**的人机协同流程。
+
+<Aside type="tip" title="核心逻辑" icon="rocket">
+  AI 做副驾驶，人负责方向、边界和质量。先把规则和验收标准说清楚，再让 AI 在限定范围内生成、测试和迭代。
+</Aside>
+
+## 流程总览
+
+<CardGrid>
+  <Card title="规则设定" icon="setting">
+    先把项目结构、前端规范、后端规范和禁区写清楚，让 AI 有稳定的执行边界。
+  </Card>
+  <Card title="任务拆解" icon="puzzle">
+    先用 Chat 模式拆大需求，明确执行步骤、模块边界和开发大纲。
+  </Card>
+  <Card title="代码生成" icon="rocket">
+    用 Agent 模式按文件或目录控制生成范围，避免一次性改动过大。
+  </Card>
+  <Card title="迭代优化" icon="random">
+    人工审核代码变更，把有效反馈沉淀进项目规则，让 AI 越用越贴合项目。
+  </Card>
+  <Card title="测试文档" icon="approve-check">
+    生成后立即测试，补齐单元测试和 API 文档，形成交付闭环。
+  </Card>
+</CardGrid>
+
+## 通用项目规则
+
+规则可以按三层写：整体项目规则、Vue3 前端规则、FastAPI 后端规则。
+
+<Tabs>
+  <TabItem label="整体规则" icon="open-book">
+    ```md
+    ---
+    description: 项目整体架构通用规范
+    globs: ["**/*"]
+    alwaysApply: true
+    ---
+
+    1. 项目必须按功能模块拆分，禁止编写超大单体文件
+    2. 通用工具、公共方法统一抽离封装，全局复用
+    3. 业务逻辑和页面 / 接口入口分离，不把所有逻辑写在入口处
+    4. 目录结构保持清晰，同类文件统一归类存放
+    ```
+  </TabItem>
+  <TabItem label="Vue3 前端" icon="puzzle">
+    ```md
+    ---
+    description: Vue3 前端统一开发规范
+    globs: ["*.vue", "*.ts", "*.js"]
+    alwaysApply: true
+    ---
+
+    1. 统一使用 Vue3 script setup 组合式 API
+    2. 组件使用大驼峰命名，变量和方法使用小驼峰命名
+    3. 接口请求统一封装，不在页面内直接写请求代码
+    4. 页面和通用组件拆分，可复用逻辑抽离为组合式函数
+    5. 按页面、组件、接口、工具分层存放文件
+    ```
+  </TabItem>
+  <TabItem label="FastAPI 后端" icon="terminal">
+    ```md
+    ---
+    description: Python FastAPI 后端统一开发规范
+    globs: ["*.py"]
+    alwaysApply: true
+    ---
+
+    1. 遵循 Python 基础命名规范，变量和文件使用下划线命名
+    2. FastAPI 按路由模块拆分，不同业务分开路由文件
+    3. 数据模型、路由接口、业务逻辑分层编写
+    4. 统一接口返回格式，参数做好基础校验
+    5. 业务逻辑抽离到单独方法，路由只做接收和响应
+    ```
+  </TabItem>
+</Tabs>
+
+## 任务拆解与提示词设计
+
+复杂需求不要直接丢给 AI 写代码，先拆成可执行的小任务。
+
+<Steps>
+
+1. **先拆需求**：用 Chat 模式把大需求拆成模块、页面、接口、数据结构和验收标准。
+
+2. **再写提示词**：提示词遵循 `技术栈 + 功能细节 + 约束规范`，让 AI 知道用什么技术、做什么功能、不能破坏哪些边界。
+
+3. **前端看设计**：复杂页面优先使用 `UI 设计图 + Agent 模式`，让 AI 按视觉稿还原界面，减少来回描述成本。
+
+</Steps>
+
+<Aside type="note" title="提示词公式">
+  **技术栈 + 功能细节 + 约束规范**。技术栈决定怎么写，功能细节决定写什么，约束规范决定不能乱写。
+</Aside>
+
+## 代码生成与范围控制
+
+AI 生成代码时，最怕范围失控。范围控制的关键是先限定上下文，再限定改动目标。
+
+<CardGrid>
+  <Card title="TDD 前置" icon="approve-check">
+    先定验收标准和关键用例，再围绕目标生成代码，避免写完才发现方向不对。
+  </Card>
+  <Card title="@file 指令" icon="file">
+    指定单个文件，让 AI 精确修改当前目标，适合修复局部问题或补充小功能。
+  </Card>
+  <Card title="@folders/ 指令" icon="folder">
+    引入文件夹上下文，让 AI 理解模块依赖，适合跨文件功能开发。
+  </Card>
+  <Card title="闭环验证" icon="sync">
+    生成后立即运行测试或构建，失败就带日志继续让 AI 修复。
+  </Card>
+</CardGrid>
+
+## 迭代优化与人工审核
+
+AI 生成初稿后，人工审核不能省。人要看的是：是否符合规则、是否破坏边界、是否引入重复逻辑、是否需要拆分模块。
+
+<Tabs>
+  <TabItem label="Codex" icon="rocket">
+    适合在已有项目里做多文件修改、读代码上下文、跑命令验证和持续修复。使用时要明确目标文件、测试命令和验收标准。
+  </TabItem>
+  <TabItem label="Cursor" icon="puzzle">
+    适合结合编辑器上下文做前端页面、组件和局部功能迭代。复杂页面可以配合设计图和 Agent 模式。
+  </TabItem>
+  <TabItem label="Claude Code" icon="setting">
+    适合做较长上下文的代码理解、重构建议和复杂需求拆解。使用时要让它先输出计划，再进入实现。
+  </TabItem>
+</Tabs>
+
+有效的反馈要沉淀回规则里，例如 `.rules`、项目指令或 `AGENTS.md`。这样下次遇到同类任务，AI 不需要重新学习项目习惯。
+
+## 测试与文档生成
+
+测试和文档是 AI 辅助开发的最后一环。
+
+| 环节 | 目的 | 关注点 |
+| --- | --- | --- |
+| 单元测试 | 验证核心逻辑可靠 | 覆盖核心场景和边界条件 |
+| 接口测试 | 验证前后端契约 | 参数、返回格式、错误处理 |
+| API 文档 | 降低协作成本 | 文档随代码同步，避免滞后 |
+| 变更说明 | 保留上下文 | 说明改了什么、为什么改、如何验证 |
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  **规则设定 → 任务拆解 → 代码生成 → 迭代优化 → 测试文档**。
+
+  核心是构建“人机协同”的闭环开发流程：AI 负责提效，人负责边界、质量和方向。
+</Aside>

@@ -1,0 +1,115 @@
+---
+title: Hermes Agent 与 LangChain / LangGraph
+description: Hermes Agent、LangChain、LangGraph 的定位区别、典型场景与学习路径
+sidebar:
+  label: 框架定位对比
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Hermes Agent、LangChain、LangGraph 经常被放在一起讨论，但它们不是同一层级的东西。
+
+可以先这样理解：Hermes Agent 更偏向“交付一个能长期运行、持续积累的 Agent 系统”；LangChain 更偏向“快速搭建 LLM 应用和 Agent 原型”；LangGraph 更偏向“让复杂 Agent 流程可编排、可恢复、可上线”。
+
+<Aside type="tip" title="核心结论" icon="star">
+  不要先问谁替代谁，而要先问当前需要的是完整 Agent 系统、开发工具箱，还是流程运行时。
+</Aside>
+
+<CardGrid>
+  <Card title="Hermes Agent" icon="rocket">
+    一套可交付的智能体系统，重点是长期运行、长期记忆、跨会话学习和自我改进。
+  </Card>
+  <Card title="LangChain" icon="setting">
+    一个高层开发工具箱，帮助开发者快速组织模型、工具、Prompt、Chain 和 Agent 逻辑。
+  </Card>
+  <Card title="LangGraph" icon="puzzle">
+    一个流程编排与运行骨架，负责图结构、状态管理、失败恢复和人工介入。
+  </Card>
+</CardGrid>
+
+## 三者定位
+
+<Tabs>
+  <TabItem label="Hermes Agent" icon="rocket">
+    Hermes Agent 的定位是 **Self-Improving AI Agent**，也就是带学习闭环的完整智能体系统。
+
+    它关注的不只是“把 Agent 搭起来”，还包括长期运行、记住经验、复用 Skills、调度任务，并在多次任务中持续改进。
+  </TabItem>
+  <TabItem label="LangChain" icon="setting">
+    LangChain 的定位是 **高层开发框架**。
+
+    它帮助开发者快速构建 LLM 应用和 Agent，重点是把模型、工具、Prompt 模板、Chain 和 Agent 逻辑组织起来。
+  </TabItem>
+  <TabItem label="LangGraph" icon="puzzle">
+    LangGraph 的定位是 **底层编排与运行时**。
+
+    它用图结构描述复杂工作流，把任务拆成节点和边，并管理状态流转、循环、恢复和人工介入，更适合需要稳定运行的复杂 Agent 系统。
+  </TabItem>
+</Tabs>
+
+<Aside type="note" title="不要混在同一层比较">
+  Hermes 更像“已经组装好的智能助理整机”，LangChain 更像“标准开发工具箱”，LangGraph 更像“让流程跑稳的工程骨架”。三者不是互相替代，而是在不同层级解决问题。
+</Aside>
+
+## 核心区别
+
+<CardGrid>
+  <Card title="定位不同" icon="information">
+    Hermes 关注可交付的 Agent 系统；LangChain 关注应用快速搭建；LangGraph 关注流程编排和运行可靠性。
+  </Card>
+  <Card title="记忆不同" icon="open-book">
+    Hermes 强调长期记忆和跨会话积累；LangChain 可按项目需要接入存储或记忆组件；LangGraph 更关注流程状态如何保存、流转和恢复。
+  </Card>
+  <Card title="学习不同" icon="random">
+    Hermes 强调 self-improving，把历史经验沉淀成后续可复用能力；LangChain 和 LangGraph 更关注应用搭建与流程可靠性，本身不以内建自学习为核心。
+  </Card>
+  <Card title="场景不同" icon="approve-check">
+    需要长期在线和持续成长时看 Hermes；需要快速验证 Agent 原型时看 LangChain；需要复杂长流程和生产级编排时看 LangGraph。
+  </Card>
+</CardGrid>
+
+## 对比总表
+
+| 维度 | Hermes Agent | LangChain | LangGraph |
+| --- | --- | --- | --- |
+| 本质 | 产品化 Agent 系统 | LLM 应用开发框架 | Agent 流程编排框架 |
+| 核心目标 | 长期运行、持续学习、积累记忆 | 快速构建应用 | 复杂流程可控可恢复 |
+| 记忆 | 长期记忆与跨会话积累 | 按需接入记忆组件 | 状态流转与流程管理 |
+| 学习 | 自我改进、技能沉淀 | 不以内建学习为核心 | 不以内建学习为核心 |
+| 适用 | 长期在线助理 | 快速原型 | 复杂、长流程生产系统 |
+| 形象 | 智能助理整机 | 标准开发工具箱 | 底层工程骨架 |
+
+## 典型选择
+
+<Tabs>
+  <TabItem label="选 Hermes" icon="rocket">
+    目标是做一个长期在线、持续积累经验、具备记忆和跨渠道交互能力的智能体系统，优先看 Hermes Agent。
+  </TabItem>
+  <TabItem label="选 LangChain" icon="setting">
+    目标是快速验证想法、搭建 LLM 应用、组织工具调用和 Agent 原型，优先看 LangChain。
+  </TabItem>
+  <TabItem label="选 LangGraph" icon="puzzle">
+    任务涉及多步骤长流程、状态保存、失败恢复、人工审批或生产级编排，优先看 LangGraph。
+  </TabItem>
+</Tabs>
+
+## 学习路径
+
+<Steps>
+
+1. **先学 LangChain**：建立 Agent 基础认知，理解模型调用、工具调用、Prompt 组织和快速原型开发。
+
+2. **再学 LangGraph**：理解复杂流程如何拆成节点、如何保存状态、如何在失败后恢复。
+
+3. **最后看 Hermes Agent**：理解长期记忆、自我进化、Skills 和完整 Agent 系统如何组合成产品化能力。
+
+</Steps>
+
+## 总结
+
+<Aside type="tip" title="速记" icon="star">
+  Hermes 是成品路线，LangChain 是工具箱，LangGraph 是工程骨架。
+
+  LangChain + LangGraph 属于同一开发生态：LangChain 帮你更快把 Agent 搭起来，LangGraph 帮你把复杂流程跑稳。Hermes 则更像直接交付完整 Agent 的产品化系统。
+</Aside>

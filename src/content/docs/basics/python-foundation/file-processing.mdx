@@ -1,0 +1,284 @@
+---
+title: Python 文件处理基础
+description: Python 文件读写、open、with、pathlib、文件改写与删除操作笔记
+sidebar:
+  label: 文件处理
+  order: 6
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+文件处理是 Python 工程里非常常见的基础能力。知识库资料、日志、报表、配置文件、临时结果，很多都需要通过文件来保存、读取和加工。
+
+<Aside type="tip" title="核心目标" icon="rocket">
+  掌握文件操作的完整流程：打开文件、读写内容、关闭资源；优先使用 `with` 和 `pathlib`，减少路径错误和资源泄露。
+</Aside>
+
+## 为什么要学文件处理
+
+<CardGrid>
+  <Card title="数据持久化" icon="database">
+    内存里的数据程序结束就会消失，文件可以把数据长期保存下来。
+  </Card>
+  <Card title="跨场景交互" icon="puzzle">
+    知识库、日志、报表、配置、导入导出，都离不开文件读写。
+  </Card>
+  <Card title="规避风险" icon="warning">
+    文件操作不当可能误删数据、覆盖原文，甚至造成资源泄露。
+  </Card>
+  <Card title="提升效率" icon="setting">
+    把常用文件操作封装成函数，可以减少重复代码。
+  </Card>
+</CardGrid>
+
+## 文件操作的底层逻辑
+
+手动处理文件时，流程通常是：**打开 → 编辑 → 保存 → 关闭**。
+
+Python 程序处理文件，本质上也是三步：
+
+<Steps>
+
+1. **申请资源**：打开文件，获得文件引用，建立程序和磁盘文件之间的连接。
+
+2. **数据交互**：读取、写入、追加、遍历或修改文件内容。
+
+3. **释放资源**：关闭文件引用，避免资源一直被占用。
+
+</Steps>
+
+<Aside type="note" title="记忆方式">
+  文件不是普通变量。文件在磁盘上，程序要先建立连接，操作完还要释放连接。
+</Aside>
+
+## open 基础用法
+
+`open()` 是 Python 原生文件操作函数，基本格式如下：
+
+```python
+open("文件路径", mode="r", encoding="utf-8")
+```
+
+常见模式：
+
+| 模式 | 含义 | 文件不存在时 | 文件存在时 |
+| --- | --- | --- | --- |
+| `r` | 只读，默认模式 | 报 `FileNotFoundError` | 读取原内容 |
+| `w` | 覆盖写 | 创建新文件 | 清空原内容后写入 |
+| `a` | 追加写 | 创建新文件 | 在文件末尾追加 |
+
+<Aside type="caution" title="谨慎使用 w">
+  `w` 会直接清空原文件内容，再写入新内容。只要不是明确要覆盖，优先考虑 `a` 或先备份。
+</Aside>
+
+编码建议：
+
+| 编码 | 适用场景 |
+| --- | --- |
+| `utf-8` | 推荐默认使用，跨平台更稳 |
+| `gbk` | 旧 Windows 文本文件可能会遇到 |
+
+## with 管理资源
+
+不推荐手动 `close()`，因为中间一旦报错，后面的关闭逻辑可能不会执行。
+
+```python
+f = open("data.txt", "r")
+content = f.read()
+f.close()
+```
+
+推荐使用 `with`，代码块结束后会自动关闭文件：
+
+```python
+with open("data.txt", "r", encoding="utf-8") as f:
+    content = f.read()
+```
+
+常见读写：
+
+<Tabs>
+  <TabItem label="读取" icon="open-book">
+    ```python
+    with open("data.txt", "r", encoding="utf-8") as f:
+        content = f.read()
+
+    print(content)
+    ```
+  </TabItem>
+  <TabItem label="覆盖写" icon="warning">
+    ```python
+    with open("data.txt", "w", encoding="utf-8") as f:
+        f.write("新的内容\n")
+    ```
+
+    `w` 会覆盖原文件内容，使用前要确认这就是想要的结果。
+  </TabItem>
+  <TabItem label="追加写" icon="plus">
+    ```python
+    with open("log.txt", "a", encoding="utf-8") as f:
+        f.write("Hello Python\n")
+    ```
+
+    日志、历史记录这类场景，更常用追加写。
+  </TabItem>
+</Tabs>
+
+## pathlib 更推荐
+
+`pathlib` 是 Python 官方推荐的路径处理模块。它把路径封装成 `Path` 对象，比字符串拼接路径更安全、更清晰。
+
+| 对比项 | 原生 `open` | `pathlib` |
+| --- | --- | --- |
+| 路径处理 | 容易写成字符串拼接 | 使用 `Path` 对象安全拼接 |
+| 资源关闭 | 手动关闭或配合 `with` | 小文件读写更简洁 |
+| 代码清晰度 | 读写逻辑稍分散 | 常见操作一行完成 |
+
+```python
+from pathlib import Path
+
+file_path = Path(__file__).parent / "data.txt"
+```
+
+<Aside type="note" title="路径定位">
+  `Path(__file__).parent` 表示当前脚本所在目录，再用 `/` 拼接文件名，可以减少相对路径出错。
+</Aside>
+
+## pathlib 读取文件
+
+小文件可以直接一次性读取：
+
+```python
+from pathlib import Path
+
+file_path = Path(__file__).parent / "data.txt"
+content = file_path.read_text(encoding="utf-8")
+
+print(content)
+```
+
+大文件不建议一次性读进内存，可以逐行读取：
+
+```python
+from pathlib import Path
+
+file_path = Path(__file__).parent / "data.txt"
+
+with file_path.open("r", encoding="utf-8") as f:
+    for line in f:
+        print(line.strip())
+```
+
+## pathlib 写入文件
+
+写入文件分两类：覆盖写和追加写。
+
+<Tabs>
+  <TabItem label="覆盖写" icon="warning">
+    ```python
+    from pathlib import Path
+
+    file_path = Path(__file__).parent / "data.txt"
+    file_path.write_text("覆盖内容\n", encoding="utf-8")
+    ```
+
+    覆盖写会清空原内容，适合生成全新文件或重写结果文件。
+  </TabItem>
+  <TabItem label="追加写" icon="plus">
+    ```python
+    from pathlib import Path
+
+    file_path = Path(__file__).parent / "log.txt"
+
+    with file_path.open("a", encoding="utf-8") as f:
+        f.write("写入的内容\n")
+    ```
+
+    追加写适合日志、记录流水、保留历史数据。
+  </TabItem>
+</Tabs>
+
+<Aside type="caution" title="换行提醒">
+  `write_text()` 和 `write()` 不会自动添加换行，需要自己写 `\n`。
+</Aside>
+
+## 文件改写
+
+文件内容通常不能“原地修改某一段”，更常见的流程是：**读取内容 → 内存中修改 → 覆盖写回**。
+
+```python
+from pathlib import Path
+
+
+def modify_file(file_path: str, old: str, new: str) -> None:
+    file = Path(file_path)
+
+    content = file.read_text(encoding="utf-8")
+
+    if old in content:
+        new_content = content.replace(old, new)
+        file.write_text(new_content, encoding="utf-8")
+```
+
+<Aside type="note" title="改写逻辑">
+  修改文件前最好先确认目标内容存在；重要文件改写前，先备份更稳。
+</Aside>
+
+## 删除文件
+
+`pathlib` 中可以用 `unlink()` 删除文件。删除操作不可逆，必须谨慎。
+
+```python
+from pathlib import Path
+
+
+def delete_file(file_path: str) -> None:
+    file = Path(file_path)
+
+    if file.exists():
+        file.unlink()
+        print(f"已删除：{file.name}")
+    else:
+        print("文件不存在")
+```
+
+<Aside type="danger" title="删除风险">
+  `unlink()` 删除后不会进入回收站。写删除逻辑时，至少先判断文件是否存在，重要文件不要直接删除。
+</Aside>
+
+## 常用操作封装
+
+文件操作经常会重复出现，适合封装成工具函数。
+
+| 函数 | 作用 |
+| --- | --- |
+| `read_text_file(path)` | 读取文本文件 |
+| `write_text_file(path, content)` | 覆盖写文本 |
+| `append_text_file(path, content)` | 追加写文本 |
+| `replace_text_in_file(path, old, new)` | 替换文件内容 |
+| `delete_file(path)` | 安全删除文件 |
+
+示例：
+
+```python
+from pathlib import Path
+
+
+def read_text_file(path: str) -> str:
+    return Path(path).read_text(encoding="utf-8")
+
+
+def append_text_file(path: str, content: str) -> None:
+    with Path(path).open("a", encoding="utf-8") as f:
+        f.write(content + "\n")
+```
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  **底层逻辑**：打开 → 操作 → 关闭，本质是申请资源、数据交互、释放资源。
+
+  **工具选择**：`open` 基础灵活，`pathlib` 更现代，路径处理优先选 `pathlib`。
+
+  **文件操作**：读、写、改、删都要掌握具体写法；`w` 会覆盖，`a` 会追加，`unlink()` 删除不可逆。
+</Aside>

@@ -1,0 +1,170 @@
+---
+title: mini-OpenClaw
+description: 从一个真实 Agent 系统看 SKILL.md 如何被发现、加载、注入并驱动执行
+---
+
+import { Steps, Aside, FileTree } from '@astrojs/starlight/components';
+
+## 核心认知
+
+SKILL.md 不是一个配置文件，而是 Agent 能力扩展闭环的起点。它的价值不在于写了多少内容，而在于系统能否**发现它、理解它、用它**。
+
+mini-OpenClaw 是一个轻量级 AI Agent 对话系统，把 Skills 的完整流转链路设计得清晰可读：
+
+```
+文件系统扫描 → 生成快照 → 注入 System Prompt → Agent 路由执行
+```
+
+---
+
+## Skills 流转四环节
+
+<Steps>
+1. **SKILL.md 标准格式** — YAML Frontmatter（机器读）+ 正文（Agent 读）
+2. **skills_scanner 自动扫描** — 遍历 `skills/` 目录，解析 Frontmatter，生成 XML 快照
+3. **prompt_builder 注入** — 将快照排在 System Prompt 第一位，Agent 优先感知
+4. **Agent 按需执行** — 先看快照决定用哪个 Skill，再通过路径读取完整内容
+</Steps>
+
+---
+
+## 环节一：SKILL.md 标准格式
+
+```markdown
+---
+name: calculator
+description: 执行数学计算，支持加减乘除和复杂表达式
+---
+
+# 计算器技能
+
+## 使用场景
+当用户需要计算数学表达式时使用。
+
+## 执行步骤
+1. 提取数学表达式
+2. 使用 python_repl 工具执行计算
+3. 以清晰格式回复结果
+
+## 注意事项
+- 只计算数学表达式，不执行文件操作或系统命令
+```
+
+三部分职责分工：
+- **Frontmatter**（name + description）→ 给系统解析，供扫描器提取
+- **使用场景** → 触发条件设计
+- **执行步骤 + 注意事项** → Agent 的行动指南
+
+---
+
+## 环节二：skills_scanner 自动扫描
+
+扫描器做三件事：遍历目录 → 解析 Frontmatter → 生成 XML 快照文件。
+
+```python
+# 核心逻辑（简化）
+for skill_md in skills_dir.rglob("SKILL.md"):
+    meta = yaml.safe_load(frontmatter)  # 只提取 name + description
+    skills.append({"name": ..., "description": ..., "location": ...})
+
+# 输出 XML 格式快照
+```
+
+生成的 `SKILLS_SNAPSHOT.md`：
+
+```xml
+<available_skills>
+  <skill>
+    <name>get_weather</name>
+    <description>查询指定城市的天气信息</description>
+    <location>./backend/skills/get_weather/SKILL.md</location>
+  </skill>
+  <skill>
+    <name>calculator</name>
+    <description>执行数学计算，支持加减乘除和复杂表达式</description>
+    <location>./backend/skills/calculator/SKILL.md</location>
+  </skill>
+</available_skills>
+```
+
+两个关键设计：
+- **摘要优先**：只提取 name + description，不注入全文 → 先让 Agent 知道"有哪些可用"
+- **保留路径**：location 字段让 Agent 可按需读取完整 SKILL.md 获取执行细节
+
+---
+
+## 环节三：prompt_builder 注入 System Prompt
+
+`build_system_prompt()` 按固定顺序拼接 6 个配置文件：
+
+| 优先级 | 文件 | 职责 |
+|:------:|------|------|
+| 1 | `SKILLS_SNAPSHOT.md` | 可用技能快照 |
+| 2 | `workspace/SOUL.md` | Agent 人格与行为边界 |
+| 3 | `workspace/IDENTITY.md` | 名称与风格 |
+| 4 | `workspace/USER.md` | 用户画像与偏好 |
+| 5 | `workspace/AGENTS.md` | 操作规范与记忆协议 |
+| 6 | `memory/MEMORY.md` | 跨会话长期记忆 |
+
+<Aside type="tip" title="为什么快照排第一">
+LLM 在处理每条消息前，首先感知"我有哪些可用技能"，大幅提升触发准确率。技能触发不准，很多时候不是 SKILL.md 写错了，而是技能信息没出现在注意力最集中的位置。
+</Aside>
+
+---
+
+## 环节四：新增技能闭环
+
+```
+创建目录 → 写 SKILL.md → 重启后端
+```
+
+无需修改任何代码，系统下次启动时自动发现并注入新技能。这就是"文件即配置"的设计理念。
+
+---
+
+## 设计原则在系统中的映射
+
+| 原则 | 工程体现 |
+|------|----------|
+| **SRP 单一职责** | 每个 SKILL.md 只定义一项技能 |
+| **SoC 关注点分离** | Frontmatter 供系统解析，正文供 Agent 执行 |
+| **信息精炼** | 快照只提取摘要，不注入全文 |
+| **触发质量** | 快照排在 System Prompt 第一位 |
+| **宁缺毋滥** | 少量核心工具 + 按需扩展 Skills |
+| **文件即配置** | 无注册中心/数据库，SKILL.md 即扩展接口 |
+
+---
+
+## 系统目录结构
+
+<FileTree>
+- mini-OpenClaw/
+  - backend/
+    - skills/
+      - get_weather/
+        - SKILL.md
+      - calculator/
+        - SKILL.md
+    - workspace/
+      - SOUL.md
+      - IDENTITY.md
+      - USER.md
+      - AGENTS.md
+    - memory/
+      - MEMORY.md
+    - SKILLS_SNAPSHOT.md（自动生成）
+    - skills_scanner.py
+    - prompt_builder.py
+    - session_manager.py
+  - frontend/
+    - ...（Next.js 14）
+  - scripts/
+    - start-macos-linux.sh
+    - start-windows.bat
+</FileTree>
+
+---
+
+## 一句话总结
+
+SKILL.md 的完整生命周期：**人写文件 → 系统扫描 → 快照注入 → Agent 路由 → 按需加载 → 执行输出**。从设计到运行，每一条规范都有精确对应的处理逻辑。

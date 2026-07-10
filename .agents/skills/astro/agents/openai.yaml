@@ -1,0 +1,4 @@
+interface:
+  display_name: "Astro"
+  short_description: "Astro 高性能 Web 框架开发指南"
+  default_prompt: "使用 astro skill 帮我解决 Astro 框架相关问题"

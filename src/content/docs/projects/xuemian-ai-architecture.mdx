@@ -1,0 +1,208 @@
+---
+title: 学面通 AI：技术选型与分层架构
+description: 学面通 AI 项目的技术选型、AI 框架组合、数据存储方案与七层架构职责
+sidebar:
+  label: 学面通 AI 架构
+  order: 1
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+学面通 AI 是一个面向**学习 + 面试**场景的 AI 项目。整理这套技术选型和分层结构，重点不是背技术名，而是建立工程化架构思维：先看业务目标，再拆系统职责，最后选择可维护、可扩展、可稳定运行的方案。
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  技术选型不是追新，而是让业务目标、模块边界、后续迭代和系统运维都能被稳定支撑。
+</Aside>
+
+## 技术选型的 4 条家规
+
+<CardGrid>
+  <Card title="业务优先" icon="approve-check">
+    技术要服务核心目标。学面通 AI 的核心场景是学习和面试，所以选型要优先支撑资料学习、知识检索、问答生成和面试训练。
+  </Card>
+  <Card title="分层解耦" icon="puzzle">
+    各模块保持独立，前端、后端、AI 编排、知识库和数据存储各司其职，替换某一层时不影响整体系统。
+  </Card>
+  <Card title="可扩展迭代" icon="random">
+    系统要能适配后续功能变化，例如新增模型、增加知识库类型、接入新的面试流程或扩展多智能体协作。
+  </Card>
+  <Card title="稳定可运维" icon="setting">
+    优先选择成熟方案，保证系统稳定、易部署、易排查、易维护，而不是为了炫技增加复杂度。
+  </Card>
+</CardGrid>
+
+## 项目规则设计思路
+
+项目规则的设计原则是：**简单通用、重架构轻细节、聚焦核心约束**。
+
+规则不是为了把所有细节都管死，而是提前约束最容易失控的地方：前后端边界、目录结构、核心变量、业务逻辑和复用方式。
+
+<CardGrid>
+  <Card title="前后端拆分" icon="puzzle">
+    明确技术栈边界，实现前端展示与后端业务的分离管理，避免界面逻辑和服务逻辑混在一起。
+  </Card>
+  <Card title="优先架构分层" icon="open-book">
+    先规范目录结构和分层职责，让项目一开始就有清晰骨架，再逐步填充具体功能。
+  </Card>
+  <Card title="聚焦核心规范" icon="approve-check">
+    不搞过多细碎要求，优先抓关键变量、核心流程和主要业务逻辑。
+  </Card>
+  <Card title="强制逻辑解耦" icon="random">
+    严禁逻辑混写，把代码按模块拆分，让业务、数据、AI 调用和工具能力各自独立。
+  </Card>
+  <Card title="可复用设计" icon="setting">
+    规则不绑定单一业务，尽量抽象成同类 AI 项目都能复用的工程约束。
+  </Card>
+</CardGrid>
+
+<Aside type="note" title="规则设计重点">
+  规则要先管结构，再管细节。只要目录、分层、边界和核心逻辑稳定，后续功能迭代才不会越写越乱。
+</Aside>
+
+<Aside type="tip" title="延伸笔记" icon="open-book">
+  AI 辅助开发流程已经单独整理成项目方法笔记：[学面通 AI：AI 辅助开发流程](/projects/xuemian-ai-development-flow/)。
+</Aside>
+
+## 技术栈总览
+
+| 模块 | 技术选型 | 核心价值 |
+| --- | --- | --- |
+| 前端 | Vue 3 + Vite + Element Plus | 快速构建复杂业务界面，结构清晰，组件生态成熟 |
+| 后端 | Python + FastAPI | 适配 AI 生态，异步性能好，自动生成接口文档 |
+| AI 框架 | LangChain + LangGraph + Hermes Agent | 能力组织、流程编排、工程治理分工明确 |
+| 大模型 | DeepSeek、豆包等云端模型 | 使用成熟模型能力，支撑问答、推理和内容生成 |
+| 文件存储 | MinIO | 存储学习资料、简历、文档等非结构化文件 |
+| 向量库 | ChromaDB | 支撑知识检索、语义召回和 RAG 问答 |
+| 关系数据库 | MySQL | 存储用户、任务、记录、配置等结构化数据 |
+
+## 前端选型
+
+<CardGrid>
+  <Card title="核心技术" icon="information">
+    Vue 3 + Vite + Element Plus。
+  </Card>
+  <Card title="核心优势" icon="rocket">
+    组合式 API 适合组件化开发，Vite 热更新快，Element Plus 组件丰富，整体开发体验成熟。
+  </Card>
+  <Card title="核心价值" icon="approve-check">
+    适合快速搭建复杂业务界面，代码结构清晰，对新手友好，也便于长期维护。
+  </Card>
+</CardGrid>
+
+前端在这个项目里不承担复杂业务判断，重点是把学习资料、问答结果、面试流程和用户操作清晰呈现出来。
+
+## 后端选型
+
+<CardGrid>
+  <Card title="核心技术" icon="information">
+    Python + FastAPI。
+  </Card>
+  <Card title="核心优势" icon="rocket">
+    Python 贴合 AI 生态，FastAPI 支持异步高性能接口，并能自动生成接口文档。
+  </Card>
+  <Card title="核心价值" icon="approve-check">
+    后端可以自然调用模型、RAG、Agent 和文档处理能力，减少后端服务与 AI 模块之间的集成成本。
+  </Card>
+</CardGrid>
+
+后端的重点不是只写接口，而是作为业务服务层，负责请求路由、参数校验、业务逻辑和数据调度。
+
+## AI 智能体框架
+
+<Aside type="note" title="组合口诀">
+  LangChain 给能力，LangGraph 给流程，Hermes 做管理升级。
+</Aside>
+
+<Tabs>
+  <TabItem label="LangChain" icon="open-book">
+    作为 AI 能力底座，负责模型调用、工具调用、Prompt 组织、Chain 和基础 Agent 能力。
+  </TabItem>
+  <TabItem label="LangGraph" icon="puzzle">
+    作为流程编排层，负责多步骤任务、状态流转、循环、分支和恢复。
+  </TabItem>
+  <TabItem label="Hermes Agent" icon="rocket">
+    作为工程治理层，负责记忆、Skills、经验沉淀和多智能体协作管理。
+  </TabItem>
+</Tabs>
+
+这套组合的价值在于分工清楚：不是把所有 Agent 逻辑堆在一个函数里，而是把能力、流程和治理拆开。
+
+## 模型与数据存储
+
+<CardGrid>
+  <Card title="大模型" icon="rocket">
+    采用 DeepSeek、豆包等成熟云端模型，优先保证推理、问答和内容生成的稳定效果。
+  </Card>
+  <Card title="文件存储" icon="open-book">
+    使用 MinIO 存储学习资料、简历、文档和上传文件，让原始资料可管理、可追溯。
+  </Card>
+  <Card title="向量检索" icon="puzzle">
+    使用 ChromaDB 做轻量级向量库，支撑知识库检索和语义召回。
+  </Card>
+  <Card title="业务数据" icon="setting">
+    使用 MySQL 保存用户、任务、面试记录、配置和业务状态。
+  </Card>
+</CardGrid>
+
+<Aside type="tip" title="核心价值">
+  文件存储保存原始资料，向量库存语义索引，MySQL 管业务数据。三者分工清楚，才能做到学习资料可追溯、问答来源可解释。
+</Aside>
+
+## 七层架构
+
+七层架构的目的，是把“谁负责展示、谁负责安全、谁负责业务、谁负责 AI、谁负责知识、谁负责数据”拆清楚。
+
+| 层级 | 核心职责 |
+| --- | --- |
+| 前端交互层 | 界面展示和用户操作，只负责前后端通信 |
+| 网关安全层 | 身份校验、防刷、跨域处理，保障系统安全接入 |
+| 后端业务服务层 | 请求路由、参数校验、业务逻辑和数据调度 |
+| 多智能体编排层 | 多 Agent 任务调度、流程控制和工具调用 |
+| 知识库服务层 | 文档解析与向量化，提供精准检索和知识支持 |
+| 多模态能力层 | 封装多模态数据处理模型，提供标准化 AI 接口 |
+| 数据持久层 | 统一管理多类型数据库，保障数据持久与可靠 |
+
+## 请求流转
+
+<Steps>
+
+1. **用户发起操作**：前端收集学习、问答或面试相关请求。
+
+2. **网关做安全处理**：校验身份、处理跨域、防止异常请求。
+
+3. **后端承接业务逻辑**：完成参数校验、业务判断和数据调度。
+
+4. **Agent 编排任务**：根据任务类型调用 LangChain、LangGraph 和 Hermes 相关能力。
+
+5. **知识库提供上下文**：从文档、向量库和历史记录中检索相关资料。
+
+6. **模型生成结果**：结合检索上下文和任务目标生成回答、建议或面试反馈。
+
+7. **结果持久化与返回**：保存任务记录和关键数据，再返回前端展示。
+
+</Steps>
+
+## 架构价值
+
+<CardGrid>
+  <Card title="覆盖全栈能力" icon="approve-check">
+    前端、后端、AI、知识库和数据存储都有明确选型，为项目打好基础。
+  </Card>
+  <Card title="AI 框架分工清楚" icon="puzzle">
+    LangChain 负责能力，LangGraph 负责流程，Hermes 负责治理，避免 Agent 逻辑失控。
+  </Card>
+  <Card title="架构可替换" icon="random">
+    每层职责独立，后续替换模型、向量库、文件存储或前端组件库时影响更小。
+  </Card>
+  <Card title="建立工程化思维" icon="rocket">
+    通过系统数据流和职责拆分，理解一个 AI 项目如何从 Demo 走向可维护系统。
+  </Card>
+</CardGrid>
+
+## 总结
+
+<Aside type="tip" title="速记" icon="star">
+  学面通 AI 的架构可以按四句话记：业务场景决定技术选型，分层解耦保证可维护，AI 框架组合支撑智能能力，数据流设计决定系统能不能长期演进。
+
+  重点不是记住用了哪些技术，而是理解每一层为什么存在、负责什么、以后怎么替换和扩展。
+</Aside>
