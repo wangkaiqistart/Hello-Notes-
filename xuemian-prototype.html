@@ -1,0 +1,1300 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>学面通 AI 原型</title>
+    <style>
+      :root {
+        --text: #1f2937;
+        --muted: #778396;
+        --line: rgba(178, 190, 208, 0.24);
+        --line-strong: rgba(178, 190, 208, 0.42);
+        --panel: rgba(255, 255, 255, 0.78);
+        --panel-strong: rgba(255, 255, 255, 0.94);
+        --sidebar: linear-gradient(180deg, #f5f8fc 0%, #eef3f8 100%);
+        --assistant-bubble: #eef4fb;
+        --user-bubble: linear-gradient(135deg, #ffe39a 0%, #f7c957 100%);
+        --gold: #f2c24f;
+        --gold-deep: #dfaa2c;
+        --blue-soft: #dce8f7;
+        --shadow-xl: 0 28px 70px rgba(76, 94, 122, 0.14);
+        --shadow-lg: 0 16px 36px rgba(98, 111, 136, 0.12);
+        --shadow-sm: 0 8px 18px rgba(104, 117, 139, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top left, rgba(255, 219, 120, 0.24), transparent 24%),
+          radial-gradient(circle at top right, rgba(149, 202, 255, 0.2), transparent 22%),
+          linear-gradient(180deg, #f5f8fc 0%, #edf2f7 100%);
+        color: var(--text);
+        font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      }
+
+      .prototype-shell {
+        padding: 26px;
+      }
+
+      .canvas {
+        width: min(1560px, calc(100vw - 52px));
+        min-height: calc(100vh - 52px);
+        margin: 0 auto;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        border-radius: 30px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.68);
+        border: 1px solid rgba(255, 255, 255, 0.74);
+        backdrop-filter: blur(20px);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .header {
+        padding: 18px 24px 14px;
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(
+          180deg,
+          rgba(249, 251, 254, 0.96) 0%,
+          rgba(242, 246, 251, 0.9) 100%
+        );
+      }
+
+      .title-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .title-badge,
+      .title-meta {
+        display: inline-flex;
+        align-items: center;
+        height: 30px;
+        padding: 0 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.84);
+        font-size: 14px;
+      }
+
+      .title-badge {
+        font-weight: 700;
+      }
+
+      .title-meta {
+        color: #98a2b3;
+      }
+
+      .tabs {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .tab {
+        appearance: none;
+        border: 1px solid rgba(182, 191, 206, 0.24);
+        background: rgba(255, 255, 255, 0.78);
+        color: var(--text);
+        min-width: 132px;
+        height: 46px;
+        padding: 0 18px;
+        border-radius: 16px;
+        font-size: 16px;
+        font-weight: 700;
+        box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease,
+          background 160ms ease;
+      }
+
+      .tab:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px rgba(118, 132, 154, 0.12);
+      }
+
+      .tab.active {
+        background: linear-gradient(135deg, #ffe8ab 0%, #f6cb63 100%);
+        border-color: rgba(232, 184, 64, 0.42);
+        box-shadow: 0 16px 32px rgba(238, 194, 87, 0.26);
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        min-height: 0;
+      }
+
+      .sidebar {
+        padding: 18px 16px 20px;
+        background: var(--sidebar);
+        border-right: 1px solid var(--line);
+      }
+
+      .sidebar-title {
+        display: inline-flex;
+        align-items: center;
+        height: 34px;
+        padding: 0 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+
+      .new-chat {
+        display: grid;
+        grid-template-columns: 1fr 44px;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .new-chat button,
+      .mini-square {
+        border: 1px solid rgba(200, 208, 220, 0.82);
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 14px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .new-chat button {
+        height: 46px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .topic-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .topic-card {
+        padding: 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(191, 201, 215, 0.36);
+        background: rgba(255, 255, 255, 0.76);
+        box-shadow: var(--shadow-sm);
+        display: grid;
+        grid-template-columns: 1fr 34px;
+        gap: 8px;
+      }
+
+      .topic-main {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .region-pill,
+      .tag,
+      .bubble-label,
+      .module-badge {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 5px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(211, 218, 228, 0.88);
+        background: rgba(255, 255, 255, 0.94);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .topic-title {
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid rgba(212, 218, 228, 0.82);
+        background: #fff;
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        font-size: 15px;
+      }
+
+      .ghost-icons {
+        display: flex;
+        gap: 6px;
+      }
+
+      .ghost-icons span {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(208, 215, 226, 0.92);
+      }
+
+      .ellipsis {
+        align-self: end;
+        height: 32px;
+        border-radius: 10px;
+        border: 1px solid rgba(211, 218, 228, 0.88);
+        background: rgba(255, 255, 255, 0.94);
+        color: #8b95a4;
+        display: grid;
+        place-items: center;
+        font-size: 18px;
+      }
+
+      .main {
+        min-height: 0;
+        padding: 24px 28px;
+        background:
+          radial-gradient(circle at top right, rgba(137, 199, 255, 0.08), transparent 24%),
+          linear-gradient(180deg, #fcfdff 0%, #f7f9fc 100%);
+      }
+
+      .module-panel {
+        display: none;
+        height: 100%;
+        min-height: 0;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .module-panel.active {
+        display: flex;
+      }
+
+      .panel-card {
+        border-radius: 28px;
+        border: 1px solid rgba(191, 201, 215, 0.28);
+        background: var(--panel);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .chat-card {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .chat-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 20px 22px;
+        border-bottom: 1px solid rgba(195, 204, 218, 0.24);
+        background: rgba(251, 252, 255, 0.84);
+      }
+
+      .chat-title {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .chat-title strong {
+        font-size: 19px;
+      }
+
+      .chat-title span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .chat-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(245, 247, 251, 0.94);
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .chat-status::before {
+        content: '';
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+        background: #50c878;
+        box-shadow: 0 0 0 4px rgba(80, 200, 120, 0.14);
+      }
+
+      .chat-stream {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        padding: 24px;
+        overflow: auto;
+      }
+
+      .message {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        max-width: 760px;
+      }
+
+      .message.user-message {
+        margin-left: auto;
+        flex-direction: row-reverse;
+      }
+
+      .avatar-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        border: 1px solid rgba(219, 226, 236, 0.92);
+        background: radial-gradient(circle at 30% 30%, #ffffff, #dfe8f5);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .bubble-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 560px;
+      }
+
+      .message.user-message .bubble-wrap {
+        align-items: flex-end;
+      }
+
+      .bubble {
+        width: fit-content;
+        max-width: 100%;
+        padding: 18px 20px;
+        border-radius: 22px;
+        border: 1px solid rgba(214, 220, 229, 0.64);
+        box-shadow: var(--shadow-sm);
+        line-height: 1.7;
+        font-size: 15px;
+      }
+
+      .bubble.ai {
+        background: var(--assistant-bubble);
+        border-top-left-radius: 8px;
+      }
+
+      .bubble.user {
+        background: var(--user-bubble);
+        color: #493405;
+        border-color: rgba(228, 184, 69, 0.42);
+        border-top-right-radius: 8px;
+      }
+
+      .composer-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .composer {
+        position: relative;
+        min-height: 152px;
+        overflow: hidden;
+      }
+
+      .composer-surface {
+        position: absolute;
+        inset: 16px 18px 74px;
+        border-radius: 18px;
+        border: 1px dashed rgba(169, 178, 194, 0.58);
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .composer-placeholder {
+        position: absolute;
+        top: 28px;
+        left: 28px;
+        color: #9ca7b8;
+        font-size: 15px;
+      }
+
+      .cursor {
+        position: absolute;
+        left: 22px;
+        bottom: 24px;
+        width: 0;
+        height: 0;
+        border-top: 18px solid transparent;
+        border-bottom: 0 solid transparent;
+        border-right: 15px solid transparent;
+        box-shadow: -10px 10px 0 1px #101622;
+        transform: rotate(-48deg);
+      }
+
+      .toolbar,
+      .interview-toolbar {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .toolbar-left,
+      .interview-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .action-btn {
+        appearance: none;
+        height: 40px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 1px solid rgba(206, 213, 223, 0.96);
+        background: rgba(255, 255, 255, 0.96);
+        color: #344051;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .action-btn.primary {
+        background: linear-gradient(135deg, #ffe7a1 0%, #f4cb64 100%);
+        border-color: rgba(231, 185, 71, 0.46);
+      }
+
+      .action-btn.secondary {
+        background: linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%);
+      }
+
+      .action-btn.ghost {
+        background: linear-gradient(180deg, #f8fbff 0%, #edf2f8 100%);
+      }
+
+      .action-btn.wide {
+        min-width: 138px;
+        justify-content: center;
+      }
+
+      .action-icon {
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #6a7384;
+        background: rgba(255, 255, 255, 0.76);
+        border: 1px solid rgba(203, 210, 222, 0.9);
+      }
+
+      .send-btn {
+        appearance: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 999px;
+        border: 1px solid rgba(233, 183, 74, 0.38);
+        background: linear-gradient(135deg, #ffd96f 0%, #f2bf42 100%);
+        box-shadow: 0 14px 28px rgba(241, 191, 66, 0.32);
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      .send-btn::before {
+        content: '';
+        position: absolute;
+        left: 18px;
+        top: 15px;
+        width: 0;
+        height: 0;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-left: 13px solid #62490a;
+      }
+
+      .interview-stage {
+        flex: 1;
+        min-height: 0;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .stage-screen {
+        flex: 1;
+        min-height: 360px;
+        border-radius: 26px;
+        border: 1px solid rgba(205, 214, 226, 0.78);
+        background: linear-gradient(180deg, #eef2f7 0%, #e7ecf3 100%);
+        position: relative;
+        overflow: hidden;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.58);
+      }
+
+      .stage-screen::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.55), transparent 24%),
+          radial-gradient(circle at 80% 84%, rgba(152, 192, 236, 0.18), transparent 26%);
+      }
+
+      .stage-overlay {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 24px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .stage-card {
+        width: 260px;
+        padding: 16px 18px;
+        border-radius: 22px;
+        border: 1px solid rgba(210, 218, 229, 0.86);
+        background: rgba(255, 255, 255, 0.76);
+        backdrop-filter: blur(12px);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .stage-card strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 16px;
+      }
+
+      .stage-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .stage-dot {
+        width: 76px;
+        height: 76px;
+        border-radius: 999px;
+        border: 1px solid rgba(206, 214, 226, 0.9);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.94) 0%,
+          rgba(241, 245, 251, 0.96) 100%
+        );
+        box-shadow: var(--shadow-sm);
+      }
+
+      .interview-composer {
+        position: relative;
+        min-height: 96px;
+        padding: 18px;
+        overflow: visible;
+      }
+
+      .interview-bar {
+        position: relative;
+        min-height: 80px;
+        padding: 14px 18px;
+        border-radius: 22px;
+        border: 1px solid rgba(202, 210, 223, 0.74);
+        background: linear-gradient(180deg, #f9fbfe 0%, #f2f5fa 100%);
+      }
+
+      .interview-toolbar {
+        position: static;
+      }
+
+      .notes-board {
+        height: 100%;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 24px;
+      }
+
+      .notes-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 18px;
+        background: linear-gradient(180deg, #eef2f7 0%, #e8edf4 100%);
+      }
+
+      .notes-create {
+        display: grid;
+        grid-template-columns: 1fr 52px;
+        gap: 12px;
+      }
+
+      .notes-create-btn,
+      .notes-create-more {
+        appearance: none;
+        border: 1px solid rgba(201, 209, 222, 0.9);
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 16px;
+        box-shadow: var(--shadow-sm);
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .notes-create-btn {
+        height: 58px;
+      }
+
+      .notes-create-more {
+        font-size: 26px;
+        color: var(--muted);
+      }
+
+      .notes-topic-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-height: 0;
+      }
+
+      .notes-topic-card {
+        padding: 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(195, 203, 216, 0.44);
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .notes-topic-card.active {
+        border-color: rgba(100, 132, 255, 0.34);
+        box-shadow: 0 14px 28px rgba(74, 112, 255, 0.14);
+      }
+
+      .notes-topic-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .notes-topic-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .notes-topic-name {
+        flex: 1;
+        min-width: 0;
+        height: 40px;
+        padding: 0 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(212, 218, 228, 0.86);
+        background: #fff;
+        display: flex;
+        align-items: center;
+        font-size: 15px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .notes-topic-actions {
+        display: flex;
+        gap: 6px;
+      }
+
+      .notes-topic-actions span {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: rgba(214, 220, 229, 0.96);
+      }
+
+      .notes-topic-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .notes-tag {
+        display: inline-flex;
+        align-items: center;
+        height: 34px;
+        padding: 0 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(213, 220, 229, 0.88);
+        background: rgba(255, 255, 255, 0.96);
+        font-size: 14px;
+        color: #5a6577;
+      }
+
+      .notes-copy-toast {
+        align-self: flex-end;
+        margin-top: auto;
+        padding: 12px 22px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #4b74ff 0%, #3258ea 100%);
+        color: #fff;
+        font-weight: 700;
+        box-shadow: 0 18px 36px rgba(59, 96, 255, 0.28);
+      }
+
+      .notes-editor-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .notes-toolbar-label,
+      .notes-field-label {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        height: 32px;
+        padding: 0 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(209, 217, 228, 0.88);
+        background: rgba(255, 255, 255, 0.96);
+        color: #5d6879;
+        font-size: 14px;
+      }
+
+      .notes-editor-panel {
+        flex: 1;
+        min-height: 0;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .notes-toolbar {
+        height: 70px;
+        border-radius: 20px;
+        border: 1px solid rgba(207, 215, 226, 0.82);
+        background: linear-gradient(180deg, #edf1f6 0%, #e7ebf2 100%);
+      }
+
+      .notes-title-input {
+        height: 54px;
+        border-radius: 18px;
+        border: 1px solid rgba(210, 217, 228, 0.82);
+        background: linear-gradient(180deg, #eff3f8 0%, #ebf0f6 100%);
+      }
+
+      .notes-content-input {
+        flex: 1;
+        min-height: 520px;
+        border-radius: 22px;
+        border: 1px solid rgba(209, 217, 228, 0.82);
+        background: linear-gradient(180deg, #eef2f7 0%, #e7ecf3 100%);
+      }
+
+      @media (max-width: 1180px) {
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .notes-board {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 820px) {
+        .prototype-shell {
+          padding: 14px;
+        }
+
+        .canvas {
+          width: 100%;
+          min-height: calc(100vh - 28px);
+        }
+
+        .chat-topbar,
+        .interview-toolbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .stage-overlay {
+          left: 16px;
+          right: 16px;
+          bottom: 16px;
+        }
+
+        .stage-card {
+          width: auto;
+          flex: 1;
+        }
+
+        .toolbar,
+        .interview-toolbar {
+          gap: 12px;
+        }
+
+        .toolbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .toolbar-left,
+        .interview-actions {
+          width: 100%;
+        }
+
+        .send-btn {
+          align-self: flex-end;
+        }
+
+        .bubble-wrap {
+          max-width: calc(100vw - 110px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="prototype-shell">
+      <section class="canvas" aria-label="学面通 AI 原型">
+        <header class="header">
+          <div class="title-row">
+            <span class="title-badge">导航栏</span>
+            <span class="title-meta">6:9 - 1</span>
+          </div>
+          <nav class="tabs" aria-label="产品分区">
+            <button class="tab" type="button">项目L...</button>
+            <button class="tab" type="button">项目名称</button>
+            <button class="tab active" type="button" data-module-tab="study">学习室</button>
+            <button class="tab" type="button" data-module-tab="interview">面试间</button>
+            <button class="tab" type="button" data-module-tab="notes">笔记本</button>
+          </nav>
+        </header>
+
+        <div class="workspace">
+          <aside class="sidebar" aria-label="对话主题面板">
+            <div class="sidebar-title">对话主题面板</div>
+            <div class="new-chat">
+              <button type="button">新建对话按钮</button>
+              <div class="mini-square" aria-hidden="true"></div>
+            </div>
+
+            <div class="topic-list">
+              <article class="topic-card">
+                <div>
+                  <div class="region-pill">学习室</div>
+                  <div class="topic-main">
+                    <div class="topic-title">JVM 高频考点精讲</div>
+                    <div class="ghost-icons" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ellipsis" aria-hidden="true">...</div>
+              </article>
+              <article class="topic-card">
+                <div>
+                  <div class="region-pill">学习室</div>
+                  <div class="topic-main">
+                    <div class="topic-title">Spring 事务刷题清单</div>
+                    <div class="ghost-icons" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ellipsis" aria-hidden="true">...</div>
+              </article>
+              <article class="topic-card">
+                <div>
+                  <div class="region-pill">面试间</div>
+                  <div class="topic-main">
+                    <div class="topic-title">Java 后端模拟面试</div>
+                    <div class="ghost-icons" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ellipsis" aria-hidden="true">...</div>
+              </article>
+              <article class="topic-card">
+                <div>
+                  <div class="region-pill">面试间</div>
+                  <div class="topic-main">
+                    <div class="topic-title">简历优化建议汇总</div>
+                    <div class="ghost-icons" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ellipsis" aria-hidden="true">...</div>
+              </article>
+              <article class="topic-card">
+                <div>
+                  <div class="region-pill">笔记本</div>
+                  <div class="topic-main">
+                    <div class="topic-title">JVM 学习笔记</div>
+                    <div class="ghost-icons" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ellipsis" aria-hidden="true">...</div>
+              </article>
+            </div>
+          </aside>
+
+          <section class="main" aria-label="模块内容区域">
+            <section class="module-panel active" data-module-panel="study">
+              <section class="panel-card chat-card" aria-label="学习室会话">
+                <div class="chat-topbar">
+                  <div class="chat-title">
+                    <strong>学习室 · Java 面试知识精讲</strong>
+                    <span>上传材料后进入知识精讲或刷题模式，保留沉浸式问答体验</span>
+                  </div>
+                  <div class="chat-status">AI 在线</div>
+                </div>
+
+                <div class="chat-stream">
+                  <article class="message">
+                    <div class="avatar-stack">
+                      <div class="tag">AI 助手</div>
+                      <div class="avatar" aria-hidden="true"></div>
+                    </div>
+                    <div class="bubble-wrap">
+                      <div class="bubble-label">系统引导</div>
+                      <div class="bubble ai">
+                        可以先上传岗位描述、简历或题目截图，我会帮你提炼重点，再切到知识精讲或刷题模式继续学习。
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="message user-message">
+                    <div class="avatar-stack">
+                      <div class="tag">用户</div>
+                      <div class="avatar" aria-hidden="true"></div>
+                    </div>
+                    <div class="bubble-wrap">
+                      <div class="bubble-label">用户消息</div>
+                      <div class="bubble user">
+                        我先上传一份 Java 后端岗位 JD，帮我提炼高频考点，并进入知识精讲。
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="message">
+                    <div class="avatar-stack">
+                      <div class="tag">AI 助手</div>
+                      <div class="avatar" aria-hidden="true"></div>
+                    </div>
+                    <div class="bubble-wrap">
+                      <div class="bubble-label">AI 回复</div>
+                      <div class="bubble ai">
+                        已识别到集合、多线程、JVM、数据库索引和 Spring
+                        事务是重点方向。你可以继续点“知识精讲”做系统梳理，或者切到“刷题模式”做针对练习。
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="message user-message">
+                    <div class="avatar-stack">
+                      <div class="tag">用户</div>
+                      <div class="avatar" aria-hidden="true"></div>
+                    </div>
+                    <div class="bubble-wrap">
+                      <div class="bubble-label">用户消息</div>
+                      <div class="bubble user">
+                        先帮我系统讲一下 JVM 内存模型，再给我 5 道面试题。
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </section>
+
+              <section class="composer-wrap">
+                <div class="module-badge">学习室输入区</div>
+                <section class="panel-card composer" aria-label="学习室输入区域">
+                  <div class="composer-surface" aria-hidden="true"></div>
+                  <div class="composer-placeholder">
+                    在这里输入你的问题，上传材料后可直接切换到知识精讲或刷题模式...
+                  </div>
+                  <div class="cursor" aria-hidden="true"></div>
+                  <div class="toolbar">
+                    <div class="toolbar-left">
+                      <button class="action-btn secondary wide" type="button">
+                        <span class="action-icon">+</span>
+                        上传文件
+                      </button>
+                      <button class="action-btn primary wide" type="button">
+                        <span class="action-icon">知</span>
+                        知识精讲
+                      </button>
+                      <button class="action-btn ghost wide" type="button">
+                        <span class="action-icon">题</span>
+                        刷题模式
+                      </button>
+                    </div>
+                    <button class="send-btn" type="button" aria-label="发送"></button>
+                  </div>
+                </section>
+              </section>
+            </section>
+
+            <section class="module-panel" data-module-panel="interview">
+              <section class="panel-card interview-stage" aria-label="面试间主舞台">
+                <div class="module-badge">面试间输入区</div>
+                <div class="stage-screen">
+                  <div class="stage-overlay">
+                    <div class="stage-card">
+                      <strong>模拟面试进行中</strong>
+                      <p>支持简历上传、追问、复盘与知识回流，让训练结果自然回到学习室和笔记本。</p>
+                    </div>
+                    <div class="stage-dot" aria-hidden="true"></div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="interview-composer">
+                <div class="interview-bar panel-card">
+                  <div class="interview-toolbar" aria-label="面试间底部操作栏">
+                    <div class="interview-actions">
+                      <button class="action-btn secondary wide" type="button">
+                        <span class="action-icon">+</span>
+                        上传文件
+                      </button>
+                      <button class="action-btn wide" type="button">
+                        <span class="action-icon">简</span>
+                        简历优化
+                      </button>
+                      <button class="action-btn primary wide" type="button">
+                        <span class="action-icon">面</span>
+                        模拟面试
+                      </button>
+                      <button class="action-btn ghost wide" type="button">
+                        <span class="action-icon">复</span>
+                        面试复盘
+                      </button>
+                      <button class="action-btn wide" type="button">
+                        <span class="action-icon">知</span>
+                        知识精讲
+                      </button>
+                    </div>
+                    <button class="send-btn" type="button" aria-label="发送"></button>
+                  </div>
+                </div>
+              </section>
+            </section>
+
+            <section class="module-panel" data-module-panel="notes">
+              <section class="notes-board">
+                <aside class="panel-card notes-sidebar">
+                  <div class="sidebar-title">对话主题面板</div>
+                  <div class="notes-create">
+                    <button class="notes-create-btn" type="button">新建笔记按钮</button>
+                    <button class="notes-create-more" type="button">...</button>
+                  </div>
+
+                  <div class="notes-topic-list">
+                    <article class="notes-topic-card">
+                      <div class="notes-topic-head">
+                        <div class="region-pill">区域 7</div>
+                      </div>
+                      <div class="notes-topic-title">
+                        <div class="notes-topic-name">对话主题名称</div>
+                        <div class="notes-topic-actions" aria-hidden="true">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="notes-topic-foot">
+                        <span class="notes-tag">笔记...</span>
+                      </div>
+                    </article>
+
+                    <article class="notes-topic-card">
+                      <div class="notes-topic-head">
+                        <div class="region-pill">区域 8</div>
+                      </div>
+                      <div class="notes-topic-title">
+                        <div class="notes-topic-name">对话主题名称</div>
+                        <div class="notes-topic-actions" aria-hidden="true">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="notes-topic-foot">
+                        <span class="notes-tag">笔记...</span>
+                      </div>
+                    </article>
+
+                    <article class="notes-topic-card">
+                      <div class="notes-topic-head">
+                        <div class="region-pill">区域 9</div>
+                      </div>
+                      <div class="notes-topic-title">
+                        <div class="notes-topic-name">对话主题名称</div>
+                        <div class="notes-topic-actions" aria-hidden="true">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="notes-topic-foot">
+                        <span class="notes-tag">笔记...</span>
+                      </div>
+                    </article>
+
+                    <article class="notes-topic-card">
+                      <div class="notes-topic-head">
+                        <div class="region-pill">区域 10</div>
+                      </div>
+                      <div class="notes-topic-title">
+                        <div class="notes-topic-name">对话主题名称</div>
+                        <div class="notes-topic-actions" aria-hidden="true">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="notes-topic-foot">
+                        <span class="notes-tag">笔记...</span>
+                      </div>
+                    </article>
+
+                    <article class="notes-topic-card">
+                      <div class="notes-topic-head">
+                        <div class="region-pill">区域 11</div>
+                      </div>
+                      <div class="notes-topic-title">
+                        <div class="notes-topic-name">对话主题名称</div>
+                        <div class="notes-topic-actions" aria-hidden="true">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="notes-topic-foot">
+                        <span class="notes-tag">笔记...</span>
+                      </div>
+                    </article>
+
+                    <article class="notes-topic-card">
+                      <div class="notes-topic-head">
+                        <div class="region-pill">区域 12</div>
+                      </div>
+                      <div class="notes-topic-title">
+                        <div class="notes-topic-name">对话主题名称</div>
+                        <div class="notes-topic-actions" aria-hidden="true">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="notes-topic-foot">
+                        <span class="notes-tag">笔记...</span>
+                      </div>
+                    </article>
+
+                    <article class="notes-topic-card">
+                      <div class="notes-topic-head">
+                        <div class="region-pill">区域 13</div>
+                      </div>
+                      <div class="notes-topic-title">
+                        <div class="notes-topic-name">对话主题名称</div>
+                        <div class="notes-topic-actions" aria-hidden="true">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="notes-topic-foot">
+                        <span class="notes-tag">笔记...</span>
+                      </div>
+                    </article>
+
+                    <article class="notes-topic-card">
+                      <div class="notes-topic-head">
+                        <div class="region-pill">区域 14</div>
+                      </div>
+                      <div class="notes-topic-title">
+                        <div class="notes-topic-name">对话主题名称</div>
+                        <div class="notes-topic-actions" aria-hidden="true">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="notes-topic-foot">
+                        <span class="notes-tag">笔记...</span>
+                      </div>
+                    </article>
+
+                    <article class="notes-topic-card active">
+                      <div class="notes-topic-head">
+                        <div class="region-pill">区域 15</div>
+                      </div>
+                      <div class="notes-topic-title">
+                        <div class="notes-topic-name">对话主题名称</div>
+                        <div class="notes-topic-actions" aria-hidden="true">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="notes-topic-foot">
+                        <span class="notes-tag">笔记...</span>
+                      </div>
+                    </article>
+                  </div>
+
+                  <div class="notes-copy-toast">阅后副本已创建</div>
+                </aside>
+
+                <section class="notes-editor-shell">
+                  <div class="notes-toolbar-label">富文本编辑器菜单栏</div>
+                  <section class="panel-card notes-editor-panel">
+                    <div class="notes-toolbar" aria-hidden="true"></div>
+                    <div class="notes-field-label">笔记主题</div>
+                    <div class="notes-title-input" aria-hidden="true"></div>
+                    <div class="notes-field-label">笔记内容</div>
+                    <div class="notes-content-input" aria-hidden="true"></div>
+                  </section>
+                </section>
+              </section>
+            </section>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const tabs = document.querySelectorAll('[data-module-tab]');
+      const panels = document.querySelectorAll('[data-module-panel]');
+
+      function activateModule(moduleName) {
+        tabs.forEach((tab) => {
+          tab.classList.toggle('active', tab.dataset.moduleTab === moduleName);
+        });
+
+        panels.forEach((panel) => {
+          panel.classList.toggle('active', panel.dataset.modulePanel === moduleName);
+        });
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => activateModule(tab.dataset.moduleTab));
+      });
+    </script>
+  </body>
+</html>
