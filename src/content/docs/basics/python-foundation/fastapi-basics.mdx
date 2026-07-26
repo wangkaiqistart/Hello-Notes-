@@ -1,0 +1,231 @@
+---
+title: FastAPI 接口开发入门
+description: FastAPI 基础接口开发、路径参数、查询参数、请求体与 Pydantic 参数校验笔记
+sidebar:
+  label: FastAPI 入门
+  order: 8
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+FastAPI 是一个现代、高性能的 Python Web 框架，适合用来开发后端接口，也适合把 AI 能力封装成可调用的 API 服务。
+
+<Aside type="tip" title="核心目标" icon="rocket">
+  先掌握最小接口开发闭环：创建应用、定义路由、接收参数、校验请求体、启动服务、查看接口文档。
+</Aside>
+
+## 为什么选择 FastAPI
+
+FastAPI 的优势不只是“写起来快”，更重要的是它把接口开发里最容易出错的部分变得更清晰。
+
+<CardGrid>
+  <Card title="高性能" icon="rocket">
+    原生支持异步能力，适合处理并发请求，也方便后续接入模型调用、文件处理等耗时任务。
+  </Card>
+  <Card title="自动生成文档" icon="open-book">
+    定义好接口后，会自动生成可调试的接口文档，开发和联调都更方便。
+  </Card>
+  <Card title="强类型校验" icon="approve-check">
+    结合类型注解和 Pydantic，可以自动校验参数类型、长度、必填项和默认值。
+  </Card>
+  <Card title="代码简洁" icon="setting">
+    用装饰器声明接口路径和请求方法，业务函数只需要关注输入、处理和输出。
+  </Card>
+</CardGrid>
+
+## 环境搭建
+
+建议在虚拟环境中安装 FastAPI 和 Uvicorn。
+
+```bash
+pip install fastapi uvicorn
+```
+
+`uvicorn` 是遵循 ASGI 协议的 Web 服务器，用来运行 FastAPI 应用。
+
+安装后可以检查当前环境里的依赖：
+
+```bash
+pip list
+```
+
+<Aside type="note" title="环境习惯">
+  FastAPI 项目最好和普通 Python 项目一样使用 `.venv`，避免不同项目之间依赖版本互相影响。
+</Aside>
+
+## 最小 API 应用
+
+一个最小 FastAPI 应用通常从这三步开始：导入框架、创建应用对象、定义接口路由。
+
+```python title="main.py"
+from fastapi import FastAPI
+
+app = FastAPI(title="第一个API", version="1.0")
+
+
+@app.get("/")
+def read_root():
+    return {"hello": "world"}
+```
+
+启动服务：
+
+```bash
+uvicorn main:app --reload
+```
+
+启动后访问：
+
+| 地址                          | 作用             |
+| ----------------------------- | ---------------- |
+| `http://127.0.0.1:8000/`      | 访问根接口       |
+| `http://127.0.0.1:8000/docs`  | Swagger 接口文档 |
+| `http://127.0.0.1:8000/redoc` | ReDoc 接口文档   |
+
+## 接口参数类型
+
+FastAPI 入门阶段先掌握三类参数：路径参数、查询参数、请求体。
+
+<Tabs>
+  <TabItem label="路径参数" icon="link">
+    路径参数写在 URL 路径中，适合表示某个具体资源的 ID。
+
+    ```python
+    @app.get("/item/{item_id}")
+    def read_item(item_id: int):
+        return {"item_id": item_id}
+    ```
+
+    访问示例：
+
+    ```text
+    /item/100
+    ```
+
+    这里的 `item_id: int` 表示参数必须能转换成整数。如果传入的不是整数，FastAPI 会自动返回参数错误。
+
+  </TabItem>
+  <TabItem label="查询参数" icon="search">
+    查询参数写在 `?` 后面，适合做筛选、搜索、分页这类可选条件。
+
+    ```python
+    @app.get("/items/")
+    def read_items(age: str | None = None):
+        return {"age": age}
+    ```
+
+    访问示例：
+
+    ```text
+    /items/?age=18
+    ```
+
+    `age: str | None = None` 表示这个参数可以不传。不传时默认值是 `None`。
+
+  </TabItem>
+  <TabItem label="请求体" icon="puzzle">
+    请求体适合接收结构化数据，比如注册用户、创建订单、提交表单。
+
+    ```python
+    from pydantic import BaseModel, Field
+
+
+    class UserCreate(BaseModel):
+        username: str = Field(min_length=2, max_length=10, description="用户名")
+        password: str = Field(min_length=6, max_length=16, description="密码")
+
+
+    @app.post("/users")
+    def create_user(user: UserCreate):
+        return {
+            "code": 200,
+            "message": "创建成功",
+            "data": user.model_dump(),
+        }
+    ```
+
+    请求体会先经过 `UserCreate` 校验，校验通过后才会进入接口函数。
+
+  </TabItem>
+</Tabs>
+
+## Pydantic 校验
+
+Pydantic 的作用是把外部传进来的数据变成“有规则的数据”。接口参数来自用户或前端，不能直接相信，所以要先校验再使用。
+
+| 写法                        | 作用                               |
+| --------------------------- | ---------------------------------- |
+| `BaseModel`                 | 定义请求体的数据结构               |
+| `Field()`                   | 给字段增加校验规则和说明           |
+| `min_length` / `max_length` | 限制字符串长度                     |
+| `description`               | 生成接口文档时展示字段说明         |
+| `model_dump()`              | 把 Pydantic 对象转换成 Python 字典 |
+
+<Aside type="tip" title="理解重点">
+  FastAPI 接收请求，Pydantic 负责校验数据。接口函数拿到的参数，应该已经是符合规则的数据。
+</Aside>
+
+## 完整示例
+
+```python title="main.py"
+from fastapi import FastAPI
+from pydantic import BaseModel, Field
+
+app = FastAPI(title="第一个API", version="1.0")
+
+
+@app.get("/")
+def read_root():
+    return {"hello": "world"}
+
+
+@app.get("/item/{item_id}")
+def read_item(item_id: int):
+    return {"item_id": item_id}
+
+
+@app.get("/items/")
+def read_items(age: str | None = None):
+    return {"age": age}
+
+
+class UserCreate(BaseModel):
+    username: str = Field(min_length=2, max_length=10, description="用户名")
+    password: str = Field(min_length=6, max_length=16, description="密码")
+
+
+@app.post("/users")
+def create_user(user: UserCreate):
+    return {
+        "code": 200,
+        "message": "创建成功",
+        "data": user.model_dump(),
+    }
+```
+
+## 开发流程
+
+<Steps>
+
+1. **创建项目和虚拟环境**：让接口项目有独立运行空间。
+
+2. **安装依赖**：安装 `fastapi` 和 `uvicorn`。
+
+3. **编写 `main.py`**：创建 `FastAPI()` 应用对象。
+
+4. **定义路由函数**：用 `@app.get()`、`@app.post()` 声明接口。
+
+5. **补充参数校验**：路径参数和查询参数用类型注解，请求体用 Pydantic 模型。
+
+6. **启动服务并验证**：用 `uvicorn main:app --reload` 启动，再访问 `/docs` 调试接口。
+
+</Steps>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  FastAPI 入门可以按一句话记：`FastAPI` 定义接口，`uvicorn` 启动服务，类型注解校验基础参数，`Pydantic` 校验请求体。
+
+三类参数：路径参数放路径里，查询参数放 `?` 后面，请求体用 `BaseModel` 接收。
+
+</Aside>
