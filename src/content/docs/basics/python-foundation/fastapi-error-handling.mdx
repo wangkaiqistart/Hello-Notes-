@@ -1,0 +1,279 @@
+---
+title: FastAPI 统一错误处理
+description: FastAPI 中自定义异常类、全局异常处理器、标准化错误响应与 Request ID 追踪笔记
+sidebar:
+  label: FastAPI 错误处理
+  order: 10
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+接口项目不能只关注“正常返回”，还要关注“出错时怎么返回”。统一错误处理，就是给所有错误定规矩：格式统一、信息清楚、问题可定位、日志可追溯。
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  统一错误处理的目标不是把错误藏起来，而是让前端看得懂、后端查得到、日志串得起来。
+</Aside>
+
+## 为什么需要统一错误处理
+
+如果每个接口随手返回错误，前端要适配很多格式，后端排查也会很痛苦。
+
+<CardGrid>
+  <Card title="前端适配" icon="terminal">
+    所有接口使用同一套错误格式，前端不用为每个接口单独写解析逻辑。
+  </Card>
+  <Card title="问题定位" icon="search">
+    通过错误码、错误信息和字段详情，快速判断问题来自参数、业务、系统还是框架。
+  </Card>
+  <Card title="用户体验" icon="information">
+    对用户返回可理解的提示，避免直接暴露堆栈、数据库错误等技术细节。
+  </Card>
+  <Card title="日志追溯" icon="setting">
+    每个请求带上 `request_id`，线上出问题时可以把前端反馈和后端日志对应起来。
+  </Card>
+</CardGrid>
+
+一句话：统一错误处理就是给所有错误“定规矩”，统一格式、规则和记录方式。
+
+## 三个核心目标
+
+| 目标   | 含义                                   | 实现方式                    |
+| ------ | -------------------------------------- | --------------------------- |
+| 可读   | 用户和前端能看懂错误，不被技术术语淹没 | 标准响应结构 + 友好提示文案 |
+| 可定位 | 开发者能快速识别错误来源               | 错误码分类 + 明确错误字段   |
+| 可追溯 | 能查到完整请求上下文和报错链路         | `request_id` + 统一日志记录 |
+
+<Aside type="note" title="响应结构">
+  常见错误响应可以包含 `code`、`message`、`detail`、`request_id`。其中 `message` 给人看，`code`
+  给程序判断，`detail` 给开发排查，`request_id` 用来查日志。
+</Aside>
+
+## 核心处理流程
+
+统一错误处理可以按这条链路理解：
+
+<Steps>
+
+1. **客户端发送请求**：前端或调用方发起 HTTP 请求。
+
+2. **生成请求标识**：FastAPI 应用为请求生成 `request_id`，并附加到请求上下文。
+
+3. **路由匹配**：根据 URL 和请求方法匹配对应接口。
+
+4. **参数校验**：Pydantic 对路径参数、查询参数、请求体进行校验。
+
+5. **调用业务逻辑**：校验成功后进入业务层处理。
+
+6. **异常处理中心接管**：参数异常、业务异常、系统异常、HTTP 异常都进入统一处理。
+
+7. **构建统一错误响应**：转换成标准 JSON 结构。
+
+8. **记录日志并返回**：日志记录 `request_id` 和错误详情，再把响应返回给客户端。
+
+</Steps>
+
+## 关键概念
+
+<Tabs>
+  <TabItem label="自定义异常类" icon="tag">
+    自定义异常类是给错误贴“类型标签”。比如参数错、业务错、系统错，可以定义成不同异常类型。
+
+    ```python title="app/core/exceptions.py"
+    class AppException(Exception):
+        def __init__(self, code: str, message: str, detail: dict | None = None):
+            self.code = code
+            self.message = message
+            self.detail = detail or {}
+
+
+    class BusinessException(AppException):
+        pass
+
+
+    class SystemException(AppException):
+        pass
+    ```
+
+    业务代码里主动抛出异常，统一处理器负责转换响应。
+
+  </TabItem>
+  <TabItem label="标准化响应" icon="approve-check">
+    标准化响应是为了确保所有错误都返回统一字段，降低前端解析成本。
+
+    ```python title="app/schemas/response.py"
+    from pydantic import BaseModel, Field
+
+
+    class ErrorResponse(BaseModel):
+        code: str = Field(description="错误码")
+        message: str = Field(description="错误提示")
+        detail: dict = Field(default_factory=dict, description="错误详情")
+        request_id: str = Field(description="请求追踪 ID")
+    ```
+
+    统一格式后，前端可以稳定读取 `code` 和 `message`。
+
+  </TabItem>
+  <TabItem label="全局异常处理器" icon="warning">
+    全局异常处理器是 FastAPI 的“错误捕手”，负责统一拦截异常。
+
+    ```python title="app/core/handlers.py"
+    from fastapi import Request
+    from fastapi.responses import JSONResponse
+
+    from app.core.exceptions import AppException
+
+
+    async def app_exception_handler(request: Request, exc: AppException):
+        request_id = getattr(request.state, "request_id", "")
+        return JSONResponse(
+            status_code=400,
+            content={
+                "code": exc.code,
+                "message": exc.message,
+                "detail": exc.detail,
+                "request_id": request_id,
+            },
+        )
+    ```
+
+    这样业务层只需要抛异常，不需要到处手写错误响应。
+
+  </TabItem>
+  <TabItem label="Request ID" icon="random">
+    `request_id` 是请求的唯一标识，用来实现错误全链路追溯。
+
+    ```python title="app/core/middleware.py"
+    import uuid
+
+    from fastapi import Request
+
+
+    async def request_id_middleware(request: Request, call_next):
+        request.state.request_id = str(uuid.uuid4())
+        response = await call_next(request)
+        response.headers["X-Request-ID"] = request.state.request_id
+        return response
+    ```
+
+    前端反馈问题时带上 `request_id`，后端就能更快定位日志。
+
+  </TabItem>
+</Tabs>
+
+## 异常分类
+
+统一错误处理不是把所有错误都变成一个错误，而是先分类，再统一输出。
+
+| 类型         | 典型来源                                     | 处理重点                         |
+| ------------ | -------------------------------------------- | -------------------------------- |
+| 参数校验异常 | Pydantic 校验失败、缺字段、类型错误          | 返回字段级错误，提示前端修正参数 |
+| 业务异常     | 用户不存在、用户名重复、余额不足、状态不允许 | 返回业务错误码和友好提示         |
+| 系统异常     | 数据库失败、第三方服务失败、内部逻辑异常     | 记录详细日志，对外隐藏敏感细节   |
+| HTTP 异常    | 404、401、403、405 等框架或权限错误          | 保留 HTTP 语义，转换为统一响应   |
+| 未捕获异常   | 没有预料到的异常                             | 兜底处理，避免直接暴露堆栈       |
+
+<Aside type="caution" title="注意">
+  对外响应要克制，不要把数据库连接信息、堆栈路径、密钥、内部服务地址直接返回给客户端。详细信息放日志里。
+</Aside>
+
+## 注册全局处理器
+
+在项目入口里注册中间件和异常处理器：
+
+```python title="app/main.py"
+from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
+
+from app.core.exceptions import AppException
+from app.core.handlers import (
+    app_exception_handler,
+    validation_exception_handler,
+    unhandled_exception_handler,
+)
+from app.core.middleware import request_id_middleware
+
+app = FastAPI(title="FastAPI 错误处理示例")
+
+app.middleware("http")(request_id_middleware)
+app.add_exception_handler(AppException, app_exception_handler)
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(Exception, unhandled_exception_handler)
+```
+
+实现顺序可以记成：
+
+```text
+自定义异常 -> 响应模型 -> 日志配置 -> 全局处理器 -> 业务示例
+```
+
+## 业务示例
+
+业务层只负责表达错误语义，不负责拼响应格式。
+
+```python title="app/services/user_service.py"
+from app.core.exceptions import BusinessException
+
+
+users = {"1": {"id": "1", "username": "kai"}}
+
+
+def get_user(user_id: str):
+    user = users.get(user_id)
+    if not user:
+        raise BusinessException(
+            code="USER_NOT_FOUND",
+            message="用户不存在",
+            detail={"user_id": user_id},
+        )
+    return user
+```
+
+统一处理后，返回给客户端的结构类似：
+
+```json
+{
+  "code": "USER_NOT_FOUND",
+  "message": "用户不存在",
+  "detail": {
+    "user_id": "100"
+  },
+  "request_id": "f7b7c7e4-7f1a-4e9b-9d65-2b0e0f7e8c11"
+}
+```
+
+## AI 生成代码时的提示词
+
+```markdown title="prompt.md"
+## 生成 FastAPI 统一错误处理代码
+
+### 核心目标
+
+报错前端中文可读，后端可定位，日志可追溯。
+
+### 关键要求
+
+1. 自定义业务 / 系统两类异常类；
+2. 标准化响应模型，包含 code / message / detail / request_id；
+3. 注册全局异常处理器；
+4. 在用户信息接口中加入错误处理功能。
+
+### 实现步骤
+
+自定义异常 -> 响应模型 -> 日志配置 -> 全局处理器 -> 业务示例
+```
+
+<Aside type="tip" title="提示词重点">
+  让 AI
+  生成错误处理代码时，要明确错误分类、响应字段、日志追踪和业务示例。只说“帮我加错误处理”，很容易生成零散的
+  try / except。
+</Aside>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  FastAPI 统一错误处理 = 自定义异常类 + 全局异常处理器 + 标准化响应 + Request ID 日志追踪。
+
+三个目标：前端可读、后端可定位、日志可追溯。
+
+</Aside>

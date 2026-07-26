@@ -1,0 +1,281 @@
+---
+title: FastAPI MySQL 数据建模与 ORM
+description: FastAPI 项目中使用 MySQL、SQLAlchemy ORM、Navicat 和 Alembic 完成用户表建模与数据库同步笔记
+sidebar:
+  label: FastAPI MySQL ORM
+  order: 11
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+前面的用户管理 API 可以先用内存字典模拟数据库，但真实项目需要把数据持久化到数据库里。这一节的重点，是用 `FastAPI + MySQL + SQLAlchemy ORM` 完成用户表建模，并用 Navicat 验证库表，用 Alembic 管理表结构变更。
+
+<Aside type="tip" title="核心目标" icon="rocket">
+  从“内存数据”升级到“真实数据库”：用 ORM 定义表，用 MySQL 存数据，用 Navicat 看结果，用 Alembic
+  同步表结构变化。
+</Aside>
+
+## 这一节解决什么
+
+<CardGrid>
+  <Card title="ORM 创建数据库表" icon="database">
+    用 Python 类描述表结构，让代码和数据库结构建立映射关系。
+  </Card>
+  <Card title="Navicat 验证库表" icon="search">
+    通过图形化工具查看数据库、表结构、字段、索引和真实数据。
+  </Card>
+  <Card title="Alembic 同步变更" icon="setting">
+    模型变更后生成迁移脚本，再同步到 MySQL，避免手动改表失控。
+  </Card>
+  <Card title="接口对接 MySQL" icon="link">
+    用户信息接口从内存字典切换到真实数据库，实现数据持久化。
+  </Card>
+</CardGrid>
+
+## MySQL 快速认识
+
+MySQL 是主流的开源关系型数据库，用表格存储结构化数据，支持复杂的表关联查询。
+
+| 维度     | 说明                                                 |
+| -------- | ---------------------------------------------------- |
+| 核心定义 | 开源关系型数据库                                     |
+| 存储方式 | 用数据库、数据表、字段、行记录组织数据               |
+| 主要特点 | 免费开源、生产级稳定、生态成熟、ORM 支持完善         |
+| 适合场景 | 用户、订单、课程、面试记录、知识库元数据等结构化数据 |
+
+课前准备：
+
+```text
+安装并启动 MySQL 服务
+Windows 启动命令：net start mysql
+默认端口：3306
+```
+
+<Aside type="note" title="理解重点">
+  MySQL 负责真正保存数据，FastAPI 负责提供接口，SQLAlchemy 负责让 Python 代码更方便地操作数据库。
+</Aside>
+
+## ORM 是什么
+
+ORM 是 Object Relational Mapping，也就是对象关系映射。它把数据库里的表、字段和增删改查，映射成 Python 里的类、属性和方法。
+
+| 数据库概念      | Python / ORM 概念                 |
+| --------------- | --------------------------------- |
+| 表 `Table`      | Python 类 `Class`                 |
+| 字段 `Field`    | 类属性 `Attribute`                |
+| 一行数据 `Row`  | 一个对象 `Object`                 |
+| 增删改查 `CRUD` | 方法或会话操作 `Method / Session` |
+
+<CardGrid>
+  <Card title="不用手写复杂 SQL" icon="terminal">
+    常见增删改查可以通过 Python 对象和 Session 完成。
+  </Card>
+  <Card title="自动校验数据类型" icon="approve-check">
+    字段类型在模型中明确，能减少存储和查询时的类型错误。
+  </Card>
+  <Card title="跨数据库更容易" icon="random">
+    ORM 抽象了部分数据库差异，后续迁移和维护成本更低。
+  </Card>
+</CardGrid>
+
+## 依赖安装
+
+常见依赖可以先按这组准备：
+
+```bash
+pip install sqlalchemy pymysql alembic
+```
+
+| 依赖         | 作用                                     |
+| ------------ | ---------------------------------------- |
+| `sqlalchemy` | ORM 框架，用 Python 定义模型并操作数据库 |
+| `pymysql`    | MySQL 驱动，让 SQLAlchemy 能连接 MySQL   |
+| `alembic`    | 数据库迁移工具，用来管理表结构变更       |
+
+## 数据库连接
+
+数据库连接串通常放在配置文件或环境变量里，不建议散落在业务代码中。
+
+```python title="app/core/config.py"
+MYSQL_URL = "mysql+pymysql://root:password@localhost:3306/fastapi_demo?charset=utf8mb4"
+```
+
+连接串可以拆成这样理解：
+
+| 片段              | 含义                                |
+| ----------------- | ----------------------------------- |
+| `mysql+pymysql`   | 使用 MySQL，并通过 PyMySQL 驱动连接 |
+| `root:password`   | 数据库账号和密码                    |
+| `localhost:3306`  | MySQL 主机和端口                    |
+| `fastapi_demo`    | 数据库名称                          |
+| `charset=utf8mb4` | 字符集，支持中文和更多特殊字符      |
+
+<Aside type="caution" title="注意">
+  真实项目不要把数据库密码直接写死在代码仓库里，应该放到 `.env` 或部署平台的环境变量中。
+</Aside>
+
+## ORM 模型设计规范
+
+ORM 模型不是随便写字段，表结构要兼顾唯一标识、类型约束、查询效率和数据合法性。
+
+| 规范         | 示例写法                                    | 作用                       |
+| ------------ | ------------------------------------------- | -------------------------- |
+| 必设主键     | `id = Column(Integer, primary_key=True)`    | 数据唯一标识，也能加速查询 |
+| 字段类型明确 | `username = Column(String(20))`             | 限定长度，规范存储         |
+| 约束清晰     | `email = Column(String(100), unique=True)`  | 保证数据合法、不重复       |
+| 加索引       | `username = Column(String(20), index=True)` | 提升查询速度               |
+
+用户表可以先包含这些字段：
+
+| 字段          | 说明                       |
+| ------------- | -------------------------- |
+| `id`          | 自增主键                   |
+| `username`    | 用户名，建议唯一索引       |
+| `password`    | 密码哈希，不保存明文       |
+| `create_time` | 创建时间，自动填充当前时间 |
+
+```python title="app/models/user.py"
+from datetime import datetime
+
+from sqlalchemy import Column, DateTime, Integer, String
+
+from app.db.base import Base
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(20), unique=True, index=True, nullable=False)
+    password = Column(String(255), nullable=False)
+    create_time = Column(DateTime, default=datetime.utcnow, nullable=False)
+```
+
+## SQLAlchemy 基础配置
+
+SQLAlchemy 通常需要三件东西：引擎、会话、模型基类。
+
+<Tabs>
+  <TabItem label="引擎" icon="database">
+    引擎负责连接数据库。
+
+    ```python title="app/db/session.py"
+    from sqlalchemy import create_engine
+
+    from app.core.config import MYSQL_URL
+
+    engine = create_engine(MYSQL_URL, pool_pre_ping=True)
+    ```
+
+  </TabItem>
+  <TabItem label="会话" icon="setting">
+    会话负责一次数据库操作过程，比如查询、保存、提交、回滚。
+
+    ```python title="app/db/session.py"
+    from sqlalchemy.orm import sessionmaker
+
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    ```
+
+  </TabItem>
+  <TabItem label="模型基类" icon="copy">
+    模型基类是所有 ORM 模型的共同基础。
+
+    ```python title="app/db/base.py"
+    from sqlalchemy.orm import declarative_base
+
+    Base = declarative_base()
+    ```
+
+  </TabItem>
+</Tabs>
+
+## Navicat 图形化验证
+
+Navicat 的作用不是替代代码，而是帮助直观看到数据库是否真的创建成功、字段是否符合预期、数据是否正确写入。
+
+<Steps>
+
+1. **连接 MySQL 数据库**：主机填写 `localhost`，端口一般是 `3306`，输入账号密码。
+
+2. **选择数据库**：例如选择 `fastapi_demo`。
+
+3. **查看表结构**：右键点击表，选择“设计表”，检查字段、约束和索引配置。
+
+4. **浏览数据**：打开“数据”标签页，以表格形式查看、编辑或验证数据内容。
+
+</Steps>
+
+## Alembic 轻量迁移
+
+Alembic 用来管理表结构变化。模型改了以后，不直接手工改数据库，而是生成迁移脚本，再同步到 MySQL。
+
+核心流程：
+
+```text
+模型修改 -> 生成脚本 -> 同步 MySQL
+```
+
+关键命令：
+
+```bash
+alembic init alembic
+alembic revision --autogenerate -m "create users table"
+alembic upgrade head
+```
+
+| 步骤       | 命令 / 操作                                 | 作用                                |
+| ---------- | ------------------------------------------- | ----------------------------------- |
+| 初始化环境 | `alembic init alembic`                      | 生成 Alembic 配置和迁移目录         |
+| 修改配置   | 指定 MySQL 地址，并导入模型类               | 让 Alembic 知道连哪个库、读哪些模型 |
+| 生成脚本   | `alembic revision --autogenerate -m "备注"` | 根据 ORM 模型生成迁移脚本           |
+| 执行同步   | `alembic upgrade head`                      | 把迁移应用到 MySQL                  |
+
+<Aside type="tip" title="理解重点">
+  SQLAlchemy 负责“用 Python 定义表”，Alembic 负责“把表结构变化同步到数据库”。
+</Aside>
+
+## 与用户接口对接
+
+用户信息接口接入 MySQL 后，数据流会变成：
+
+<Steps>
+
+1. **路由层接收请求**：例如创建用户、查询用户。
+
+2. **校验层校验参数**：用 Pydantic 校验用户名、密码等字段。
+
+3. **业务层处理规则**：判断用户名是否重复、密码是否需要哈希。
+
+4. **数据库层操作 ORM**：通过 SQLAlchemy Session 查询或写入 `User` 表。
+
+5. **返回统一响应**：把数据库对象转换成响应模型，不返回密码明文。
+
+</Steps>
+
+## AI 生成代码时的提示词
+
+```markdown title="prompt.md"
+# 用 FastAPI + SQLAlchemy 2.0 + MySQL 实现用户信息数据建模
+
+1. 定义 User 表：id 自增主键，username 添加唯一索引，password，create_time 自动填充当前时间；
+2. 配置 MySQL 连接串 mysql_url，启动时自动建表，基于 SQLAlchemy 模型；
+3. 集成 Alembic 管理表结构变更，支持修改表结构后一键同步到数据库；
+4. 用户密码只保存哈希值，不保存明文；
+5. 用户信息接口对接 MySQL，完成用户创建和查询；
+6. 代码按路由层、校验层、业务层、数据库层组织。
+```
+
+<Aside type="note" title="提示词重点">
+  让 AI 生成数据库代码时，要明确数据库类型、ORM
+  版本、表字段、索引约束、迁移工具和目录分层，否则很容易只生成一个能跑但不好维护的 Demo。
+</Aside>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  FastAPI 接 MySQL 的核心链路：SQLAlchemy 定义模型，MySQL 保存数据，Navicat 验证库表，Alembic 管理表结构变更。
+
+ORM 可以按一句话记：表变成类，字段变成属性，增删改查变成对象操作。
+
+</Aside>
