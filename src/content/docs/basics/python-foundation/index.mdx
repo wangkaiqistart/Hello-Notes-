@@ -168,18 +168,20 @@ print(counts)
 
 ## 章节规划
 
-| 模块                                                                        | 重点内容                                            | 学完后能做什么                               |
-| --------------------------------------------------------------------------- | --------------------------------------------------- | -------------------------------------------- |
-| [开发环境](/basics/python-foundation/environment-and-deps/)                 | Python 安装、虚拟环境、依赖安装、版本锁定           | 能独立搭建干净可复现的开发环境               |
-| [基础语法与代码组织](/basics/python-foundation/syntax-basics/)              | 缩进、变量、控制流、函数、模块包、异常处理          | 能看懂脚本运行流程，并把零散代码组织起来     |
-| [常用数据类型](/basics/python-foundation/data-types/)                       | 字符串、列表、字典、集合、元组                      | 能处理接口数据、文档内容和中间结果           |
-| [代码组织](/basics/python-foundation/code-organization-and-utils/)          | 函数封装、工具层、目录结构、通用方法抽离            | 能把零散脚本整理成可维护模块                 |
-| [文件处理](/basics/python-foundation/file-processing/)                      | 文件读写、pathlib、改写、删除、工具函数封装         | 能为 RAG 和知识库准备原始资料                |
-| [进阶语法与校验](/basics/python-foundation/advanced-syntax-and-validation/) | 类型注解、推导式、装饰器、OOP、Pydantic             | 能写出更可读、可复用、参数更安全的代码       |
-| [FastAPI 入门](/basics/python-foundation/fastapi-basics/)                   | 接口路由、路径参数、查询参数、请求体、Pydantic 校验 | 能开发一个最小 API 服务，并通过接口文档调试  |
-| [FastAPI 分层架构](/basics/python-foundation/fastapi-layered-architecture/) | 路由层、校验层、业务层、数据库层、用户管理 API      | 能把单文件接口拆成清晰、可维护的项目结构     |
-| [FastAPI 错误处理](/basics/python-foundation/fastapi-error-handling/)       | 自定义异常、全局处理器、标准响应、Request ID        | 能让接口错误前端可读、后端可定位、日志可追溯 |
-| [FastAPI MySQL ORM](/basics/python-foundation/fastapi-mysql-orm/)           | MySQL、SQLAlchemy ORM、Navicat、Alembic             | 能把用户接口从内存数据切换到真实数据库       |
+| 模块                                                                               | 重点内容                                            | 学完后能做什么                               |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------- | -------------------------------------------- |
+| [开发环境](/basics/python-foundation/environment-and-deps/)                        | Python 安装、虚拟环境、依赖安装、版本锁定           | 能独立搭建干净可复现的开发环境               |
+| [基础语法与代码组织](/basics/python-foundation/syntax-basics/)                     | 缩进、变量、控制流、函数、模块包、异常处理          | 能看懂脚本运行流程，并把零散代码组织起来     |
+| [常用数据类型](/basics/python-foundation/data-types/)                              | 字符串、列表、字典、集合、元组                      | 能处理接口数据、文档内容和中间结果           |
+| [代码组织](/basics/python-foundation/code-organization-and-utils/)                 | 函数封装、工具层、目录结构、通用方法抽离            | 能把零散脚本整理成可维护模块                 |
+| [文件处理](/basics/python-foundation/file-processing/)                             | 文件读写、pathlib、改写、删除、工具函数封装         | 能为 RAG 和知识库准备原始资料                |
+| [进阶语法与校验](/basics/python-foundation/advanced-syntax-and-validation/)        | 类型注解、推导式、装饰器、OOP、Pydantic             | 能写出更可读、可复用、参数更安全的代码       |
+| [FastAPI 入门](/basics/python-foundation/fastapi-basics/)                          | 接口路由、路径参数、查询参数、请求体、Pydantic 校验 | 能开发一个最小 API 服务，并通过接口文档调试  |
+| [FastAPI 分层架构](/basics/python-foundation/fastapi-layered-architecture/)        | 路由层、校验层、业务层、数据库层、用户管理 API      | 能把单文件接口拆成清晰、可维护的项目结构     |
+| [FastAPI 错误处理](/basics/python-foundation/fastapi-error-handling/)              | 自定义异常、全局处理器、标准响应、Request ID        | 能让接口错误前端可读、后端可定位、日志可追溯 |
+| [FastAPI MySQL ORM](/basics/python-foundation/fastapi-mysql-orm/)                  | MySQL、SQLAlchemy ORM、Navicat、Alembic             | 能把用户接口从内存数据切换到真实数据库       |
+| [FastAPI 环境与日志](/basics/python-foundation/fastapi-env-and-logging/)           | 环境变量分层、敏感信息管理、Loguru、Request ID      | 能适配开发 / 生产环境，并建立可追溯日志体系  |
+| [FastAPI 健康与冒烟测试](/basics/python-foundation/fastapi-health-and-smoke-test/) | 健康检查、数据库连通性、pytest、httpx               | 能判断服务是否真实可用，并上线前验证核心接口 |
 
 <Aside type="note" title="速记" icon="star">
   Python 工程基础 = 看懂运行流程、定位 bug、改成需要的样子、验收 AI 生成结果。

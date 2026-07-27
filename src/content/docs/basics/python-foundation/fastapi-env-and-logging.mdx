@@ -1,0 +1,259 @@
+---
+title: FastAPI 环境配置与日志体系
+description: FastAPI 项目中开发与生产环境适配、环境变量分层、敏感信息管理和 Loguru 日志体系笔记
+sidebar:
+  label: FastAPI 环境与日志
+  order: 12
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+一个应用不能只在本地跑通，还要能在开发、测试、生产等不同环境中安全稳定运行。环境配置和日志体系，就是应用程序的“安全自适应生存法则”：配置让程序适配环境，日志让问题可追踪。
+
+<Aside type="tip" title="核心目标" icon="rocket">
+  配置负责“在不同环境正确运行”，日志负责“出问题后能定位原因”。两者合起来，才算具备基本工程可维护性。
+</Aside>
+
+## 为什么要适配不同环境
+
+同一套代码通常会运行在多个环境里，比如本地开发、测试服务器和生产服务器。不同环境的数据库地址、密钥、日志级别、调试模式都不一样。
+
+<CardGrid>
+  <Card title="安全性" icon="lock">
+    密码、密钥、数据库地址等敏感信息不能写死在代码里，也不能暴露到仓库中。
+  </Card>
+  <Card title="环境自适应" icon="setting">
+    一套代码根据环境变量切换配置，减少重复代码和维护成本。
+  </Card>
+  <Card title="运行可追溯" icon="search">
+    通过日志记录时间、环境、事件级别和请求上下文，方便快速排查问题。
+  </Card>
+</CardGrid>
+
+核心问题可以概括为一句话：应用需要在“开发 / 生产”等不同环境中安全运行。
+
+## 环境变量分层
+
+环境变量分层的作用，是把“代码逻辑”和“运行配置”分开。代码负责业务，配置负责告诉代码当前运行在哪里、连接哪个数据库、使用什么密钥。
+
+<CardGrid>
+  <Card title="识别环境身份" icon="information">
+    通过环境变量判断当前是开发环境、测试环境还是生产环境。
+  </Card>
+  <Card title="加载正确配置" icon="approve-check">
+    根据不同环境加载不同数据库地址、日志级别、调试开关等配置项。
+  </Card>
+  <Card title="守护隐私安全" icon="lock">
+    敏感信息只走 `.env` 文件或服务器环境变量，不写死在业务代码中。
+  </Card>
+</CardGrid>
+
+常见环境配置可以这样拆：
+
+| 配置项         | 开发环境       | 生产环境           |
+| -------------- | -------------- | ------------------ |
+| `APP_ENV`      | `dev`          | `prod`             |
+| `DEBUG`        | `true`         | `false`            |
+| `DATABASE_URL` | 本地数据库地址 | 生产数据库地址     |
+| `SECRET_KEY`   | 本地测试密钥   | 生产安全密钥       |
+| `LOG_LEVEL`    | `DEBUG`        | `INFO` / `WARNING` |
+
+<Aside type="caution" title="安全边界">
+  `.env` 可以存在本地项目中，但不要提交真实敏感信息。代码仓库里可以放
+  `.env.example`，用来说明需要哪些配置项。
+</Aside>
+
+## 配置读取示例
+
+FastAPI 项目里可以用 Pydantic Settings 或类似方式读取环境变量。重点不是工具本身，而是让配置集中管理。
+
+```python title="app/core/config.py"
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    app_env: str = "dev"
+    debug: bool = True
+    database_url: str
+    secret_key: str
+    log_level: str = "INFO"
+
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
+
+settings = Settings()
+```
+
+对应 `.env` 示例：
+
+```bash title=".env.example"
+APP_ENV=dev
+DEBUG=true
+DATABASE_URL=mysql+pymysql://root:password@localhost:3306/fastapi_demo
+SECRET_KEY=change-me
+LOG_LEVEL=DEBUG
+```
+
+配置读取后，业务代码只使用 `settings.database_url` 这类变量，不直接写死真实地址和密钥。
+
+## 日志体系要记录什么
+
+日志不是随便 `print()`，而是要留下能排查问题的关键线索。
+
+日志四大记忆要素：
+
+| 要素     | 说明                                       |
+| -------- | ------------------------------------------ |
+| 时间戳   | 记录精确时间，方便按时间线排查             |
+| 环境身份 | 标明开发、测试或生产环境                   |
+| 事件级别 | 区分 `DEBUG`、`INFO`、`WARNING`、`ERROR`   |
+| 上下文   | 记录请求 ID、接口路径、用户 ID、异常信息等 |
+
+<Aside type="note" title="日志目的">
+  日志的目标不是越多越好，而是关键时刻能回答：什么时候、在哪个环境、哪个请求、发生了什么、影响了谁。
+</Aside>
+
+## Loguru 日志方案
+
+Loguru 是一个 Python 日志工具，配置简单，适合快速搭建项目日志体系。
+
+<Tabs>
+  <TabItem label="开发环境" icon="terminal">
+    开发环境适合同时输出到控制台和文件，方便边调试边查看历史记录。
+
+    ```python title="app/core/logger.py"
+    from loguru import logger
+
+    logger.add(
+        "logs/dev.log",
+        level="DEBUG",
+        rotation="10 MB",
+        retention="7 days",
+        encoding="utf-8",
+    )
+    ```
+
+    开发环境可以保留更多调试信息，但也要避免输出密码、密钥等敏感内容。
+
+  </TabItem>
+  <TabItem label="生产环境" icon="lock">
+    生产环境通常更强调文件输出、日志轮转和资源控制。
+
+    ```python title="app/core/logger.py"
+    from loguru import logger
+
+    logger.add(
+        "logs/prod_{time:YYYY-MM-DD}.log",
+        level="INFO",
+        rotation="00:00",
+        retention="30 days",
+        compression="zip",
+        encoding="utf-8",
+    )
+    ```
+
+    生产环境要减少噪音，只记录重要信息，并按天分割，避免日志文件无限增大。
+
+  </TabItem>
+</Tabs>
+
+Loguru 关键特性：
+
+| 特性       | 作用                       |
+| ---------- | -------------------------- |
+| 控制台输出 | 开发时直接查看运行状态     |
+| 文件输出   | 保留历史问题线索           |
+| 日志级别   | 控制不同环境输出哪些内容   |
+| 日志轮转   | 按大小或时间拆分文件       |
+| 保留策略   | 自动清理过旧日志，节省资源 |
+
+## 请求日志与 Request ID
+
+如果前面已经做了统一错误处理，可以把日志体系和 `request_id` 结合起来，让一次请求的链路更完整。
+
+```python title="app/core/middleware.py"
+import time
+import uuid
+
+from fastapi import Request
+from loguru import logger
+
+
+async def request_log_middleware(request: Request, call_next):
+    request_id = str(uuid.uuid4())
+    request.state.request_id = request_id
+
+    start = time.time()
+    response = await call_next(request)
+    cost_ms = round((time.time() - start) * 1000, 2)
+
+    logger.info(
+        "request_id={} method={} path={} status={} cost_ms={}",
+        request_id,
+        request.method,
+        request.url.path,
+        response.status_code,
+        cost_ms,
+    )
+
+    response.headers["X-Request-ID"] = request_id
+    return response
+```
+
+这样前端、错误响应和日志里都能看到同一个 `request_id`。
+
+## 实现步骤
+
+<Steps>
+
+1. **拆分配置项**：确认哪些配置会随环境变化，比如数据库地址、密钥、日志级别。
+
+2. **建立 `.env.example`**：只保留字段说明和示例值，不放真实敏感信息。
+
+3. **集中读取配置**：通过 `Settings` 类或配置模块统一读取环境变量。
+
+4. **配置日志输出**：开发环境输出控制台和文件，生产环境以文件为主并开启轮转。
+
+5. **接入请求日志**：在中间件里记录 `request_id`、路径、状态码和耗时。
+
+6. **补齐忽略规则**：把 `.env`、真实日志文件、临时文件加入 `.gitignore`。
+
+</Steps>
+
+## 常见忽略规则
+
+```text title=".gitignore"
+.env
+logs/
+*.log
+__pycache__/
+.venv/
+```
+
+忽略规则的核心，是避免把敏感配置、运行日志、虚拟环境和缓存文件提交到仓库。
+
+## AI 生成代码时的提示词
+
+```markdown title="prompt.md"
+# 实现环境变量分层管理和日志体系
+
+1. 环境变量分层：支持开发 / 生产环境；
+2. 敏感信息只走环境变量 / 配置层，不写死在业务代码；
+3. 建立日志体系：日志文件用于留痕与排障，避免重复和噪音；
+4. 日志需要包含时间戳、环境身份、事件级别、请求 ID 和关键上下文；
+5. 使用 Loguru，开发环境输出控制台 + 文件，生产环境仅文件输出并按天分割；
+6. 补齐 .gitignore，避免提交 .env、logs、虚拟环境和缓存文件。
+```
+
+<Aside type="tip" title="提示词重点">
+  让 AI 生成工程配置时，要明确环境类型、敏感信息边界、日志输出位置、日志轮转策略和忽略规则。
+</Aside>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  环境配置解决“同一套代码如何跑在不同环境”，日志体系解决“出问题后如何定位和追溯”。
+
+记住三句话：敏感信息不写死，配置按环境加载，日志要带时间、级别、环境和请求 ID。
+
+</Aside>

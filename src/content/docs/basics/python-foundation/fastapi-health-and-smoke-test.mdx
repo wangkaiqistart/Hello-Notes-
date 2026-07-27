@@ -1,0 +1,224 @@
+---
+title: FastAPI 健康检查与冒烟测试
+description: FastAPI 项目中健康检查接口、数据库连通性校验、冒烟测试与上线前稳定性保障笔记
+sidebar:
+  label: FastAPI 健康与冒烟测试
+  order: 13
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+服务稳定性不能只靠“看起来能启动”。一个服务进程在运行，不代表核心依赖可用，也不代表关键接口没问题。健康检查和冒烟测试，就是上线前后最基础的稳定性保障。
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  健康检查解决“服务是否真的可用”，冒烟测试解决“核心功能上线前是否能快速跑通”。
+</Aside>
+
+## 核心痛点
+
+<CardGrid>
+  <Card title="服务假活" icon="server">
+    服务进程还在运行，但数据库、缓存或外部依赖已经失效，实际请求无法正常完成。
+  </Card>
+  <Card title="上线即故障" icon="warning">
+    新版本没有充分验证核心功能，上线后才发现接口异常，直接影响用户体验。
+  </Card>
+  <Card title="核心矛盾" icon="question">
+    只靠人工判断容易遗漏，缺少自动化校验机制，就很难稳定保证服务质量。
+  </Card>
+</CardGrid>
+
+一句话：服务稳定性保障的重点，不是“服务有没有启动”，而是“核心链路能不能正常工作”。
+
+## 方案一：健康检查
+
+健康检查接口通常用 `/health` 表示，用来快速判断服务自身和关键依赖是否可用。
+
+<CardGrid>
+  <Card title="实现目标" icon="approve-check">
+    快速判断服务与核心依赖状态，解决“服务假活”问题。
+  </Card>
+  <Card title="核心实现" icon="setting">
+    在项目中实现健康检查接口，统一返回服务、数据库等状态。
+  </Card>
+  <Card title="校验内容" icon="database">
+    同时验证服务自身存活状态和数据库连通性。
+  </Card>
+  <Card title="状态返回" icon="chart">
+    校验通过返回正常状态；服务异常或数据库不可用时，返回 `503`。
+  </Card>
+</CardGrid>
+
+### 返回结构
+
+健康检查接口的返回结果要简单、稳定、适合机器读取。
+
+| 字段       | 说明                          |
+| ---------- | ----------------------------- |
+| `status`   | 整体状态，例如 `ok` / `error` |
+| `service`  | 服务自身状态                  |
+| `database` | 数据库连通状态                |
+| `message`  | 简要说明                      |
+
+示例：
+
+```json
+{
+  "status": "ok",
+  "service": "up",
+  "database": "up",
+  "message": "service is healthy"
+}
+```
+
+### 接口示例
+
+```python title="app/api/health_router.py"
+from fastapi import APIRouter, Depends, status
+from fastapi.responses import JSONResponse
+from sqlalchemy import text
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+
+router = APIRouter(prefix="/health", tags=["health"])
+
+
+@router.get("")
+def health_check(db: Session = Depends(get_db)):
+    try:
+        db.execute(text("SELECT 1"))
+        return {
+            "status": "ok",
+            "service": "up",
+            "database": "up",
+            "message": "service is healthy",
+        }
+    except Exception:
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={
+                "status": "error",
+                "service": "up",
+                "database": "down",
+                "message": "database unavailable",
+            },
+        )
+```
+
+<Aside type="note" title="理解重点">
+  `/health` 不应该只返回服务进程状态，还要检查关键依赖。对 FastAPI
+  后端来说，数据库通常就是最重要的依赖之一。
+</Aside>
+
+## 方案二：冒烟测试
+
+冒烟测试是上线前的快速验证：不覆盖所有细节，只验证最核心功能是否能跑通。
+
+<CardGrid>
+  <Card title="实现目标" icon="rocket">
+    上线前快速验证核心功能，防止“上线即故障”。
+  </Card>
+  <Card title="技术栈" icon="terminal">
+    使用 `pytest` 测试框架结合 `httpx` 进行接口测试。
+  </Card>
+  <Card title="用例设计" icon="edit">
+    优先覆盖核心用户接口，比如创建用户、查询用户、健康检查。
+  </Card>
+  <Card title="执行方式" icon="setting">
+    通过命令行一键执行，失败就拦截上线流程。
+  </Card>
+</CardGrid>
+
+安装测试依赖：
+
+```bash
+pip install pytest httpx
+```
+
+### 测试用例示例
+
+```python title="tests/test_smoke.py"
+from fastapi.testclient import TestClient
+
+from app.main import app
+
+client = TestClient(app)
+
+
+def test_health_check():
+    response = client.get("/health")
+    assert response.status_code == 200
+    assert response.json()["status"] == "ok"
+
+
+def test_create_user():
+    response = client.post(
+        "/users",
+        json={"username": "smoke_user", "password": "123456"},
+    )
+    assert response.status_code in (200, 201)
+    assert response.json()["code"] == 200
+```
+
+执行命令：
+
+```bash
+pytest tests/test_smoke.py -v
+```
+
+## 两者的区别
+
+| 能力     | 健康检查                   | 冒烟测试                  |
+| -------- | -------------------------- | ------------------------- |
+| 运行时机 | 服务运行中，随时可调用     | 上线前、发布后、CI 流程中 |
+| 关注重点 | 服务和依赖是否可用         | 核心业务接口是否能跑通    |
+| 常见接口 | `/health`                  | `tests/test_smoke.py`     |
+| 失败影响 | 返回 `503`，提示服务不可用 | 阻止上线或触发修复        |
+
+<Aside type="tip" title="组合使用">
+  健康检查偏“运行状态”，冒烟测试偏“业务链路”。两者一起用，才能既看服务活没活，也看核心功能通不通。
+</Aside>
+
+## 实现步骤
+
+<Steps>
+
+1. **梳理核心依赖**：先明确服务依赖哪些关键组件，比如数据库、缓存、外部 API。
+
+2. **实现 `/health` 接口**：检查服务自身状态和关键依赖连通性。
+
+3. **定义异常状态**：依赖不可用时返回 `503`，不要继续伪装正常。
+
+4. **编写冒烟测试**：优先覆盖健康检查和核心用户接口。
+
+5. **加入运行命令**：用 `pytest tests/test_smoke.py -v` 一键执行。
+
+6. **接入上线流程**：冒烟测试失败时停止发布，先修复再上线。
+
+</Steps>
+
+## AI 生成代码时的提示词
+
+```markdown title="prompt.md"
+# 在项目里完善稳定性保障：实现健康检查接口，并补齐基础冒烟测试。
+
+要求：
+
+1. 健康检查：实现 `/health` 接口，校验服务存活及数据库连通性，异常返回 503。
+2. 冒烟测试：用 `pytest` + `httpx` 编写用户接口测试用例。
+3. 交付：说明改动文件及运行测试命令（`pytest tests/test_smoke.py -v`）。
+```
+
+<Aside type="note" title="提示词重点">
+  让 AI 生成稳定性保障代码时，要明确检查对象、异常状态码、测试框架、测试范围和运行命令。
+</Aside>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  健康检查 = 判断服务和关键依赖是否真的可用；冒烟测试 = 上线前快速验证核心接口是否能跑通。
+
+稳定性保障可以按一句话记：先用 `/health` 防止服务假活，再用 `pytest` 防止上线即故障。
+
+</Aside>
