@@ -47,6 +47,7 @@ export default defineConfig({
 					label: '智能体开发',
 					items: [
 						{ label: 'Agent 基础', items: [{ autogenerate: { directory: 'agent/fundamentals' } }] },
+						{ label: '开发范式', items: [{ autogenerate: { directory: 'agent/development-patterns' } }] },
 						{ label: 'Hermes', items: [{ autogenerate: { directory: 'agent/hermes' } }] },
 						{ label: 'Skills 架构', items: [{ autogenerate: { directory: 'agent/skills' } }] },
 						{ label: '记忆系统', items: [{ autogenerate: { directory: 'agent/memory' } }] },
