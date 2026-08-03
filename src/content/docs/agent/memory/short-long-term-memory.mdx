@@ -1,0 +1,339 @@
+---
+title: Agent 长短期记忆系统基础
+description: Agent 记忆系统的短期记忆、长期记忆、上下文管理、压缩摘要、存储选型、写入检索和 Memory Manager
+sidebar:
+  label: 长短期记忆基础
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Agent 记忆系统解决的是一个核心问题：**如何让 Agent 不只是完成一次对话，而是能在当前会话中保持上下文，并在跨会话场景下持续理解用户。**
+
+短期记忆负责当前会话里的连续理解，长期记忆负责跨会话保存有价值的信息。两者不是独立模块，而是在每次请求中一起参与 Prompt 组装、结果生成和记忆写回。
+
+<Aside type="tip" title="一句话理解" icon="rocket">
+  短期记忆管当前会话，长期记忆管跨会话经验，Memory Manager 负责读写调度。
+</Aside>
+
+<CardGrid>
+  <Card title="为什么需要记忆" icon="warning">
+    没有记忆的 Agent 每次对话都像从零开始，无法持续理解用户身份、稳定偏好、项目背景和历史任务。
+  </Card>
+  <Card title="短期记忆" icon="open-book">
+    保存当前 Session 内的消息历史，让 Agent 能理解前后文，但会受到上下文窗口限制。
+  </Card>
+  <Card title="长期记忆" icon="database">
+    将有价值的信息写入外部存储，支持跨会话复用，例如用户画像、项目背景和历史经验。
+  </Card>
+  <Card title="调度中枢" icon="setting">
+    Memory Manager 决定本次请求读取哪些记忆，以及响应后哪些内容值得写回。
+  </Card>
+</CardGrid>
+
+## 为什么 Agent 需要记忆
+
+没有记忆时，Agent 很容易在第二轮、第三轮对话里重新询问用户已经说过的信息。例如用户已经说过“我是后端工程师”，下一轮让它推荐学习路线时，它仍然可能反问“你的技术背景是什么？”
+
+有记忆后，Agent 可以把用户身份、技术背景、稳定偏好和项目上下文带入后续对话，输出会更连续，也更个性化。
+
+<Aside type="note" title="关键区别">
+  聊天记录不等于真正的长期记忆。聊天记录只是历史对话的存档；长期记忆需要经过筛选、结构化、存储和检索，才能在未来请求中被稳定使用。
+</Aside>
+
+## 上下文窗口的限制
+
+上下文窗口再大，也不是无限缓冲区。长对话如果不管理，会遇到三个问题：
+
+<CardGrid>
+  <Card title="Token 上限" icon="warning">
+    当历史消息持续累积，总长度超过窗口上限时，旧内容会被截断或无法继续注入。
+  </Card>
+  <Card title="成本增长" icon="setting">
+    每次调用都要携带历史上下文，对话越长，输入 Token 越多，成本也越高。
+  </Card>
+  <Card title="响应变慢" icon="timer">
+    输入越长，模型处理时间越长，首 Token 延迟也会明显上升。
+  </Card>
+</CardGrid>
+
+因此，Agent 不能只把所有历史消息塞进 Prompt，而要引入存储、截断、压缩和长期检索机制。
+
+## 人类记忆类比
+
+| 人类记忆 | 日常理解 | Agent 对应实现 | 技术载体 |
+| --- | --- | --- | --- |
+| 工作记忆 | 桌面便利贴，只放当前任务要用的信息 | 短期记忆 | 当前会话 `messages[]` |
+| 常驻备忘录 | 每次开工前都会先看的一页关键信息 | 长期记忆全文注入 | `MEMORY.md` / System Prompt |
+| 搜索历史聊天 | 记不清原话，只记得大概主题，于是找回相关聊天片段 | 长期记忆 RAG | 向量数据库 Top-K 相似度检索 |
+| 通讯录备注 | 给联系人记录长期偏好和注意事项 | 用户画像 | `USER.md` / KV Store |
+| 会后纪要 | 把长对话整理成关键结论和待办 | 会话压缩摘要 | `compressed_context` |
+
+这个类比能帮助理解：短期记忆解决“眼前正在做什么”，长期记忆解决“过去沉淀了什么”。
+
+## 整体架构
+
+Agent 的记忆系统可以分成两层：执行层和记忆层。
+
+<CardGrid>
+  <Card title="执行层" icon="rocket">
+    负责用户输入、LLM 推理、工具调用和流式输出。LangChain、LangGraph 等框架主要工作在这一层。
+  </Card>
+  <Card title="记忆层" icon="database">
+    负责消息历史存储、跨会话持久化、记忆检索与注入、压缩与遗忘策略。
+  </Card>
+</CardGrid>
+
+执行层决定 Agent 如何思考和行动；记忆层决定 Agent 如何保留、筛选和取回信息。
+
+## 实现路线
+
+不同框架对记忆系统的设计哲学不同，没有绝对优劣，主要看透明度、自动化程度和业务场景。
+
+| 路线 | 代表 | 存储方式 | 检索方式 | 适合场景 |
+| --- | --- | --- | --- | --- |
+| 文件系统记忆 | OpenClaw | Markdown + JSON 文件 | 全文注入，超阈值后可降级检索 | 个人 Agent、教学项目、本地优先 |
+| 多后端存储 | LangChain / LangGraph | Checkpointer、Store、SQL、向量库 | 状态机 + `store.search` | 原型到生产，生态优先 |
+| 多源召回 | LlamaIndex | ChatMemoryBuffer、VectorMemory | 滑动窗口 + 向量检索 + 多路召回 | 企业知识管理、RAG 密集场景 |
+| 分层自管理 | Letta / MemGPT | Core blocks、Archival、Recall | LLM 自主读写工具 | 研究型自主 Agent、超长对话 |
+
+<Aside type="note" title="选型视角">
+  文件系统记忆更透明可控，适合理解原理；Letta 这类方案更自主，但黑盒感也更强。越靠自动化，越要关注可解释性和可调试性。
+</Aside>
+
+## 短期记忆与长期记忆
+
+| 维度 | 短期记忆 | 长期记忆 |
+| --- | --- | --- |
+| 作用域 | 当前对话 / 单次 Session | 跨 Session 持久保留 |
+| 容量 | 受 Context Window 限制 | 理论上可扩展到外部存储 |
+| 持久性 | 默认不持久，主要随上下文存在 | 写入文件、KV 存储或向量库 |
+| 查询方式 | 直接读取消息列表 | 语义检索或 KV 精确查询 |
+| 核心挑战 | 窗口溢出，需要截断和压缩 | 写入时机和检索精度 |
+
+## 短期记忆管理
+
+短期记忆的核心链路是：**存储 -> 截断 -> 压缩**。
+
+<Steps>
+
+1. **存储**：把每轮对话追加到 `messages[]`，同时记录 `session_id`、元数据和 Token 统计。
+
+2. **截断**：当消息超过阈值时，按 FIFO 策略只保留最近消息，控制本轮注入模型的上下文长度。
+
+3. **压缩**：如果旧消息里有重要信息，不直接丢弃，而是先由 LLM 提炼成摘要，再注入到 system 层。
+
+</Steps>
+
+### 会话存储结构
+
+一个完整的会话对象通常包含四类字段：
+
+```json title="session-memory.json"
+{
+  "session_id": "sess_abc123",
+  "messages": [
+    { "role": "user", "content": "你好，我叫李明，是一名后端工程师" },
+    { "role": "assistant", "content": "你好李明，有什么可以帮你？" }
+  ],
+  "compressed_context": "用户是后端工程师，当前关注 LangChain Agent 与 FastAPI 集成，倾向 Python 技术栈。",
+  "metadata": {
+    "created_at": "2026-08-03T10:00:00",
+    "last_active": "2026-08-03T10:30:00",
+    "token_count": 4200,
+    "compress_count": 1
+  }
+}
+```
+
+| 字段 | 作用 |
+| --- | --- |
+| `session_id` | 标识一次完整会话，用于跨请求追踪上下文 |
+| `messages[]` | 保存当前会话的对话轮次 |
+| `compressed_context` | 保存被压缩后的历史摘要 |
+| `metadata` | 记录时间、Token 消耗、压缩次数等运营信息 |
+
+## 截断与压缩
+
+只做截断会带来一个问题：较早的消息虽然可能还在原始会话记录里，但不会再进入本轮 Prompt，模型当下读不到。这样一来，用户身份、重要决策、技术细节和未完成任务等关键信息就无法参与后续推理。压缩摘要就是为了解决这个问题。
+
+<Tabs>
+  <TabItem label="截断" icon="warning">
+    截断的目标是控制上下文长度。最简单的策略是保留最近 N 条消息，让更早的历史消息不再注入本轮 Prompt。
+
+    它实现简单，但会损失信息。适合处理低价值、临时性、已经完成的历史内容。
+  </TabItem>
+  <TabItem label="压缩" icon="setting">
+    压缩的目标是保留历史价值。旧消息不直接丢掉，而是先总结成摘要，再作为 system 内容注入后续对话。
+
+    它成本更高，但能保留用户身份、重要决策、技术细节和未完成任务。
+  </TabItem>
+</Tabs>
+
+一个好的压缩 Prompt，至少要保留四类信息：
+
+<CardGrid>
+  <Card title="用户身份" icon="user">
+    用户角色、背景、偏好，用来保持个性化理解。
+  </Card>
+  <Card title="重要决策" icon="approve-check">
+    已经达成的结论和方向，避免后续对话推翻共识。
+  </Card>
+  <Card title="技术细节" icon="terminal">
+    技术选型、参数、约束条件，保证后续建议一致。
+  </Card>
+  <Card title="未完成任务" icon="list">
+    已提出但尚未处理的需求，避免遗忘承诺和待办事项。
+  </Card>
+</CardGrid>
+
+<Aside type="tip" title="短期记忆速记">
+  存储提供结构，截断控制容量，压缩保留价值。
+</Aside>
+
+## 长期记忆架构
+
+长期记忆要解决的是跨会话问题：哪些信息值得永久保存？保存到哪里？下次如何取回来？
+
+<Tabs>
+  <TabItem label="In-Context" icon="open-book">
+    把小体积、高频访问、非常关键的信息直接注入 Prompt。
+
+    适合用户偏好、稳定身份、少量核心背景。优点是简单直接，缺点是体积变大后 Token 成本高。
+  </TabItem>
+  <TabItem label="KV Store" icon="database">
+    用 key-value 保存结构化数据，例如用户画像、偏好配置、会话元数据。
+
+    适合精确查找，读取快，结构清晰，但不适合模糊语义检索。
+  </TabItem>
+  <TabItem label="Vector DB" icon="magnifier">
+    把自然语言记忆向量化，按语义相似度召回 Top-K 片段。
+
+    适合“类似问题”“上次讨论过什么”这类模糊查询，常见工具包括 Chroma、FAISS。
+  </TabItem>
+</Tabs>
+
+<Aside type="note" title="边界说明">
+  订单、权限、业务流程状态这类数据更适合作为业务系统数据，由 Agent 通过 Tool / API 按需访问，不放在这篇记忆系统基础里展开。
+</Aside>
+
+### KV 与向量库
+
+| 维度 | KV Store | 向量库 |
+| --- | --- | --- |
+| 查询方式 | 精确 key 查找 | 语义相似度检索 |
+| 适合数据 | JSON 用户画像、偏好、配置 | 历史对话片段、经验、非结构化文本 |
+| 优点 | 快、简单、结构稳定 | 能处理模糊表达和相似问题 |
+| 局限 | key 必须明确 | 召回结果需要排序和过滤 |
+
+### 存储选型
+
+<Steps>
+
+1. **结构化数据**：如果是 JSON、键值对、用户偏好，优先使用 KV Store。
+
+2. **小体积核心事实**：如果内容少于大约 2000 tokens，并且高频使用，可以直接注入 Prompt。
+
+3. **大体积自然语言**：如果是大量历史片段、文档或经验，使用向量库 + RAG 按需召回。
+
+</Steps>
+
+## 写入与检索
+
+长期记忆不是“什么都写”。写入前要判断这条信息未来是否真的有价值。
+
+<CardGrid>
+  <Card title="事实性" icon="approve-check">
+    是否描述相对客观、可验证的信息。例如用户是 Python 后端工程师。
+  </Card>
+  <Card title="稳定性" icon="setting">
+    是否不会很快过期。例如用户偏好简洁代码风格。
+  </Card>
+  <Card title="跨会话复用性" icon="random">
+    是否对未来新会话仍有参考价值。例如用户正在推进 FastAPI 项目。
+  </Card>
+</CardGrid>
+
+| 内容 | 是否写入 | 原因 |
+| --- | --- | --- |
+| 用户是 Python 后端工程师，5 年经验 | 写入 | 事实稳定，后续可复用 |
+| 用户偏好简洁代码风格 | 写入 | 可长期影响输出风格 |
+| 帮我把这段代码改优雅一点 | 跳过 | 只是当前任务请求 |
+| 用户今天心情不好，说话较短 | 谨慎 | 可能临时有效，不一定长期稳定 |
+
+### Direct 注入与 RAG 检索
+
+| 方式 | 做法 | 适合情况 |
+| --- | --- | --- |
+| Direct 全文注入 | 把 `MEMORY.md` 或核心记忆全部放进 Prompt | 记忆体积小、使用频率高、内容高度关键 |
+| RAG 语义检索 | 根据当前问题检索 Top-K 相关记忆，只注入相关片段 | 记忆体积大、内容分散、需要控制 Token 成本 |
+
+可以用一个简单阈值理解：当长期记忆内容很小，Direct 最简单；当记忆体积变大，RAG 更能控制 Token 成本。
+
+## sleep-time 记忆重组
+
+长期记忆如果只追加不整理，会越来越乱。sleep-time 机制指的是在 Agent 空闲时启动后台整理任务，对记忆做去重、合并和提炼。
+
+<Steps>
+
+1. **日常写入**：每次对话后，把符合条件的事实、偏好和项目背景追加到长期记忆。
+
+2. **空闲触发**：会话结束或系统空闲时，后台启动记忆整理任务。
+
+3. **去重合并**：把重复、相近、碎片化的信息合并成更清晰的表达。
+
+4. **整理完成**：保留高质量、稳定、可复用的记忆，减少噪音堆积。
+
+</Steps>
+
+<Aside type="note" title="理解方式">
+  sleep-time 不是在线回答链路里的必要步骤，而是后台维护机制。它的目标是让长期记忆越用越清晰，而不是越积越乱。
+</Aside>
+
+## Memory Manager
+
+Memory Manager 是记忆系统的调度中枢。每次请求进入 Agent，它至少要做两次判断：先判断读取哪些记忆，再判断结果写入哪里。
+
+<CardGrid>
+  <Card title="输入来源" icon="information">
+    用户消息、工具调用结果、Agent 内部状态，都会成为记忆管理的输入。
+  </Card>
+  <Card title="读取决策" icon="magnifier">
+    判断本次请求需要读取短期消息、压缩摘要、Direct 记忆还是 RAG 检索结果。
+  </Card>
+  <Card title="写入决策" icon="approve-check">
+    判断响应后哪些信息要写回短期记忆、长期记忆、KV 存储或向量库。
+  </Card>
+</CardGrid>
+
+## 请求生命周期
+
+一条用户消息进入 Agent 后，短期记忆和长期记忆会共同参与完整链路。
+
+<Steps>
+
+1. **用户输入**：用户消息进入 Agent，触发记忆处理链路。
+
+2. **短期记忆读取**：读取当前会话的 `messages[]` 和 `compressed_context`。
+
+3. **长期记忆注入**：根据策略选择 Direct 注入或 RAG 检索。
+
+4. **Prompt 组装**：把系统规则、短期上下文、长期记忆和当前问题组合成完整 Prompt。
+
+5. **LLM 推理**：模型基于完整上下文生成响应。
+
+6. **短期写回**：把用户消息和助手响应追加到当前会话。
+
+7. **价值判断**：评估新信息是否具备事实性、稳定性和跨会话复用性。
+
+8. **长期写入**：把有价值的信息写入 `MEMORY.md`、KV Store 或向量库。
+
+</Steps>
+
+## 总结
+
+<Aside type="tip" title="速记" icon="star">
+  Agent 记忆系统 = 短期记忆 + 长期记忆 + Memory Manager。
+
+  短期记忆通过 `messages[]`、截断和压缩解决当前会话连续性；长期记忆通过 Direct、KV 和向量库解决跨会话复用；Memory Manager 负责在每次请求中做读取和写入决策。
+</Aside>
