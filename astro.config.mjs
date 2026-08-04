@@ -48,6 +48,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Agent 基础', items: [{ autogenerate: { directory: 'agent/fundamentals' } }] },
 						{ label: '开发范式', items: [{ autogenerate: { directory: 'agent/development-patterns' } }] },
+						{ label: 'Loop Engineering', items: [{ autogenerate: { directory: 'agent/loop-engineering' } }] },
 						{ label: 'Hermes', items: [{ autogenerate: { directory: 'agent/hermes' } }] },
 						{ label: 'Skills 架构', items: [{ autogenerate: { directory: 'agent/skills' } }] },
 						{ label: '记忆系统', items: [{ autogenerate: { directory: 'agent/memory' } }] },
