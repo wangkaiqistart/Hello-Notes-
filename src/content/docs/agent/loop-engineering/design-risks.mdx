@@ -66,23 +66,33 @@ import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/
 
 </Steps>
 
-## 要素理解
+## 怎么理解这些要素
 
 <Tabs>
   <TabItem label="目标与触发" icon="rocket">
-    目标回答“最终要做到什么”，触发回答“什么时候开始”。目标越模糊，Loop 越容易跑偏；触发越频繁，响应越快，但成本也越高。
+    <p><strong>目标是终点，触发是开关。</strong></p>
+    <p>目标要写成能验收的结果，比如“指定测试全部通过”，而不是“优化一下代码”。触发要根据任务节奏来选：紧急问题适合事件触发，周期任务适合定时触发，复杂修复适合目标驱动。</p>
+    <p>判断标准：Agent 启动前，系统应该已经知道“为什么开始”和“做到什么算结束”。</p>
   </TabItem>
   <TabItem label="发现与空间" icon="folder">
-    发现机制决定 Loop 去哪里找任务，比如扫描目录、读工单、查日志。工作空间决定 Agent 在哪里动手，避免污染真实项目或和其他 Agent 冲突。
+    <p><strong>发现决定任务从哪里来，空间决定 Agent 能在哪里动手。</strong></p>
+    <p>发现机制可以是扫描目录、读取工单、分析 CI 日志或监听 Webhook。工作空间要尽量隔离，比如用 Git worktree、临时目录或文件系统沙盒，让 Agent 的修改先发生在安全区域。</p>
+    <p>判断标准：Agent 找得到任务，也不会直接污染主项目。</p>
   </TabItem>
   <TabItem label="上下文与状态" icon="database">
-    上下文是 Agent 做事前需要知道的稳定知识，状态是 Loop 运行过程中要保存的进度。前者常放在规则、Skill 和知识库里，后者常放在 checkpointer、进度文件或日志里。
+    <p><strong>上下文是做事依据，状态是接着做的依据。</strong></p>
+    <p>上下文包括项目规则、业务政策、Skill、历史知识，解决“Agent 凭什么判断”的问题。状态包括当前进度、上一轮结果、失败次数、是否已升级，解决“下一轮从哪里继续”的问题。</p>
+    <p>判断标准：重启或换一轮执行后，Loop 仍然知道任务进度和关键约束。</p>
   </TabItem>
   <TabItem label="委托与验证" icon="approve-check">
-    Maker 负责执行，Checker 负责验证，Orchestrator 负责调度和异常决策。验证条件要尽量客观：通过或不通过，不要让 Agent 自己说“差不多完成了”。
+    <p><strong>委托解决谁来干，验证解决谁来判。</strong></p>
+    <p>Maker 负责执行，Checker 负责独立复核，Orchestrator 负责调度、重试、升级和退出。验证条件要尽量客观，比如测试是否通过、金额是否合规、状态是否写入，而不是让 Agent 自己判断“差不多完成了”。</p>
+    <p>判断标准：干活的人和打分的人分开，验证依据能被复查。</p>
   </TabItem>
   <TabItem label="预算与退出" icon="warning">
-    没有预算的 Loop 可能无限烧 Token。必须设置最大轮数、最大时间、最大成本；退出条件要由测试、状态、日志或独立 Checker 支撑。
+    <p><strong>预算防止无限消耗，退出防止无限循环。</strong></p>
+    <p>预算要限制最大轮数、最长时间、Token 成本和工具调用次数。退出条件要由测试、状态、日志或独立 Checker 支撑；超过预算还没通过，就停止自动重试并升级给人。</p>
+    <p>判断标准：Loop 不会因为“还想再试试”而一直跑下去。</p>
   </TabItem>
 </Tabs>
 
