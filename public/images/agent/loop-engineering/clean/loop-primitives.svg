@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Loop Engineering 六个构建块</title>
+  <desc id="desc">展示自动化调度、工作树隔离、Skill、工具调用与外部连接、子 Agent 协作以及记忆状态层。</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 40px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 20px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .center { fill: #111827; }
+      .center-text { font: 700 30px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .card { fill: #ffffff; stroke: #1f2937; stroke-width: 2.4; rx: 20; }
+      .layer { fill: #ecfdf5; stroke: #1f2937; stroke-width: 2.4; rx: 20; }
+      .label { font: 700 24px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .text { font: 400 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .line { stroke: #64748b; stroke-width: 2.5; fill: none; }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="760" />
+  <text class="title" x="72" y="78">Loop Engineering 构建块</text>
+  <text class="subtitle" x="72" y="114">五个工程构建块加一层记忆/状态，组成一个可以持续运行的 Agent 系统。</text>
+
+  <circle class="center" cx="640" cy="340" r="112" />
+  <text class="center-text" x="516" y="328">Loop</text>
+  <text class="center-text" x="454" y="368">Engineering</text>
+
+  <rect class="card" x="80" y="190" width="260" height="118" />
+  <text class="label" x="122" y="238">自动化 / 调度</text>
+  <text class="text" x="122" y="272">定时、事件、目标驱动</text>
+
+  <rect class="card" x="920" y="190" width="260" height="118" />
+  <text class="label" x="964" y="238">工作树 / 隔离</text>
+  <text class="text" x="964" y="272">worktree / 沙盒 / 权限边界</text>
+
+  <rect class="card" x="80" y="408" width="260" height="118" />
+  <text class="label" x="122" y="456">Skill 技能</text>
+  <text class="text" x="122" y="490">检查清单与流程外化</text>
+
+  <rect class="card" x="920" y="408" width="260" height="118" />
+  <text class="label" x="944" y="456">工具调用 / 外部连接</text>
+  <text class="text" x="964" y="490">Tool / API / MCP</text>
+
+  <rect class="card" x="510" y="548" width="260" height="118" />
+  <text class="label" x="552" y="596">子 Agent / 协作</text>
+  <text class="text" x="552" y="630">Maker-Checker 分离</text>
+
+  <rect class="layer" x="240" y="650" width="800" height="70" />
+  <text class="label" x="446" y="694">记忆 / 状态：工作记忆、短期记忆、长期记忆</text>
+
+  <path class="line" d="M340 248 C442 240 500 274 538 302" />
+  <path class="line" d="M920 248 C838 242 760 272 728 302" />
+  <path class="line" d="M340 466 C442 460 502 416 538 382" />
+  <path class="line" d="M920 466 C838 460 760 416 728 382" />
+  <path class="line" d="M640 548 V452" />
+  <path class="line" d="M640 650 V666" />
+</svg>

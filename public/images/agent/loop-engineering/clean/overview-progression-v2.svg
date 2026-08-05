@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">从 LLM 到 Loop Engineering 的能力递进</title>
+  <desc id="desc">展示 LLM、工具绑定、Agent、Agent Loop 和 Loop Engineering 的能力边界与递进关系。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#1f2937" />
+    </marker>
+    <marker id="arrow-teal" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#0f766e" />
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 40px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 20px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .stage { stroke: #1f2937; stroke-width: 2.4; rx: 20; }
+      .llm { fill: #e0f2fe; }
+      .tools { fill: #fef3c7; }
+      .agent { fill: #dcfce7; }
+      .loop { fill: #ede9fe; }
+      .engineering { fill: #fee2e2; }
+      .num { font: 700 15px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .num-bg { fill: #111827; }
+      .label { font: 700 25px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .text { font: 400 16px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #374151; }
+      .small { font: 500 15px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .arrow { fill: none; stroke: #1f2937; stroke-width: 3; marker-end: url(#arrow); }
+      .loop-arrow { fill: none; stroke: #0f766e; stroke-width: 3.2; marker-end: url(#arrow-teal); }
+      .note { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.8; rx: 18; }
+      .note-title { font: 700 19px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .note-text { font: 400 16px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .pill { fill: #ecfdf5; stroke: #0f766e; stroke-width: 2; rx: 18; }
+      .pill-text { font: 700 18px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f766e; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1280" height="760" />
+  <text class="title" x="70" y="76">从 LLM 到 Loop Engineering</text>
+  <text class="subtitle" x="70" y="112">先分清模型、工具、Agent 和循环的边界，再理解 Loop Engineering 管控什么。</text>
+
+  <rect class="stage llm" x="64" y="202" width="206" height="166" />
+  <circle class="num-bg" cx="96" cy="234" r="16" />
+  <text class="num" x="92" y="240">1</text>
+  <text class="label" x="126" y="244">LLM</text>
+  <text class="text" x="96" y="286">负责推理和生成</text>
+  <text class="small" x="96" y="320">没有跨会话持久记忆</text>
+  <text class="small" x="96" y="346">只知道训练知识和当前上下文</text>
+
+  <rect class="stage tools" x="318" y="202" width="206" height="166" />
+  <circle class="num-bg" cx="350" cy="234" r="16" />
+  <text class="num" x="346" y="240">2</text>
+  <text class="label" x="380" y="244">工具绑定</text>
+  <text class="text" x="350" y="286">让模型知道工具</text>
+  <text class="small" x="350" y="320">知道该调用哪个工具</text>
+  <text class="small" x="350" y="346">但模型本身不执行工具</text>
+
+  <rect class="stage agent" x="572" y="202" width="206" height="166" />
+  <circle class="num-bg" cx="604" cy="234" r="16" />
+  <text class="num" x="600" y="240">3</text>
+  <text class="label" x="636" y="244">Agent</text>
+  <text class="text" x="604" y="286">执行工具并回填结果</text>
+  <text class="small" x="604" y="320">补上状态、记忆和执行能力</text>
+  <text class="small" x="604" y="346">把结果交回 LLM 继续推理</text>
+
+  <rect class="stage loop" x="826" y="202" width="206" height="166" />
+  <circle class="num-bg" cx="858" cy="234" r="16" />
+  <text class="num" x="854" y="240">4</text>
+  <text class="label" x="888" y="244">Agent Loop</text>
+  <text class="text" x="858" y="286">反复思考和行动</text>
+  <text class="small" x="858" y="320">思考 -> 行动 -> 观察</text>
+  <text class="small" x="858" y="346">直到解决问题或退出</text>
+
+  <rect class="stage engineering" x="1070" y="202" width="150" height="166" />
+  <circle class="num-bg" cx="1102" cy="234" r="16" />
+  <text class="num" x="1098" y="240">5</text>
+  <text class="label" x="1102" y="274">Loop</text>
+  <text class="label" x="1102" y="304">工程</text>
+  <text class="small" x="1102" y="336">目标 / 触发</text>
+  <text class="small" x="1102" y="360">验证 / 退出</text>
+
+  <path class="arrow" d="M270 285 H308" />
+  <path class="arrow" d="M524 285 H562" />
+  <path class="arrow" d="M778 285 H816" />
+  <path class="arrow" d="M1032 285 H1060" />
+
+  <rect class="note" x="96" y="430" width="430" height="116" />
+  <text class="note-title" x="126" y="468">工具绑定的边界</text>
+  <text class="note-text" x="126" y="500">工具绑定只让模型“知道有哪些工具、参数怎么填”。</text>
+  <text class="note-text" x="126" y="528">真正执行工具、保存状态、把结果送回模型的是 Agent。</text>
+
+  <rect class="note" x="600" y="430" width="520" height="116" />
+  <text class="note-title" x="630" y="468">ReAct 循环</text>
+  <text class="note-text" x="630" y="500">Agent Loop 的核心是“思考 -> 行动 -> 观察 -> 再思考”。</text>
+  <text class="note-text" x="630" y="528">工具结果会成为下一轮推理的上下文，推动任务逐步收敛。</text>
+
+  <path class="loop-arrow" d="M932 368 C932 398 892 402 858 382" />
+  <text class="small" x="828" y="404">循环直到完成</text>
+
+  <rect class="pill" x="160" y="596" width="960" height="92" />
+  <text class="pill-text" x="204" y="634">速记：LLM 负责想，工具绑定告诉它能用什么，Agent 负责执行。</text>
+  <text class="pill-text" x="204" y="664">Agent Loop 负责反复执行，Loop Engineering 负责管控整个循环。</text>
+</svg>

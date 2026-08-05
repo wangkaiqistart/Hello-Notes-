@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Loop 核心流程</title>
+  <desc id="desc">展示用户任务进入 Agent 运行时后，经过观察、思考、行动、反馈的循环，并由完成检查决定继续循环或输出结果。</desc>
+  <defs>
+    <marker id="arrow-dark" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#1f2937" />
+    </marker>
+    <marker id="arrow-teal" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#0f766e" />
+    </marker>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.12" />
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .grid { stroke: #e2e8f0; stroke-width: 1; opacity: 0.7; }
+      .title { font: 750 42px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 20px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .panel { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 28; filter: url(#soft-shadow); }
+      .panel-title { font: 750 20px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .panel-note { font: 400 15px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #64748b; }
+      .card { stroke-width: 2.2; rx: 18; filter: url(#soft-shadow); }
+      .input { fill: #e0f2fe; stroke: #0369a1; }
+      .observe { fill: #ecfeff; stroke: #0891b2; }
+      .think { fill: #eef2ff; stroke: #4f46e5; }
+      .act { fill: #fef3c7; stroke: #d97706; }
+      .feedback { fill: #dcfce7; stroke: #16a34a; }
+      .check { fill: #fff1f2; stroke: #e11d48; }
+      .done { fill: #f3e8ff; stroke: #7e22ce; }
+      .num-bg { fill: #111827; }
+      .num { font: 750 14px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .label { font: 750 24px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .small { font: 400 15px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .tiny { font: 650 13px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #64748b; }
+      .code-pill { fill: #111827; rx: 20; }
+      .code { font: 750 20px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #ffffff; }
+      .code-note { font: 500 14px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #cbd5e1; }
+      .arrow { fill: none; stroke: #1f2937; stroke-width: 3; marker-end: url(#arrow-dark); }
+      .loop-arrow { fill: none; stroke: #0f766e; stroke-width: 3.4; marker-end: url(#arrow-teal); }
+      .dash { fill: none; stroke: #0f766e; stroke-width: 2.6; stroke-dasharray: 9 8; marker-end: url(#arrow-teal); }
+      .tag { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; rx: 16; }
+      .tag-text { font: 650 14px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+      .footer { fill: #ecfdf5; stroke: #0f766e; stroke-width: 2; rx: 18; }
+      .footer-text { font: 700 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f766e; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1280" height="760" />
+  <path class="grid" d="M70 155 H1210" />
+  <path class="grid" d="M70 640 H1210" />
+
+  <text class="title" x="70" y="76">Agent Loop 核心流程</text>
+  <text class="subtitle" x="70" y="112">把 LLM 放进“观察、思考、行动、反馈”的循环，让 Agent 能边做边根据结果调整。</text>
+
+  <rect class="card input" x="70" y="320" width="210" height="128" />
+  <circle class="num-bg" cx="104" cy="354" r="16" />
+  <text class="num" x="100" y="359">0</text>
+  <text class="label" x="132" y="363">用户任务</text>
+  <text class="small" x="104" y="400">用户给出目标、问题</text>
+  <text class="small" x="104" y="428">或待完成的动作</text>
+
+  <rect class="panel" x="324" y="178" width="650" height="438" />
+  <text class="panel-title" x="360" y="218">Agent 运行时</text>
+  <text class="panel-note" x="486" y="218">每一轮都会读取上一次结果，再决定下一步</text>
+
+  <rect class="card observe" x="370" y="248" width="220" height="104" />
+  <circle class="num-bg" cx="402" cy="281" r="15" />
+  <text class="num" x="398" y="286">1</text>
+  <text class="label" x="436" y="290">观察</text>
+  <text class="small" x="404" y="323">读取环境、任务和历史</text>
+
+  <rect class="card think" x="708" y="248" width="220" height="104" />
+  <circle class="num-bg" cx="740" cy="281" r="15" />
+  <text class="num" x="736" y="286">2</text>
+  <text class="label" x="774" y="290">思考</text>
+  <text class="small" x="742" y="323">LLM 推理下一步计划</text>
+
+  <rect class="card act" x="708" y="442" width="220" height="104" />
+  <circle class="num-bg" cx="740" cy="475" r="15" />
+  <text class="num" x="736" y="480">3</text>
+  <text class="label" x="774" y="484">行动</text>
+  <text class="small" x="742" y="517">调用工具、API 或代码</text>
+
+  <rect class="card feedback" x="370" y="442" width="220" height="104" />
+  <circle class="num-bg" cx="402" cy="475" r="15" />
+  <text class="num" x="398" y="480">4</text>
+  <text class="label" x="436" y="484">反馈</text>
+  <text class="small" x="404" y="517">把结果写回上下文</text>
+
+  <rect class="code-pill" x="522" y="353" width="254" height="82" />
+  <text class="code" x="564" y="388">while not done</text>
+  <text class="code-note" x="570" y="416">继续循环，直到完成或退出</text>
+
+  <path class="arrow" d="M280 384 H314" />
+  <path class="loop-arrow" d="M590 300 H696" />
+  <path class="loop-arrow" d="M818 352 V430" />
+  <path class="loop-arrow" d="M708 494 H602" />
+  <path class="loop-arrow" d="M480 442 V366" />
+
+  <rect class="card check" x="1030" y="264" width="190" height="124" />
+  <text class="label" x="1070" y="314">完成检查</text>
+  <text class="small" x="1064" y="344">目标 / 步数 / 验收</text>
+  <path class="arrow" d="M974 326 H1018" />
+  <text class="tiny" x="988" y="304">每轮都判断</text>
+
+  <rect class="card done" x="1030" y="468" width="190" height="106" />
+  <text class="label" x="1078" y="512">输出结果</text>
+  <text class="small" x="1062" y="542">返回最终答案或动作</text>
+  <path class="arrow" d="M1125 388 V456" />
+  <text class="tiny" x="1140" y="430">是</text>
+
+  <path class="dash" d="M1030 326 C960 170 560 150 480 238" />
+  <text class="tiny" x="865" y="178">否：带着新反馈继续下一轮</text>
+
+  <rect class="tag" x="400" y="574" width="146" height="32" />
+  <text class="tag-text" x="430" y="595">记忆 / 状态</text>
+  <rect class="tag" x="574" y="574" width="146" height="32" />
+  <text class="tag-text" x="606" y="595">工具执行</text>
+  <rect class="tag" x="748" y="574" width="146" height="32" />
+  <text class="tag-text" x="780" y="595">验证 / 退出</text>
+
+  <rect class="footer" x="160" y="668" width="960" height="54" />
+  <text class="footer-text" x="210" y="702">关键：行动结果不是结束，而是下一轮思考的输入；循环能不能收敛，取决于验收和退出条件。</text>
+</svg>

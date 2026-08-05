@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Loop Engineering 五大构建块与记忆层</title>
+  <desc id="desc">展示 Loop Runtime 周围的自动化调度、工作树隔离、Skill 技能、工具调用与外部连接、子 Agent 协作，以及贯穿底部的记忆状态层。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#64748b" />
+    </marker>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="135%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.12" />
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .rule { stroke: #e2e8f0; stroke-width: 1.4; }
+      .title { font: 750 40px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 20px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .center { fill: #111827; rx: 28; filter: url(#soft-shadow); }
+      .center-title { font: 760 28px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .center-text { font: 500 16px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #cbd5e1; }
+      .card { fill: #ffffff; stroke-width: 2.2; rx: 20; filter: url(#soft-shadow); }
+      .auto { stroke: #0891b2; }
+      .workspace { stroke: #4f46e5; }
+      .skill { stroke: #d97706; }
+      .connector { stroke: #0f766e; }
+      .subagent { stroke: #e11d48; }
+      .memory { fill: #ecfdf5; stroke: #0f766e; stroke-width: 2.2; rx: 22; filter: url(#soft-shadow); }
+      .num-bg { fill: #111827; }
+      .num { font: 760 14px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .label { font: 750 23px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .text { font: 400 15.5px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .tiny { font: 650 13px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #64748b; }
+      .line { fill: none; stroke: #94a3b8; stroke-width: 2.4; marker-end: url(#arrow); }
+      .dash { fill: none; stroke: #94a3b8; stroke-width: 2.2; stroke-dasharray: 8 8; }
+      .chip { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.3; rx: 14; }
+      .chip-text { font: 700 13px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+      .footer-text { font: 700 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f766e; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1280" height="760" />
+  <text class="title" x="70" y="76">Loop Engineering 构建块</text>
+  <text class="subtitle" x="70" y="112">五个工程构建块负责让 Loop 跑起来，记忆 / 状态层负责让每一轮接得上上一轮。</text>
+  <line class="rule" x1="70" y1="148" x2="1210" y2="148" />
+
+  <rect class="center" x="484" y="300" width="312" height="152" />
+  <text class="center-title" x="560" y="350">Loop Runtime</text>
+  <text class="center-text" x="532" y="386">调度 Agent 多轮执行</text>
+  <text class="center-text" x="532" y="416">验证结果，决定继续或退出</text>
+
+  <rect class="chip" x="516" y="470" width="86" height="30" />
+  <text class="chip-text" x="546" y="490">目标</text>
+  <rect class="chip" x="616" y="470" width="86" height="30" />
+  <text class="chip-text" x="646" y="490">触发</text>
+  <rect class="chip" x="716" y="470" width="86" height="30" />
+  <text class="chip-text" x="746" y="490">退出</text>
+
+  <rect class="card auto" x="82" y="196" width="300" height="128" />
+  <circle class="num-bg" cx="120" cy="234" r="17" />
+  <text class="num" x="116" y="240">1</text>
+  <text class="label" x="154" y="242">自动化 / 调度</text>
+  <text class="text" x="120" y="278">决定什么时候启动 Loop</text>
+  <text class="text" x="120" y="304">定时、事件、目标驱动</text>
+
+  <rect class="card workspace" x="898" y="196" width="300" height="128" />
+  <circle class="num-bg" cx="936" cy="234" r="17" />
+  <text class="num" x="932" y="240">2</text>
+  <text class="label" x="970" y="242">工作树 / 隔离</text>
+  <text class="text" x="936" y="278">给 Agent 安全工作空间</text>
+  <text class="text" x="936" y="304">worktree、沙盒、权限边界</text>
+
+  <rect class="card skill" x="82" y="420" width="300" height="128" />
+  <circle class="num-bg" cx="120" cy="458" r="17" />
+  <text class="num" x="116" y="464">3</text>
+  <text class="label" x="154" y="466">Skill 技能</text>
+  <text class="text" x="120" y="502">把经验写成可复用流程</text>
+  <text class="text" x="120" y="528">规则、清单、业务步骤</text>
+
+  <rect class="card connector" x="898" y="420" width="300" height="128" />
+  <circle class="num-bg" cx="936" cy="458" r="17" />
+  <text class="num" x="932" y="464">4</text>
+  <text class="label" x="958" y="466">工具调用 / 外部连接</text>
+  <text class="text" x="936" y="502">连接真实外部系统</text>
+  <text class="text" x="936" y="528">Tool、API、MCP</text>
+
+  <rect class="card subagent" x="490" y="548" width="300" height="110" />
+  <circle class="num-bg" cx="528" cy="586" r="17" />
+  <text class="num" x="524" y="592">5</text>
+  <text class="label" x="562" y="594">子 Agent / 协作</text>
+  <text class="text" x="528" y="630">Maker 执行，Checker 验收</text>
+
+  <path class="line" d="M382 260 C438 260 456 306 476 338" />
+  <path class="line" d="M898 260 C838 260 824 306 804 338" />
+  <path class="line" d="M382 484 C438 484 456 438 476 406" />
+  <path class="line" d="M898 484 C838 484 824 438 804 406" />
+  <path class="line" d="M640 548 V464" />
+
+  <rect class="memory" x="170" y="682" width="940" height="54" />
+  <text class="footer-text" x="222" y="716">记忆 / 状态层：保存进度、工具结果、错误经验和长期规则，让下一轮能接上上一轮。</text>
+  <path class="dash" d="M640 658 V680" />
+</svg>

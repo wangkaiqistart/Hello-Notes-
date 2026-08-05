@@ -1,4 +1,6 @@
 name: starlight
-description: Starlight - Astro 官方文档主题。配置站点、侧边栏、内置组件、样式定制、页面和 frontmatter。
+description: Starlight - Astro 官方文档主题。配置站点、侧边栏、内置组件、样式定制、页面和 frontmatter；文档需要把本地图片变成远程 OSS 链接时，先使用 oss-image-publisher。
 version: "1.0.0"
 paradigm: navigator
+interface:
+  default_prompt: "使用 $starlight 处理 Starlight 文档；如果本地图片需要远程 OSS 链接，先使用 $oss-image-publisher 返回链接。"

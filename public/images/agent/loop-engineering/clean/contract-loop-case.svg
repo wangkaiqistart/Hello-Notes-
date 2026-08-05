@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">合同智能完善 Loop 案例</title>
+  <desc id="desc">展示合同完善系统中扫描合同、Editor 修改、Reviewer 复核、通过归档、不通过重试或升级人工的流程。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#1f2937" />
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 40px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 20px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .box { stroke: #1f2937; stroke-width: 2.4; rx: 18; }
+      .scan { fill: #dbeafe; }
+      .maker { fill: #dcfce7; }
+      .checker { fill: #fef3c7; }
+      .done { fill: #ede9fe; }
+      .warn { fill: #fee2e2; }
+      .label { font: 700 23px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .text { font: 400 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #374151; }
+      .arrow { fill: none; stroke: #1f2937; stroke-width: 3; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="760" />
+  <text class="title" x="72" y="78">案例一：合同智能完善系统</text>
+  <text class="subtitle" x="72" y="114">目标不是审完即止，而是 Editor 和 Reviewer 循环协作，直到合同质量达标。</text>
+
+  <rect class="box scan" x="70" y="280" width="200" height="100" />
+  <text class="label" x="112" y="322">扫描合同</text>
+  <text class="text" x="102" y="352">pending_contracts/</text>
+
+  <rect class="box maker" x="350" y="200" width="250" height="120" />
+  <text class="label" x="392" y="244">Editor / Maker</text>
+  <text class="text" x="390" y="276">读取合同并完善条款</text>
+
+  <rect class="box checker" x="700" y="200" width="250" height="120" />
+  <text class="label" x="734" y="244">Reviewer / Checker</text>
+  <text class="text" x="742" y="276">只读复核四大维度</text>
+
+  <rect class="box done" x="1010" y="150" width="210" height="100" />
+  <text class="label" x="1064" y="192">通过</text>
+  <text class="text" x="1050" y="222">归档并记录结果</text>
+
+  <rect class="box warn" x="1010" y="360" width="210" height="100" />
+  <text class="label" x="1052" y="402">不通过</text>
+  <text class="text" x="1040" y="432">带问题清单重试</text>
+
+  <rect class="box warn" x="700" y="520" width="250" height="100" />
+  <text class="label" x="756" y="562">超过上限</text>
+  <text class="text" x="752" y="592">升级人工处理</text>
+
+  <path class="arrow" d="M270 330 C310 318 322 286 340 260" />
+  <path class="arrow" d="M600 260 H690" />
+  <path class="arrow" d="M950 240 C982 226 988 214 1000 202" />
+  <path class="arrow" d="M950 290 C988 310 1000 356 1008 390" />
+  <path class="arrow" d="M1010 410 C830 472 565 450 478 330" />
+  <path class="arrow" d="M1115 460 C1100 555 1000 570 960 570" />
+
+  <text class="text" x="354" y="410">审查维度：完整性、明确性、公平性、合规性</text>
+  <text class="text" x="354" y="442">工程边界：Editor 有写权限，Reviewer 只有只读权限</text>
+  <text class="text" x="354" y="474">状态记忆：store 记录每次修改、归档、升级，checkpointer 保存跨轮上下文</text>
+</svg>

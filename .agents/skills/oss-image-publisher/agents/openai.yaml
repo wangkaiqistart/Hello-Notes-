@@ -1,0 +1,4 @@
+interface:
+  display_name: "OSS 图片发布"
+  short_description: "上传本地图片到阿里云 OSS，并返回远程图片链接。"
+  default_prompt: "使用 $oss-image-publisher 上传本地图片到阿里云 OSS，只返回图片链接。"

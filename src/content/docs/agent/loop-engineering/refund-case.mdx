@@ -1,0 +1,182 @@
+---
+title: Loop Engineering 案例：智能退款处理
+description: 用 Maker、Checker、Orchestrator 三层隔离处理电商退款，控制不可逆业务操作
+sidebar:
+  label: 退款处理案例
+  order: 6
+---
+
+import { Aside, Card, CardGrid, Steps } from '@astrojs/starlight/components';
+
+## 案例业务
+
+一个电商平台每天会收到大量退款申请，订单状态不同，处理规则也不同：
+
+- 未发货：通常可以直接退款。
+- 已发货：可能需要先拦截物流，再退款或通知客户。
+- 已签收：需要检查退货状态、7 天窗口、是否扣除运费。
+
+人工处理容易出错，比如金额算错、规则误用、忘记扣运费、通知文案不一致。这个案例用 Loop Engineering 架构自动处理退款单：Maker 分析订单并提出方案，Checker 独立核验，Orchestrator 在审查通过后执行真实操作。
+
+![智能退款处理 Loop](/images/agent/loop-engineering/clean/refund-loop-case.svg)
+
+## 业务逻辑
+
+<Steps>
+
+1. Python Loop 扫描退款订单队列，找出未完成的退款单。
+
+2. `refund-maker` 只读查询订单、退款政策、7 天窗口，给出通知文案、退款金额和建议动作。
+
+3. `refund-checker` 只读重新核验订单、政策和 Maker 方案。
+
+4. Checker 通过后，Orchestrator 才能调用写入工具：执行退款、发送通知、物流拦截、标记完成。
+
+5. Checker 不通过时，Orchestrator 把问题清单原样传给下一轮 Maker。
+
+6. 多轮仍未通过时，升级人工。
+
+</Steps>
+
+## 三层权限隔离
+
+<CardGrid>
+  <Card title="Maker：只读提案" icon="open-book">
+    查询订单和规则，确认通知文案、计算退款金额，但不执行退款。
+  </Card>
+  <Card title="Checker：只读审核" icon="approve-check">
+    独立核验 Maker 的方案，检查金额、规则、窗口期和文案。
+  </Card>
+  <Card title="Orchestrator：受控写入" icon="setting">
+    持有写入工具，但只有 Checker 审查通过后才能执行不可逆操作。
+  </Card>
+</CardGrid>
+
+## 代码骨架
+
+```python title="refund_loop.py"
+class RefundLoop:
+    def scan(self) -> list[str]:
+        """扫描退款队列，返回待处理退款单 ID。"""
+        pending = []
+        for refund_id, refund in db.refund_orders.items():
+            already_done = any("完成" in note for note in refund.get("notes", []))
+            if not already_done:
+                pending.append(refund_id)
+        return pending
+
+    def process_one(self, refund_id: str, max_rounds: int = 3) -> dict:
+        """处理单个退款单，Python 控制最大修正轮数。"""
+        thread_id = f"refund-{refund_id}"
+
+        for round_num in range(1, max_rounds + 1):
+            orchestrator_text = self._stream_round(refund_id, thread_id)
+            result = self._check_result(orchestrator_text, refund_id)
+
+            if result == "completed":
+                return {"refund_id": refund_id, "status": "completed", "rounds": round_num}
+            if result == "escalated":
+                return {"refund_id": refund_id, "status": "escalated", "rounds": round_num}
+
+        escalate_to_human.invoke({
+            "refund_id": refund_id,
+            "reason": f"经过 {max_rounds} 轮 Maker-Checker 处理仍未解决",
+            "priority": "high",
+        })
+        return {"refund_id": refund_id, "status": "escalated", "rounds": max_rounds}
+
+    def run_loop(self, interval: int = 10):
+        """持续运行的监控循环。"""
+        while True:
+            self.run_one_cycle()
+            time.sleep(interval)
+```
+
+工具按权限严格分层：
+
+```python title="refund_tools.py"
+# 只读工具：Maker 和 Checker 共用
+@tool
+def query_refund_order(refund_id: str) -> str:
+    """查询退款单。"""
+
+@tool
+def get_refund_policy(order_status: str) -> str:
+    """查询退款规则。"""
+
+@tool
+def check_7day_window(refund_id: str) -> str:
+    """检查 7 天退货窗口。"""
+
+# 写入工具：只有 Orchestrator 能调用
+@tool
+def execute_refund(refund_id: str, amount: float, reason: str) -> str:
+    """执行退款，不可逆。"""
+
+@tool
+def send_notification(refund_id: str, message: str) -> str:
+    """发送客户通知。"""
+
+@tool
+def send_logistics_intercept(refund_id: str) -> str:
+    """发送物流拦截请求。"""
+
+@tool
+def finalize_refund(refund_id: str, comment: str) -> str:
+    """标记退款单完成。"""
+
+@tool
+def escalate_to_human(refund_id: str, reason: str, priority: str) -> str:
+    """升级人工处理。"""
+```
+
+子 Agent 和编排者：
+
+```python title="refund_agents.py"
+refund_maker = SubAgent(
+    name="refund-maker",
+    tools=[query_refund_order, get_refund_policy, check_7day_window],
+    model=deepseek_llm,  # 强模型做提案
+)
+
+refund_checker = SubAgent(
+    name="refund-checker",
+    tools=[query_refund_order, get_refund_policy, check_7day_window],
+    model=deepseek_llm_flash,  # 较低成本模型做审核
+)
+
+orchestrator = create_deep_agent(
+    tools=[
+        execute_refund,
+        send_notification,
+        send_logistics_intercept,
+        finalize_refund,
+        escalate_to_human,
+    ],
+    subagents=[refund_maker, refund_checker],
+    skills=[SKILLS],
+    backend=FilesystemBackend(root_dir=CUR_DIR, virtual_mode=True),
+    checkpointer=InMemorySaver(),
+)
+```
+
+## 构建块映射
+
+| 构建块 | 退款案例中的落点 |
+| --- | --- |
+| 自动化 / 调度 | `RefundLoop.run_loop()` 持续扫描退款队列 |
+| 工作树 / 隔离 | `FilesystemBackend(virtual_mode=True)` 限定工作范围 |
+| Skill 技能 | `skills/refund-processor/SKILL.md` 保存退款规则和处理流程 |
+| 工具调用 / 外部连接 | 查询退款单、查政策、检查 7 天窗口、执行退款、通知客户、拦截物流 |
+| 子 Agent / 协作 | Maker 提案，Checker 审核，Orchestrator 执行 |
+| 记忆 / 状态 | `store.put(("operations",), ...)` 记录操作，`checkpointer` 保存跨轮上下文 |
+
+## 这个案例最关键的点
+
+<Aside type="caution" title="不可逆操作必须受控">
+  退款、通知、物流拦截都是真实业务动作，不能让 Maker 或 Checker 直接执行。Maker 只能提案，Checker 只能审核，Orchestrator 只有在审核通过后才能调用写入工具。
+</Aside>
+
+<Aside type="tip" title="速记">
+  退款案例的核心是三层隔离：**Maker 只读提案，Checker 只读审核，Orchestrator 审核通过后写入。**
+</Aside>

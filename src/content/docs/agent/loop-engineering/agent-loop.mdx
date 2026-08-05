@@ -1,0 +1,205 @@
+---
+title: Agent Loop：概念与历史演进
+description: 从 Agent Loop 的 while 循环，到 Loop Engineering 的范式形成
+sidebar:
+  label: 概念与演进
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+## Agent Loop 是什么
+
+Agent Loop（智能体循环）是 AI Agent 的核心工作机制。它让大语言模型从“只会聊天”变成“能干活”：通过“观察 -> 思考 -> 行动 -> 反馈”的循环，Agent 能够自主调用工具、获取信息、根据结果调整策略，并持续迭代直到完成任务。
+
+一句话理解：**Agent Loop = 把 LLM 的推理能力放进一个 while 循环里，让它可以反复思考和行动。**
+
+![Agent Loop 核心流程](/images/agent/loop-engineering/clean/agent-loop-flow-v2.svg)
+
+Agent Loop 的形式化定义可以写成：
+
+```python title="agent_loop.py"
+# Agent Loop 的核心：一个 while 循环
+while not termination_condition:
+    # 1. 观察：获取当前环境状态
+    observation = environment.perceive()
+
+    # 2. 思考：LLM 推理下一步该做什么
+    plan = llm.reason(observation, history=memory)
+
+    # 3. 行动：执行工具调用
+    result = tool_executor.run(plan)
+
+    # 4. 反馈：将结果存入记忆
+    memory.store(observation=observation, plan=plan, result=result)
+
+    # 5. 检查终止条件
+    if plan.is_final_answer() or max_steps_reached():
+        break
+```
+
+<Aside type="note" title="核心价值">
+  单次 LLM 调用只是在回答；Agent Loop 让 LLM 能基于工具结果和环境反馈继续行动，所以它开始具备“执行任务”的能力。
+</Aside>
+
+## Loop Engineering 是什么
+
+Loop Engineering（循环工程）描述的是：不再亲手给 AI 写一轮又一轮 Prompt，而是设计一个系统（Loop），让这个系统自动调度 AI Agent 去发现任务、执行任务、验证结果，直到目标达成。
+
+它不是替代 Agent Loop，而是在 Agent Loop 之上增加自动化调度和控制。你仍然需要一个能干的 Agent；Loop Engineering 关注的是怎么让它自动、稳定、受控地运转起来。
+
+![Loop Engineering 流程](/images/agent/loop-engineering/clean/loop-engineering-flow-v2.svg)
+
+旧模式是：
+
+```text frame="none"
+人 -> 写 Prompt -> LLM 回答 -> 人读结果 -> 不满意再写 Prompt -> ...
+```
+
+旧模式的问题：
+
+- 每次都要人介入。
+- 复杂多步骤任务需要人手动拆解。
+- 人无法 24 小时盯着。
+- 上下文窗口有限，长对话会丢失早期目标。
+
+新模式是：
+
+```text frame="none"
+人 -> 设计 Loop（目标 + 触发条件 + 验证标准 + 退出条件）
+     -> Loop 自动发现任务
+     -> 调度 Agent 执行
+     -> 自动验证结果
+     -> 通过：记录并继续下一个
+     -> 不通过：修正重试或升级给人类
+```
+
+## 历史演进
+
+Loop Engineering 不是先有概念、再去找技术实现，而是 Agent 能力逐步成熟之后，被总结出来的一套工程方法。它的演进主线可以这样理解：先让 AI 能“边想边做”，再让它稳定调用工具，然后让它可以多轮循环，最后用规则、验证和退出条件把循环管控起来。下面的时间节点不用死记，重点看每一步补齐了哪块能力。
+
+<Steps>
+
+1. **2022 左右：ReAct 让 AI 学会“边想边做”**
+
+   早期的大模型主要是回答问题。ReAct 的关键变化是把“思考”和“行动”串起来：先想下一步，再调用工具，拿到结果后继续想。也就是 `Thought -> Action -> Observation` 这种循环雏形。
+
+2. **2023 左右：AutoGPT / BabyAGI 尝试让 Agent 自己拆任务**
+
+   这类项目让 Agent 自己拆目标、排任务、执行任务，把“自主循环”推到了大家面前。但问题也很明显：Agent 很容易一直忙，却没有真正推进结果，也就是常说的空转。
+
+3. **2023-2024：工具调用标准化，Agent 开始能稳定使用外部能力**
+
+   工具调用标准化之后，模型不再只是“说我要查一下”，而是能用更稳定的参数格式告诉系统“该调用哪个工具、传什么参数”。框架再负责执行工具、回填结果、处理重试，Agent 的执行链路开始可靠起来。
+
+4. **2024-2025：MCP、记忆和 Skills 补齐 Agent 的工作环境**
+
+   只会调用工具还不够，Agent 还需要连接真实系统、保存状态、复用技能、隔离工作空间。MCP、记忆、Skills、沙盒这些能力补齐后，Agent 才更像一个能长期工作的执行单元。
+
+5. **2025 左右：Ralph Loop 证明简单循环也能持续修正**
+
+   它的启发很直接：哪怕只是一个简单的 `while true`，只要每一轮都能读取上一次的错误、测试结果和文件状态，Agent 就可以不断修正。单次失败不可怕，关键是失败信息要能进入下一轮。
+
+6. **2025-2026：Maker-Checker 把“执行”和“验收”分开**
+
+   让一个 Agent 又干活又判断自己是否完成，风险很高。更稳的方式是 Maker 负责执行，Checker 负责独立检查，而且 Checker 尽量只读。核心原则是：**干活的人不能给自己打分。**
+
+7. **2026 左右：Loop Engineering 把循环变成工程方法**
+
+   到这一步，重点不再是“让 Agent 多跑几轮”，而是系统化设计整个循环：什么时候启动、带什么上下文、能用什么工具、怎么验收、失败怎么重试、什么时候退出。
+
+</Steps>
+
+## Prompt 到 Loop
+
+看完时间线，再回到这件事的本质：为什么只会写 Prompt 还不够，最后一定会走到 Loop？
+
+可以先抓住一句话：**Prompt Engineering 更像手动推进一轮任务，Loop Engineering 是把多轮任务做成可自动运行的系统。** 它不是说 Prompt 没用了，而是 Prompt 从“人手写的一次指令”，变成了 Loop 系统里会被反复生成、调用、调整的一个组件。
+
+<Aside type="tip" title="一句话理解">
+  Prompt 解决“一次怎么问”，Loop 解决“任务怎么持续跑完”。
+</Aside>
+
+Prompt Engineering 的旧模式，本质是“人机单轮交互”：人写 Prompt，Agent 执行一次，人读结果判断好坏，然后再写下一轮 Prompt。它适合信息查询、文案润色、单段代码生成，但面对“每天处理几百个订单、自动分类、自动退款、异常自动升级”这类持续任务时，就会暴露出三个问题。
+
+<CardGrid>
+  <Card title="人要一直盯着" icon="user">
+    每轮 Agent 执行结束后，都要人判断结果、启动下一轮。Agent 处理 100 个任务，人就要看 100 次，吞吐量被人的注意力上限卡住。
+  </Card>
+  <Card title="对话越长越容易跑偏" icon="database">
+    复杂任务可能要跑几十轮，越往后 Agent 越容易忘记最初目标，出现目标漂移。只靠 Prompt，很难把关键状态稳定保存到对话之外。
+  </Card>
+  <Card title="自己验自己不靠谱" icon="approve-check">
+    同一个 Agent 既干活又判断“干完了没”，很容易自信地认可自己的产出。更稳的方式是让独立 Checker 重新验收。
+  </Card>
+</CardGrid>
+
+这三个问题指向同一个结论：**让人在每一轮都介入的“手动模式”，无法支撑 Agent 的规模化使用。** 必须把任务做成自动循环，让 Agent 自己推进，人只在异常、不确定或高风险时介入。
+
+| 对比维度 | Prompt Engineering | Loop Engineering |
+| --- | --- | --- |
+| 工作方式 | 人写 Prompt，Agent 执行一次，人看结果再写 | 人设计 Loop，Loop 自动发现任务、调度 Agent、验证并循环 |
+| 人的角色 | 每轮都要手动交互 | 设定目标、约束和退出条件，然后监控结果 |
+| Agent 角色 | 一次性工具 | 持续运行的数字员工 |
+| 典型形态 | ChatGPT 对话框、API 单次调用 | Claude Code `/loop`、Codex 的持续执行任务、Agent 系统里的 Loop 循环 |
+
+<Aside type="tip" title="关键区别">
+  Prompt Engineering 的重点是“怎么把一次问题问清楚”；Loop Engineering 的重点是“怎么设计一个系统，让系统持续提出正确的问题、调用正确工具，并验证结果”。
+</Aside>
+
+### 三根支柱
+
+Loop Engineering 到 2026 年才真正爆发，不是之前没人想做，而是之前三个条件没同时成熟。Loop 要跑起来，至少需要三根支柱。
+
+![Loop Engineering 三大支柱](/images/agent/loop-engineering/clean/loop-three-pillars.svg)
+
+<Tabs>
+  <TabItem label="MCP 协议" icon="puzzle">
+    MCP 解决的是“Agent 怎么稳定连接外部系统”。过去接 GitHub、Slack、数据库、Jira 往往要各写各的连接器，组合一多就很难维护。MCP 像一套统一插口，让 Agent 更容易连接工具和业务系统。
+  </TabItem>
+  <TabItem label="上下文与记忆" icon="database">
+    Loop 要持续运行，就必须既“跑得起”，也“记得住”。Prompt Caching 降低重复上下文成本，工作记忆、短期记忆、长期记忆把当前任务、跨轮状态和长期规则分开保存。
+  </TabItem>
+  <TabItem label="Maker-Checker" icon="approve-check">
+    自主运行最大的风险不是做不完，而是做错了没人发现。Maker 负责执行，Checker 负责独立检查，并且尽量只读、独立上下文、按客观条件验收。
+  </TabItem>
+</Tabs>
+
+![Agent 记忆三层架构](/images/agent/loop-engineering/clean/memory-three-layer.svg)
+
+三根支柱缺一不可：没有 MCP，Agent 还是很难稳定连接真实系统；没有上下文和记忆管理，Loop 跑久了就会贵、会忘、会乱；没有 Maker-Checker，自主运行就容易变成“做错了也没人发现”。
+
+### 工程范式关系
+
+Prompt 没有消失，只是从“人手写的一次指令”，变成 Loop 系统里的一个组件。Prompt 仍然会存在，但更多由循环系统根据任务、上下文和工具结果自动生成、调试和使用。
+
+| 范式 | 解决的问题 | 在 Loop 中的位置 |
+| --- | --- | --- |
+| Prompt Engineering | 让 AI 理解你的问题 | 每次 Agent 执行时仍会用到 |
+| Context Engineering | 让 AI 知道当前有哪些信息 | 提供对话历史、目标、代码、工具结果 |
+| Harness Engineering | 让 AI 安全、规范地运行 | 提供规则、隔离、Skills、权限边界 |
+| Loop Engineering | 让 AI 持续完成目标 | 负责发现目标、执行、检查、修正、结束 |
+
+<Aside type="note" title="关系理解">
+  Loop 是持续推进业务目标的入口，Harness 是支撑 Agent 安全执行的工程底座。
+</Aside>
+
+### 开发者的新角色
+
+工程师的核心技能会从“怎么问 AI 一个好问题”，转向“怎么设计一个系统，让系统持续问对问题、做对事情、验收结果”。
+
+<CardGrid>
+  <Card title="设计循环" icon="random">
+    定义目标、触发条件、工具权限、验证标准、重试策略和退出条件。
+  </Card>
+  <Card title="训练系统" icon="star">
+    把错误经验、业务规则、项目规范沉淀到 Skills、规则和长期记忆里。
+  </Card>
+  <Card title="验证产出" icon="approve-check">
+    不能只看 Agent 的总结，要用测试、日志、业务状态和独立 Checker 做客观验收。
+  </Card>
+</CardGrid>
+
+<Aside type="tip" title="速记">
+  Prompt 是入口，Context 是信息，Harness 是底座，Loop 是持续完成目标的运行机制。
+</Aside>

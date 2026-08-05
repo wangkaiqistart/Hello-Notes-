@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">智能退款处理 Loop 案例</title>
+  <desc id="desc">展示退款处理系统中 Maker 提案、Checker 审核、Orchestrator 执行写入操作的三层隔离流程。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#1f2937" />
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 40px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 20px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .box { stroke: #1f2937; stroke-width: 2.4; rx: 18; }
+      .queue { fill: #dbeafe; }
+      .maker { fill: #dcfce7; }
+      .checker { fill: #fef3c7; }
+      .orch { fill: #ede9fe; }
+      .write { fill: #fee2e2; }
+      .memory { fill: #ecfeff; }
+      .label { font: 700 23px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .text { font: 400 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #374151; }
+      .arrow { fill: none; stroke: #1f2937; stroke-width: 3; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="760" />
+  <text class="title" x="72" y="78">案例二：智能退款处理循环系统</text>
+  <text class="subtitle" x="72" y="114">Maker 和 Checker 都只读，真正的退款、通知、物流拦截只由 Orchestrator 在审核通过后执行。</text>
+
+  <rect class="box queue" x="70" y="250" width="210" height="110" />
+  <text class="label" x="116" y="294">退款队列</text>
+  <text class="text" x="104" y="326">未发货 / 已发货 / 已签收</text>
+
+  <rect class="box maker" x="360" y="180" width="250" height="120" />
+  <text class="label" x="418" y="224">Maker</text>
+  <text class="text" x="398" y="256">只读查询订单和政策</text>
+  <text class="text" x="398" y="282">提出通知与金额方案</text>
+
+  <rect class="box checker" x="700" y="180" width="250" height="120" />
+  <text class="label" x="758" y="224">Checker</text>
+  <text class="text" x="736" y="256">只读独立核验方案</text>
+  <text class="text" x="736" y="282">检查金额、窗口、文案</text>
+
+  <rect class="box orch" x="520" y="390" width="260" height="120" />
+  <text class="label" x="578" y="434">Orchestrator</text>
+  <text class="text" x="556" y="466">审核通过后执行写操作</text>
+  <text class="text" x="556" y="492">不通过则进入下一轮</text>
+
+  <rect class="box write" x="880" y="390" width="300" height="120" />
+  <text class="label" x="936" y="434">写入工具</text>
+  <text class="text" x="920" y="466">execute_refund / notify</text>
+  <text class="text" x="920" y="492">logistics_intercept / finalize</text>
+
+  <rect class="box memory" x="250" y="590" width="780" height="90" />
+  <text class="label" x="474" y="630">记忆与审计日志</text>
+  <text class="text" x="390" y="660">store 记录每次操作，checkpointer 保存跨轮上下文，失败超过上限升级人工</text>
+
+  <path class="arrow" d="M280 305 C320 286 332 256 350 240" />
+  <path class="arrow" d="M610 240 H690" />
+  <path class="arrow" d="M825 300 C790 340 724 360 682 382" />
+  <path class="arrow" d="M780 450 H870" />
+  <path class="arrow" d="M650 510 V580" />
+  <path class="arrow" d="M520 455 C420 430 402 336 458 306" />
+  <text class="text" x="250" y="536">不通过：把 Checker 的问题清单</text>
+  <text class="text" x="250" y="564">原样传给下一轮 Maker</text>
+</svg>

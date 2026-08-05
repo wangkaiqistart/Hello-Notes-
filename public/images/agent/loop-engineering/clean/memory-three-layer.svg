@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="760" viewBox="0 0 1080 760" role="img" aria-labelledby="title desc">
+  <title id="title">Agent 记忆三层架构</title>
+  <desc id="desc">展示工作记忆、短期记忆和长期记忆三层结构，以及压缩摘要、提炼沉淀的流转关系。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#0f766e" />
+    </marker>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.12" />
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 750 38px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 19px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .card { fill: #ffffff; stroke-width: 2.4; rx: 22; filter: url(#soft-shadow); }
+      .working { stroke: #0891b2; fill: #ecfeff; }
+      .short { stroke: #16a34a; fill: #f0fdf4; }
+      .long { stroke: #7e22ce; fill: #faf5ff; }
+      .label { font: 750 25px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .en { font: 650 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+      .text { font: 400 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+      .strong { font: 700 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f172a; }
+      .arrow { fill: none; stroke: #0f766e; stroke-width: 3.2; marker-end: url(#arrow); }
+      .arrow-text { font: 750 18px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f766e; }
+      .tag { fill: #111827; rx: 16; }
+      .tag-text { font: 750 14px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .footer { fill: #ecfdf5; stroke: #0f766e; stroke-width: 2; rx: 18; }
+      .footer-text { font: 700 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f766e; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1080" height="760" />
+  <text class="title" x="70" y="76">Agent 记忆三层架构</text>
+  <text class="subtitle" x="70" y="112">把当前上下文、阶段摘要和长期知识分开保存，让 Loop 能持续运行而不丢目标。</text>
+
+  <rect class="card working" x="142" y="162" width="796" height="136" />
+  <rect class="tag" x="174" y="190" width="90" height="30" />
+  <text class="tag-text" x="196" y="210">当前轮</text>
+  <text class="label" x="288" y="212">工作记忆</text>
+  <text class="en" x="402" y="212">Working Memory</text>
+  <text class="strong" x="184" y="246">存储位置：</text>
+  <text class="text" x="274" y="246">当前上下文窗口</text>
+  <text class="strong" x="184" y="274">时效：</text>
+  <text class="text" x="234" y="274">单次会话</text>
+  <text class="strong" x="452" y="274">内容：</text>
+  <text class="text" x="502" y="274">当前任务思考链、工具调用记录</text>
+
+  <path class="arrow" d="M540 300 V376" />
+  <text class="arrow-text" x="568" y="346">压缩 / 摘要</text>
+
+  <rect class="card short" x="142" y="380" width="796" height="136" />
+  <rect class="tag" x="174" y="408" width="90" height="30" />
+  <text class="tag-text" x="196" y="428">阶段内</text>
+  <text class="label" x="288" y="430">短期记忆</text>
+  <text class="en" x="402" y="430">Short-term Memory</text>
+  <text class="strong" x="184" y="464">存储位置：</text>
+  <text class="text" x="274" y="464">向量库、checkpointer、会话摘要</text>
+  <text class="strong" x="184" y="492">时效：</text>
+  <text class="text" x="234" y="492">跨轮次</text>
+  <text class="strong" x="452" y="492">内容：</text>
+  <text class="text" x="502" y="492">关键节点、错误经验、任务进度</text>
+
+  <path class="arrow" d="M540 518 V594" />
+  <text class="arrow-text" x="568" y="564">提炼 / 沉淀</text>
+
+  <rect class="card long" x="142" y="598" width="796" height="118" />
+  <rect class="tag" x="174" y="624" width="90" height="30" />
+  <text class="tag-text" x="196" y="644">长期</text>
+  <text class="label" x="288" y="646">长期记忆</text>
+  <text class="en" x="402" y="646">Long-term Memory</text>
+  <text class="strong" x="184" y="680">存储位置：</text>
+  <text class="text" x="274" y="680">知识库、配置文件、项目规则、领域知识</text>
+  <text class="strong" x="184" y="708">时效：</text>
+  <text class="text" x="234" y="708">永久</text>
+  <text class="strong" x="452" y="708">内容：</text>
+  <text class="text" x="502" y="708">用户偏好、项目规范、业务政策</text>
+</svg>

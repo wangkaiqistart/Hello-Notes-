@@ -38,6 +38,7 @@ description: Starlight - Astro 官方文档主题，构建快速可定制的文�
 │   └── 代码块增强（高亮/标题/diff） → references/components.md #代码
 ├── 编写文档内容
 │   ├── Markdown/MDX 基础 → references/authoring.md
+│   ├── 本地图片需要 OSS 远程链接 → 先用 oss-image-publisher skill 返回链接，再继续写入文档
 │   ├── Frontmatter 属性 → references/frontmatter.md
 │   └── 代码块/Expressive Code → references/authoring.md #代码块
 ├── 样式/主题定制
@@ -60,6 +61,7 @@ description: Starlight - Astro 官方文档主题，构建快速可定制的文�
 - 始终使用 `@astrojs/starlight` 包的最新 API
 - 组件导入路径：`@astrojs/starlight/components`
 - 文档内容放在 `src/content/docs/` 目录
+- 编写文档时如果用户提供本地图片并要求远程可访问链接，先调用 `oss-image-publisher` 获取 OSS 链接；Starlight skill 只负责把返回链接正确放入文档
 - 配置在 `astro.config.mjs` 的 `starlight()` 集成中
 - 使用 MCP astro-docs 工具搜索最新文档以补充 references 中的信息
 - 不适用：Astro 通用功能（路由/Islands/SSR）→ astro skill；非文档站点开发

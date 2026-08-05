@@ -1,0 +1,149 @@
+---
+title: Loop Engineering 案例：合同智能完善
+description: 用 Editor-Reviewer 循环协作，自动完善合同内容并通过四大维度复核
+sidebar:
+  label: 合同完善案例
+  order: 5
+---
+
+import { Aside, Card, CardGrid, Steps } from '@astrojs/starlight/components';
+
+## 案例业务
+
+这是一个合同质量的自动迭代打磨系统。它不是简单地“审一下，通过或驳回”，而是让两个 AI Agent 像律师团队一样循环协作：一个负责改，一个负责审；改完再审，审完再改，直到合同质量达标。
+
+![合同智能完善 Loop](/images/agent/loop-engineering/clean/contract-loop-case.svg)
+
+## 业务逻辑
+
+合同完善的核心流程：
+
+<Steps>
+
+1. Python Loop 定时扫描 `pending_contracts/` 中的待处理合同。
+
+2. `contract-editor` 作为 Maker，读取合同，按 Skill 中的审查维度修复条款。
+
+3. `contract-reviewer` 作为 Checker，只读复核合同是否达标。
+
+4. 通过则归档并记录操作；不通过则把问题清单带给下一轮 Editor。
+
+5. 多轮仍不通过则升级人工。
+
+</Steps>
+
+四大审查维度定义在 `skills/contract-improver/SKILL.md` 中：
+
+| 维度 | 检查内容 | 示例 |
+| --- | --- | --- |
+| 完整性 | 必备要素是否齐全 | 双方信息、金额、付款方式、交付时间、违约金、保密、知识产权、签署信息 |
+| 明确性 | 有没有模糊表述 | “尽快”改为“60 个工作日内”，“协商解决”改为明确仲裁机构 |
+| 公平性 | 双方权利义务是否平衡 | 违约金双向对等、付款条件合理、知识产权归属公平 |
+| 合规性 | 是否符合法律和行业标准 | 违约金比例合理、保密期限覆盖合同期和解约后周期 |
+
+## 核心设计
+
+<CardGrid>
+  <Card title="Python 控制循环" icon="sync">
+    重试轮数由代码控制，不交给 Prompt 自己决定。
+  </Card>
+  <Card title="上下文持久化" icon="database">
+    `checkpointer + thread_id` 让每轮消息能接上上一轮。
+  </Card>
+  <Card title="权限隔离" icon="approve-check">
+    Editor 有写入工具，Reviewer 只有只读工具。
+  </Card>
+  <Card title="Skill 驱动" icon="star">
+    审查维度、标准模板、退出条件沉淀在 Skill 中。
+  </Card>
+</CardGrid>
+
+## 代码骨架
+
+```python title="contract_improve_loop.py"
+class ContractImproveLoop:
+    def scan(self) -> list[str]:
+        """扫描待处理合同。"""
+        return glob("pending_contracts/*.txt")
+
+    def process_one(self, contract_id: str, max_rounds: int = 3) -> dict:
+        """对单个合同执行多轮 Editor -> Reviewer 循环。"""
+        thread_id = f"contract-{contract_id}"
+
+        for round_num in range(1, max_rounds + 1):
+            result = orchestrator.stream(
+                {"messages": [("user", f"请处理合同 {contract_id}")]},
+                config={"configurable": {"thread_id": thread_id}},
+            )
+
+            status = self._check_result(result, contract_id)
+            if status == "completed":
+                return {"contract_id": contract_id, "status": "completed"}
+            if status == "escalated":
+                return {"contract_id": contract_id, "status": "escalated"}
+
+        escalate_contract.invoke({
+            "contract_id": contract_id,
+            "reason": "多轮修正仍未通过，需要人工处理",
+        })
+        return {"contract_id": contract_id, "status": "escalated"}
+
+    def run_loop(self, interval: int = 10):
+        """持续运行的监控循环。"""
+        while True:
+            for contract_id in self.scan():
+                self.process_one(contract_id)
+            time.sleep(interval)
+```
+
+工具和子代理分层：
+
+```python title="contract_agents.py"
+@tool
+def read_contract(contract_id: str) -> str:
+    """读取合同文件。"""
+
+@tool
+def improve_contract(contract_id: str, improved_content: str) -> str:
+    """写入完善后的合同。"""
+
+@tool
+def finalize_contract(contract_id: str, comment: str) -> str:
+    """归档已完成合同。"""
+
+@tool
+def escalate_contract(contract_id: str, reason: str) -> str:
+    """升级人工处理。"""
+
+contract_editor = SubAgent(
+    name="contract-editor",
+    tools=[read_contract, improve_contract],  # Maker 有写入权限
+)
+
+contract_reviewer = SubAgent(
+    name="contract-reviewer",
+    tools=[read_contract],  # Checker 只有只读权限
+)
+
+orchestrator = create_deep_agent(
+    skills=[SKILLS],
+    backend=FilesystemBackend(root_dir=CUR_DIR, virtual_mode=True),
+    subagents=[contract_editor, contract_reviewer],
+    checkpointer=InMemorySaver(),
+)
+```
+
+## 构建块映射
+
+| 构建块 | 合同案例中的落点 |
+| --- | --- |
+| 自动化 / 调度 | `while True` 持续监控 `pending_contracts/` |
+| 工作树 / 隔离 | `FilesystemBackend(root_dir=CUR_DIR, virtual_mode=True)` |
+| Skill 技能 | `skills/contract-improver/SKILL.md` 定义四大审查维度 |
+| 工具调用 / 外部连接 | `read_contract`、`improve_contract`、`finalize_contract`、`escalate_contract` |
+| 子 Agent / 协作 | `contract-editor` 做 Maker，`contract-reviewer` 做 Checker |
+| 记忆 / 状态 | `store.put()` 记录修改/归档/升级，`InMemorySaver` 保存跨轮上下文 |
+
+<Aside type="tip" title="案例重点">
+  这个案例最值得记的是：Loop 的重试由 Python 控制，合同审查由 Skill 定义，写入和复核通过子 Agent 权限隔离。
+</Aside>

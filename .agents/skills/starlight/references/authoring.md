@@ -127,3 +127,5 @@ echo "无边框"
 ```
 
 本地图片放在 `src/assets/` 中，Astro 会自动优化。
+
+如果用户提供的是本地图片，但希望文档里使用可公开访问的远程图片链接，先使用 `oss-image-publisher` skill 上传图片并获取 OSS 链接，再把返回的链接写成 Markdown 图片语法。文档 skill 不直接处理 OSS 密钥，也不自己实现上传。

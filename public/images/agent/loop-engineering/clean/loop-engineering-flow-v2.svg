@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">从 Prompt Engineering 到 Loop Engineering</title>
+  <desc id="desc">对比旧模式中人手动推进每一轮，以及新模式中人设计 Loop，系统自动发现任务、调度 Agent、验证结果并修正重试。</desc>
+  <defs>
+    <marker id="arrow-dark" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#1f2937" />
+    </marker>
+    <marker id="arrow-teal" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#0f766e" />
+    </marker>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.12" />
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .rule { stroke: #e2e8f0; stroke-width: 1.4; }
+      .title { font: 750 40px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 20px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .panel { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 28; filter: url(#soft-shadow); }
+      .old-panel { fill: #fff7ed; stroke: #fed7aa; }
+      .new-panel { fill: #ecfdf5; stroke: #99f6e4; }
+      .panel-title { font: 750 25px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .panel-sub { font: 450 15px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #64748b; }
+      .badge { rx: 16; }
+      .badge-old { fill: #ffedd5; stroke: #f97316; stroke-width: 1.6; }
+      .badge-new { fill: #ccfbf1; stroke: #0f766e; stroke-width: 1.6; }
+      .badge-text { font: 750 14px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+      .card { fill: #ffffff; stroke-width: 2.2; rx: 18; filter: url(#soft-shadow); }
+      .human { stroke: #2563eb; }
+      .llm { stroke: #7c3aed; }
+      .review { stroke: #f97316; }
+      .loop { stroke: #0f766e; }
+      .agent { stroke: #4f46e5; }
+      .check { stroke: #e11d48; }
+      .store { stroke: #16a34a; }
+      .repair { stroke: #d97706; }
+      .icon-bg { fill: #111827; }
+      .icon { font: 750 15px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .label { font: 750 21px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .small { font: 400 14px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .tiny { font: 650 13px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #64748b; }
+      .arrow { fill: none; stroke: #1f2937; stroke-width: 3; marker-end: url(#arrow-dark); }
+      .loop-arrow { fill: none; stroke: #0f766e; stroke-width: 3.4; marker-end: url(#arrow-teal); }
+      .soft-arrow { fill: none; stroke: #94a3b8; stroke-width: 2.4; stroke-dasharray: 8 8; marker-end: url(#arrow-dark); }
+      .control { fill: #111827; rx: 20; }
+      .control-title { font: 750 20px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #ffffff; }
+      .control-note { font: 500 14px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #cbd5e1; }
+      .chip { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.4; rx: 15; }
+      .chip-text { font: 700 13px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+      .footer { fill: #eef2ff; stroke: #4f46e5; stroke-width: 2; rx: 18; }
+      .footer-text { font: 700 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #3730a3; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1280" height="760" />
+  <text class="title" x="70" y="76">从 Prompt Engineering 到 Loop Engineering</text>
+  <text class="subtitle" x="70" y="112">不是抛弃 Prompt，而是把 Prompt、工具、验证和重试放进一个可控的循环系统。</text>
+  <line class="rule" x1="70" y1="148" x2="1210" y2="148" />
+
+  <rect class="panel old-panel" x="70" y="188" width="445" height="416" />
+  <text class="panel-title" x="104" y="236">旧模式：人在循环里</text>
+  <text class="panel-sub" x="104" y="264">每一轮都靠人手动判断、追问和修正。</text>
+  <rect class="badge badge-old" x="300" y="212" width="174" height="34" />
+  <text class="badge-text" x="328" y="234">Prompt Engineering</text>
+
+  <rect class="card human" x="112" y="312" width="152" height="82" />
+  <circle class="icon-bg" cx="140" cy="340" r="15" />
+  <text class="icon" x="136" y="345">1</text>
+  <text class="label" x="168" y="348">写 Prompt</text>
+  <text class="small" x="140" y="374">把问题说清楚</text>
+
+  <rect class="card llm" x="322" y="312" width="152" height="82" />
+  <circle class="icon-bg" cx="350" cy="340" r="15" />
+  <text class="icon" x="346" y="345">2</text>
+  <text class="label" x="378" y="348">LLM 回答</text>
+  <text class="small" x="350" y="374">生成一次结果</text>
+
+  <rect class="card review" x="112" y="460" width="152" height="82" />
+  <circle class="icon-bg" cx="140" cy="488" r="15" />
+  <text class="icon" x="136" y="493">3</text>
+  <text class="label" x="168" y="496">人工判断</text>
+  <text class="small" x="140" y="522">读结果、找问题</text>
+
+  <rect class="card human" x="322" y="460" width="152" height="82" />
+  <circle class="icon-bg" cx="350" cy="488" r="15" />
+  <text class="icon" x="346" y="493">4</text>
+  <text class="label" x="378" y="496">继续追问</text>
+  <text class="small" x="350" y="522">再写下一轮</text>
+
+  <path class="arrow" d="M264 353 H310" />
+  <path class="soft-arrow" d="M398 394 V448" />
+  <path class="arrow" d="M322 501 H276" />
+  <path class="soft-arrow" d="M188 460 C130 420 130 380 112 356" />
+
+  <text class="tiny" x="116" y="576">瓶颈：人要一直盯着，复杂任务要手动拆解，长对话容易丢上下文。</text>
+
+  <rect class="panel new-panel" x="575" y="188" width="635" height="416" />
+  <text class="panel-title" x="610" y="236">新模式：系统在循环里</text>
+  <text class="panel-sub" x="610" y="264">人先设计 Loop，后面由系统自动调度、验证和收敛。</text>
+  <rect class="badge badge-new" x="956" y="212" width="178" height="34" />
+  <text class="badge-text" x="982" y="234">Loop Engineering</text>
+
+  <rect class="control" x="610" y="304" width="244" height="92" />
+  <text class="control-title" x="654" y="340">Loop Contract</text>
+  <text class="control-note" x="646" y="370">目标、触发、验证、退出</text>
+
+  <rect class="chip" x="622" y="414" width="82" height="30" />
+  <text class="chip-text" x="644" y="434">目标</text>
+  <rect class="chip" x="716" y="414" width="82" height="30" />
+  <text class="chip-text" x="738" y="434">触发</text>
+  <rect class="chip" x="810" y="414" width="82" height="30" />
+  <text class="chip-text" x="832" y="434">验收</text>
+
+  <rect class="card loop" x="924" y="304" width="210" height="78" />
+  <circle class="icon-bg" cx="954" cy="331" r="15" />
+  <text class="icon" x="950" y="336">1</text>
+  <text class="label" x="984" y="339">发现任务</text>
+  <text class="small" x="954" y="362">定时、事件或队列触发</text>
+
+  <rect class="card agent" x="924" y="426" width="210" height="78" />
+  <circle class="icon-bg" cx="954" cy="453" r="15" />
+  <text class="icon" x="950" y="458">2</text>
+  <text class="label" x="984" y="461">调度 Agent</text>
+  <text class="small" x="954" y="484">带上下文执行一轮</text>
+
+  <rect class="card check" x="662" y="504" width="210" height="78" />
+  <circle class="icon-bg" cx="692" cy="531" r="15" />
+  <text class="icon" x="688" y="536">3</text>
+  <text class="label" x="722" y="539">自动验证</text>
+  <text class="small" x="692" y="562">测试、状态或 Checker</text>
+
+  <rect class="card store" x="1000" y="536" width="156" height="56" />
+  <text class="label" x="1032" y="562">通过</text>
+  <text class="small" x="1024" y="584">记录并继续</text>
+
+  <rect class="card repair" x="610" y="456" width="210" height="36" />
+  <text class="small" x="640" y="479">不通过：修正重试 / 升级人工</text>
+
+  <path class="arrow" d="M854 350 H912" />
+  <path class="loop-arrow" d="M1029 382 V414" />
+  <path class="loop-arrow" d="M924 465 C850 466 834 486 818 502" />
+  <path class="loop-arrow" d="M662 542 C610 520 600 486 610 474" />
+  <path class="loop-arrow" d="M820 474 C886 430 906 380 924 345" />
+  <path class="arrow" d="M872 543 C926 550 956 556 988 564" />
+
+  <text class="tiny" x="946" y="416">执行</text>
+  <text class="tiny" x="846" y="522">验收</text>
+  <text class="tiny" x="704" y="618">关键：人不再逐轮催促，而是设计循环边界，让系统自己推进。</text>
+
+  <path class="arrow" d="M518 396 H564" />
+  <text class="tiny" x="510" y="378">升级为</text>
+
+  <rect class="footer" x="180" y="658" width="920" height="56" />
+  <text class="footer-text" x="226" y="693">核心变化：Prompt 仍然存在，但从“人手动写每一轮”，变成“Loop 按规则自动生成、执行、检查和修正”。</text>
+</svg>

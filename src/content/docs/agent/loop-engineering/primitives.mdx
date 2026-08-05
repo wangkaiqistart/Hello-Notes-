@@ -1,0 +1,343 @@
+---
+title: Loop Engineering：五大构建块
+description: 自动化/调度、工作树/隔离、Skill、工具调用/外部连接、子 Agent/协作，以及记忆/状态层
+sidebar:
+  label: 五大构建块
+  order: 3
+---
+
+import { Aside, Card, CardGrid, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Addy Osmani 将 Loop 的设计方法论提炼为五大构建块（Five Primitives）加记忆层。它们不是抽象概念，而是一个 Loop 系统中真实存在的职责划分。
+
+![Loop Engineering 构建块](/images/agent/loop-engineering/clean/loop-primitives-v2.svg)
+
+## 能力总览
+
+<CardGrid>
+  <Card title="自动化 / 调度" icon="sync">
+    决定 Loop 何时启动、如何发现任务、多久运行一次，以及什么情况下继续或停止。
+  </Card>
+  <Card title="工作树 / 隔离" icon="folder">
+    给不同 Agent 分配安全工作空间，避免互相踩文件、污染真实项目或越界操作。
+  </Card>
+  <Card title="Skill 技能" icon="star">
+    把项目规范、业务流程、审查清单外化成 `SKILL.md`，让 Agent 按清单执行。
+  </Card>
+  <Card title="工具调用 / 外部连接" icon="puzzle">
+    通过 Tool、API、MCP 连接外部系统，让 Agent 能查询真实数据并执行真实操作。
+  </Card>
+  <Card title="子 Agent / 协作" icon="random">
+    将执行者和验证者分离，用 Maker-Checker 降低自评偏差。
+  </Card>
+  <Card title="记忆 / 状态" icon="database">
+    保存进度、历史反馈、处理记录和长期经验，让下一轮能接上上一轮。
+  </Card>
+</CardGrid>
+
+## 自动化 / 调度
+
+自动化是 Loop 的触发器，决定系统什么时候开始工作。没有自动化，Agent 仍然要等人手动调用。
+
+<Tabs>
+  <TabItem label="定时触发" icon="clock">
+    按固定时间间隔唤醒系统，适合周期性巡检：每天生成运营日报、每 10 分钟扫描待处理队列、每小时检查服务健康。
+  </TabItem>
+  <TabItem label="事件触发" icon="bolt">
+    由外部事件唤醒：GitHub PR 创建、CI 失败、监控告警、Slack 关键词消息、Webhook 事件。
+  </TabItem>
+  <TabItem label="目标驱动" icon="approve-check">
+    不设固定时间表，而是设完成条件。Agent 持续运行，直到独立 Checker 判定验收条件满足。
+  </TabItem>
+</Tabs>
+
+典型写法：
+
+```python title="scheduler.py"
+while True:
+    contracts = glob("pending_contracts/*.txt")
+    for contract_id in contracts:
+        process_contract(contract_id)
+    time.sleep(10)
+```
+
+目标驱动型工具可以理解成：不是只让 Agent 执行一步，而是给它一个目标和验收标准，让它围绕这个目标持续执行。
+
+```text frame="none"
+目标：修复 test/auth 下所有失败测试
+验收：npm test 退出码为 0，lint 无报错
+```
+
+关键点：**循环逻辑在代码里，不在 Prompt 里。**
+
+## 工作树 / 隔离
+
+多个 Agent 同时在一个项目里工作时，最容易出问题：Agent A 正在读某个文件，Agent B 同时把它改了，A 后面的所有判断都基于过期状态。
+
+隔离常见做法：
+
+```text frame="none"
+main repository
+├── worktree-auth-fix      -> Agent A 独占
+├── worktree-api-optimize  -> Agent B 独占
+└── worktree-ui-refactor   -> Agent C 独占
+```
+
+在 DeepAgents 类系统里，可以用文件系统后端限制 Agent 的工作范围：
+
+```python title="workspace.py"
+from deepagents.backends import FilesystemBackend
+
+maker = create_deep_agent(
+    backend=FilesystemBackend(
+        root_dir="./agent_workspace",
+        virtual_mode=True,  # Agent 看不到 root_dir 之外的任何文件
+    ),
+    # ...
+)
+```
+
+隔离的价值：
+
+- 防止多个 Agent 互相覆盖文件。
+- 失败修改可以丢弃，不污染主工作区。
+- 让多个 Agent 真正并行，提高吞吐量。
+- 把权限边界变成工程边界，而不是只靠 Prompt 约束。
+
+## Skill 技能
+
+Skill 是把项目知识外化为独立的 `SKILL.md` 文件。它可以理解成给 Agent 使用的标准作业流程（SOP）：不是单纯写给人看的说明文档，而是 Agent 在某类任务里可以照着执行的流程清单。
+
+一份好的 Skill 应该像检查清单：什么时候使用、先做什么、后做什么、失败怎么处理、最后怎么验收，都要写得清楚。模糊的指导没有意义，可执行、可验证的规则才有用。
+
+Skill 在 Loop 中解决的是“每一轮都重新解释规则”的问题。项目规范、业务政策、审查标准、常见错误处理方式，如果都塞进 Prompt，会让上下文越来越重；如果沉淀成 Skill，Agent 只在需要时读取，就能把高频经验复用起来。
+
+<CardGrid>
+  <Card title="沉淀项目知识" icon="open-book">
+    把业务规则、项目规范、操作流程写成独立文件，避免每次都在 Prompt 里重新交代。
+  </Card>
+  <Card title="按需加载" icon="download">
+    Agent 启动时只知道 Skill 名称和一句描述，真正需要执行该任务时，才读取完整 `SKILL.md`。
+  </Card>
+  <Card title="降低上下文成本" icon="database">
+    不把所有规则一次性塞进 system prompt，能减少重复 Token，让长时间 Loop 的上下文和成本更稳定。
+  </Card>
+  <Card title="让执行可检查" icon="approve-check">
+    Skill 不是灵感提示，而是可执行清单。Agent 做完后，Checker 也能按同一份清单复核。
+  </Card>
+</CardGrid>
+
+渐进式披露可以理解成两层加载：
+
+- 第一层：Agent 启动时只加载 Skill 的名称和一句描述，相当于先知道“我有哪些技能可用”。
+- 第二层：当任务真的需要某个 Skill 时，再读取完整 `SKILL.md`，拿到详细步骤、规则和验收标准。
+
+典型实现里，第一层通常只占几十个 Token；完整 Skill 可能很长，但只有命中任务时才进入上下文。这样做的好处是：常用能力可以长期沉淀，但不会每轮都占满上下文。Loop 跑得越久，这种按需加载越重要。
+
+<Aside type="tip" title="写 Skill 的原则">
+  Skill 要写成“可执行流程 + 可验证标准”，而不是泛泛的经验总结。能被 Agent 执行、能被 Checker 检查，才适合放进 Skill。
+</Aside>
+
+适合沉淀成 Skill 的内容，通常有三个特点：会反复使用、有明确流程、结果可以检查。
+
+| 不适合写法 | 更适合写法 |
+| --- | --- |
+| “请认真审查合同风险” | “检查合同双方、金额、付款条款、交付条款、违约条款，并输出风险评级” |
+| “代码要写得规范一些” | “函数命名使用 snake_case，接口返回统一结构，新增逻辑必须补充错误处理” |
+| “遇到异常要谨慎处理” | “连续 3 次失败后停止重试，记录错误日志，并升级给人工处理” |
+
+```markdown title="skills/contract-review/SKILL.md"
+---
+name: contract-review
+description: 合同审查标准流程。当需要审查合同时使用此技能。
+---
+
+# 合同审查清单
+
+## 第一步：基础信息核验
+- 合同双方名称是否完整准确
+- 合同金额是否明确，大小写是否一致
+- 签署日期是否在有效期内
+
+## 第二步：条款审查
+- 付款条款：付款方式、账期是否合理
+- 交付条款：交付时间、验收标准是否明确
+- 违约条款：违约金比例是否在合理范围内
+- 保密条款：保密期限是否覆盖合同期和解约后周期
+
+## 第三步：风险评级
+- 低风险：标准模板合同，无特殊条款
+- 中风险：非标准条款，但不涉及核心利益
+- 高风险：涉及大额违约金、知识产权归属、独家授权
+```
+
+在代码里，Skill 一般以目录形式挂载。Agent 启动时只加载目录下的 Skill 摘要，真正命中任务时再读取具体文件：
+
+```python title="skills.py"
+agent = create_deep_agent(
+    model=llm,
+    tools=[...],
+    skills=["./skills/"],  # 启动时只加载名称列表，用到才读全文
+)
+```
+
+这也是 Skill 相比普通 Prompt 更适合 Loop 的原因：Prompt 更适合一次性说明，Skill 更适合长期复用；Prompt 常常随对话消失，Skill 可以作为项目资产沉淀下来，后续让不同 Agent、不同任务继续复用。
+
+## 工具调用 / 外部连接
+
+工具调用是 Agent 与外部世界交互的接口层。没有工具调用，Agent 只能推理和生成文本；有了 Tool、API、MCP 这类外部连接，Agent 才能查询真实数据、执行真实操作、发送通知和记录结果。
+
+典型链路：
+
+```text frame="none"
+Agent 推理：“退款在 7 天窗口内，符合政策”
+  -> 调订单系统查询退款记录
+  -> 调支付网关执行退款
+  -> 调消息系统通知客户
+  -> 调工单系统创建操作记录
+```
+
+在自定义 Loop 代码中，外部连接通常会封装成工具函数：
+
+```python title="tools.py"
+from langchain.tools import tool
+
+@tool
+def read_contract(file_path: str) -> str:
+    """读取合同文件内容。"""
+    with open(file_path, "r") as f:
+        return f.read()
+
+@tool
+def approve_contract(contract_id: str, reason: str) -> str:
+    """批准合同并归档。"""
+    shutil.move(f"pending/{contract_id}", f"approved/{contract_id}")
+    return f"合同 {contract_id} 已批准：{reason}"
+
+@tool
+def escalate_contract(contract_id: str, reason: str) -> str:
+    """合同存在高风险，升级给人工审批。"""
+    return f"合同 {contract_id} 已升级：{reason}"
+```
+
+## 子 Agent / 协作
+
+子代理是 Loop Engineering 中最核心的设计之一。原则只有一条：**执行者和验证者必须是两个独立 Agent。**
+
+Maker-Checker 的三条硬规则：
+
+- **硬性权限隔离**：Checker 的工具列表里没有写入工具，不是让它“别乱改”，而是它根本改不了。
+- **独立上下文**：Checker 只看 Maker 的产出物，不看 Maker 的推理过程，避免被推理路径带偏。
+- **客观评估标准**：Checker 对照检查清单逐项核对，结果要么通过，要么不通过。
+
+```python title="subagents.py"
+from deepagents.middleware.subagents import SubAgent
+
+maker = SubAgent(
+    name="contract-editor",
+    description="审查合同并给出处理结论。",
+    tools=[read_contract, approve_contract, reject_contract, escalate_contract],
+    model=llm,
+)
+
+checker = SubAgent(
+    name="contract-reviewer",
+    description="独立复核 Maker 的审查结论。",
+    tools=[read_contract, get_skill_checklist],  # 只有只读权限
+    model=llm,
+)
+
+agent = create_deep_agent(
+    model=llm,
+    tools=[read_contract],
+    subagents=[maker, checker],
+    system_prompt="""
+    审查流程：
+    1. 委派 contract-editor 审查
+    2. 委派 contract-reviewer 复核
+    3. 通过则执行，不通过则退回重做，仍不通过则升级人工
+    """,
+)
+```
+
+## 记忆 / 状态
+
+记忆 / 状态解决的是 Loop 持续运行时最现实的问题：Agent 不能每一轮都像第一次启动一样重新开始。它需要知道当前任务做到哪一步、上一轮工具返回了什么、哪些错误已经踩过、哪些规则需要长期遵守。
+
+可以把它拆成两件事看：
+
+- **记忆**：让 Agent 知道“过去发生过什么、沉淀了什么经验”。
+- **状态**：让运行时知道“当前任务跑到哪一步、下一步该继续还是退出”。
+
+![Agent 记忆三层架构](/images/agent/loop-engineering/clean/memory-three-layer.svg)
+
+三层记忆可以这样理解：
+
+| 记忆层 | 存储位置 | 时效 | 主要内容 |
+| --- | --- | --- | --- |
+| 工作记忆 | 当前上下文窗口 | 单次会话 / 当前轮 | 当前任务上下文、工具调用记录、临时消息 |
+| 短期记忆 | checkpointer、会话摘要、临时向量库、进度文件 | 跨轮次，通常是数天到数周 | 对话摘要、关键节点、任务进度、错误经验 |
+| 长期记忆 | store、知识库、配置文件、向量库、`AGENTS.md`、`SKILL.md` | 长期保存 | 用户偏好、项目规范、业务政策、领域知识 |
+
+这里容易混淆的是：短期记忆确实也可能保存 `messages` 列表，但它和工作记忆的区别不在“是不是 messages”，而在生命周期。
+
+- **工作记忆**：已经进入当前上下文窗口，模型这一轮可以直接看到，用完就可能被压缩或丢弃。
+- **短期记忆**：保存在对话窗口之外，用来恢复任务状态。下一轮开始时，再从 checkpointer、进度文件或任务状态里取出来，重新放回上下文。
+
+所以可以这样理解：工作记忆是“正在脑子里想的内容”，短期记忆是“临时记在便签上，下一轮继续用的内容”。
+
+三层之间不是互相替代，而是逐步沉淀：
+
+```text frame="none"
+当前上下文窗口
+  -> 压缩 / 摘要
+短期记忆
+  -> 提炼 / 沉淀
+长期记忆
+```
+
+在工程实现上，`checkpointer` 更偏“保存任务状态”，`store` 更偏“保存长期记忆”。前者让 Loop 可以恢复到上一轮，后者让后续任务能复用已经验证过的经验。
+
+```python title="memory.py"
+from langgraph.store.memory import InMemoryStore
+from langgraph.checkpoint.memory import InMemorySaver
+
+store = InMemoryStore()         # 长期记忆
+checkpointer = InMemorySaver()  # 短期记忆：保存跨轮状态，里面可以包含 messages
+
+agent = create_deep_agent(
+    model=llm,
+    store=store,
+    checkpointer=checkpointer,
+)
+
+# Loop 每次执行后写入结构化结果
+store.put(("reviews",), contract_id, {
+    "status": "approved",
+    "maker_conclusion": "低风险，同意通过",
+    "checker_conclusion": "复核通过",
+    "timestamp": "2026-06-12T15:30:00",
+})
+```
+
+这段代码的重点不是 `InMemoryStore` 本身，而是它体现的设计思路：
+
+- 每次 Loop 结束后，都要把关键结果写成结构化记录。
+- 只保存可复用、可追踪的信息，不把所有原始对话无脑塞进长期记忆。
+- Maker 的结论、Checker 的结论、最终状态和时间戳要分开保存，方便后续审计和复盘。
+- 失败、重试、升级人工等状态也应该记录下来，否则 Loop 跑久了很难解释“为什么走到这一步”。
+
+<Aside type="caution" title="注意">
+  `InMemoryStore` 在进程重启后会丢失。生产环境要换成持久化存储，并配合操作日志、审计记录和可观测性系统。
+</Aside>
+
+## 构建块总表
+
+| 构建块 | 解决的问题 | 开发者要设计什么 |
+| --- | --- | --- |
+| 自动化 / 调度 | Loop 何时运行 | 定时、事件、目标驱动、扫描频率 |
+| 工作树 / 隔离 | Agent 在哪里安全操作 | worktree、沙盒目录、虚拟文件系统、权限 |
+| Skill 技能 | Agent 按什么流程做事 | `SKILL.md`、检查清单、业务规则 |
+| 工具调用 / 外部连接 | Agent 如何连接外部世界 | Tool、API、MCP、只读/写入分层 |
+| 子 Agent / 协作 | 谁执行，谁验证 | Maker、Checker、Orchestrator |
+| 记忆 / 状态 | 如何跨轮接续 | checkpointer、store、日志、进度文件 |

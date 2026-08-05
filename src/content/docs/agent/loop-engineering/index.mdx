@@ -1,205 +1,108 @@
 ---
 title: Agent Loop 与 Loop Engineering
-description: 从 Agent Loop 到 Loop Engineering，理解智能体如何从单次工具调用走向持续运行、自动验证和闭环执行
+description: 理解 Agent Loop 的底层循环，以及 Loop Engineering 如何把智能体执行过程工程化、自动化、可验证化
 sidebar:
   label: 总览
   order: 1
 ---
 
-import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+import { Aside, Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 
-Agent Loop 是智能体能“干活”的底层机制；Loop Engineering 则是在 Agent Loop 之上，设计一套能持续发现任务、调度 Agent、验证结果、修正重试和退出收敛的工程系统。
+Agent Loop 是 AI Agent 能“干活”的底层机制；Loop Engineering 则是在 Agent Loop 之上，设计目标、触发、调度、隔离、验证、记忆、重试和退出，让 Agent 可以持续运行并稳定收敛。
 
 <Aside type="tip" title="一句话理解" icon="rocket">
-  Agent Loop 是让 LLM 反复观察、思考、行动和接收反馈；Loop Engineering 是设计这套循环如何自动运行、如何验证结果、如何避免失控。
+  Agent Loop 是“观察、思考、行动、反馈”的 while 循环；Loop Engineering 是把这个循环做成可调度、可验证、可退出的工程系统。
 </Aside>
 
-<CardGrid>
-  <Card title="Agent Loop" icon="random">
-    把 LLM 放进一个循环里，让它根据环境反馈不断调整行动，直到任务完成或达到终止条件。
-  </Card>
-  <Card title="Loop Engineering" icon="setting">
-    设计目标、触发条件、验证标准、权限边界、重试策略和退出条件，让 Agent 可以稳定持续运行。
-  </Card>
-  <Card title="核心变化" icon="rocket">
-    从“人写 Prompt，Agent 执行一次”，变成“人设计 Loop，Loop 调度 Agent 持续执行”。
-  </Card>
-  <Card title="工程重点" icon="approve-check">
-    不让 Agent 自己说“我完成了”，而是用测试、规则、Checker 或外部状态验证结果。
-  </Card>
-</CardGrid>
+![从 LLM 到 Loop Engineering 的概念递进](/images/agent/loop-engineering/clean/overview-progression-v2.svg)
 
-## Agent Loop
+## 概念递进
 
-Agent Loop 的核心是一个循环：观察环境、推理下一步、调用工具、读取反馈、更新记忆，再继续下一轮。
-
-```python title="agent-loop.py"
-while not termination_condition:
-    observation = environment.perceive()
-    plan = llm.reason(observation, history=memory)
-    result = tool_executor.run(plan)
-    memory.store(observation=observation, plan=plan, result=result)
-
-    if plan.is_final_answer() or max_steps_reached():
-        break
-```
-
-<Aside type="note" title="核心价值">
-  单次 LLM 调用只是在回答；Agent Loop 让 LLM 能根据工具结果和环境反馈继续行动，所以它开始具备“执行任务”的能力。
-</Aside>
-
-## Loop Engineering
-
-Loop Engineering 不是替代 Agent Loop，而是在 Agent Loop 之上加一层自动化调度和控制。
-
-旧模式里，人每次都要写 Prompt、看结果、再追问。新模式里，人先设计一套 Loop，让系统自动发现任务、调度 Agent、验证结果，不通过就修正重试，必要时升级给人类。
-
-<Tabs>
-  <TabItem label="Prompt Engineering" icon="open-book">
-    人写 Prompt，Agent 执行一次，人再判断结果好不好。
-
-    适合查询、文案、单段代码、一次性分析等短任务。
-  </TabItem>
-  <TabItem label="Loop Engineering" icon="random">
-    人设计目标、触发、约束、验证、预算和退出条件，Loop 自动调度 Agent 多轮执行。
-
-    适合持续监控、批量处理、代码修复、任务巡检、自动运营等长任务。
-  </TabItem>
-</Tabs>
-
-| 维度 | Prompt Engineering | Loop Engineering |
-| --- | --- | --- |
-| 工作方式 | 人写 Prompt，Agent 执行一次 | 人设计 Loop，Loop 调度 Agent 循环执行 |
-| 人的角色 | 每轮都要手动交互 | 设定目标、约束、验证和退出条件 |
-| Agent 角色 | 一次性工具 | 持续运行的执行单元 |
-| 适合任务 | 单次问答、简单生成 | 多步骤、长周期、可验证任务 |
-
-## 演进脉络
+理解 Agent Loop 之前，先把 LLM、工具绑定、Agent 这几层关系分清楚。
 
 <Steps>
 
-1. **ReAct 奠基**：把推理和行动交替组织起来，形成 `Thought -> Action -> Observation` 的基础循环。
+1. **LLM 本身只负责推理和生成**
 
-2. **AutoGPT / BabyAGI 探索**：尝试让 Agent 自主拆目标、生成任务、循环执行，但暴露出空转和缺少验证的问题。
+   LLM 本身没有跨会话的持久记忆，只能依赖当前上下文窗口，以及训练截止时间之前学到的知识。它可以判断、推理、生成文本，但不会天然记住上一次任务的执行状态。
 
-3. **Function Calling 与框架化**：工具调用标准化，LangChain 等框架降低了 Agent 开发门槛。
+2. **绑定工具只是让模型知道“有哪些工具可用”**
 
-4. **MCP 与 Agent SDK 成熟**：外部工具、文件系统、API 和数据源更容易接入，Agent 能力边界扩大。
+   工具绑定通常只是把工具名称、用途、参数结构告诉大模型，让模型判断“这个问题应该调用哪个工具、传什么参数”。真正执行工具的不是模型本身，而是外部运行时或 Agent 框架。
 
-5. **Ralph Loop 实验**：用简单 Bash 循环、文件系统状态和外部验证，让 Agent 可以无人值守地持续工作。
+3. **Agent 给 LLM 补上执行能力和状态能力**
 
-6. **Maker-Checker 产品化**：构建者负责执行，检查者负责独立验证，避免 Agent 给自己打分。
+   Agent 会接收模型给出的工具调用意图，真正执行工具，再把执行结果交回给 LLM。它还可以引入记忆、状态、任务历史和上下文管理，让模型下一步推理时能接着上一步走。
 
-7. **Loop Engineering 方法论化**：五大构建块、记忆层、理解负债、权限隔离等工程原则逐渐成形。
+4. **Agent Loop 让 Agent 可以反复思考和行动**
+
+   Agent 不只调用一次工具，而是进入“思考 -> 行动 -> 观察结果 -> 再思考”的循环，也就是 ReAct 思想。循环会持续进行，直到问题解决、达到最大轮数，或触发退出/升级条件。
 
 </Steps>
 
-<Aside type="caution" title="关键教训">
-  Agent 自主循环最怕“空转”。闭环必须依赖客观验证条件，例如测试结果、Git diff、日志、业务状态或独立 Checker，而不是 Agent 自己说“差不多完成了”。
-</Aside>
-
-## 五大构建块
-
-Loop Engineering 可以拆成五个构建块，再加一层记忆 / 状态系统。
+## 核心定位
 
 <CardGrid>
-  <Card title="自动化 / 调度" icon="sync">
-    决定 Loop 何时启动、如何扫描任务、多久运行一次、什么情况下停止。
+  <Card title="Agent Loop" icon="random">
+    把 LLM 的推理能力放进循环，让它可以基于工具结果反复思考和行动。
   </Card>
-  <Card title="工作树 / 隔离" icon="folder">
-    给 Agent 安全的工作空间，例如独立分支、沙盒目录、虚拟文件系统或受限权限。
+  <Card title="Loop Engineering" icon="setting">
+    不是只让 Agent 多跑几轮，而是提前定好：要做什么、什么时候开始、能用哪些工具和资料、怎么验收、失败怎么办、什么时候停下来。
   </Card>
-  <Card title="Skills 技能" icon="star">
-    把高频规则、业务知识、操作流程沉淀成可复用技能，减少每次重复解释。
+  <Card title="关键变化" icon="rocket">
+    从“人写 Prompt，Agent 执行一次”，变成“人设计 Loop，Loop 调度 Agent 多轮执行”。
   </Card>
-  <Card title="插件 / 连接器" icon="puzzle">
-    通过 Tool、API、MCP 等方式连接外部系统，让 Agent 能查询和执行真实操作。
-  </Card>
-  <Card title="子 Agent / 协作" icon="random">
-    将任务拆给不同角色，例如 Maker 负责方案，Checker 负责审核，Orchestrator 负责执行。
-  </Card>
-  <Card title="记忆 / 状态" icon="database">
-    保存任务进度、历史反馈、操作日志和上下文，保证下一轮能接上上一轮。
+  <Card title="工程底线" icon="approve-check">
+    不能让 Agent 自己给自己打分。它说“完成了”不算，必须用测试结果、业务状态、运行日志，或者独立 Checker 来验证。
   </Card>
 </CardGrid>
 
-## 设计要素
-
-设计一个 Loop 时，重点不是“让 Agent 多跑几轮”，而是把循环边界设计清楚。
-
-| 要素 | 要问的问题 |
-| --- | --- |
-| Objective | 这个 Loop 最终要达成什么目标？ |
-| Trigger | 什么条件触发 Loop？定时、事件、队列还是人工启动？ |
-| Discovery | Loop 如何发现待处理任务？ |
-| Workspace | Agent 在哪里工作？能改哪些文件或调用哪些工具？ |
-| Context | 每一轮需要带入哪些上下文、状态和记忆？ |
-| Delegation | 是否需要 Maker、Checker、子 Agent 或人工协作？ |
-| Verification | 用什么客观标准判断通过？ |
-| Budget | 最大轮数、时间、成本和工具调用次数是多少？ |
-| Escalation | 失败或不确定时如何升级给人类？ |
-| Exit | 什么条件下停止，而不是无限循环？ |
-
-<Aside type="tip" title="设计口诀">
-  先定目标，再定触发；先划权限，再定验证；先设预算，再设退出。
-</Aside>
-
-## 关键风险
-
-<Tabs>
-  <TabItem label="空转" icon="warning">
-    Agent 一直行动，但没有朝目标收敛。解决方式是引入可验证的外部状态，例如测试、日志、业务状态或审查结果。
-  </TabItem>
-  <TabItem label="自评偏差" icon="warning">
-    同一个 Agent 既执行又判断完成度，容易高估结果。更稳的做法是 Maker-Checker 分离。
-  </TabItem>
-  <TabItem label="权限失控" icon="warning">
-    Agent 拥有过大写入权限，可能误删、误改或误调用真实业务动作。应使用沙盒、只读工具和写操作审批。
-  </TabItem>
-  <TabItem label="理解负债" icon="warning">
-    Loop 自动化越高，人越容易不知道系统到底在做什么。需要日志、检查点、交接文档和定期 Review。
-  </TabItem>
-</Tabs>
-
-## 案例理解
-
-笔记里包含两个 Loop Engineering 案例，重点不是记代码，而是看五大构建块如何落到业务流程里。
+## 文档结构
 
 <CardGrid>
-  <Card title="案例一：持续处理任务" icon="sync">
-    Loop 定时扫描队列，发现待处理任务后调度 Agent 执行，再根据验证结果决定完成、重试或升级。
-  </Card>
-  <Card title="案例二：智能退款处理" icon="approve-check">
-    Maker 只读并提出退款方案，Checker 只读并审核方案，Orchestrator 只有在审核通过后才执行退款、通知、物流拦截或升级人工。
-  </Card>
+  <LinkCard
+    title="概念与演进"
+    href="/agent/loop-engineering/agent-loop/"
+    description="Agent Loop、Loop Engineering、Prompt Engineering 对比，以及 2022-2026 的演进脉络。"
+  />
+  <LinkCard
+    title="五大构建块"
+    href="/agent/loop-engineering/primitives/"
+    description="自动化/调度、工作树/隔离、Skill、工具调用/外部连接、子 Agent/协作、记忆/状态。"
+  />
+  <LinkCard
+    title="设计与风险"
+    href="/agent/loop-engineering/design-risks/"
+    description="设计 Loop 的 11 个要素、运行风险、未来趋势与工程师角色变化。"
+  />
+  <LinkCard
+    title="合同完善案例"
+    href="/agent/loop-engineering/contract-case/"
+    description="Editor-Reviewer 循环协作，自动打磨合同质量，直到四大审查维度达标。"
+  />
+  <LinkCard
+    title="退款处理案例"
+    href="/agent/loop-engineering/refund-case/"
+    description="Maker 提案、Checker 审核、Orchestrator 执行，把不可逆业务操作放进受控闭环。"
+  />
 </CardGrid>
 
-退款案例体现了一个重要原则：**会写的人不一定能审，能审的人不应该直接写，真正写入操作必须被权限和验证保护起来。**
+## 学习路径
 
-| 构建块 | 退款案例中的映射 |
-| --- | --- |
-| 自动化 / 调度 | Python `while True` 定时扫描退款队列 |
-| 工作树 / 隔离 | 虚拟文件系统或受限工作区，降低误操作风险 |
-| Skills 技能 | 退款政策、处理流程、审核规则沉淀为 Skill |
-| 插件 / 连接器 | 查询订单、检查政策、执行退款、发送通知等 Tool |
-| 子 Agent / 协作 | Maker 提方案，Checker 审核，Orchestrator 执行 |
-| 记忆 / 状态 | checkpointer、操作日志、处理记录和历史反馈 |
+<Steps>
 
-## 与 Harness 的关系
+1. 先理解 **Agent Loop**：它解决的是“LLM 如何从回答问题变成执行任务”。
 
-Loop Engineering 和 Harness Engineering 都在解决“如何让 Agent 稳定做事”，但关注点略有不同。
+2. 再理解 **Loop Engineering**：它解决的是“如何让 Agent 持续运行，并且不空转、不失控”。
 
-| 方法 | 关注点 | 更像什么 |
-| --- | --- | --- |
-| Harness Engineering | 规则、上下文、流程、验收、交付管控 | 驾驭 Agent 的工程体系 |
-| Loop Engineering | 自动触发、持续执行、验证反馈、循环收敛 | 让 Agent 自动运转的闭环系统 |
+3. 接着看 **五大构建块 + 记忆层**：把 Loop 拆成可落地的工程组件。
 
-可以把 Harness 看成“管控体系”，把 Loop 看成“执行循环”。复杂项目里，两者通常会一起用。
+4. 最后看两个案例：合同完善偏内容迭代，退款处理偏业务执行和权限隔离。
 
-## 总结
+</Steps>
+
+## 总结速记
 
 <Aside type="tip" title="速记" icon="star">
-  Agent Loop 是观察、思考、行动、反馈的循环；Loop Engineering 是把这个循环工程化，让它能自动发现任务、调度 Agent、验证结果、修正重试和安全退出。
-
-  速记：**Prompt 是一次指令，Loop 是持续系统；Agent 负责干活，Loop 负责让干活过程可验证、可收敛、可交接。**
+  **Prompt 解决“一次怎么说”，Loop 解决“持续怎么做”。Agent Loop 让 Agent 一轮轮思考、行动、看结果再调整；Loop Engineering 负责给这套循环加上规则、验收、恢复和退出机制。**
 </Aside>
