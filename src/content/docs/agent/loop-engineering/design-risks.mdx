@@ -134,6 +134,26 @@ Loop 跑起来之后，风险不再只是“Agent 不干活”，而是“Agent 
 - **状态可追踪**：每轮关键决策、工具结果、失败原因、升级原因都要有记录。
 - **成本有上限**：轮数、时间、Token、调用次数都要有硬限制。
 
+## 未来趋势
+
+Loop Engineering 后面会沿着几个比较清晰的方向发展：
+
+<CardGrid>
+  <Card title="Maker-Checker 成为默认架构" icon="approve-check">
+    不是所有场景都需要 Checker，但只要 Agent 的结果会被直接应用，比如代码合并、退款执行、合同审批，独立验证就不是额外成本，而是保险。
+  </Card>
+  <Card title="记忆系统决定 Agent 上限" icon="database">
+    模型能力会逐渐接近，但企业知识不会趋同。退款政策、合同模板、审批流程、历史处理经验，能否沉淀为 Skill 和记忆，决定 Loop 能处理多复杂的任务。
+  </Card>
+  <Card title="可观测性变成必须项" icon="setting">
+    24 小时运行的 Loop 必须有运行日志、成本追踪、成功率监控和异常告警。没有可观测性，就很难算生产系统。
+  </Card>
+</CardGrid>
+
+<Aside type="note" title="理解">
+  Loop 越接近真实业务，越不能只看“能不能跑”。还要看它能不能被验证、能不能复用企业知识、能不能被持续观察和追责。
+</Aside>
+
 ## 开发者的新角色
 
 Loop Engineering 不是替代 Prompt Engineering，而是把 Prompt 放进一个可运行的系统里。Prompt 仍然存在，只是更多由 Loop 根据任务、上下文和工具结果自动生成和调试。

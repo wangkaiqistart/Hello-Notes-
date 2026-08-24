@@ -1,0 +1,47 @@
+---
+title: Agent 实战进阶
+description: 从 Agent 的运行机制、工具调用、Workflow 对比和多智能体协作，逐步进入 Agent 实战开发
+sidebar:
+  label: 总览
+  order: 1
+---
+
+import { Aside, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+
+这个专题放的是 Agent 从“概念理解”走向“工程实战”的内容。
+
+这里不只关注某一个具体平台，而是先把 Agent 的共性机制拆清楚：大模型如何产生工具调用意图、工具如何被执行、结果如何回到上下文、Agent 如何通过循环完成任务，以及 Workflow、子 Agent、Skills 这些概念在工程里怎么衔接。
+
+<Aside type="tip" title="核心定位" icon="rocket">
+  Agent 实战进阶关注的是：如何把大模型从“会回答”推进到“会规划、会调用工具、会循环执行、会协作完成任务”。
+</Aside>
+
+## 学习主线
+
+<Steps>
+
+1. 先理解 **Agent 的核心组成**：LLM、Prompt、Tools、Tool Executor、上下文状态分别负责什么。
+
+2. 再理解 **工具调用链路**：模型生成工具调用意图，运行时真正执行工具，工具结果再回填给模型。
+
+3. 接着区分 **Workflow 和 Agent**：什么时候适合固定流程，什么时候需要 Agent 自己判断下一步。
+
+4. 最后进入 **多智能体协作**：主 Agent 负责任务拆解和调度，子 Agent 承担专业子任务。
+
+</Steps>
+
+## 当前笔记
+
+<CardGrid>
+  <LinkCard
+    title="Agent 与 OpenClaw 相关概念"
+    href="/agent/agent-practice/agent-openclaw-concepts/"
+    description="理解 Agent 的定义、运行原理、工具调用、Workflow 对比，以及主 Agent / 子 Agent 协作。"
+  />
+</CardGrid>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  Agent 不是单纯的大模型，而是把模型推理、工具执行、上下文状态和循环控制组织起来的工程系统。
+</Aside>

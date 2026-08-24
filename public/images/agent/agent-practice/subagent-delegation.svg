@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="680" viewBox="0 0 1180 680" role="img" aria-labelledby="title desc">
+  <title id="title">主 Agent 与子 Agent 协作</title>
+  <desc id="desc">展示主 Agent 接收用户请求后，将任务委派给多个子 Agent，并汇总结果返回用户。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#475569" />
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.11" />
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 760 39px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 19px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .node { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2.2; rx: 22; filter: url(#shadow); }
+      .main { fill: #fff7ed; stroke: #ea580c; }
+      .sub { fill: #eef2ff; stroke: #6366f1; }
+      .out { fill: #ecfdf5; stroke: #16a34a; }
+      .label { font: 750 24px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .text { font: 400 16px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .line { fill: none; stroke: #475569; stroke-width: 2.8; marker-end: url(#arrow); }
+      .back { fill: none; stroke: #64748b; stroke-width: 2.4; stroke-dasharray: 8 8; marker-end: url(#arrow); }
+      .chip { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.4; rx: 14; }
+      .chip-text { font: 700 13px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1180" height="680" />
+  <text class="title" x="70" y="72">主 Agent 与子 Agent 协作</text>
+  <text class="subtitle" x="70" y="108">复杂任务可以由主 Agent 负责调度，不同子 Agent 承担不同专业任务，最后汇总结果。</text>
+
+  <rect class="node" x="70" y="292" width="190" height="84" />
+  <text class="label" x="108" y="328">用户请求</text>
+  <text class="text" x="106" y="358">输入目标</text>
+
+  <rect class="node main" x="390" y="258" width="250" height="152" />
+  <text class="label" x="452" y="316">Main Agent</text>
+  <text class="text" x="430" y="350">拆解任务、委派子任务</text>
+  <text class="text" x="430" y="378">汇总结果并决策</text>
+
+  <rect class="node sub" x="800" y="150" width="250" height="86" />
+  <text class="label" x="856" y="202">Subagent A</text>
+  <rect class="node sub" x="800" y="292" width="250" height="86" />
+  <text class="label" x="856" y="344">Subagent B</text>
+  <rect class="node sub" x="800" y="434" width="250" height="86" />
+  <text class="label" x="856" y="486">Subagent C</text>
+
+  <rect class="node out" x="434" y="526" width="164" height="72" />
+  <text class="label" x="474" y="572">响应</text>
+
+  <path class="line" d="M260 334 H384" />
+  <path class="line" d="M640 292 C706 226 724 194 794 194" />
+  <path class="line" d="M640 334 H794" />
+  <path class="line" d="M640 376 C706 442 724 478 794 478" />
+  <path class="back" d="M800 218 C724 258 690 288 646 310" />
+  <path class="back" d="M800 356 C730 360 692 354 646 344" />
+  <path class="back" d="M800 456 C720 430 690 398 646 374" />
+  <path class="line" d="M516 410 V520" />
+
+  <rect class="chip" x="710" y="92" width="230" height="32" />
+  <text class="chip-text" x="740" y="113">委派：专业子任务</text>
+  <rect class="chip" x="686" y="564" width="250" height="32" />
+  <text class="chip-text" x="716" y="585">回收：结果、证据、状态</text>
+</svg>

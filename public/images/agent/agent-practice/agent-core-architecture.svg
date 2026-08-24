@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="680" viewBox="0 0 1180 680" role="img" aria-labelledby="title desc">
+  <title id="title">Agent 核心组成</title>
+  <desc id="desc">展示 LLM、Prompt、Tools 和 Tool Executor 如何共同组成 Agent。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#64748b" />
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#0f172a" flood-opacity="0.12" />
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 760 40px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 19px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .card { stroke-width: 2.2; rx: 22; filter: url(#shadow); }
+      .llm { fill: #eef6ff; stroke: #2563eb; }
+      .prompt { fill: #f0fdf4; stroke: #16a34a; }
+      .tools { fill: #ecfeff; stroke: #0891b2; }
+      .executor { fill: #fefce8; stroke: #ca8a04; }
+      .agent { fill: #111827; filter: url(#shadow); }
+      .label { font: 750 25px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .text { font: 400 16px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .agent-title { font: 760 35px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .agent-text { font: 500 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #cbd5e1; }
+      .line { fill: none; stroke: #64748b; stroke-width: 3; marker-end: url(#arrow); }
+      .chip { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 14; }
+      .chip-text { font: 700 13px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1180" height="680" />
+  <text class="title" x="70" y="72">Agent = LLM + Prompt + Tools + Tool Executor</text>
+  <text class="subtitle" x="70" y="108">LLM 负责理解和推理，工具负责连接外部世界，执行器负责真正调用工具，Agent 负责把它们组织成循环。</text>
+
+  <rect class="agent" x="438" y="262" width="304" height="154" rx="32" />
+  <text class="agent-title" x="488" y="328">Agent</text>
+  <text class="agent-text" x="486" y="366">协调推理、工具调用</text>
+  <text class="agent-text" x="486" y="394">观察结果并继续迭代</text>
+
+  <rect class="card llm" x="86" y="210" width="260" height="126" />
+  <text class="label" x="134" y="264">LLM</text>
+  <text class="text" x="134" y="300">大脑：理解任务、推理下一步</text>
+
+  <rect class="card tools" x="408" y="86" width="260" height="126" />
+  <text class="label" x="474" y="140">Tools</text>
+  <text class="text" x="450" y="176">手和感官：搜索、计算、查询</text>
+
+  <rect class="card prompt" x="736" y="86" width="260" height="126" />
+  <text class="label" x="800" y="140">Prompt</text>
+  <text class="text" x="776" y="176">角色、规则、任务说明</text>
+
+  <rect class="card executor" x="834" y="382" width="260" height="126" />
+  <text class="label" x="890" y="436">Tool Executor</text>
+  <text class="text" x="888" y="472">运行时：执行工具并返回结果</text>
+
+  <path class="line" d="M346 273 C384 280 404 300 432 322" />
+  <path class="line" d="M538 212 C548 232 558 244 568 262" />
+  <path class="line" d="M844 212 C824 242 792 274 742 318" />
+  <path class="line" d="M834 445 C790 420 770 400 744 382" />
+
+  <rect class="chip" x="466" y="456" width="108" height="30" />
+  <text class="chip-text" x="490" y="476">推理</text>
+  <rect class="chip" x="590" y="456" width="108" height="30" />
+  <text class="chip-text" x="616" y="476">行动</text>
+  <rect class="chip" x="528" y="502" width="108" height="30" />
+  <text class="chip-text" x="554" y="522">观察</text>
+</svg>

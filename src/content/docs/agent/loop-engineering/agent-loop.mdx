@@ -165,7 +165,9 @@ Loop Engineering 到 2026 年才真正爆发，不是之前没人想做，而是
   </TabItem>
 </Tabs>
 
-![Agent 记忆三层架构](/images/agent/loop-engineering/clean/memory-three-layer.svg)
+<Aside type="note" title="延伸阅读">
+  记忆三层架构的细节放在 [五大构建块：记忆 / 状态](/agent/loop-engineering/primitives/#记忆--状态) 中，这里只需要先记住：Loop 要持续运行，就必须把当前上下文、跨轮状态和长期规则分开管理。
+</Aside>
 
 三根支柱缺一不可：没有 MCP，Agent 还是很难稳定连接真实系统；没有上下文和记忆管理，Loop 跑久了就会贵、会忘、会乱；没有 Maker-Checker，自主运行就容易变成“做错了也没人发现”。
 
@@ -184,21 +186,44 @@ Prompt 没有消失，只是从“人手写的一次指令”，变成 Loop 系�
   Loop 是持续推进业务目标的入口，Harness 是支撑 Agent 安全执行的工程底座。
 </Aside>
 
-### 开发者的新角色
+### 范式已定：从写 Prompt 到写 Loop
 
-工程师的核心技能会从“怎么问 AI 一个好问题”，转向“怎么设计一个系统，让系统持续问对问题、做对事情、验收结果”。
+这一节的重点不是说 Prompt 不重要了，而是说**人和 Agent 的协作入口变了**。
+
+过去的核心动作是“人写 Prompt”：人把问题描述清楚，Agent 执行一轮，人再根据结果继续追问或修正。现在的核心动作正在变成“人写 Loop”：人把目标、触发、上下文、工具权限、验证标准和退出条件设计好，让 Loop 在运行过程中持续调度 Agent。
+
+<Aside type="tip" title="一句话理解">
+  以前是人一轮轮提示 Agent，现在是人设计一个会提示 Agent、调度 Agent、检查 Agent 的循环系统。
+</Aside>
+
+这个范式基本确定下来，是因为 Agent 已经不只是“回答问题”的模型，而是开始具备持续工作的工程条件：
 
 <CardGrid>
-  <Card title="设计循环" icon="random">
-    定义目标、触发条件、工具权限、验证标准、重试策略和退出条件。
+  <Card title="工具能稳定连接" icon="puzzle">
+    Tool、API、MCP 让 Agent 能接入真实系统，不只是停留在对话框里生成建议。
   </Card>
-  <Card title="训练系统" icon="star">
-    把错误经验、业务规则、项目规范沉淀到 Skills、规则和长期记忆里。
+  <Card title="上下文能持续管理" icon="database">
+    记忆、状态、摘要、缓存让长时间任务不必完全依赖单次对话窗口。
   </Card>
-  <Card title="验证产出" icon="approve-check">
-    不能只看 Agent 的总结，要用测试、日志、业务状态和独立 Checker 做客观验收。
+  <Card title="结果能独立验证" icon="approve-check">
+    Maker-Checker 把执行和验收拆开，避免 Agent 自己做完又自己说“完成了”。
   </Card>
 </CardGrid>
+
+所以工程师的新重点，不再只是把一个 Prompt 写得更漂亮，而是把任务运行过程设计清楚：
+
+| 过去更关注 | 现在更关注 |
+| --- | --- |
+| 这句话怎么问 AI？ | 这个任务什么时候启动？ |
+| Prompt 怎么写得更完整？ | 需要哪些上下文和工具？ |
+| Agent 这一轮回答得好不好？ | 结果由谁验证，失败怎么重试？ |
+| 人怎么继续追问？ | Loop 什么时候退出，什么时候升级给人？ |
+
+这也是“从写 Prompt 到写 Loop”的真正含义：**Prompt 变成 Loop 中的一环，Loop 变成工程师控制 Agent 持续工作的外层系统。**
+
+### 开发者的新角色
+
+工程师的核心技能会从“怎么问 AI 一个好问题”，转向“怎么设计一个系统，让系统持续问对问题、做对事情、验收结果”。详细的角色变化放在 [设计与风险](/agent/loop-engineering/design-risks/#开发者的新角色) 中，这里只记住三件事：设计循环、训练系统、验证产出。
 
 <Aside type="tip" title="速记">
   Prompt 是入口，Context 是信息，Harness 是底座，Loop 是持续完成目标的运行机制。
