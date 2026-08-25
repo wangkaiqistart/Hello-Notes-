@@ -1,0 +1,61 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title{font:700 42px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}
+      .sub{font:500 21px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#516071}
+      .label{font:700 25px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#182032}
+      .body{font:500 18px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#546171}
+      .note{font:700 22px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#1f2937}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M2 2L10 6L2 10" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <filter id="shadow" x="-8%" y="-12%" width="116%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity=".12"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="640" rx="28" fill="#F7FAFC"/>
+  <rect x="34" y="34" width="1132" height="572" rx="24" fill="#FFFFFF" stroke="#D9E2EC"/>
+  <text x="70" y="95" class="title">LLM 应用开发闭环</text>
+  <text x="72" y="132" class="sub">不是训练一个新模型，而是用模型能力、业务数据和工程流程组合出稳定应用。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="82" y="210" width="158" height="116" rx="18" fill="#E6F6F2" stroke="#6BC2B2"/>
+    <text x="115" y="254" class="label">目标</text>
+    <text x="112" y="288" class="body">场景 / 用户</text>
+    <text x="112" y="314" class="body">核心价值</text>
+
+    <rect x="278" y="210" width="158" height="116" rx="18" fill="#FFF4D6" stroke="#E2B84D"/>
+    <text x="311" y="254" class="label">功能</text>
+    <text x="310" y="288" class="body">最小闭环</text>
+    <text x="310" y="314" class="body">输入输出</text>
+
+    <rect x="474" y="210" width="158" height="116" rx="18" fill="#EAF0FF" stroke="#8AA4F5"/>
+    <text x="507" y="254" class="label">架构</text>
+    <text x="506" y="288" class="body">模型 / 数据</text>
+    <text x="506" y="314" class="body">检索 / 工具</text>
+
+    <rect x="670" y="210" width="158" height="116" rx="18" fill="#F5EAFF" stroke="#BB8FE8"/>
+    <text x="703" y="254" class="label">Prompt</text>
+    <text x="702" y="288" class="body">任务说明</text>
+    <text x="702" y="314" class="body">格式约束</text>
+
+    <rect x="866" y="210" width="158" height="116" rx="18" fill="#FFE9E3" stroke="#EE967B"/>
+    <text x="899" y="254" class="label">验证</text>
+    <text x="898" y="288" class="body">样例测试</text>
+    <text x="898" y="314" class="body">Bad Case</text>
+  </g>
+
+  <path d="M242 268H274" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M438 268H470" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M634 268H666" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M830 268H862" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <path d="M945 330C945 420 745 452 552 452C359 452 161 421 161 333" stroke="#64748B" stroke-width="3" stroke-dasharray="10 9" marker-end="url(#arrow)"/>
+  <rect x="350" y="398" width="404" height="84" rx="18" fill="#EEF7FF" stroke="#8CC4F5"/>
+  <text x="385" y="433" class="note">迭代核心：记录 Bad Case，改 Prompt / 检索 / 工具链</text>
+  <text x="415" y="461" class="body">从真实问题中收集失败样例，再逐步提高稳定性。</text>
+
+  <rect x="78" y="522" width="1044" height="45" rx="14" fill="#F1F5F9"/>
+  <text x="204" y="552" class="note">速记：目标先行 → 架构搭桥 → Prompt 控制 → 样例验证 → Bad Case 迭代</text>
+</svg>

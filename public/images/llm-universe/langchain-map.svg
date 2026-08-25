@@ -1,0 +1,54 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title{font:700 42px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}
+      .sub{font:500 21px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#516071}
+      .center{font:800 38px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#102033}
+      .label{font:700 23px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#182032}
+      .body{font:500 17px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#546171}
+      .note{font:700 22px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#1f2937}
+    </style>
+    <filter id="shadow" x="-8%" y="-12%" width="116%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity=".12"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="640" rx="28" fill="#F8FAFC"/>
+  <rect x="34" y="34" width="1132" height="572" rx="24" fill="#FFFFFF" stroke="#D9E2EC"/>
+  <text x="70" y="92" class="title">LangChain：LLM 应用的组合工具箱</text>
+  <text x="72" y="129" class="sub">把模型、Prompt、检索、工具和运行过程组织成可复用的应用链路。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="475" y="246" width="250" height="132" rx="28" fill="#172033"/>
+    <text x="510" y="304" class="center" fill="#FFFFFF">LangChain</text>
+    <text x="526" y="340" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="20" font-weight="600" fill="#D8E2EE">统一接口 + 组合流程</text>
+
+    <rect x="142" y="176" width="210" height="96" rx="18" fill="#E6F6F2" stroke="#6BC2B2"/>
+    <text x="184" y="214" class="label">模型与 Prompt</text>
+    <text x="185" y="244" class="body">统一调用，组织输入</text>
+
+    <rect x="142" y="368" width="210" height="96" rx="18" fill="#FFF4D6" stroke="#E2B84D"/>
+    <text x="196" y="406" class="label">文档与检索</text>
+    <text x="184" y="436" class="body">加载、切分、Retriever</text>
+
+    <rect x="495" y="456" width="210" height="96" rx="18" fill="#EAF0FF" stroke="#8AA4F5"/>
+    <text x="529" y="494" class="label">LCEL / Chain</text>
+    <text x="530" y="524" class="body">把组件串成流程</text>
+
+    <rect x="848" y="176" width="210" height="96" rx="18" fill="#F5EAFF" stroke="#BB8FE8"/>
+    <text x="899" y="214" class="label">工具与 Agent</text>
+    <text x="884" y="244" class="body">模型决定是否调用工具</text>
+
+    <rect x="848" y="368" width="210" height="96" rx="18" fill="#FFE9E3" stroke="#EE967B"/>
+    <text x="888" y="406" class="label">Memory / 回调</text>
+    <text x="883" y="436" class="body">历史、日志、流式输出</text>
+  </g>
+
+  <path d="M353 223L471 285" stroke="#94A3B8" stroke-width="3"/>
+  <path d="M353 416L471 340" stroke="#94A3B8" stroke-width="3"/>
+  <path d="M600 454V380" stroke="#94A3B8" stroke-width="3"/>
+  <path d="M847 223L729 285" stroke="#94A3B8" stroke-width="3"/>
+  <path d="M847 416L729 340" stroke="#94A3B8" stroke-width="3"/>
+
+  <rect x="170" y="534" width="860" height="46" rx="14" fill="#F1F5F9"/>
+  <text x="258" y="564" class="note">生态速记：LangChain 组织应用，LangGraph 管复杂状态，LangSmith 做调试评测。</text>
+</svg>

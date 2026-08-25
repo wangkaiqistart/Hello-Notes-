@@ -1,0 +1,136 @@
+---
+title: RAG 文档处理与分块
+description: 理解 RAG 建库前如何读取、清洗和切分文档
+sidebar:
+  label: 文档处理与分块
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+RAG 的效果很大程度取决于建库前的数据处理。文档如果读错、噪声太多、分块不合理，后面的 Embedding 和向量检索都会被拖累。
+
+![文档处理与分块流程](/images/llm-universe/document-chunking-pipeline.svg)
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  文档处理是 RAG 的质量入口：读取得准，清洗得干净，分块得合理，检索才有机会准确。
+</Aside>
+
+## 处理流程
+
+<Steps>
+
+1. **选择源文档**
+
+   明确哪些资料应该进入知识库，常见格式包括 PDF、Markdown、Word、HTML、TXT、数据库记录等。
+
+2. **读取文档**
+
+   使用 Loader 把不同格式文档读成统一的 `Document` 对象，通常包含 `page_content` 和 `metadata`。
+
+3. **清洗文本**
+
+   去掉异常换行、无意义空格、页眉页脚、乱码、重复内容等噪声。
+
+4. **切分文档**
+
+   由于单个文档的长度往往会超过模型支持的上下文，如果不切分，检索得到的知识可能太长，超出模型的处理能力。切分文档就是把长文档拆成多个 chunk，每个 chunk 是后续检索的基本单位。
+
+5. **保留元数据**
+
+   保存来源、标题、页码、章节、更新时间等信息，方便引用、过滤和排错。
+
+</Steps>
+
+## Document 对象怎么理解
+
+LangChain 读取文档后，通常会得到 `Document` 列表：
+
+| 字段 | 作用 |
+| --- | --- |
+| `page_content` | 文档正文内容 |
+| `metadata` | 来源、页码、文件路径、标题等描述信息 |
+
+<Tabs>
+  <TabItem label="PDF">
+    PDF 常用 `PyMuPDFLoader` 读取。优点是速度快，并且能保留页码、文件路径等元数据。
+  </TabItem>
+  <TabItem label="Markdown">
+    Markdown 可以用 `UnstructuredMarkdownLoader` 或按标题结构解析。标题层级对后续分块很有帮助。
+  </TabItem>
+</Tabs>
+
+```python
+from langchain_community.document_loaders import PyMuPDFLoader
+
+loader = PyMuPDFLoader("knowledge.pdf")
+pages = loader.load()
+
+first_page = pages[0]
+print(first_page.page_content)
+print(first_page.metadata)
+```
+
+## 清洗重点
+
+<CardGrid>
+  <Card title="换行问题" icon="document">
+    PDF 经常把一句话切成多行，需要处理异常换行，否则会影响语义连续性。
+  </Card>
+  <Card title="噪声字符" icon="warning">
+    页码、项目符号、重复空格、乱码、广告信息等都可能降低检索质量。
+  </Card>
+  <Card title="结构保留" icon="puzzle">
+    标题、章节、页码不要随便丢，它们是后续引用和过滤的重要元数据。
+  </Card>
+</CardGrid>
+
+清洗不是越狠越好。对于法律、合同、技术文档，标点、编号和章节结构本身可能很重要。
+
+## 分块参数
+
+分块的本质，是把“整篇文档”变成“适合检索和放入上下文的知识片段”。这样既能控制输入长度，也能让模型拿到更聚焦的参考内容。
+
+| 参数 | 含义 | 影响 |
+| --- | --- | --- |
+| `chunk_size` | 单个 chunk 的最大长度 | 太大容易噪声多，太小容易语义不完整 |
+| `chunk_overlap` | 相邻 chunk 的重叠长度 | 防止切分边界丢失上下文 |
+| `separators` | 分块时优先使用的分隔符 | 影响是否按段落、句子、标题切开 |
+| `length_function` | 如何计算长度 | 可以按字符，也可以按 token |
+
+常见起步值可以先用 `chunk_size=500`、`chunk_overlap=50`，再根据检索效果调整。
+
+```python
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=50,
+)
+
+split_docs = text_splitter.split_documents(pages)
+```
+
+## 分块策略怎么选
+
+| 文档类型 | 建议策略 |
+| --- | --- |
+| 普通长文 | 递归字符分割，优先按段落和句子切 |
+| Markdown | 优先按标题层级切，再按长度补切 |
+| 代码文档 | 尽量按函数、类、模块边界切 |
+| 合同/制度 | 保留条款编号和章节结构 |
+| FAQ | 一问一答可以作为天然 chunk |
+
+<Aside type="note" title="我的判断标准">
+  分块是否合理，看检索结果就知道：如果召回片段经常缺上文，说明块太小或 overlap 不够；如果召回片段信息太杂，说明块太大。
+</Aside>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  RAG 建库前流程：选文档 → 读取 → 清洗 → 分块 → 保留元数据。
+
+  分块记住两个参数：`chunk_size` 控制长度，`chunk_overlap` 保留上下文。
+
+  检索效果差时，先别急着换模型，先检查文档解析、清洗和分块。
+</Aside>

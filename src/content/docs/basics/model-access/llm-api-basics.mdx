@@ -1,0 +1,123 @@
+---
+title: LLM API 调用基础
+description: 理解调用大模型 API 时的消息结构、关键参数、环境变量和常见排错方向
+sidebar:
+  label: API 调用基础
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+大多数 LLM 应用不会把模型直接装进项目里，而是通过 API 或 SDK 调用模型服务。我要做的是把请求组织清楚，把密钥管理好，把返回结果处理稳定。
+
+![LLM API 调用链路](/images/llm-universe/llm-api-call-flow.svg)
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  API 调用的本质是：准备密钥和参数 → 组织 messages → 调用模型 → 解析结果 → 处理异常和成本。
+</Aside>
+
+## 调用前先知道什么
+
+<CardGrid>
+  <Card title="API Key" icon="lock">
+    用来证明调用者身份。密钥不能写死在代码里，应放在环境变量或 `.env` 文件中。
+  </Card>
+  <Card title="Model" icon="setting">
+    指定要调用的模型。不同模型的能力、上下文长度、价格和速度不同。
+  </Card>
+  <Card title="Messages" icon="document">
+    对话模型通常用消息列表表示上下文，常见角色包括 system、user、assistant。
+  </Card>
+  <Card title="Parameters" icon="puzzle">
+    常见参数有 temperature、max tokens、stream、top_p 等，用来控制输出风格和成本。
+  </Card>
+</CardGrid>
+
+## 核心消息结构
+
+<Tabs>
+  <TabItem label="System">
+    系统提示，用来设定模型角色、边界、风格和长期规则。它通常比普通用户输入更稳定地影响会话。
+  </TabItem>
+  <TabItem label="User">
+    用户输入，也就是当前要模型处理的问题、任务或原始材料。
+  </TabItem>
+  <TabItem label="Assistant">
+    模型历史回复。多轮对话时可以把历史回复放进 messages，让模型延续上下文。
+  </TabItem>
+</Tabs>
+
+可以把 messages 理解成一段可控的对话记录：
+
+```python
+messages = [
+    {"role": "system", "content": "你是一个严谨的知识库助手，只基于给定材料回答。"},
+    {"role": "user", "content": "请总结这段文档的核心观点。"},
+]
+```
+
+## 常见参数
+
+| 参数 | 作用 | 记忆方式 |
+| --- | --- | --- |
+| `model` | 选择调用哪个模型 | 先选能力，再看成本和速度 |
+| `messages` | 输入上下文 | system 定规则，user 给任务 |
+| `temperature` | 控制随机性 | 越低越稳定，越高越发散 |
+| `max_tokens` | 限制输出长度 | 控成本，也防止输出过长 |
+| `stream` | 是否流式返回 | 聊天产品常用，体验更好 |
+| `top_p` | 另一种采样控制 | 通常不要和 temperature 一起大幅调整 |
+
+<Aside type="note" title="Temperature 怎么记">
+  知识库问答、客服、信息抽取更适合低 temperature；创意文案、头脑风暴、开放式写作可以适当提高。
+</Aside>
+
+## 基础调用流程
+
+<Steps>
+
+1. **保存密钥**
+
+   把密钥放到 `.env` 或系统环境变量，不提交到代码仓库。
+
+   ```bash
+   LLM_API_KEY="your-api-key"
+   ```
+
+2. **读取配置**
+
+   程序启动时读取环境变量，缺失就直接报错，不要等到线上才发现。
+
+3. **组织 messages**
+
+   用 system 写规则，用 user 写任务，用 assistant 保存必要历史。
+
+4. **调用模型**
+
+   指定模型、消息和参数，发送请求。
+
+5. **解析结果**
+
+   提取回答文本，同时记录请求 ID、token 用量、耗时和错误信息。
+
+</Steps>
+
+## 常见排错
+
+| 问题 | 可能原因 | 检查方向 |
+| --- | --- | --- |
+| 鉴权失败 | API Key 错误或没加载 | 环境变量、`.env` 路径、密钥权限 |
+| 模型不存在 | 模型名写错或无权限 | 模型列表、区域、账号权限 |
+| 超出长度 | 输入或输出 token 太多 | 压缩上下文、减少历史、限制输出 |
+| 额度不足 | 账户余额或免费额度用完 | 控制台额度、计费状态 |
+| 返回很慢 | 模型大、上下文长、网络慢 | 换轻量模型、流式输出、设置超时 |
+| 输出不稳定 | 参数过高或 Prompt 不清楚 | 降低 temperature，补充格式约束 |
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  LLM API 调用 = 密钥 + 模型 + messages + 参数 + 结果解析。
+
+  messages 记成：system 定规则，user 给任务，assistant 存历史。
+
+  排错先看四件事：密钥、模型名、额度、上下文长度。
+</Aside>

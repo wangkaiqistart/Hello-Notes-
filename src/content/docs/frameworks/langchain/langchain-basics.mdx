@@ -1,0 +1,109 @@
+---
+title: LangChain 入门：把 LLM 应用串起来
+description: 理解 LangChain 的定位、核心组件和学习路径
+sidebar:
+  label: LangChain 入门
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+LangChain 可以先理解为一个 LLM 应用开发工具箱。它把模型调用、Prompt、文档检索、工具调用、链式流程、回调日志等能力封装起来，帮助我更快搭建 AI 应用。
+
+![LangChain 组件图](/images/llm-universe/langchain-map.svg)
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  LangChain 不是一个模型，而是把模型、数据、工具和流程串起来的开发框架。
+</Aside>
+
+## 解决什么问题
+
+只调用一次模型 API 并不难，难的是把它变成完整应用。LangChain 主要解决这些工程问题：
+
+<CardGrid>
+  <Card title="统一模型调用" icon="setting">
+    不同模型和厂商接口不一样，框架可以提供更统一的调用方式。
+  </Card>
+  <Card title="组织 Prompt 和流程" icon="puzzle">
+    把 Prompt、模型、输出解析、检索器等组件串成可复用流程。
+  </Card>
+  <Card title="连接外部数据" icon="database">
+    加载文档、切分文本、生成 Embedding，并接入向量库和 Retriever。
+  </Card>
+  <Card title="支持工具与 Agent" icon="rocket">
+    把函数封装成工具，让模型根据任务决定是否调用。
+  </Card>
+</CardGrid>
+
+## 核心组件
+
+<Tabs>
+  <TabItem label="模型与 Prompt">
+    用统一接口调用不同 LLM，把系统提示、用户输入、上下文材料组织成消息，并解析模型输出。
+  </TabItem>
+  <TabItem label="Chain / LCEL">
+    把多个步骤串起来，例如：输入问题 → 构造 Prompt → 调用模型 → 解析输出。LCEL 更强调可组合、可流式、可调试。
+  </TabItem>
+  <TabItem label="文档与检索">
+    负责文档加载、文本切分、Embedding、向量库和 Retriever，是搭建 RAG 应用的基础。
+  </TabItem>
+  <TabItem label="工具与 Agent">
+    工具是可调用函数，Agent 是让模型根据目标选择工具、读取结果、继续决策的运行方式。
+  </TabItem>
+  <TabItem label="回调与调试">
+    回调可以记录运行过程、支持流式输出、观察每一步输入输出，方便排查问题。
+  </TabItem>
+</Tabs>
+
+## 生态位置
+
+| 名称 | 定位 | 我该怎么理解 |
+| --- | --- | --- |
+| LangChain Core | 基础抽象 | 消息、Prompt、Runnable、工具等底层接口 |
+| 集成包 | 连接外部服务 | 接模型、向量库、文档加载器、第三方工具 |
+| LangGraph | 有状态编排 | 复杂 Agent、循环、恢复、人类介入 |
+| LangSmith | 调试评测 | 追踪运行过程、评估效果、排查 Bad Case |
+
+一句话：LangChain 适合快速搭应用，LangGraph 适合管复杂流程，LangSmith 适合看清运行过程。
+
+## 学习路径
+
+<Steps>
+
+1. **先学模型和 Prompt**
+
+   理解消息格式、System Prompt、User Prompt、Temperature、输出解析。
+
+2. **再学 Chain / Runnable**
+
+   学会把多个步骤组合起来，而不是把所有逻辑写在一个函数里。
+
+3. **然后学 RAG**
+
+   掌握文档加载、切分、Embedding、向量库、Retriever 和检索问答链。
+
+4. **最后学工具和 Agent**
+
+   把函数封装成工具，让模型在多步任务中决定是否调用工具。
+
+</Steps>
+
+## 使用时的判断
+
+| 场景 | 是否适合 LangChain |
+| --- | --- |
+| 只调用一次模型 API | 不一定需要，直接 SDK 更简单 |
+| 要快速做 RAG Demo | 适合，组件比较完整 |
+| 要组合 Prompt、检索、工具 | 适合，能减少重复封装 |
+| 要做复杂有状态 Agent | 可以结合 LangGraph |
+| 对性能和依赖极度敏感 | 需要评估框架带来的复杂度 |
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  LangChain = LLM 应用开发工具箱。
+
+  核心组件可以记成：模型 / Prompt、Chain、文档检索、Memory、工具 Agent、回调调试。
+
+  学习顺序：先会调用模型，再会串流程，再做 RAG，最后做工具和 Agent。
+</Aside>

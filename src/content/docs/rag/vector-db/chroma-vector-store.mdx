@@ -1,0 +1,136 @@
+---
+title: Chroma 向量库与检索
+description: 理解如何用 Chroma 存储文档向量，并通过相似度检索取回相关 chunk
+sidebar:
+  label: Chroma 向量库
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Chroma 是一个轻量级向量数据库，适合用来学习和快速搭建 RAG 原型。它可以保存文本向量、原文内容和元数据，并支持相似度检索。
+
+![Chroma 建库与检索](/images/llm-universe/chroma-vector-store.svg)
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  向量库不是只存一堆数字。它通常同时保存向量、原文 chunk 和 metadata，这样检索回来后才能交给模型回答并展示来源。
+</Aside>
+
+## 向量库解决什么问题
+
+<CardGrid>
+  <Card title="存储向量" icon="database">
+    把文档 chunk 的 Embedding 保存起来，避免每次查询都重新计算。
+  </Card>
+  <Card title="相似度检索" icon="search">
+    用户问题也转成向量后，向量库可以快速找出最相似的文档块。
+  </Card>
+  <Card title="保存元数据" icon="document">
+    记录来源、页码、标题、文件路径，方便引用、过滤和排错。
+  </Card>
+</CardGrid>
+
+## 建库流程
+
+<Steps>
+
+1. **准备文档块**
+
+   先完成文档读取、清洗和分块，得到 `split_docs`。
+
+2. **准备 Embedding**
+
+   选择 OpenAI、千帆、智谱或本地 Embedding 模型。
+
+3. **指定持久化目录**
+
+   设置 `persist_directory`，让向量库保存到磁盘，后续可以复用。
+
+4. **写入 Chroma**
+
+   使用 `Chroma.from_documents()` 把文档块转向量并写入数据库。
+
+5. **检查数量**
+
+   建库后检查 collection 中的文档数量，确认是否成功写入。
+
+</Steps>
+
+```python
+from langchain_community.vectorstores import Chroma
+
+persist_directory = "data/vector_db/chroma"
+
+vectordb = Chroma.from_documents(
+    documents=split_docs,
+    embedding=embedding,
+    persist_directory=persist_directory,
+)
+
+print(vectordb._collection.count())
+```
+
+## 检索方式
+
+<Tabs>
+  <TabItem label="相似度检索">
+    `similarity_search(question, k=3)` 会按向量相似度取回最相关的 `k` 个 chunk，适合追求相关性排序的场景。
+  </TabItem>
+  <TabItem label="MMR 检索">
+    `max_marginal_relevance_search(question, k=3)` 会在相关性和多样性之间折中，避免结果过于重复。
+  </TabItem>
+</Tabs>
+
+```python
+question = "什么是大语言模型"
+
+docs = vectordb.similarity_search(question, k=3)
+for doc in docs:
+    print(doc.page_content[:200])
+    print(doc.metadata)
+```
+
+## 相似度怎么理解
+
+向量检索常用余弦相似度、点积或欧几里得距离。可以简单记成：问题向量和文档向量越接近，说明语义越可能相关。
+
+Chroma 的相似度搜索可以先按余弦相似度来理解：它比较两个向量夹角的接近程度，夹角越小，语义越相近。
+
+```text
+similarity = cos(A, B)
+           = (A · B) / (||A|| ||B||)
+           = Σ(a_i b_i) / (sqrt(Σ a_i²) sqrt(Σ b_i²))
+```
+
+其中，`a_i`、`b_i` 分别是向量 `A`、向量 `B` 的第 `i` 个分量。
+
+| 概念 | 记忆方式 |
+| --- | --- |
+| Query 向量 | 用户问题转成的向量 |
+| Document 向量 | 文档 chunk 转成的向量 |
+| Top K | 返回最相关的前 K 个 chunk |
+| MMR | 既要相关，也要避免结果太重复 |
+
+## 常见问题
+
+| 问题 | 可能原因 | 优化方向 |
+| --- | --- | --- |
+| 搜不到正确内容 | 分块不合理或 Embedding 不适配 | 调整分块、换模型、优化查询 |
+| 返回内容太重复 | 相似度检索过于集中 | 尝试 MMR |
+| 返回内容太杂 | chunk 太大或知识库噪声多 | 清洗数据、缩小 chunk |
+| 没法展示来源 | metadata 保存不完整 | 建库时保存文件名、页码、标题 |
+| 每次重启都丢数据 | 没有持久化 | 设置 `persist_directory` |
+
+<Aside type="caution" title="注意">
+  删除旧向量库要谨慎。重新建库前最好确认源文档、分块参数和 Embedding 模型都已经确定，否则结果不可复现。
+</Aside>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  Chroma = 轻量向量库，适合 RAG 原型和学习。
+
+  建库：split_docs + embedding + persist_directory。
+
+  检索：问题先向量化，再取 Top K；相似度检索看相关，MMR 兼顾多样性。
+</Aside>

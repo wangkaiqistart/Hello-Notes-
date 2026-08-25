@@ -13,3 +13,4 @@ sidebar:
 | 内容 | 重点 |
 | --- | --- |
 | [什么是大模型](/basics/llm-theory/what-is-llm/) | 大模型定义、开发流程、Transformer、Token、生成逻辑和模型分类 |
+| [LLM 应用开发流程](/basics/llm-theory/llm-application-workflow/) | 从目标、功能、架构、数据、Prompt 到 Bad Case 迭代的开发闭环 |

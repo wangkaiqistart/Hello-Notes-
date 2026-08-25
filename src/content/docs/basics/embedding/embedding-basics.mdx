@@ -1,0 +1,106 @@
+---
+title: Embedding 基础：文本向量化
+description: 理解 Embedding 如何把文本转成向量，以及它在 RAG 检索中的作用
+sidebar:
+  label: Embedding 基础
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Embedding 可以理解为“把文本变成一串数字向量”。这串向量不是随便生成的，它会尽量保留文本的语义信息，让计算机可以用距离、相似度来判断两段文本是否相关。
+
+![Embedding 语义空间](/images/llm-universe/embedding-vector-space.svg)
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  Embedding 的价值在于：把自然语言变成可计算的向量。RAG 检索时，不是直接比关键词，而是比较“问题向量”和“文档向量”的语义距离。
+</Aside>
+
+## 为什么需要 Embedding
+
+传统关键词检索更依赖字面匹配，用户问题和文档用词不一致时，容易搜不到。Embedding 检索更关注语义相似，比如“什么是大语言模型”和“LLM 的定义”虽然字面不同，但语义接近。
+
+<CardGrid>
+  <Card title="语义检索" icon="search">
+    通过向量相似度找到语义接近的内容，不只依赖关键词是否完全一致。
+  </Card>
+  <Card title="统一表示" icon="puzzle">
+    文本、图片、音频等内容都可以被映射成向量，为多模态检索打基础。
+  </Card>
+  <Card title="RAG 建库" icon="database">
+    文档分块后，每个 chunk 都要转成向量，才能写入向量数据库。
+  </Card>
+</CardGrid>
+
+## 词向量和文本向量
+
+<Tabs>
+  <TabItem label="词向量">
+    词向量以单词为单位，把单词映射到向量空间。它能表达一部分语义关系，但容易忽略上下文差异。
+  </TabItem>
+  <TabItem label="文本向量">
+    RAG 更常用通用文本向量，可以把一句话、一段文本或一个 chunk 转成向量，更适合表达上下文语义。
+  </TabItem>
+</Tabs>
+
+## 在 RAG 里的位置
+
+<Steps>
+
+1. **文档分块**
+
+   先把文档切成适合检索的 chunk。
+
+2. **生成文档向量**
+
+   用 Embedding 模型把每个 chunk 转成向量。
+
+3. **写入向量库**
+
+   保存向量、原文内容和元数据。
+
+4. **问题向量化**
+
+   用户提问时，也用同一个 Embedding 模型把问题转成向量。
+
+5. **相似度检索**
+
+   比较问题向量和文档向量的距离，取回最相关的 Top K 文档块。
+
+</Steps>
+
+## Embedding API 要看什么
+
+不同厂商接口写法不同，但返回结果通常都要关注这几项：
+
+| 字段 | 作用 |
+| --- | --- |
+| `embedding` | 生成出的向量，是后续入库和检索的核心 |
+| `model` | 使用的 Embedding 模型 |
+| `usage` | token 使用情况，影响成本 |
+| `dimension` | 向量维度，有些接口不会直接给，需要看返回数组长度 |
+
+模型选择时主要看三件事：效果、价格、维度。维度越高不一定越好，还要看模型质量、语料适配和检索评测。
+
+## 常见模型选择
+
+| 选择 | 适合情况 | 注意点 |
+| --- | --- | --- |
+| API Embedding | 快速开发、效果稳定、不想本地部署 | 注意费用、限流、数据安全 |
+| 本地 Embedding | 私有化、成本可控、数据不能出网 | 需要本地算力和模型维护 |
+| 中文向量模型 | 中文知识库、中文问答 | 要用真实业务问题测试召回 |
+| 多语言模型 | 中英混合、多语言资料 | 检查不同语言之间的检索一致性 |
+
+<Aside type="note" title="实践判断">
+  选 Embedding 模型不要只看榜单。最稳的方式是准备一小批真实问题和正确文档片段，直接测试召回效果。
+</Aside>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  Embedding = 文本转向量。
+
+  RAG 检索 = 问题向量和文档向量比相似度。
+
+  建库时向量化文档，查询时向量化问题；两边最好使用同一个 Embedding 模型。
+</Aside>

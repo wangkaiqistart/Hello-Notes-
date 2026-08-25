@@ -1,0 +1,59 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title{font:700 42px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}
+      .sub{font:500 21px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#516071}
+      .label{font:700 23px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#182032}
+      .body{font:500 17px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#546171}
+      .note{font:700 22px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#1f2937}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M2 2L10 6L2 10" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <filter id="shadow" x="-8%" y="-12%" width="116%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity=".12"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="640" rx="28" fill="#F8FAFC"/>
+  <rect x="34" y="34" width="1132" height="572" rx="24" fill="#FFFFFF" stroke="#D9E2EC"/>
+  <text x="70" y="92" class="title">文档处理：RAG 建库前的质量入口</text>
+  <text x="72" y="129" class="sub">检索质量很大程度取决于文档是否读对、洗干净、切得合适。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="78" y="220" width="150" height="94" rx="18" fill="#E6F6F2" stroke="#6BC2B2"/>
+    <text x="116" y="258" class="label">源文档</text>
+    <text x="107" y="288" class="body">PDF / MD / HTML</text>
+
+    <rect x="276" y="220" width="150" height="94" rx="18" fill="#FFF4D6" stroke="#E2B84D"/>
+    <text x="314" y="258" class="label">读取</text>
+    <text x="306" y="288" class="body">Document 对象</text>
+
+    <rect x="474" y="220" width="150" height="94" rx="18" fill="#EAF0FF" stroke="#8AA4F5"/>
+    <text x="512" y="258" class="label">清洗</text>
+    <text x="499" y="288" class="body">换行 / 噪声 / 空格</text>
+
+    <rect x="672" y="220" width="150" height="94" rx="18" fill="#F5EAFF" stroke="#BB8FE8"/>
+    <text x="710" y="258" class="label">分块</text>
+    <text x="704" y="288" class="body">chunk + overlap</text>
+
+    <rect x="870" y="220" width="150" height="94" rx="18" fill="#FFE9E3" stroke="#EE967B"/>
+    <text x="908" y="258" class="label">入库</text>
+    <text x="895" y="288" class="body">Embedding + 元数据</text>
+  </g>
+
+  <path d="M230 267H272" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M428 267H470" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M626 267H668" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M824 267H866" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="150" y="396" width="900" height="88" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <rect x="190" y="428" width="190" height="24" rx="8" fill="#6BC2B2"/>
+  <rect x="350" y="428" width="190" height="24" rx="8" fill="#E2B84D"/>
+  <rect x="510" y="428" width="190" height="24" rx="8" fill="#8AA4F5"/>
+  <rect x="670" y="428" width="190" height="24" rx="8" fill="#BB8FE8"/>
+  <text x="212" y="470" class="body">chunk_size 控制单块长度</text>
+  <text x="574" y="470" class="body">chunk_overlap 保留上下文连续性</text>
+
+  <rect x="184" y="536" width="832" height="46" rx="14" fill="#F1F5F9"/>
+  <text x="268" y="566" class="note">速记：先读准，再洗净，最后按语义和长度切成可检索 chunk。</text>
+</svg>

@@ -1,0 +1,112 @@
+---
+title: LangChain 自定义 Embedding 封装
+description: 理解如何通过继承 Embeddings 基类，把未内置的厂商 Embedding API 接入 LangChain
+sidebar:
+  label: 自定义 Embedding
+  order: 3
+---
+
+import { Aside, Card, CardGrid, Steps } from '@astrojs/starlight/components';
+
+LangChain 内置了很多 Embedding 接口，但不可能覆盖所有厂商或私有模型。遇到框架没有直接支持的模型时，可以自己封装一个 Embedding 类，让它符合 LangChain 的统一接口。
+
+![LangChain 自定义 Embedding](/images/llm-universe/langchain-custom-embedding.svg)
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  自定义 Embedding 的关键不是写很多代码，而是实现两个方法：`embed_query()` 处理单个问题，`embed_documents()` 处理文档列表。
+</Aside>
+
+## 什么时候需要自定义
+
+<CardGrid>
+  <Card title="框架未内置" icon="puzzle">
+    使用的 Embedding 服务没有现成 LangChain 集成。
+  </Card>
+  <Card title="公司私有模型" icon="lock">
+    内部模型只能通过公司接口调用，需要适配 LangChain。
+  </Card>
+  <Card title="统一调用方式" icon="setting">
+    希望向量库、Retriever、RAG 链路都用同一种 Embedding 接口。
+  </Card>
+</CardGrid>
+
+## 必须实现的接口
+
+| 方法 | 输入 | 输出 | 用途 |
+| --- | --- | --- | --- |
+| `embed_query()` | 单个字符串 | 一个向量 | 把用户问题转成 query 向量 |
+| `embed_documents()` | 字符串列表 | 向量列表 | 把文档 chunk 批量转成向量 |
+
+通常 `embed_query()` 可以复用 `embed_documents()`：把单个字符串放进列表，取第一个结果即可。
+
+## 最小封装模板
+
+```python
+from typing import List
+from langchain_core.embeddings import Embeddings
+
+
+class CustomEmbeddings(Embeddings):
+    def __init__(self, client):
+        self.client = client
+
+    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        response = self.client.embeddings.create(
+            model="your-embedding-model",
+            input=texts,
+        )
+        return [item.embedding for item in response.data]
+
+    def embed_query(self, text: str) -> List[float]:
+        return self.embed_documents([text])[0]
+```
+
+## 封装步骤
+
+<Steps>
+
+1. **继承 `Embeddings` 基类**
+
+   让自定义类符合 LangChain 对 Embedding 对象的预期。
+
+2. **初始化厂商客户端**
+
+   在 `__init__` 里创建 API client，密钥从环境变量读取。
+
+3. **实现 `embed_documents()`**
+
+   接收文本列表，调用厂商 Embedding API，返回二维向量列表。
+
+4. **实现 `embed_query()`**
+
+   接收单个问题字符串，返回一个向量。
+
+5. **接入向量库**
+
+   把自定义 Embedding 对象传给 `Chroma.from_documents()` 或其他向量库。
+
+</Steps>
+
+## 实践注意点
+
+| 注意点 | 原因 |
+| --- | --- |
+| 密钥不要写死 | 避免泄露，统一从环境变量读取 |
+| 批量接口要控长度 | 文本过长或列表过大可能超出接口限制 |
+| 返回结构要统一 | LangChain 需要 `List[float]` 或 `List[List[float]]` |
+| 查询和文档用同一模型 | 否则向量空间不一致，检索会失真 |
+| 记录模型版本 | 后续重建索引和复现结果需要知道模型 |
+
+<Aside type="note" title="我的理解">
+  自定义 Embedding 本质上是一层适配器：外面保持 LangChain 统一接口，里面调用具体厂商或本地模型。
+</Aside>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  自定义 Embedding = 继承 `Embeddings` + 实现 `embed_query` / `embed_documents`。
+
+  `embed_query` 管问题，`embed_documents` 管文档。
+
+  封装完成后，就能像内置 Embedding 一样接入 Chroma、Retriever 和 RAG 链路。
+</Aside>

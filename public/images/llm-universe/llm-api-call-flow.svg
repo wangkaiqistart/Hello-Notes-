@@ -1,0 +1,64 @@
+<svg width="1200" height="620" viewBox="0 0 1200 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title{font:700 42px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}
+      .sub{font:500 21px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#516071}
+      .label{font:700 23px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#182032}
+      .body{font:500 17px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#546171}
+      .tiny{font:700 18px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#334155}
+      .note{font:700 22px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#1f2937}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M2 2L10 6L2 10" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <filter id="shadow" x="-8%" y="-12%" width="116%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity=".12"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="620" rx="28" fill="#F8FAFC"/>
+  <rect x="34" y="34" width="1132" height="552" rx="24" fill="#FFFFFF" stroke="#D9E2EC"/>
+  <text x="70" y="92" class="title">LLM API 调用链路</text>
+  <text x="72" y="129" class="sub">多数应用不是把模型装进项目，而是把请求组织好，再交给模型服务。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="82" y="236" width="150" height="94" rx="18" fill="#E6F6F2" stroke="#6BC2B2"/>
+    <text x="119" y="274" class="label">用户输入</text>
+    <text x="113" y="304" class="body">问题 / 任务</text>
+
+    <rect x="280" y="236" width="150" height="94" rx="18" fill="#FFF4D6" stroke="#E2B84D"/>
+    <text x="318" y="274" class="label">Messages</text>
+    <text x="313" y="304" class="body">system / user</text>
+
+    <rect x="478" y="236" width="150" height="94" rx="18" fill="#EAF0FF" stroke="#8AA4F5"/>
+    <text x="520" y="274" class="label">请求参数</text>
+    <text x="511" y="304" class="body">model / temp</text>
+
+    <rect x="676" y="236" width="150" height="94" rx="18" fill="#F5EAFF" stroke="#BB8FE8"/>
+    <text x="720" y="274" class="label">模型服务</text>
+    <text x="713" y="304" class="body">API / SDK</text>
+
+    <rect x="874" y="236" width="150" height="94" rx="18" fill="#FFE9E3" stroke="#EE967B"/>
+    <text x="916" y="274" class="label">响应结果</text>
+    <text x="913" y="304" class="body">content / usage</text>
+  </g>
+
+  <path d="M234 283H276" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M432 283H474" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M630 283H672" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M828 283H870" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="104" y="392" width="316" height="92" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="132" y="429" class="tiny">请求前检查</text>
+  <text x="132" y="459" class="body">API Key、模型名、额度、网络、环境变量</text>
+
+  <rect x="444" y="392" width="316" height="92" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="472" y="429" class="tiny">请求中控制</text>
+  <text x="472" y="459" class="body">temperature、max tokens、stream、超时</text>
+
+  <rect x="784" y="392" width="316" height="92" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="812" y="429" class="tiny">请求后处理</text>
+  <text x="812" y="459" class="body">解析输出、记录日志、兜底错误、统计成本</text>
+
+  <rect x="210" y="520" width="780" height="46" rx="14" fill="#F1F5F9"/>
+  <text x="315" y="550" class="note">速记：密钥进环境变量，请求走 messages，参数控稳定性。</text>
+</svg>

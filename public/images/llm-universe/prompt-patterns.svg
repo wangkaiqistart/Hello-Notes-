@@ -1,0 +1,66 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title{font:700 42px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}
+      .sub{font:500 21px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#516071}
+      .label{font:700 24px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#182032}
+      .body{font:500 17px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#546171}
+      .note{font:700 22px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#1f2937}
+    </style>
+    <filter id="shadow" x="-8%" y="-12%" width="116%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity=".12"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="640" rx="28" fill="#F8FAFC"/>
+  <rect x="34" y="34" width="1132" height="572" rx="24" fill="#FFFFFF" stroke="#D9E2EC"/>
+  <text x="70" y="92" class="title">Prompt 设计记忆公式</text>
+  <text x="72" y="129" class="sub">Prompt 的目标不是“写得玄”，而是让模型明确任务、材料、约束和验收标准。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="95" y="185" width="160" height="96" rx="18" fill="#E6F6F2" stroke="#6BC2B2"/>
+    <text x="144" y="224" class="label">角色</text>
+    <text x="130" y="253" class="body">你是谁</text>
+
+    <rect x="279" y="185" width="160" height="96" rx="18" fill="#FFF4D6" stroke="#E2B84D"/>
+    <text x="328" y="224" class="label">任务</text>
+    <text x="314" y="253" class="body">要做什么</text>
+
+    <rect x="463" y="185" width="160" height="96" rx="18" fill="#EAF0FF" stroke="#8AA4F5"/>
+    <text x="512" y="224" class="label">上下文</text>
+    <text x="498" y="253" class="body">基于什么</text>
+
+    <rect x="647" y="185" width="160" height="96" rx="18" fill="#F5EAFF" stroke="#BB8FE8"/>
+    <text x="696" y="224" class="label">输入</text>
+    <text x="682" y="253" class="body">待处理内容</text>
+
+    <rect x="831" y="185" width="160" height="96" rx="18" fill="#FFE9E3" stroke="#EE967B"/>
+    <text x="880" y="224" class="label">输出</text>
+    <text x="866" y="253" class="body">格式和字段</text>
+  </g>
+
+  <text x="259" y="241" class="label" fill="#64748B">+</text>
+  <text x="443" y="241" class="label" fill="#64748B">+</text>
+  <text x="627" y="241" class="label" fill="#64748B">+</text>
+  <text x="811" y="241" class="label" fill="#64748B">+</text>
+
+  <g filter="url(#shadow)">
+    <rect x="150" y="350" width="205" height="82" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="190" y="384" class="label">分隔符</text>
+    <text x="181" y="412" class="body">隔开指令和输入</text>
+
+    <rect x="382" y="350" width="205" height="82" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="420" y="384" class="label">结构化输出</text>
+    <text x="414" y="412" class="body">JSON / 表格 / 步骤</text>
+
+    <rect x="615" y="350" width="205" height="82" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="673" y="384" class="label">Few-shot</text>
+    <text x="650" y="412" class="body">给示例，学格式</text>
+
+    <rect x="847" y="350" width="205" height="82" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="884" y="384" class="label">先思考</text>
+    <text x="881" y="412" class="body">复杂题分步骤判断</text>
+  </g>
+
+  <rect x="190" y="495" width="820" height="46" rx="14" fill="#F1F5F9"/>
+  <text x="272" y="525" class="note">速记：说清角色、目标、材料、格式、边界，再让模型按步骤完成。</text>
+</svg>

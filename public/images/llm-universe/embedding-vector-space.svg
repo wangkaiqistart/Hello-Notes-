@@ -1,0 +1,57 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title{font:700 42px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}
+      .sub{font:500 21px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#516071}
+      .label{font:700 24px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#182032}
+      .body{font:500 17px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#546171}
+      .point{font:700 18px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#1f2937}
+      .note{font:700 22px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#1f2937}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M2 2L10 6L2 10" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <filter id="shadow" x="-8%" y="-12%" width="116%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity=".12"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="640" rx="28" fill="#F8FAFC"/>
+  <rect x="34" y="34" width="1132" height="572" rx="24" fill="#FFFFFF" stroke="#D9E2EC"/>
+  <text x="70" y="92" class="title">Embedding：把文本变成可计算的语义向量</text>
+  <text x="72" y="129" class="sub">语义相近的文本，在向量空间里距离更近；检索时比较的是向量相似度。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="85" y="210" width="218" height="96" rx="18" fill="#E6F6F2" stroke="#6BC2B2"/>
+    <text x="128" y="248" class="label">原始文本</text>
+    <text x="118" y="277" class="body">“什么是大语言模型？”</text>
+
+    <rect x="385" y="210" width="218" height="96" rx="18" fill="#FFF4D6" stroke="#E2B84D"/>
+    <text x="430" y="248" class="label">Embedding 模型</text>
+    <text x="427" y="277" class="body">理解语义并编码</text>
+
+    <rect x="685" y="210" width="218" height="96" rx="18" fill="#EAF0FF" stroke="#8AA4F5"/>
+    <text x="733" y="248" class="label">向量表示</text>
+    <text x="730" y="277" class="body">[0.12, -0.03, ...]</text>
+  </g>
+
+  <path d="M306 258H381" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M606 258H681" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <g transform="translate(142 370)">
+    <rect x="0" y="0" width="916" height="128" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <line x1="80" y1="95" x2="845" y2="20" stroke="#CBD5E1" stroke-width="2"/>
+    <circle cx="190" cy="70" r="12" fill="#6BC2B2"/>
+    <text x="210" y="76" class="point">大语言模型</text>
+    <circle cx="260" cy="82" r="12" fill="#6BC2B2"/>
+    <text x="282" y="88" class="point">LLM</text>
+    <circle cx="640" cy="42" r="12" fill="#E2B84D"/>
+    <text x="662" y="48" class="point">苹果</text>
+    <circle cx="708" cy="50" r="12" fill="#E2B84D"/>
+    <text x="730" y="56" class="point">水果</text>
+    <circle cx="455" cy="92" r="12" fill="#BB8FE8"/>
+    <text x="477" y="98" class="point">向量数据库</text>
+  </g>
+
+  <rect x="222" y="536" width="756" height="46" rx="14" fill="#F1F5F9"/>
+  <text x="315" y="566" class="note">速记：文本变向量，语义看距离；距离越近，越可能相关。</text>
+</svg>

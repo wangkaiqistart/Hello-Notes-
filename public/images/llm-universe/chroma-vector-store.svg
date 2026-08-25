@@ -1,0 +1,63 @@
+<svg width="1200" height="640" viewBox="0 0 1200 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title{font:700 42px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}
+      .sub{font:500 21px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#516071}
+      .label{font:700 23px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#182032}
+      .body{font:500 17px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#546171}
+      .note{font:700 22px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#1f2937}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M2 2L10 6L2 10" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <filter id="shadow" x="-8%" y="-12%" width="116%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity=".12"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="640" rx="28" fill="#F8FAFC"/>
+  <rect x="34" y="34" width="1132" height="572" rx="24" fill="#FFFFFF" stroke="#D9E2EC"/>
+  <text x="70" y="92" class="title">Chroma：轻量向量库建库与检索</text>
+  <text x="72" y="129" class="sub">把 chunk、向量和元数据保存起来，收到问题后按相似度取回相关内容。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="92" y="206" width="170" height="96" rx="18" fill="#E6F6F2" stroke="#6BC2B2"/>
+    <text x="135" y="244" class="label">split_docs</text>
+    <text x="124" y="274" class="body">切好的文档块</text>
+
+    <rect x="324" y="206" width="170" height="96" rx="18" fill="#FFF4D6" stroke="#E2B84D"/>
+    <text x="365" y="244" class="label">Embedding</text>
+    <text x="356" y="274" class="body">文本转向量</text>
+
+    <rect x="556" y="190" width="200" height="128" rx="22" fill="#172033"/>
+    <text x="606" y="244" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="34" font-weight="800" fill="#FFFFFF">Chroma</text>
+    <text x="590" y="280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="19" font-weight="600" fill="#D8E2EE">向量 + 原文 + 元数据</text>
+
+    <rect x="818" y="206" width="190" height="96" rx="18" fill="#F5EAFF" stroke="#BB8FE8"/>
+    <text x="869" y="244" class="label">持久化目录</text>
+    <text x="850" y="274" class="body">persist_directory</text>
+  </g>
+
+  <path d="M264 254H320" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M496 254H552" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M758 254H814" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="180" y="392" width="206" height="90" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="222" y="428" class="label">用户问题</text>
+    <text x="216" y="456" class="body">先转成 query 向量</text>
+
+    <rect x="496" y="392" width="206" height="90" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="535" y="428" class="label">相似度检索</text>
+    <text x="529" y="456" class="body">similarity_search</text>
+
+    <rect x="812" y="392" width="206" height="90" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+    <text x="852" y="428" class="label">返回 Top K</text>
+    <text x="844" y="456" class="body">相关 chunk 给 LLM</text>
+  </g>
+
+  <path d="M388 437H492" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M704 437H808" stroke="#64748B" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="235" y="536" width="730" height="46" rx="14" fill="#F1F5F9"/>
+  <text x="326" y="566" class="note">速记：文档块入库，问题也向量化，按距离取回 Top K。</text>
+</svg>

@@ -1,0 +1,135 @@
+---
+title: Prompt 设计基础
+description: 理解 Prompt、Temperature、System Prompt，以及写清晰提示词的基础方法
+sidebar:
+  label: Prompt 基础
+  order: 2
+---
+
+import { Aside, Card, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Prompt 可以先理解为“给模型的输入指令”。它决定模型要扮演什么角色、基于什么材料、完成什么任务、按什么格式输出。
+
+![Prompt 设计记忆公式](/images/llm-universe/prompt-patterns.svg)
+
+<Aside type="tip" title="核心理解" icon="rocket">
+  好 Prompt 不是越短越好，而是让模型清楚知道：任务是什么、材料在哪里、边界是什么、结果要长什么样。
+</Aside>
+
+## 三个基础概念
+
+<CardGrid>
+  <Card title="Prompt" icon="document">
+    给模型的输入，可以是问题、任务说明、上下文材料、示例和输出要求。
+  </Card>
+  <Card title="Completion" icon="approve-check">
+    模型基于 Prompt 返回的结果，也就是回答、摘要、结构化数据或生成内容。
+  </Card>
+  <Card title="Temperature" icon="setting">
+    控制输出随机性。低温更稳定，高温更有创意，但也更容易发散。
+  </Card>
+</CardGrid>
+
+## System Prompt 和 User Prompt
+
+<Tabs>
+  <TabItem label="System Prompt">
+    用来设定模型角色、行为边界、输出风格和长期规则。例如：你是一个严谨的知识库助手，只能基于给定材料回答。
+  </TabItem>
+  <TabItem label="User Prompt">
+    用户当前输入的任务。例如：请总结下面这段内容，并用三条要点输出。
+  </TabItem>
+</Tabs>
+
+简单理解：System Prompt 管“你是谁、必须遵守什么”，User Prompt 管“这次要做什么”。
+
+## Prompt 记忆公式
+
+一个好用的 Prompt 通常包含这些部分：
+
+| 部分 | 作用 | 示例 |
+| --- | --- | --- |
+| 角色 | 限定模型身份 | 你是一个 Python 教学助手 |
+| 任务 | 说明要做什么 | 帮我解释这段代码 |
+| 上下文 | 提供参考材料 | 基于以下文档内容回答 |
+| 输入 | 放入待处理内容 | 文本、代码、问题、表格 |
+| 约束 | 规定边界 | 不要编造，不确定就说明 |
+| 输出格式 | 规定结果形态 | 用表格输出，字段为问题/原因/建议 |
+| 检查标准 | 让模型自查 | 回答前先判断材料是否足够 |
+
+```text
+你是一个{角色}。
+你的任务是{任务}。
+请基于以下材料回答，不要使用材料外的信息。
+
+材料：
+"""
+{输入内容}
+"""
+
+输出要求：
+- {格式要求}
+- {边界约束}
+- {检查标准}
+```
+
+## 基础技巧
+
+<Steps>
+
+1. **使用分隔符**
+
+   用 `"""`、反引号、XML 标签或固定标题，把指令和用户输入隔开，减少模型把输入内容当成新指令的风险。
+
+2. **要求结构化输出**
+
+   需要给程序继续处理时，优先要求 JSON、表格、列表或固定字段，不要只让模型自由发挥。
+
+3. **先检查条件**
+
+   如果任务有前提，先让模型判断是否满足条件。不满足就说明原因，不继续编造结果。
+
+4. **提供少量示例**
+
+   Few-shot 适合统一语气、格式和判断标准。给模型一两个样例，它更容易模仿输出风格。
+
+5. **给模型思考步骤**
+
+   复杂任务不要只问结论。可以要求它先分析、再判断、最后输出结论。
+
+</Steps>
+
+## 温度参数怎么选
+
+| 场景 | 建议倾向 |
+| --- | --- |
+| 知识库问答 | 低 temperature，追求稳定和准确 |
+| 信息抽取 | 低 temperature，减少格式漂移 |
+| 智能客服 | 低到中等，优先一致性 |
+| 创意文案 | 中到高，允许更多变化 |
+| 头脑风暴 | 中到高，鼓励多样性 |
+
+## 幻觉与提示词注入
+
+<CardGrid>
+  <Card title="幻觉" icon="warning">
+    模型可能编造事实、链接、论文、数据。重要内容要用 RAG、搜索、数据库或人工审核校验。
+  </Card>
+  <Card title="提示词注入" icon="lock">
+    用户输入里可能包含“忽略前面规则”之类的攻击内容。要用分隔符、权限控制和输出约束降低风险。
+  </Card>
+</CardGrid>
+
+<Aside type="caution" title="注意">
+  Prompt 能提高可靠性，但不能替代事实校验、权限设计和工程防护。
+</Aside>
+
+## 总结速记
+
+<Aside type="tip" title="速记" icon="star">
+  Prompt = 角色 + 任务 + 上下文 + 输入 + 约束 + 输出格式。
+
+  System 管长期规则，User 管当前任务。
+
+  基础技巧：分隔输入、结构化输出、先检查条件、给示例、复杂任务分步骤。
+</Aside>
