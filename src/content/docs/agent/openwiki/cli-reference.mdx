@@ -1,0 +1,164 @@
+---
+title: OpenWiki CLI 命令速查
+description: OpenWiki 的核心命令、参数、认证、Connector、Cron 和交互式命令
+sidebar:
+  label: CLI reference
+  order: 10
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+> 官方来源：[CLI reference](https://docs.langchain.com/oss/openwiki/cli-reference)
+
+OpenWiki 提供一个统一的 `openwiki` 命令，既能启动交互式聊天，也能执行一次性文档生成和更新。
+
+## 核心命令
+
+```bash
+# 当前仓库的交互式 Code mode
+openwiki
+openwiki "请为这个仓库生成文档"
+
+# Personal mode
+openwiki personal
+openwiki personal --init
+openwiki personal --update
+
+# 显式 Code mode
+openwiki code --init
+openwiki code --update
+openwiki code --update --print
+
+# 默认使用 Code mode，并指定文档语言
+openwiki --init
+openwiki --update
+openwiki --init --language ko
+
+# 一次性输出
+openwiki -p "总结你能做什么"
+
+# 浏览或导出 Wiki
+openwiki visualize
+openwiki visualize openwiki --port 4400 --no-open
+openwiki visualize openwiki --export docs/openwiki-visualizer
+
+# Coding-agent integrations
+openwiki integrations list
+openwiki integrations install codex
+openwiki integrations install claude
+openwiki integrations install opencode
+openwiki integrations install cursor
+openwiki integrations uninstall codex
+
+# 帮助
+openwiki --help
+```
+
+## 通用参数
+
+| 参数                      | 作用                                                       |
+| ------------------------- | ---------------------------------------------------------- |
+| `--init`                  | 生成初始文档；默认 Code mode；不能和 `--update` 一起使用   |
+| `--update`                | 更新现有文档；默认 Code mode；没有 Wiki 时也可创建初始内容 |
+| `-l, --language <locale>` | 使用 BCP-47 语言生成，例如 `ko`、`zh-CN`、`pt-BR`          |
+| `--mode <personal\|code>` | 选择 Personal brain 或仓库文档                             |
+| `-p, --print`             | 执行一次任务，打印最终输出后退出                           |
+| `--modelId`, `--model-id` | 指定模型 ID                                                |
+| `--telemetry-file=<path>` | 把本次遥测 payload 另存为 JSON                             |
+| `-h, --help`              | 打印帮助                                                   |
+
+TTY 中如果没有 `--print`，`--init` 和 `--update` 会流式显示 Agent 输出，并在成功后自动退出。
+
+## 可视化
+
+```bash
+openwiki visualize
+openwiki visualize openwiki --port 4400 --no-open
+openwiki visualize ~/.openwiki/wiki
+openwiki visualize openwiki --export docs/openwiki-visualizer
+```
+
+详细说明见[可视化 Wiki 图谱](./visualize/)。
+
+## Coding-agent integrations
+
+```bash
+openwiki integrations list [--project [path]]
+openwiki integrations install <codex|claude|opencode|cursor> [--force] [--project [path]]
+openwiki integrations uninstall <codex|claude|opencode|cursor> [--project [path]]
+```
+
+详细说明见[接入 Coding Agent](./integrations/)。
+
+## 认证和 Connector
+
+```bash
+# 查看支持的认证 Provider 和状态
+openwiki auth
+
+# 浏览器 OAuth
+openwiki auth gmail
+openwiki auth notion
+openwiki auth slack
+openwiki auth x
+
+# 根据已保存的环境变量重新生成 Connector 配置
+openwiki auth configure <provider> [--force]
+
+# 查看 MCP Provider 的实时工具
+openwiki auth tools <provider>
+
+# 执行 Connector 摄入
+openwiki ingest <source|source-instance|all>
+
+# 为 Slack OAuth 启动 HTTPS 隧道
+openwiki ngrok start [url] [--port <port>]
+```
+
+## Personal mode 的 Cron
+
+macOS 上可以管理 Connector 调度：
+
+```bash
+openwiki cron list
+openwiki cron pause <source|all>
+openwiki cron resume <source|all>
+openwiki cron delete <source|all>
+```
+
+`cron delete` 只删除保存的调度并卸载 LaunchAgent，不删除认证信息、Connector 配置、原始数据或 Wiki。
+
+## 交互式 Slash 命令
+
+```text
+/api-key          更新当前 Provider API Key
+/langsmith-key    更新或清理 LangSmith 追踪凭证
+/provider         修改当前 Provider
+/model            修改当前模型
+/effort           设置推理强度，或用 /effort default 恢复默认值
+/init             从当前会话启动初始化
+/update           从当前会话启动更新
+/exit             退出程序
+```
+
+## 我会怎么记这套 CLI
+
+```text
+code / personal       选择知识边界
+init / update         选择生成还是维护
+auth / ingest         管理外部来源
+integrations          接入宿主 Coding Agent
+visualize             检查知识关系
+cron                  管理个人来源的定时刷新
+```
+
+<Aside type="tip" title="使用建议">
+  第一次接入时优先记住 `--init`、`--update`、`visualize` 三个命令；需要外部资料时再补 `auth` 和
+  `ingest`，需要自动化时再看 `integrations` 和 `cron`。
+</Aside>
+
+## 相关页面
+
+- [快速上手](./quickstart/)
+- [模型 Provider](./providers/)
+- [Personal mode](./personal-mode/)

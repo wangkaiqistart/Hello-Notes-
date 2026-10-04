@@ -1,0 +1,161 @@
+---
+title: 模型 Provider 与凭证配置
+description: OpenWiki 支持的模型提供商、认证方式和常用运行参数
+sidebar:
+  label: Model providers
+  order: 6
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+> 官方来源：[Model providers](https://docs.langchain.com/oss/openwiki/providers)
+
+OpenWiki 把模型接入抽象成 Provider。初始化时可以选择 Provider 和模型，配置会保存到 `~/.openwiki/.env`；进程环境变量优先于文件中的值。
+
+## Provider 总览
+
+| Provider            | 主要凭证                            | 备注                              |
+| ------------------- | ----------------------------------- | --------------------------------- |
+| `openai`            | `OPENAI_API_KEY`                    | 可配置 `OPENAI_BASE_URL`          |
+| `openai-chatgpt`    | ChatGPT OAuth                       | 使用 ChatGPT 订阅的 Codex 配额    |
+| `copilot`           | GitHub CLI 会话或 `COPILOT_API_KEY` | CI 需要 OAuth Token，不是 PAT     |
+| `openrouter`        | `OPENROUTER_API_KEY`                | 可限制上游 Provider               |
+| `anthropic`         | `ANTHROPIC_API_KEY`                 | 可配置 `ANTHROPIC_BASE_URL`       |
+| `gemini`            | `GEMINI_API_KEY`                    | Google AI Studio                  |
+| `gemini-enterprise` | Google ADC + `GOOGLE_CLOUD_PROJECT` | 可设置区域                        |
+| `bedrock`           | AWS 凭证和 Region                   | 支持显式凭证或 AWS 默认链         |
+| `baseten`           | `BASETEN_API_KEY`                   | 可配置 Base URL                   |
+| `fireworks`         | `FIREWORKS_API_KEY`                 | 可配置 Base URL                   |
+| `nebius`            | `NEBIUS_API_KEY`                    | Nebius Token Factory              |
+| `nvidia`            | `NVIDIA_API_KEY`                    | 可配置 Base URL                   |
+| `openai-compatible` | `OPENAI_COMPATIBLE_API_KEY`         | 必须配置 Base URL 和自定义模型 ID |
+
+最小配置示例：
+
+```bash
+OPENWIKI_PROVIDER=openai
+OPENWIKI_MODEL_ID=gpt-5.6-terra
+```
+
+## 重试、输出和推理强度
+
+Provider 首次请求失败后的重试次数：
+
+```bash
+OPENWIKI_PROVIDER_RETRY_ATTEMPTS=3
+```
+
+不设置时默认重试 3 次，必须是正整数。
+
+统一设置输出 Token 上限：
+
+```bash
+OPENWIKI_MAX_OUTPUT_TOKENS=16384
+```
+
+不同 Provider 会映射到不同 SDK 字段，例如 Gemini 使用 `maxOutputTokens`，其他多数 Provider 使用 `maxTokens`。OpenRouter 可以单独使用：
+
+```bash
+OPENWIKI_OPENROUTER_MAX_TOKENS=8192
+```
+
+推理强度只对支持它的模型生效：
+
+```bash
+OPENWIKI_REASONING_EFFORT=high
+```
+
+官方当前列出的组合主要包括 OpenAI GPT-5.6、`openai-chatgpt` GPT-5.6 和 NVIDIA NIM。无效的 Provider、模型或 effort 组合会在真正发请求前失败。
+
+## GitHub Copilot
+
+初始化时选择 Copilot。如果本机已有 GitHub CLI 登录，OpenWiki 可以复用；否则在凭证提示中执行 `gh auth login`。
+
+```bash
+OPENWIKI_PROVIDER=copilot
+OPENWIKI_MODEL_ID=gpt-5.5
+```
+
+CI 或无头环境使用 `COPILOT_API_KEY` 时，必须是 GitHub OAuth Token。Classic 或 fine-grained Personal Access Token 不适用于第三方 Copilot 集成。
+
+## ChatGPT 登录
+
+`openai-chatgpt` 使用 ChatGPT 订阅对应的 Codex 后端：
+
+```bash
+OPENWIKI_PROVIDER=openai-chatgpt openwiki code --init
+```
+
+登录后 OAuth Token 会保存到 `~/.openwiki/.env` 并自动刷新，Refresh Token 应按密码级别保护。
+
+## Gemini Enterprise
+
+该 Provider 使用 Google Application Default Credentials，不需要 API Key：
+
+```bash
+OPENWIKI_PROVIDER=gemini-enterprise
+GOOGLE_CLOUD_PROJECT=your-gcp-project
+GOOGLE_CLOUD_LOCATION=global
+```
+
+账号需要 Gemini Enterprise Agent Platform 权限，使用 Model Garden 中已经启用的模型。
+
+## AWS Bedrock
+
+```bash
+OPENWIKI_PROVIDER=bedrock
+BEDROCK_AWS_ACCESS_KEY_ID=your-access-key-id
+BEDROCK_AWS_SECRET_ACCESS_KEY=your-secret-access-key
+BEDROCK_AWS_REGION=us-east-1
+OPENWIKI_MODEL_ID=anthropic.claude-sonnet-5
+```
+
+未设置显式 Bedrock 凭证时，会使用 AWS SDK 默认凭证链。部分新模型需要跨区域 inference profile ID，例如 `us.anthropic.claude-sonnet-5`。
+
+Bedrock 默认输出上限为 16000 Token；也可以用 `OPENWIKI_BEDROCK_MAX_TOKENS` 覆盖。流式请求空闲超时可通过 `OPENWIKI_STREAM_IDLE_TIMEOUT` 设置，`0` 表示关闭 watchdog。
+
+## OpenAI-compatible 网关
+
+适合本地模型服务或兼容 OpenAI Chat Completions 的网关：
+
+```bash
+OPENWIKI_PROVIDER=openai-compatible
+OPENAI_COMPATIBLE_API_KEY=your-gateway-key
+OPENAI_COMPATIBLE_BASE_URL=https://your-gateway.example.com/v1
+OPENWIKI_MODEL_ID=your-gateway-model-name
+```
+
+Ollama 和 LM Studio 也可以使用这个模式。即使本地服务忽略 Key，OpenWiki 仍要求设置 `OPENAI_COMPATIBLE_API_KEY`。
+
+OpenWiki 默认发送非流式请求。如果网关只接受流式请求，可以启用：
+
+```bash
+OPENWIKI_OPENAI_COMPATIBLE_STREAMING=true
+```
+
+也可以切换到 Responses API：
+
+```bash
+OPENWIKI_OPENAI_COMPATIBLE_USE_RESPONSES_API=true
+```
+
+## OpenRouter 上游固定
+
+同一模型可能由多个上游提供商承载，可以限制路由：
+
+```bash
+OPENWIKI_PROVIDER=openrouter
+OPENROUTER_API_KEY=your-key
+OPENWIKI_OPENROUTER_PROVIDER_ONLY=Novita
+```
+
+<Aside type="note" title="配置建议">
+  Provider、模型和 Token 上限是三个不同层次的配置：先确保 Provider 能调用，再根据 Wiki
+  页面的长度调整输出上限，最后才考虑 Reasoning effort。不要把一次模型截断误判成 Wiki 结构问题。
+</Aside>
+
+## 相关页面
+
+- [快速上手](./quickstart/)
+- [自动更新](./automate-updates/)
+- [CLI 命令速查](./cli-reference/)

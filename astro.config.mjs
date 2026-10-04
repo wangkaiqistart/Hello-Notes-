@@ -143,6 +143,7 @@ export default defineConfig({
 					label: '智能体开发',
 					items: [
 						{ label: 'Agent 基础', items: [{ autogenerate: { directory: 'agent/fundamentals' } }] },
+						{ label: 'OpenWiki', items: [{ autogenerate: { directory: 'agent/openwiki' } }] },
 						{ label: 'Agent 实战进阶', items: [{ autogenerate: { directory: 'agent/agent-practice' } }] },
 						{ label: '开发范式', items: [{ autogenerate: { directory: 'agent/development-patterns' } }] },
 						{ label: 'Loop Engineering', items: [{ autogenerate: { directory: 'agent/loop-engineering' } }] },

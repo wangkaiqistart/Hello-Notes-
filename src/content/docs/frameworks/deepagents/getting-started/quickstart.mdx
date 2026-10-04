@@ -1,18 +1,281 @@
 ---
 title: Deep Agents 快速开始
-description: 用最小代码创建并运行一个 Deep Agent
+description: 从模型、搜索工具到 invoke 返回值，跑通第一个可排错的 Deep Agent
 sidebar:
   label: 快速开始
   order: 2
 ---
 
-## 我的笔记角度
+import { Aside, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
 
-先跑通一个带模型和工具的最小 Agent，再逐步加入文件系统、Skills、Memory 和子 Agent。这样可以把“模型配置问题”和“Harness 能力问题”分开排查。
+## 第一步
 
-## 后续整理重点
+第一次运行 Deep Agents 时，不需要立刻接入 Memory、Skills、持久化后端或多个子 Agent，而是先验证一条最短链路：
 
-- 最小依赖和环境变量。
-- create_deep_agent 的最小参数组合。
-- 第一次 invoke 的输入输出形状。
-- 从示例扩展到真实工具时需要补的观测和错误处理。
+1. Python 能导入 `deepagents`。
+2. 模型凭据有效，并且模型支持 Tool Calling。
+3. Agent 能识别搜索需求并调用工具。
+4. 工具结果能回到上下文，最终形成一条 AI 消息。
+
+
+
+<Aside type="tip" title="最小闭环">
+  一个模型、一个搜索工具、一段明确的系统提示词和一次 `invoke`，已经足够验证 Deep Agents
+  的核心运行链路。
+</Aside>
+
+## 环境准备
+
+使用 Python 3.11。基础包与部分能力的最低版本要求并不完全相同，而 Interpreter 等扩展明确依赖 Python 3.11 或更高版本，从一开始统一版本可以减少后续升级环境的成本。
+
+### 1. 创建隔离环境并安装依赖
+
+<Tabs>
+  <TabItem label="uv">
+
+```bash
+uv init
+uv python pin 3.11
+uv add deepagents
+uv sync
+```
+
+  </TabItem>
+  <TabItem label="pip">
+
+```bash
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -U deepagents
+```
+
+  </TabItem>
+</Tabs>
+
+### 2. 选择一个模型 Provider
+
+不要同时配置多个 Provider 来测试第一版。先选一个模型，把对应密钥放进环境变量，再确认当前模型支持 Tool Calling。
+
+<Tabs>
+  <TabItem label="OpenAI">
+
+```bash
+export OPENAI_API_KEY="your-api-key"
+```
+
+  </TabItem>
+  <TabItem label="Google">
+
+```bash
+export GOOGLE_API_KEY="your-api-key"
+```
+
+  </TabItem>
+  <TabItem label="Anthropic">
+
+```bash
+export ANTHROPIC_API_KEY="your-api-key"
+```
+
+  </TabItem>
+  <TabItem label="OpenRouter">
+
+```bash
+export OPENROUTER_API_KEY="your-api-key"
+export TAVILY_API_KEY="your-tavily-api-key"
+```
+
+  </TabItem>
+</Tabs>
+
+### 3. 把密钥排除在版本控制之外
+
+如果项目使用 `.env`，应把它加入 `.gitignore`。示例里的 `your-api-key` 只是占位符，密钥不应该出现在 Python 文件、日志或提交记录中。
+
+## 选择搜索工具
+
+研究型 Agent 需要先取得外部事实。Google、OpenAI 和 Anthropic 可以把各自的服务端搜索工具描述直接传给 Agent；使用其他 Provider，或者希望搜索实现与模型解耦时，可以改用 Tavily。
+
+我会优先用模型 Provider 自带的搜索能力跑通第一版，因为依赖和密钥更少。只有确认模型调用正常，但搜索能力不符合需求时，再引入 Tavily。
+
+<Tabs>
+  <TabItem label="OpenAI 内置搜索">
+
+```python
+model = "openai:gpt-5.5"
+internet_search = {"type": "web_search"}
+```
+
+  </TabItem>
+  <TabItem label="Google 内置搜索">
+
+```python
+model = "google_genai:gemini-3.6-flash"
+internet_search = {"google_search": {}}
+```
+
+  </TabItem>
+  <TabItem label="Anthropic 内置搜索">
+
+```python
+model = "anthropic:claude-sonnet-5"
+internet_search = {
+    "type": "web_search_20260209",
+    "name": "web_search",
+}
+```
+
+  </TabItem>
+  <TabItem label="Tavily">
+
+先安装额外依赖：
+
+```bash
+uv add tavily-python
+```
+
+再定义一个普通 Python 工具：
+
+```python
+import os
+from typing import Literal
+
+from tavily import TavilyClient
+
+
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+
+
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+) -> dict:
+    """搜索资料并返回与问题相关的结果。"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        topic=topic,
+        include_raw_content=include_raw_content,
+    )
+```
+
+  </TabItem>
+</Tabs>
+
+<Aside type="caution" title="工具描述会影响调用质量">
+  自定义函数的类型标注决定输入 Schema，Docstring
+  会成为模型理解工具用途的重要信息。参数含义不清或缺少类型时，Agent
+  即使能看到工具，也可能传错参数或根本不调用。
+</Aside>
+
+## 创建第一个 Deep Agent
+
+下面的代码与上一节任选一个搜索工具片段组合使用。`create_deep_agent` 接受 `provider:model` 格式的模型字符串，也可以传入已经初始化的模型实例。
+
+```python title="agent.py"
+from deepagents import create_deep_agent
+
+
+research_instructions = """
+你是一名严谨的研究助手。
+
+处理问题时先搜索并核对事实，再整理成结构清楚的结论。
+不要根据记忆补全不确定的信息；资料不足时明确说明缺口。
+"""
+
+agent = create_deep_agent(
+    model=model,
+    tools=[internet_search],
+    system_prompt=research_instructions,
+)
+```
+
+这里最重要的不是提示词写得多长，而是三项职责是否清楚：
+
+| 参数            | 我关注的内容                 | 常见问题                        |
+| --------------- | ---------------------------- | ------------------------------------- |
+| `model`         | Provider 和模型标识必须匹配  | 模型名写错、凭据属于另一个 Provider   |
+| `tools`         | 只放当前任务真正需要的工具   | 一开始塞入太多工具，模型选择不稳定    |
+| `system_prompt` | 说明角色、工作顺序和事实边界 | 只写角色，没有告诉 Agent 何时使用工具 |
+
+## 发起第一次调用
+
+`invoke` 接收的是 Agent 状态，其中最关键的字段是 `messages`。最简单的输入是一条 `user` 消息：
+
+```python title="agent.py"
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "整理 LangGraph 的核心用途，并说明它和普通模型调用的区别。",
+            }
+        ]
+    }
+)
+
+print(result["messages"][-1].content)
+```
+
+`messages` 理解为一次运行的消息轨迹，而不是只有最终答案的字符串。运行过程中可能出现：
+
+- 用户消息；
+- 模型发起的 Tool Call；
+- 工具返回的 Tool Message；
+- 模型整理出的最终 AI Message。
+
+因此，`result["messages"][-1]` 通常是最终回答；排错时只打印最后一条会丢失中间信息，可以先查看整条轨迹：
+
+```python
+for index, message in enumerate(result["messages"]):
+    print(index, message.type, message.content)
+```
+
+<Aside type="note" title="先确认发生过工具调用">
+  只看到一段看似正确的答案，还不能证明 Agent 使用了搜索工具。第一次运行时应检查消息轨迹或
+  Trace，确认确实出现了 Tool Call 和对应结果。
+</Aside>
+
+## 可选：打开 Trace
+
+需要观察模型请求、工具调用和子 Agent 委派时，可以开启 LangSmith Trace：
+
+```bash
+export LANGSMITH_TRACING=true
+export LANGSMITH_API_KEY="your-langsmith-api-key"
+```
+
+这不是运行 Deep Agents 的前置条件。我的习惯是先确保最小示例能运行，再打开 Trace 做行为分析；否则容易把凭据问题和业务逻辑问题混为一谈。
+
+## 这个示例已经实现的内容
+
+即使只显式传入一个搜索工具，Deep Agents 仍然提供了一套预置 Harness：
+
+- Agent 可以调用搜索工具取得事实。
+- 大结果可以卸载到文件系统，再通过文件工具读取和检索。
+- 复杂子任务可以按需委派到独立的子 Agent 上下文。
+- 最终结果会重新汇总到主 Agent 的消息状态中。
+
+结构化任务清单不是这个最小示例的默认前提。如果确实需要 `write_todos` 这类规划能力，应再显式加入 `TodoListMiddleware`，不要因为用了 Deep Agents 就假设所有 Middleware 都已启用。
+
+## 怎样继续扩展
+
+最小示例稳定后，我按下面的次序增加能力，每次只引入一个新变量：
+
+<Steps>
+
+1. **替换成真实业务工具**：先单独测试工具函数，再注册给 Agent。
+2. **确定文件后端**：根据数据是否需要跨请求保留，选择内存、磁盘、Store 或远程 Sandbox。
+3. **加入 Skills**：把按需使用的领域流程、脚本和模板拆成能力包。
+4. **加入 Memory**：只放每次运行都应该遵守的稳定偏好和长期约定。
+5. **配置子 Agent**：仅为边界清楚、值得隔离上下文的子任务设置专门角色。
+6. **补齐控制能力**：加入重试、超时、权限、人工审批、Trace 和评估。
+
+</Steps>
+
+<Aside type="tip" title="我的推荐顺序">
+  先让一个模型稳定调用一个工具，再增加文件系统；之后才加入 Skills、Memory 和子
+  Agent。任何一步失败，都退回到上一层已经验证通过的最小版本。
+</Aside>

@@ -1,0 +1,119 @@
+---
+title: 忽略规则、指令和状态目录
+description: 自定义 OpenWiki 的扫描边界、Agent 入口、本地状态和遥测
+sidebar:
+  label: Customize OpenWiki
+  order: 9
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+> 官方来源：[Customize OpenWiki](https://docs.langchain.com/oss/openwiki/customize)
+
+OpenWiki 的可定制点主要集中在四类文件和设置：忽略哪些路径、给 Wiki 什么写作范围、如何让 Agent 找到 Wiki，以及本地状态保存在哪里。
+
+## 忽略路径
+
+在仓库根目录创建 `.openwikiignore`：
+
+```text
+secrets/
+*.log
+!logs/keep.log
+```
+
+支持注释、空行、`*`、`**`、目录规则和 `!` 反选。启用规则后，OpenWiki 会过滤文件发现，并限制 Shell 执行，避免被忽略路径进入运行过程。
+
+这不是“永远不会被提及”的保证：被忽略目录不会被读取、扫描或复制，但 Agent 仍可能从 README、测试、提交信息或既有 Wiki 中推断出相关内容。
+
+## Wiki 指令文件
+
+| 模式     | 文件                          | 作用                                 |
+| -------- | ----------------------------- | ------------------------------------ |
+| Code     | `openwiki/INSTRUCTIONS.md`    | 当前仓库 Wiki 的范围、重点和写作约定 |
+| Personal | `~/.openwiki/INSTRUCTIONS.md` | 个人知识库的全局说明                 |
+
+这些文件可以手动编辑，也可以直接让 OpenWiki 修改：
+
+```bash
+openwiki "把 openwiki/INSTRUCTIONS.md 改成重点说明公共 API"
+```
+
+普通 `--init` 和 `--update` 不会重写它们。
+
+## Agent 指引文件
+
+每次 Code mode 运行都会维护仓库根目录的 `AGENTS.md` 和 `CLAUDE.md`：
+
+- 文件不存在时创建。
+- 已存在时只重写 `<!-- OPENWIKI:START -->` 到 `<!-- OPENWIKI:END -->` 区块。
+- 区块之外的项目内容保持不变。
+
+这两个文件的职责不是承载所有知识，而是告诉 Coding Agent：遇到仓库上下文问题时，先去哪里读 OpenWiki。
+
+## 本地状态目录
+
+Code mode 和 Personal mode 默认都使用：
+
+```text
+~/.openwiki/
+```
+
+| 路径                          | 模式            | 用途                                |
+| ----------------------------- | --------------- | ----------------------------------- |
+| `~/.openwiki/.env`            | 两者            | Provider 配置、API Key、OAuth Token |
+| `~/.openwiki/openwiki.sqlite` | 两者            | 会话检查点数据库                    |
+| `~/.openwiki/install-id`      | 两者            | 匿名遥测的随机安装 ID               |
+| `~/.openwiki/wiki/`           | Personal        | 个人 Wiki                           |
+| `~/.openwiki/INSTRUCTIONS.md` | Personal        | 个人 Wiki 说明                      |
+| `~/.openwiki/onboarding.json` | Personal        | 首次设置、Connector 和调度          |
+| `~/.openwiki/connectors/`     | 主要是 Personal | 原始数据、配置和 manifest           |
+
+Code mode 生成的 `openwiki/`、Claims、`INSTRUCTIONS.md` 和更新元数据属于项目本身，不在 `~/.openwiki` 下。
+
+想使用其他可写目录：
+
+```bash
+OPENWIKI_CONFIG_DIR=/data/openwiki openwiki personal --init
+```
+
+这个变量会选择一套独立状态目录，不会自动移动或删除原来的 `~/.openwiki`。
+
+## 遥测
+
+OpenWiki 默认收集匿名、聚合的使用数据，用来了解工具是否稳定。
+
+每次 `init` / `update` 主要记录：
+
+- 命令类型和结果：成功、失败或 no-op
+- 失败时的粗粒度错误类别
+- 初始化时的模式、Provider 和 Connector 名称
+
+不会收集：
+
+- 文件内容
+- 仓库数据或名称
+- 凭证、Prompt 和模型输出
+- Connector 原始数据
+- 错误消息、文件路径、URL 和个人信息
+
+关闭遥测：
+
+```bash
+export OPENWIKI_TELEMETRY_DISABLED=1
+# 或
+export DO_NOT_TRACK=1
+```
+
+也可以把 `OPENWIKI_TELEMETRY_DISABLED=1` 写入 `~/.openwiki/.env`。使用 `--telemetry-file=<path>` 可以查看一次运行准备发送的内容。
+
+<Aside type="note" title="配置优先级">
+  `.openwikiignore` 决定“能不能读”，`INSTRUCTIONS.md` 决定“重点写什么”，`AGENTS.md` / `CLAUDE.md`
+  决定“Agent 从哪里发现 Wiki”。这三层不要混在一个文件里维护。
+</Aside>
+
+## 相关页面
+
+- [Code mode](./code-mode/)
+- [Personal mode](./personal-mode/)
+- [自动更新](./automate-updates/)

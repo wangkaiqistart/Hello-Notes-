@@ -1,0 +1,146 @@
+---
+title: Personal mode：构建个人知识大脑
+description: 使用多个信息源生成和维护本地个人 Wiki
+sidebar:
+  label: Personal mode
+  order: 4
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+> 官方来源：[Personal mode](https://docs.langchain.com/oss/openwiki/personal-mode)
+
+Personal mode 面向的不是某一个 Git 仓库，而是个人长期积累的资料。它把多个信息源抓取到本地，再由 Agent 合并到：
+
+```text
+~/.openwiki/wiki
+```
+
+常用命令：
+
+```bash
+openwiki personal
+openwiki personal --init
+openwiki personal --update
+openwiki personal --update "刷新已配置的连接器"
+```
+
+如果不想使用默认的 `~/.openwiki`，可以设置：
+
+```bash
+OPENWIKI_CONFIG_DIR=/data/openwiki openwiki personal --init
+```
+
+## 支持哪些信息源
+
+| 来源         | 凭证                   | 我会怎么理解它                                         |
+| ------------ | ---------------------- | ------------------------------------------------------ |
+| `custom-mcp` | 默认不需要             | 连接指定的 HTTP 或 stdio MCP，只允许显式安全的只读工具 |
+| `git-repo`   | 本地路径               | 读取配置的本地仓库，并生成紧凑 manifest                |
+| `x`          | OAuth 用户凭证         | 获取时间线、帖子、提及、书签和列表内容                 |
+| `notion`     | Notion OAuth           | 通过 Notion OAuth，不直接粘贴 Token                    |
+| `google`     | Gmail OAuth            | 通过 Gmail API 获取近期邮件                            |
+| `web-search` | `TAVILY_API_KEY`       | 通过 Tavily 搜索，再交给 LangChain 处理                |
+| `hackernews` | 不需要                 | 使用公开的 Hacker News Feed 和搜索 API                 |
+| `slack`      | Slack App 凭证和 OAuth | 需要配置 HTTPS OAuth 回调                              |
+
+同一来源可以配置多份。例如两个不同主题的 Web Search 会变成 `web-search-1`、`web-search-2`。
+
+## 典型的接入流程
+
+<Steps>
+
+1. **先认证需要 OAuth 的来源**
+
+   ```bash
+   openwiki auth notion
+   openwiki auth gmail
+   openwiki auth x
+   openwiki auth slack
+   ```
+
+   Gmail 和 Slack 需要预先准备 App client credentials；Notion 使用动态客户端注册；X 使用 OAuth 2.0 + PKCE。
+
+2. **再拉取并整理来源**
+
+   ```bash
+   openwiki ingest all
+   openwiki ingest web-search
+   openwiki ingest web-search-2
+   ```
+
+   Connector 先把原始数据和 manifest 写入 `~/.openwiki/connectors/<connector>/raw/`，然后由来源专属的 Agent 运行更新个人 Wiki。
+
+</Steps>
+
+认证辅助命令：
+
+```bash
+openwiki auth configure <provider>
+openwiki auth tools <provider>
+```
+
+## Slack 的 HTTPS 回调
+
+Slack OAuth 可能要求 HTTPS 重定向地址，可以使用：
+
+```bash
+openwiki ngrok start
+openwiki ngrok start https://your-domain.ngrok.app
+```
+
+OpenWiki 会保存 `OPENWIKI_HTTPS_OAUTH_REDIRECT_URI`，并打印要填入 Slack 配置的回调地址。
+
+X/Twitter 和 Gmail 默认仍使用本地回调：
+
+```text
+http://127.0.0.1:53682/callback
+```
+
+## 凭证和本地状态
+
+默认目录权限和文件权限为：
+
+```text
+~/.openwiki/       0o700
+~/.openwiki/.env   0o600
+```
+
+Connector 配置只引用环境变量名，不应该直接写入密钥值。
+
+常见设置包括：
+
+- Gmail、Notion、Slack、X 的 OAuth Token
+- `TAVILY_API_KEY`
+- `OPENWIKI_OAUTH_CALLBACK_PORT`
+- `OPENWIKI_HTTPS_OAUTH_REDIRECT_URI`
+
+## 定时刷新
+
+macOS 上可以把 Connector 更新注册成用户 LaunchAgent：
+
+```bash
+openwiki cron list
+openwiki cron pause <source|all>
+openwiki cron resume <source|all>
+openwiki cron delete <source|all>
+```
+
+调度信息保存在：
+
+```text
+~/.openwiki/onboarding.json
+```
+
+删除 Cron 只会移除该来源的调度和 LaunchAgent，不会删除认证信息、Connector 配置、原始数据或 Wiki 内容。
+
+<Aside type="note" title="和 Code mode 的区别">
+  Personal mode 关注“我有哪些资料”，Code mode 关注“这个仓库怎么工作”。两者都输出
+  Markdown，但扫描边界、来源治理和更新入口不同。
+</Aside>
+
+## 相关页面
+
+- [Code mode](./code-mode/)
+- [模型 Provider](./providers/)
+- [CLI 命令速查](./cli-reference/)

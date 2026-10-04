@@ -96,11 +96,78 @@ for doc in docs:
 
 Chroma 的相似度搜索可以先按余弦相似度来理解：它比较两个向量夹角的接近程度，夹角越小，语义越相近。
 
-```text
-similarity = cos(A, B)
-           = (A · B) / (||A|| ||B||)
-           = Σ(a_i b_i) / (sqrt(Σ a_i²) sqrt(Σ b_i²))
-```
+<div
+  aria-label="余弦相似度公式"
+  style={{
+    margin: '1rem 0',
+    padding: '1.2rem 1.4rem',
+    border: '1px solid var(--sl-color-gray-5)',
+    borderRadius: '0.75rem',
+    background: 'var(--sl-color-gray-6)',
+    overflowX: 'auto',
+  }}
+>
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'minmax(7rem, max-content) 1.5rem max-content',
+      alignItems: 'center',
+      gap: '0.85rem',
+      minWidth: 'max-content',
+      padding: '0.35rem 0',
+      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+      fontSize: '1.05rem',
+    }}
+  >
+    <span style={{ fontWeight: 700 }}>similarity</span>
+    <span style={{ color: 'var(--sl-color-gray-2)', fontWeight: 700 }}>=</span>
+    <span style={{ fontWeight: 700 }}>cos(A, B)</span>
+  </div>
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'minmax(7rem, max-content) 1.5rem max-content',
+      alignItems: 'center',
+      gap: '0.85rem',
+      minWidth: 'max-content',
+      padding: '0.35rem 0',
+      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+      fontSize: '1.05rem',
+    }}
+  >
+    <span></span>
+    <span style={{ color: 'var(--sl-color-gray-2)', fontWeight: 700 }}>=</span>
+    <span style={{ display: 'inline-grid', gridTemplateRows: 'auto auto', placeItems: 'center', lineHeight: 1.35 }}>
+      <span style={{ width: '100%', padding: '0 0.55rem 0.25rem', borderBottom: '1.5px solid currentColor', textAlign: 'center', fontWeight: 700 }}>
+        A · B
+      </span>
+      <span style={{ paddingTop: '0.25rem', textAlign: 'center' }}>||A|| ||B||</span>
+    </span>
+  </div>
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'minmax(7rem, max-content) 1.5rem max-content',
+      alignItems: 'center',
+      gap: '0.85rem',
+      minWidth: 'max-content',
+      padding: '0.35rem 0',
+      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+      fontSize: '1.05rem',
+    }}
+  >
+    <span></span>
+    <span style={{ color: 'var(--sl-color-gray-2)', fontWeight: 700 }}>=</span>
+    <span style={{ display: 'inline-grid', gridTemplateRows: 'auto auto', placeItems: 'center', lineHeight: 1.35, fontSize: '0.98rem' }}>
+      <span style={{ width: '100%', padding: '0 0.55rem 0.25rem', borderBottom: '1.5px solid currentColor', textAlign: 'center', fontWeight: 700 }}>
+        Σ<sub>i=1</sub><sup>n</sup> a<sub>i</sub>b<sub>i</sub>
+      </span>
+      <span style={{ paddingTop: '0.25rem', textAlign: 'center' }}>
+        √(Σ<sub>i=1</sub><sup>n</sup> a<sub>i</sub><sup>2</sup>) √(Σ<sub>i=1</sub><sup>n</sup> b<sub>i</sub><sup>2</sup>)
+      </span>
+    </span>
+  </div>
+</div>
 
 其中，`a_i`、`b_i` 分别是向量 `A`、向量 `B` 的第 `i` 个分量。
 

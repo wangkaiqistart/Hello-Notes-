@@ -1,0 +1,96 @@
+---
+title: OpenWiki：面向 Coding Agent 的知识 Wiki
+description: 用 OpenWiki 把代码仓库和个人资料整理成 Agent 可以持续使用的 Markdown 知识库
+sidebar:
+  label: 总览
+  order: 1
+---
+
+import { Aside, Card, CardGrid } from '@astrojs/starlight/components';
+
+> 官方来源：[OpenWiki Overview](https://docs.langchain.com/oss/openwiki/overview)
+
+## 先记住它是做什么的
+
+OpenWiki 是 LangChain 开源的 CLI。它会把代码仓库或个人资料整理成 Markdown Wiki，让 Coding Agent 先读整理好的上下文，再去检查源代码。
+
+它主要解决一个很实际的问题：每次让 Agent 接手项目时，都要重新寻找架构、集成、工作流和运行方式。OpenWiki 把这些信息沉淀下来，减少重复探索和 Token 消耗。
+
+我的理解是：OpenWiki 不是另一个静态文档站，而是给 Agent 准备的“可持续更新的项目上下文层”。人可以读同一份 Markdown，Agent 才是它的主要使用者。
+
+OpenWiki 基于 [Deep Agents](https://docs.langchain.com/oss/python/deepagents/overview)，可以通过 [LangSmith](https://docs.langchain.com/langsmith/observability-quickstart) 追踪生成过程。
+
+## 官方文档地图
+
+| 页面                                         | 我把它归纳成什么问题                              |
+| -------------------------------------------- | ------------------------------------------------- |
+| [快速上手](./quickstart/)                    | 怎么安装、初始化和更新第一份 Wiki                 |
+| [Code mode](./code-mode/)                    | 怎么为代码仓库生成知识库，以及如何绑定源码证据    |
+| [Personal mode](./personal-mode/)            | 怎么把 Git、Gmail、Notion 等资料汇总成个人知识库  |
+| [Coding-agent integrations](./integrations/) | 怎么让 Codex、Claude Code 等宿主 Agent 来驱动生成 |
+| [Model providers](./providers/)              | 用哪些模型，以及凭证和输出参数怎么配置            |
+| [Automate updates](./automate-updates/)      | 怎么接入 GitHub Actions、GitLab CI 和 Bitbucket   |
+| [Visualize your wiki](./visualize/)          | 怎么用图谱和 Markdown 阅读器浏览 Wiki             |
+| [Customize OpenWiki](./customize/)           | 怎么控制扫描范围、指引文件和本地状态              |
+| [CLI reference](./cli-reference/)            | 命令、参数、认证、Connector 和 Cron 速查          |
+
+## 两种模式
+
+<CardGrid>
+  <Card title="Code mode" icon="folder-code">
+    默认模式。读取当前仓库，生成 `openwiki/`，并在 `AGENTS.md` 和 `CLAUDE.md` 中写入发现 Wiki
+    的指引。
+  </Card>
+  <Card title="Personal mode" icon="brain">
+    把本地仓库、Gmail、Notion、Web Search、Slack 等来源汇总到 `~/.openwiki/wiki`。
+  </Card>
+</CardGrid>
+
+常用命令的区别如下：
+
+| 模式     | 命令                        | 产物                   |
+| -------- | --------------------------- | ---------------------- |
+| Code     | `openwiki`、`openwiki code` | 当前仓库的 `openwiki/` |
+| Personal | `openwiki personal`         | `~/.openwiki/wiki`     |
+
+裸命令 `openwiki --init` 和 `openwiki --update` 都是 Code mode。个人 Wiki 要明确写成 `openwiki personal --init` 或 `openwiki personal --update`。
+
+## 一次完整运行怎么走
+
+```text
+选择模式
+  ↓
+配置模型、凭证和可选连接器
+  ↓
+扫描仓库或拉取信息源
+  ↓
+按页面任务生成 Markdown
+  ↓
+写入索引、证据和状态文件
+  ↓
+本地阅读或提交到 CI
+  ↓
+后续 update 检查源码变化并刷新文档
+```
+
+Code mode 还会给事实性页面建立 Claims，记录事实对应的源码证据。这样更新时不只是“重新生成一遍 Markdown”，而是可以判断哪些事实已经失效。
+
+## 我会怎么使用它
+
+1. 先用 Code mode 生成项目总览、架构和常用流程。
+2. 把 `openwiki/INSTRUCTIONS.md` 当成项目 Wiki 的范围说明，明确哪些目录要重点讲、哪些内容不要展开。
+3. 把 `AGENTS.md` / `CLAUDE.md` 看成 Agent 进入 Wiki 的入口，而不是把所有项目规则都塞进 Wiki 页面。
+4. 源码有较大变化后运行 `openwiki --update`，日常更新则交给 CI。
+5. 使用 `openwiki visualize` 检查页面之间的链接是否形成了可导航的知识图谱。
+
+<Aside type="note" title="一个边界">
+  OpenWiki 生成的是 Markdown/OKF 知识包，不是直接发布到公网的 HTML
+  文档站。可视化器只是用来浏览这份知识包。
+</Aside>
+
+## 下一步
+
+- 想先跑起来：看[快速上手](./quickstart/)。
+- 想理解产物和证据：看[Code mode](./code-mode/)。
+- 想接入现有的 Coding Agent：看[集成方式](./integrations/)。
+- 想把更新放进发布流程：看[自动更新](./automate-updates/)。

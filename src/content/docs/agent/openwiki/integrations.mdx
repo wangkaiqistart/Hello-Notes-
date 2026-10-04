@@ -1,0 +1,95 @@
+---
+title: 接入 Codex、Claude Code、OpenCode 和 Cursor
+description: 让现有 Coding Agent 使用自己的模型和仓库工具驱动 OpenWiki
+sidebar:
+  label: Coding-agent integrations
+  order: 5
+---
+
+import { Aside, CardGrid, Card } from '@astrojs/starlight/components';
+
+> 官方来源：[Coding-agent integrations](https://docs.langchain.com/oss/openwiki/integrations)
+
+OpenWiki 不一定要自己启动一个独立的模型会话。也可以安装到已有的 Coding Agent 中，让宿主 Agent 负责调研仓库和写页面，OpenWiki 负责把过程变成可恢复、可验证的页面任务。
+
+## 支持的宿主 Agent
+
+<CardGrid>
+  <Card title="Codex" icon="robot">
+    使用 Codex 的模型会话和仓库工具。
+  </Card>
+  <Card title="Claude Code" icon="robot">
+    在 Claude Code 中执行仓库 Wiki 初始化和更新。
+  </Card>
+  <Card title="OpenCode" icon="robot">
+    把 OpenWiki 安装到 OpenCode 的用户级或项目级环境。
+  </Card>
+  <Card title="Cursor" icon="robot">
+    使用 Cursor 的 Agent 工作流生成仓库文档。
+  </Card>
+</CardGrid>
+
+## 安装
+
+默认安装到用户级，这样从任意 Git 仓库都能使用：
+
+```bash
+openwiki integrations install codex
+openwiki integrations install claude
+openwiki integrations install opencode
+openwiki integrations install cursor
+```
+
+安装后重启对应 Coding Agent，然后在仓库里直接提出任务：
+
+```text
+请基于当前源码和测试初始化这个仓库的 OpenWiki。
+```
+
+已有 Wiki 时可以说：
+
+```text
+请根据上次成功运行之后的变化更新这个仓库的 OpenWiki。
+```
+
+## 查看和卸载
+
+```bash
+openwiki integrations list
+openwiki integrations uninstall <codex|claude|opencode|cursor>
+```
+
+使用 `--project [path]` 可以把状态限定到某个仓库。项目路径会解析到 Git 仓库根目录；OpenCode 的用户级集成位于 `~/.config/opencode`。
+
+## 它们之间怎么分工
+
+```text
+宿主 Coding Agent
+  ├── 调研仓库、读取测试和调用原生工具
+  └── 编写被分配的 Wiki 页面
+
+OpenWiki
+  ├── 管理页面任务队列和恢复状态
+  ├── 校验和持久化 Grounded Claims
+  ├── 处理源码证据漂移
+  └── 完成最终元数据和结果收敛
+```
+
+这种方式仍然使用和原生 `openwiki --init` / `--update` 相同的可恢复页面任务生命周期。
+
+## 重要限制
+
+- 宿主 Agent 路径只支持仓库 Code mode，不支持 Personal mode。
+- 使用宿主 Agent 已认证的模型会话，因此不需要额外配置 OpenWiki Provider 凭证。
+- 当前不支持 Connector 派生上下文，包括 LangSmith Connector。
+
+<Aside type="tip" title="我的理解">
+  这个集成层解决的是“谁来执行调研和写作”的问题，不改变 Wiki 的产物格式和 Claims 机制。已经在 Codex
+  或 Claude Code 中工作的团队，可以先安装集成，再决定是否需要单独维护模型 Provider。
+</Aside>
+
+## 相关页面
+
+- [Code mode](./code-mode/)
+- [快速上手](./quickstart/)
+- [CLI 命令速查](./cli-reference/)

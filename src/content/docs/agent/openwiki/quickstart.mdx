@@ -1,0 +1,138 @@
+---
+title: OpenWiki 快速上手
+description: 安装 OpenWiki、配置模型并生成第一份仓库或个人 Wiki
+sidebar:
+  label: 快速上手
+  order: 2
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+> 官方来源：[Quickstart](https://docs.langchain.com/oss/openwiki/quickstart)
+
+OpenWiki 的第一次使用可以拆成四件事：安装 CLI、初始化、检查生成结果、后续更新。
+
+## 1. 安装 CLI
+
+```bash
+npm install -g openwiki
+```
+
+Windows 环境优先使用 `npm` 或 `pnpm`。官方特别提醒：Bun 可能会触发 `better-sqlite3` 的本地编译，从而需要 Visual Studio Build Tools 和 Desktop development with C++ 工作负载。
+
+## 2. 初始化当前仓库
+
+在仓库根目录执行：
+
+```bash
+openwiki --init
+```
+
+第一次交互式运行通常会询问：
+
+- 推理 Provider 和模型
+- Provider API Key 或等价凭证
+- 是否配置 LangSmith API Key
+- 是否从 LangSmith 项目运行记录中补充 Wiki
+
+配置和密钥默认保存到：
+
+```text
+~/.openwiki/.env
+```
+
+再次运行 `--init` 会重新生成仓库 Wiki 和 Claims，但会保留用户维护的 `openwiki/INSTRUCTIONS.md`。如果运行中断，持久化工作区可以通过 `openwiki/.run.json` 恢复页面队列。
+
+## 3. 检查生成的 Wiki
+
+成功后重点看这些内容：
+
+```text
+openwiki/
+├── Markdown 主题页面
+├── INSTRUCTIONS.md
+├── .claims/
+├── .page-manifest.json
+└── .last-update.json
+```
+
+仓库根目录还会维护 `AGENTS.md` 和 `CLAUDE.md`，其中加入一段提示 Coding Agent 先查 Wiki。
+
+如果想在浏览器里看页面和链接图谱：
+
+```bash
+openwiki visualize
+```
+
+可视化器的细节见[可视化 Wiki 图谱](./visualize/)。
+
+## 4. 让文档跟着代码更新
+
+代码变化后执行：
+
+```bash
+openwiki --update
+```
+
+Code mode 更新时会检查源码证据是否仍然成立，并同步处理过期 Claims。需要自动化时，再接入 GitHub Actions、GitLab CI 或 Bitbucket Pipelines。
+
+## 个人 Wiki（可选）
+
+如果目标不是当前仓库，而是个人知识库：
+
+```bash
+openwiki personal --init
+```
+
+它会把内容写入 `~/.openwiki/wiki`，信息源可以是本地 Git 仓库、Custom MCP、Gmail、Notion、Web Search、Hacker News、Slack 和 X/Twitter。
+
+## 交互式和一次性运行
+
+不带参数时，`openwiki` 会在当前仓库打开交互式 Code mode：
+
+```bash
+openwiki
+```
+
+也可以直接给一条任务：
+
+```bash
+openwiki "请为这个仓库生成文档"
+```
+
+用 `-p` / `--print` 做一次性、非交互运行：
+
+```bash
+openwiki -p "总结你能做什么"
+```
+
+交互式会话里还可以使用：
+
+```text
+/api-key          更新当前 Provider API Key
+/langsmith-key    更新或清理 LangSmith 凭证
+/effort           设置支持的推理强度
+```
+
+## LangSmith 追踪
+
+初始化时提供 LangSmith API Key，可以把 OpenWiki 自身的运行记录到名为 `openwiki` 的 LangSmith 项目：
+
+```bash
+LANGSMITH_API_KEY=your-key
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_PROJECT=openwiki
+```
+
+这和 Code mode 的 LangSmith Connector 是两件事：前者追踪 OpenWiki 的执行过程，后者从 LangSmith traces 中提取运行事实来丰富仓库 Wiki。
+
+<Aside type="tip" title="我的上手顺序">
+  先只配置一个能稳定调用的模型完成 `--init`，确认 Wiki 结构和入口文件符合预期，再接 LangSmith、个人
+  Connector 和 CI。这样遇到问题时更容易判断是模型、扫描范围还是自动化流程的问题。
+</Aside>
+
+## 下一步
+
+- 了解文件、Claims 和 OKF：看[Code mode](./code-mode/)。
+- 让 Codex 或 Claude Code 驱动生成：看[集成方式](./integrations/)。
+- 查看完整命令：看[CLI 命令速查](./cli-reference/)。

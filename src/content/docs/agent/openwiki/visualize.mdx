@@ -1,0 +1,83 @@
+---
+title: 可视化 Wiki 图谱
+description: 用本地节点图和 Markdown 阅读器浏览 OpenWiki 生成的知识库
+sidebar:
+  label: Visualize your wiki
+  order: 8
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+> 官方来源：[Visualize your wiki](https://docs.langchain.com/oss/openwiki/visualize)
+
+`openwiki visualize` 提供一个本地浏览器界面：左侧是 Wiki 概念节点和链接关系，右侧是当前选中页面的 Markdown 阅读器。
+
+## 直接浏览当前仓库
+
+在已经存在 `openwiki/` 的仓库中执行：
+
+```bash
+openwiki visualize
+```
+
+默认服务地址：
+
+```text
+http://127.0.0.1:4321
+```
+
+运行时会自动打开浏览器。Wiki 文件发生变化时，阅读器会自动读取最新内容；图谱面板可以调整大小或折叠。
+
+## 常用参数
+
+```bash
+openwiki visualize openwiki --port 4400 --no-open
+```
+
+| 参数             | 作用                                                     |
+| ---------------- | -------------------------------------------------------- |
+| `[path]`         | 要服务的 Wiki 目录，默认是 `./openwiki`                  |
+| `--port <port>`  | 首选端口，默认 `4321`，占用时自动递增                    |
+| `--no-open`      | 不自动打开浏览器                                         |
+| `--export <dir>` | 导出静态站点目录，不能和 `--port` / `--no-open` 一起使用 |
+
+个人 Wiki 也可以浏览：
+
+```bash
+openwiki visualize ~/.openwiki/wiki
+```
+
+图谱只展示 Concept 页面及其 Markdown 链接，不显示 `INSTRUCTIONS.md` 等脚手架文件。
+
+## 导出静态站点
+
+```bash
+openwiki visualize <PATH> --export docs/openwiki-visualizer
+```
+
+导出目录包含：
+
+```text
+index.html
+client.js
+client-lib.js
+styles.css
+graph.json
+```
+
+目录可以部署到 GitHub Pages、MkDocs 或其他静态托管服务。客户端读取旁边的 `graph.json`，不依赖实时文件监听。
+
+## 一个容易忽略的限制
+
+本地和静态可视化器都会从公共 CDN 加载图谱、Markdown 和图表库，因此浏览器运行时仍然需要联网。
+
+<Aside type="tip" title="我的使用方式">
+  先用图谱看页面之间有没有链接，再点进页面检查内容。一个页面写得很完整，但如果没有连到索引、架构和操作页面，Agent
+  仍然可能很难发现它。
+</Aside>
+
+## 相关页面
+
+- [快速上手](./quickstart/)
+- [Code mode](./code-mode/)
+- [CLI 命令速查](./cli-reference/)

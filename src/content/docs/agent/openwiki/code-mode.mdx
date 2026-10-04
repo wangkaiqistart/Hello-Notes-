@@ -1,0 +1,143 @@
+---
+title: Code mode：生成仓库知识库
+description: OpenWiki 如何生成仓库 Wiki、维护 Claims 并把知识暴露给 Coding Agent
+sidebar:
+  label: Code mode
+  order: 3
+---
+
+import { Aside, Card, CardGrid } from '@astrojs/starlight/components';
+
+> 官方来源：[Code mode](https://docs.langchain.com/oss/openwiki/code-mode)
+
+Code mode 是 OpenWiki 的默认模式，目标是给当前 Git 仓库建立一份可持续维护的 Markdown 知识库。
+
+```bash
+openwiki
+openwiki --init
+openwiki --update
+```
+
+也可以把模式写全：
+
+```bash
+openwiki code --init
+openwiki code --update
+openwiki code --update --print
+```
+
+## 生成哪些文件
+
+一次成功的初始化或更新通常会得到：
+
+| 产物                           | 用途                                                          |
+| ------------------------------ | ------------------------------------------------------------- |
+| `openwiki/`                    | 生成的 Markdown Wiki，包含 quickstart、架构、操作、集成等主题 |
+| `openwiki/INSTRUCTIONS.md`     | 用户维护的范围和优先级说明，普通 init/update 不会改写         |
+| `openwiki/.claims/`            | 事实性页面对应的结构化 Claims                                 |
+| `openwiki/.page-manifest.json` | 页面进度和源码检查点                                          |
+| `openwiki/.last-update.json`   | 最近一次成功检查的元数据，包括 no-op 更新                     |
+| `openwiki/.run.json`           | 活跃运行中的页面队列，中断恢复使用，成功后删除                |
+| `AGENTS.md` / `CLAUDE.md`      | 写入指向 Wiki 的入口指引                                      |
+
+重新运行 `--init` 会重新生成 Wiki 和 Claims，但保留 `INSTRUCTIONS.md`。`--update` 则在现有 Wiki 上继续维护。
+
+生成页面还可以指定语言，例如：
+
+```bash
+openwiki --init --language zh-CN
+```
+
+## Grounded Claims：让事实可以回到源码
+
+普通 Markdown 只能告诉我们“页面现在写了什么”，不一定能说明“这些事实为什么可信”。Grounded Claims 额外保存页面背后的重要事实，例如：
+
+- 某个模块负责什么
+- 数据从哪里流向哪里
+- 哪些配置和安全边界不能改变
+- 某个失败场景应该怎样处理
+- 某个行为依赖哪些不变量
+
+每个 Claim 都会绑定精确的仓库证据，例如：
+
+```text
+repo://src/server.ts#L40-L82
+```
+
+并记录 OpenWiki 建立 Claim 时看到的证据版本。更新时，如果源码证据变化，OpenWiki 会重新协调相关 Claims。
+
+页面只有在 Claims 集合完整、最终证据复核通过、sidecar 成功写入后，才会写入 `verified` 元数据。
+
+Connector 派生的事实（例如只来自 LangSmith 的观察）不纳入仓库 Claims。
+
+## Open Knowledge Format（OKF）
+
+OpenWiki 输出的是 Google Open Knowledge Format v0.2 Markdown Bundle：
+
+- 一个主题文件就是一个 Concept。
+- 每个 Concept 必须有 YAML front matter，并且 `type` 不能为空。
+- 新建或内容发生变化的页面会写入 `generated: {by, at}`。
+- 仓库页面会把 Claims 证据投影到 `sources`。
+- 页面完成可靠复核后会写入 `verified`。
+- `status`、`stale_after` 等字段按需使用。
+- `index.md` 和 `log.md` 是保留脚手架，不是普通 Concept。
+- Concept 之间用标准 Markdown 链接表达关系。
+
+这也是为什么 Wiki 不是一堆互不相干的说明，而是带有类型、来源和关系的知识包。
+
+## 控制扫描范围：`.openwikiignore`
+
+仓库根目录可以放 `.openwikiignore`：
+
+```text
+secrets/
+*.log
+!logs/keep.log
+```
+
+支持注释、空行、`*`、`**`、目录规则和 `!` 反选。启用后，OpenWiki 会在文件发现和 Shell 执行范围上都避开被忽略路径。
+
+这是一个读取边界：被忽略目录不会被读取、扫描或复制到 Wiki，但 Agent 仍可能从 README、测试、提交信息或现有 Wiki 中间接推断相关主题。
+
+## Mermaid 图表
+
+OpenWiki 会在适合的主题中加入 Mermaid 图表，并在每次运行后验证 Mermaid fence。
+
+如果验证失败，代码块会先被转换成普通 `text` fence，并留下简短说明；后续 `--update` 会尝试修复。
+
+想让校验更接近 GitHub，可以额外安装：
+
+```bash
+npm install mermaid jsdom
+```
+
+没有这些依赖时，OpenWiki 会退回轻量级检查，图表生成仍然可用。
+
+## 修改 Wiki 的范围说明
+
+`openwiki/INSTRUCTIONS.md` 适合放：
+
+- 本项目最关注哪些目录和模块
+- 哪些主题需要写得更详细
+- 希望使用的术语和语气
+- 哪些内部工具或生成目录可以跳过
+
+例如：
+
+```bash
+openwiki "把 openwiki/INSTRUCTIONS.md 改成优先说明公共 API，并跳过内部工具"
+```
+
+普通 `--init` 和 `--update` 不会自行重写这份文件。
+
+<Aside type="tip" title="我的理解">
+  Code mode 的价值不只是“帮我生成 README”。它把 Markdown 页面、源码证据、Agent
+  入口和可恢复的页面任务放在一起，目标是让下一次 Agent 接手项目时少走一遍考古流程。
+</Aside>
+
+## 相关页面
+
+- [可视化 Wiki 图谱](./visualize/)
+- [自动更新](./automate-updates/)
+- [自定义 OpenWiki](./customize/)
+- [个人知识大脑](./personal-mode/)

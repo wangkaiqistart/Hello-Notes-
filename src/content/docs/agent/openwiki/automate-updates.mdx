@@ -1,0 +1,100 @@
+---
+title: 使用 CI 自动更新 Wiki
+description: 在 GitHub Actions、GitLab CI 和 Bitbucket Pipelines 中刷新 OpenWiki
+sidebar:
+  label: Automate updates
+  order: 7
+---
+
+import { Aside, CardGrid, Card } from '@astrojs/starlight/components';
+
+> 官方来源：[Automate updates](https://docs.langchain.com/oss/openwiki/automate-updates)
+
+OpenWiki 可以按计划刷新仓库文档，并在 Wiki 发生变化时自动打开 Pull Request 或 Merge Request。
+
+## 支持的 CI 平台
+
+<CardGrid>
+  <Card title="GitHub Actions" icon="github">
+    使用官方示例 `openwiki-update.yml`，放到 `.github/workflows/openwiki-update.yml`。
+  </Card>
+  <Card title="GitLab CI" icon="git-branch">
+    使用 `openwiki-update.gitlab-ci.yml`，放到 `.gitlab-ci.yml` 或从现有 Pipeline include。
+  </Card>
+  <Card title="Bitbucket Pipelines" icon="cloud">
+    使用 `openwiki-update.bitbucket-pipelines.yml`，并调度 `openwiki-update` custom pipeline。
+  </Card>
+</CardGrid>
+
+官方示例位于 [OpenWiki 仓库 examples](https://github.com/langchain-ai/openwiki/tree/main/examples)。
+
+## CI 中运行什么
+
+```bash
+openwiki code --update --print
+```
+
+CI 不需要先执行 `--init`。只要工作流提供 Provider 和模型环境变量，`--update` 在没有 `openwiki/` 时也能生成初始文档。
+
+典型凭证和配置包括：
+
+```text
+Provider API Key 或 Copilot OAuth / 云凭证
+OPENWIKI_PROVIDER
+OPENWIKI_MODEL_ID
+LANGSMITH_API_KEY                 可选
+OPENWIKI_LANGSMITH_API_KEY        使用 LangSmith Connector 时需要
+```
+
+凭证应放在仓库 Secret 或 CI Variables 中，不要提交到仓库。
+
+## 什么时候会创建 PR/MR
+
+定时工作流会把这些变化纳入文档变更：
+
+- Wiki Markdown 页面
+- `openwiki/.claims/`
+- `AGENTS.md` 和 `CLAUDE.md`
+- 工作流文件本身
+
+如果 Markdown 和 Claims 都没有变化，CI 不会创建 PR/MR。
+
+一次干净的 no-op 更新只会刷新：
+
+```text
+openwiki/.last-update.json
+```
+
+它用来记录“这次新鲜度检查已经发生过”。
+
+## CI 运行失败时的状态
+
+持久化工作区可以通过：
+
+```text
+openwiki/.run.json
+openwiki/.page-manifest.json
+```
+
+恢复页面队列和源码检查点。临时 CI Runner 如果失败后工作区被销毁，就会从头开始；如果部分页面已经完成，OpenWiki 仍可能发布部分进度。
+
+## CI 遥测
+
+定时和 CI 运行会使用共享的 CI 标识发送匿名可靠性遥测。需要关闭时设置：
+
+```bash
+OPENWIKI_TELEMETRY_DISABLED=1
+```
+
+本地遥测和收集边界见[自定义 OpenWiki](./customize/)。
+
+<Aside type="tip" title="我的落地顺序">
+  先在本地完成一次 `--init`，把 `INSTRUCTIONS.md` 和扫描边界稳定下来，再把 `--update --print` 放进
+  CI。否则第一次 CI 运行既可能生成大量页面，也不容易判断变更是否符合预期。
+</Aside>
+
+## 相关页面
+
+- [Code mode](./code-mode/)
+- [模型 Provider](./providers/)
+- [CLI 命令速查](./cli-reference/)
