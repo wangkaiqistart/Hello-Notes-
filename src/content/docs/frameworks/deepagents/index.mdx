@@ -56,6 +56,12 @@ Deep Agents 的核心能力可以归纳为六个动作：
 
 ## 整体结构
 
+底层关系可以这样记：
+
+- LangChain 提供模型、工具和 Middleware 等基础构件。
+- LangGraph 提供持久执行、状态、流式和人工介入所需的运行时。
+- Deep Agents 把这些构件装进一套更适合复杂任务的 Harness。
+
 <figure class="deepagents-diagram">
   <div class="deepagents-diagram__surface">
     <img
@@ -68,15 +74,9 @@ Deep Agents 的核心能力可以归纳为六个动作：
   <figcaption>Deep Agents 的运行链路与四类支撑能力</figcaption>
 </figure>
 
-底层关系可以这样记：
-
-- LangChain 提供模型、工具和 Middleware 等基础构件。
-- LangGraph 提供持久执行、状态、流式和人工介入所需的运行时。
-- Deep Agents 把这些构件装进一套更适合复杂任务的 Harness。
-
 所以它不是要替代 LangChain 或 LangGraph，而是把常见的 Agent 工程能力提前组合好。
 
-## 最小使用方式
+## 最小运行示例
 
 实际落地时，可以先用企业中常见的订单查询场景跑通最小闭环，确认模型调用、工具执行和结果返回都稳定后，再逐步接入文件系统、记忆和子 Agent。
 
@@ -228,6 +228,17 @@ Skills 和 Memory 应分开治理：Skills 是“需要时才加载的能力包�
 - 只有一个模型调用和一个简单工具的流程。
 - 所有步骤都固定、可预测、无需动态决策的工作流。
 
+<Tabs>
+  <TabItem label="简单任务">先用普通的 Agent 创建方式，保持调用链短、状态少、调试简单。</TabItem>
+  <TabItem label="复杂任务">
+    再考虑 Deep Agents，把文件系统、上下文管理、子 Agent 和人工介入按需加进来。
+  </TabItem>
+  <TabItem label="强流程任务">
+    如果每一步都必须严格按业务规则执行，可以直接设计 LangGraph 工作流，不必为了“像
+    Agent”而增加自主决策。
+  </TabItem>
+</Tabs>
+
 <figure class="deepagents-diagram">
   <div class="deepagents-diagram__surface">
     <img
@@ -239,17 +250,6 @@ Skills 和 Memory 应分开治理：Skills 是“需要时才加载的能力包�
   </div>
   <figcaption>根据任务复杂度、执行跨度和风险边界选择合适的实现方式</figcaption>
 </figure>
-
-<Tabs>
-  <TabItem label="简单任务">先用普通的 Agent 创建方式，保持调用链短、状态少、调试简单。</TabItem>
-  <TabItem label="复杂任务">
-    再考虑 Deep Agents，把文件系统、上下文管理、子 Agent 和人工介入按需加进来。
-  </TabItem>
-  <TabItem label="强流程任务">
-    如果每一步都必须严格按业务规则执行，可以直接设计 LangGraph 工作流，不必为了“像
-    Agent”而增加自主决策。
-  </TabItem>
-</Tabs>
 
 ## 工程实践要点
 
