@@ -1,0 +1,48 @@
+.deepagents-diagram {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 1.75rem auto 2.25rem;
+}
+
+.deepagents-diagram__surface {
+  overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 72%, transparent);
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgb(15 23 42 / 12%);
+}
+
+.deepagents-diagram img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+.deepagents-diagram figcaption {
+  margin-top: 0.7rem;
+  color: var(--sl-color-gray-3);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (min-width: 72rem) {
+  .deepagents-diagram {
+    width: min(50rem, calc(100% + 6rem));
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 30rem) {
+  .deepagents-diagram {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .deepagents-diagram__surface {
+    border-radius: 6px;
+    box-shadow: 0 10px 24px rgb(15 23 42 / 10%);
+  }
+}

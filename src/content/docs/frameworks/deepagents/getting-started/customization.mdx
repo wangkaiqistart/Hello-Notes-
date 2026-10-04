@@ -1,0 +1,15 @@
+---
+title: Deep Agents 自定义
+description: 调整系统提示词、工具、后端、记忆和技能
+sidebar:
+  label: 自定义 Agent
+  order: 3
+---
+
+我把自定义拆成几层：先改系统提示词和工具，再决定文件系统后端，最后接入 Skills、Memory、Middleware 和子 Agent。每一层都应该能单独验证。
+
+## 后续整理重点
+
+- create_deep_agent 的扩展点。
+- 默认能力与显式关闭能力的区别。
+- 自定义后端、权限和记忆的组合方式。

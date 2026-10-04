@@ -1,0 +1,15 @@
+---
+title: Deep Agents 文件权限
+description: 用声明式规则限制 Agent 的读写范围
+sidebar:
+  label: 文件权限
+  order: 4
+---
+
+权限规则是文件工具层的安全护栏。我会特别记录规则顺序、首个匹配获胜、默认行为，以及父 Agent 和子 Agent 之间的权限继承。
+
+## 后续整理重点
+
+- read/write 操作和路径 glob。
+- allow、deny 与 first-match-wins。
+- 敏感文件保护和 Sandbox 的边界。

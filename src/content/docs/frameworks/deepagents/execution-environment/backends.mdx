@@ -1,0 +1,15 @@
+---
+title: Deep Agents 文件系统后端
+description: 选择内存、磁盘、Store 或自定义虚拟文件系统后端
+sidebar:
+  label: 文件系统后端
+  order: 3
+---
+
+Deep Agents 的文件工具不是直接绑定某一种磁盘，而是通过 Backend 抽象提供虚拟文件系统。我会按状态生命周期、并发、权限和部署环境比较不同后端。
+
+## 后续整理重点
+
+- StateBackend、StoreBackend、FilesystemBackend 的使用边界。
+- 组合路由和自定义 Backend。
+- 大文件、二进制文件和持久化的一致性。

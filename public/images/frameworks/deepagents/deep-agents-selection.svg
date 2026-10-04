@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1120" viewBox="0 0 800 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Agent 技术选型判断</title>
+  <desc id="desc">通过国内常见业务场景，对比普通 Agent、Deep Agents 和固定工作流各自适合解决的任务。</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.08" />
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 30px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 16px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .card { stroke-width: 2.2; rx: 8; filter: url(#shadow); }
+      .simple { fill: #eff6ff; stroke: #2563eb; }
+      .deep { fill: #ecfdf5; stroke: #059669; }
+      .workflow { fill: #fffbeb; stroke: #d97706; }
+      .tag { font: 700 14px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .tag-blue { fill: #2563eb; }
+      .tag-green { fill: #059669; }
+      .tag-amber { fill: #d97706; }
+      .card-title { font: 700 24px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .scenario { font: 700 17px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+      .text { font: 400 15px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .divider { stroke: #cbd5e1; stroke-width: 1.5; }
+      .footer { fill: #111827; rx: 8; }
+      .footer-title { font: 700 18px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .footer-text { font: 400 15px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #cbd5e1; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="1120" />
+  <text class="title" x="44" y="56">不要一上来就选最复杂的架构</text>
+  <text class="subtitle" x="44" y="86">先看任务不确定性、执行跨度和风险边界。</text>
+
+  <rect class="card simple" x="44" y="126" width="712" height="250" />
+  <rect class="tag-blue" x="70" y="150" width="104" height="26" rx="6" />
+  <text class="tag" x="88" y="169">低复杂度</text>
+  <text class="card-title" x="70" y="214">普通 Agent</text>
+  <text class="scenario" x="70" y="252">场景：知识问答、文案改写、单接口查询</text>
+  <line class="divider" x1="70" y1="274" x2="730" y2="274" />
+  <text class="text" x="70" y="306">判断：步骤少、状态少，一次调用基本能完成。</text>
+  <text class="text" x="70" y="338">原则：调用链越短，调试和上线成本越低。</text>
+
+  <rect class="card deep" x="44" y="406" width="712" height="250" />
+  <rect class="tag-green" x="70" y="430" width="104" height="26" rx="6" />
+  <text class="tag" x="88" y="449">高复杂度</text>
+  <text class="card-title" x="70" y="494">Deep Agents</text>
+  <text class="scenario" x="70" y="532">场景：订单异常排查、研发助手、跨系统分析</text>
+  <line class="divider" x1="70" y1="554" x2="730" y2="554" />
+  <text class="text" x="70" y="586">判断：多步骤、长上下文，需要文件、委派或审批。</text>
+  <text class="text" x="70" y="618">原则：过程要能恢复、追踪，并在风险节点让人确认。</text>
+
+  <rect class="card workflow" x="44" y="686" width="712" height="250" />
+  <rect class="tag-amber" x="70" y="710" width="104" height="26" rx="6" />
+  <text class="tag" x="88" y="729">强确定性</text>
+  <text class="card-title" x="70" y="774">固定工作流</text>
+  <text class="scenario" x="70" y="812">场景：定时同步、固定审批流、ETL、规则批处理</text>
+  <line class="divider" x1="70" y1="834" x2="730" y2="834" />
+  <text class="text" x="70" y="866">判断：步骤固定、分支可枚举，强调一致性和可审计。</text>
+  <text class="text" x="70" y="898">原则：不要为了“智能”强行增加自主决策。</text>
+
+  <rect class="footer" x="44" y="982" width="712" height="94" />
+  <text class="footer-title" x="70" y="1020">我的选型原则</text>
+  <text class="footer-text" x="70" y="1050">能用简单方案完成，就不要额外增加状态、成本和不可控性。</text>
+</svg>

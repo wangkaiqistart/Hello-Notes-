@@ -32,6 +32,102 @@ export default defineConfig({
 						{ label: 'LangGraph', items: [{ autogenerate: { directory: 'frameworks/langgraph' } }] },
 						{ label: 'LlamaIndex', items: [{ autogenerate: { directory: 'frameworks/llamaindex' } }] },
 						{ label: 'MCP', items: [{ autogenerate: { directory: 'frameworks/mcp' } }] },
+						{
+							label: 'Deep Agents',
+							items: [
+								'frameworks/deepagents',
+								{
+									label: '入门',
+									items: [
+										'frameworks/deepagents/getting-started/quickstart',
+										'frameworks/deepagents/getting-started/customization',
+										'frameworks/deepagents/getting-started/models',
+										'frameworks/deepagents/getting-started/comparison-with-claude-agent-sdk',
+										'frameworks/deepagents/getting-started/changelog',
+									],
+								},
+								{
+									label: '部署',
+									items: [
+										'frameworks/deepagents/deployment/managed-deep-agents',
+										{
+											label: '生产化',
+											items: [
+												'frameworks/deepagents/deployment/going-to-production/fault-tolerance',
+											],
+										},
+									],
+								},
+								{
+									label: '执行环境',
+									items: [
+										'frameworks/deepagents/execution-environment/tools',
+										'frameworks/deepagents/execution-environment/backends',
+										'frameworks/deepagents/execution-environment/permissions',
+										'frameworks/deepagents/execution-environment/multimodality',
+										'frameworks/deepagents/execution-environment/sandboxes',
+										{ slug: 'frameworks/deepagents/execution-environment/interpreters', badge: 'Beta' },
+										{ slug: 'frameworks/deepagents/execution-environment/event-streaming', badge: 'Beta' },
+										'frameworks/deepagents/execution-environment/streaming',
+									],
+								},
+								{
+									label: '上下文管理',
+									items: [
+										'frameworks/deepagents/context-management/skills',
+										'frameworks/deepagents/context-management/memory',
+										'frameworks/deepagents/context-management/retrieval',
+										'frameworks/deepagents/context-management/context-engineering',
+										{ slug: 'frameworks/deepagents/context-management/profiles', badge: 'Beta' },
+										'frameworks/deepagents/context-management/openwiki',
+									],
+								},
+								{
+									label: '委派',
+									items: [
+										'frameworks/deepagents/delegation/subagents',
+										{ slug: 'frameworks/deepagents/delegation/dynamic-subagents', badge: 'Beta' },
+										'frameworks/deepagents/delegation/async-subagents',
+									],
+								},
+								{
+									label: 'Steering',
+									items: [
+										'frameworks/deepagents/steering/human-in-the-loop',
+										{ slug: 'frameworks/deepagents/steering/grading-rubrics', badge: 'Beta' },
+									],
+								},
+								{
+									label: 'Middleware',
+									items: [
+										'frameworks/deepagents/middleware/prebuilt',
+										'frameworks/deepagents/middleware/custom',
+									],
+								},
+								{
+									label: 'Frontend',
+									items: [
+										{
+											label: 'Patterns',
+											items: [
+												'frameworks/deepagents/frontend/patterns/subagent-streaming',
+												'frameworks/deepagents/frontend/patterns/todo-list',
+												'frameworks/deepagents/frontend/patterns/sandbox',
+											],
+										},
+									],
+								},
+								{
+									label: 'Protocols',
+									items: [
+										'frameworks/deepagents/protocols/acp',
+										'frameworks/deepagents/protocols/mcp-with-langchain',
+										'frameworks/deepagents/protocols/a2a-with-langsmith',
+										'frameworks/deepagents/protocols/ag-ui',
+									],
+								},
+							],
+						},
 					],
 				},
 				{

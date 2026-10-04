@@ -1,0 +1,15 @@
+---
+title: Frontend 子 Agent 流式展示
+description: 把协调 Agent 和子 Agent 的运行流拆开呈现
+sidebar:
+  label: 子 Agent 流式展示
+  order: 2
+---
+
+前端不应该把所有 token 混成一条聊天记录。我会记录如何用根流展示协调 Agent，再用子 Agent 的发现快照和 selector 渲染专家卡片。
+
+## 后续整理重点
+
+- stream.messages 与 stream.subagents 的职责。
+- 子 Agent 卡片与触发它的 tool-call ID 关联。
+- 进度、错误和最终结果的展示状态。

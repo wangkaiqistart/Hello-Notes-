@@ -1,0 +1,15 @@
+---
+title: Deep Agents Async Subagents
+description: 并发运行互不依赖的子任务并汇总结果
+sidebar:
+  label: Async Subagents
+  order: 4
+---
+
+异步委派适合多个独立检索或分析任务并行执行。我会把并发度、结果顺序、取消、超时和部分失败的处理写清楚。
+
+## 后续整理重点
+
+- async 调用模型。
+- 并发限制和资源隔离。
+- 多个子结果合并成主 Agent 可用的上下文。

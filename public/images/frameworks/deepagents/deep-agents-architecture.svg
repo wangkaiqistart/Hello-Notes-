@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1040" viewBox="0 0 800 1040" role="img" aria-labelledby="title desc">
+  <title id="title">Deep Agents 四层能力架构</title>
+  <desc id="desc">展示用户目标如何进入 Agent Loop，并由执行环境、上下文管理、任务委派和人工介入四层能力共同支撑。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#475569" />
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.08" />
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 30px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .subtitle { font: 400 16px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .flow { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; rx: 8; filter: url(#shadow); }
+      .flow-main { fill: #111827; stroke: #111827; }
+      .flow-label { font: 700 22px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .flow-label-light { font: 700 22px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .flow-small { font: 400 16px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #64748b; }
+      .flow-small-light { font: 400 16px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #cbd5e1; }
+      .line { fill: none; stroke: #475569; stroke-width: 3; marker-end: url(#arrow); }
+      .card { stroke-width: 2; rx: 8; filter: url(#shadow); }
+      .execution { fill: #eff6ff; stroke: #2563eb; }
+      .context { fill: #ecfdf5; stroke: #059669; }
+      .delegation { fill: #fffbeb; stroke: #d97706; }
+      .steering { fill: #fff1f2; stroke: #e11d48; }
+      .card-title { font: 700 22px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .card-text { font: 400 16px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+      .base { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 8; }
+      .base-title { font: 700 18px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .base-text { font: 400 14px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #64748b; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="1040" />
+  <text class="title" x="44" y="56">Deep Agents：一套可持续执行的系统</text>
+  <text class="subtitle" x="44" y="86">为 Agent Loop 补齐环境、上下文、委派和人工控制。</text>
+
+  <rect class="flow" x="160" y="124" width="480" height="76" />
+  <text class="flow-label" x="354" y="156">用户目标</text>
+  <text class="flow-small" x="306" y="182">任务、约束、验收标准</text>
+
+  <path class="line" d="M400 200 V226" />
+  <rect class="flow flow-main" x="160" y="238" width="480" height="88" />
+  <text class="flow-label-light" x="344" y="272">Agent Loop</text>
+  <text class="flow-small-light" x="296" y="302">理解 → 行动 → 观察 → 继续</text>
+
+  <path class="line" d="M400 326 V352" />
+  <rect class="flow" x="160" y="364" width="480" height="76" />
+  <text class="flow-label" x="354" y="396">任务结果</text>
+  <text class="flow-small" x="298" y="422">可验证、可恢复、可追踪</text>
+
+  <text class="flow-label" x="44" y="494">四层支撑能力</text>
+
+  <rect class="card execution" x="44" y="520" width="338" height="158" />
+  <text class="card-title" x="70" y="558">1. 执行环境</text>
+  <text class="card-text" x="70" y="592">工具与 MCP</text>
+  <text class="card-text" x="70" y="620">文件系统、权限与代码执行</text>
+  <text class="card-text" x="70" y="648">流式输出运行过程</text>
+
+  <rect class="card context" x="418" y="520" width="338" height="158" />
+  <text class="card-title" x="444" y="558">2. 上下文管理</text>
+  <text class="card-text" x="444" y="592">Skills、Memory 与检索</text>
+  <text class="card-text" x="444" y="620">摘要和结果卸载</text>
+  <text class="card-text" x="444" y="648">缓存重复的静态内容</text>
+
+  <rect class="card delegation" x="44" y="706" width="338" height="158" />
+  <text class="card-title" x="70" y="744">3. 任务委派</text>
+  <text class="card-text" x="70" y="778">先拆任务，再分配职责</text>
+  <text class="card-text" x="70" y="806">子 Agent 隔离复杂上下文</text>
+  <text class="card-text" x="70" y="834">独立任务可以并发执行</text>
+
+  <rect class="card steering" x="418" y="706" width="338" height="158" />
+  <text class="card-title" x="444" y="744">4. 人工介入</text>
+  <text class="card-text" x="444" y="778">高风险动作先审批</text>
+  <text class="card-text" x="444" y="806">任务可以暂停和恢复</text>
+  <text class="card-text" x="444" y="834">用评分和反馈持续纠偏</text>
+
+  <rect class="base" x="44" y="908" width="338" height="88" />
+  <text class="base-title" x="70" y="944">LangChain：基础构件</text>
+  <text class="base-text" x="70" y="972">模型、工具、消息、Middleware</text>
+
+  <rect class="base" x="418" y="908" width="338" height="88" />
+  <text class="base-title" x="444" y="944">LangGraph：持久运行时</text>
+  <text class="base-text" x="444" y="972">状态、恢复、流式、人工介入</text>
+</svg>

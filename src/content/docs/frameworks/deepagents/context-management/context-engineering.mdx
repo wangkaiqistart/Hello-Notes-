@@ -1,0 +1,15 @@
+---
+title: Deep Agents Context Engineering
+description: 设计输入、压缩、隔离和长期记忆的上下文流
+sidebar:
+  label: Context Engineering
+  order: 5
+---
+
+我把 Context Engineering 当作整个 Harness 的上下文治理：输入上下文、摘要压缩、子 Agent 隔离和跨线程记忆要一起设计，而不是只调大模型上下文窗口。
+
+## 后续整理重点
+
+- 输入上下文的组成。
+- summarization 与 context offloading。
+- 子 Agent 隔离和长期记忆的取舍。
