@@ -1,15 +1,485 @@
 ---
-title: Deep Agents 自定义
-description: 调整系统提示词、工具、后端、记忆和技能
+title: Deep Agents 自定义 Agent
+description: 理解 create_deep_agent 的扩展点、默认能力和组合边界
 sidebar:
   label: 自定义 Agent
   order: 3
 ---
 
-我把自定义拆成几层：先改系统提示词和工具，再决定文件系统后端，最后接入 Skills、Memory、Middleware 和子 Agent。每一层都应该能单独验证。
+import { Aside, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
 
-## 后续整理重点
+## 自定义的基本思路
 
-- create_deep_agent 的扩展点。
-- 默认能力与显式关闭能力的区别。
-- 自定义后端、权限和记忆的组合方式。
+`create_deep_agent` 已经把文件系统、上下文压缩、子 Agent 和提示词缓存等能力组装成了一套 Harness。自定义时不需要重新搭建执行循环，而是决定下面几件事：
+
+1. Agent 使用哪个模型，能调用哪些业务工具。
+2. 哪些行为写进系统提示词，哪些行为交给 Middleware。
+3. 文件、Skills 和 Memory 存在哪里，保存多久。
+4. 哪些任务需要子 Agent，哪些工具调用必须先经过人工确认。
+5. 最终结果返回自然语言，还是返回经过校验的结构化对象。
+
+我的习惯是从模型、工具和提示词开始，再逐层加入 Backend、Skills、Memory 和子 Agent。每增加一层都单独验证，避免同时出现多个变量后无法定位问题。
+
+<Aside type="tip" title="先改行为，再改架构">
+  大多数需求先通过 `system_prompt` 和 `tools`
+  就能验证。只有确认任务确实需要持久文件、按需知识、上下文隔离或审批恢复时，才继续增加对应能力。
+</Aside>
+
+## 参数速查
+
+| 参数              | 负责什么                           | 我的使用判断                                         |
+| ----------------- | ---------------------------------- | ---------------------------------------------------- |
+| `model`           | 主 Agent 使用的聊天模型            | 先用字符串跑通，需要超时、重试等参数时再传模型实例   |
+| `tools`           | Agent 可以调用的领域工具           | 只暴露当前任务需要的工具，保持描述和输入 Schema 清楚 |
+| `system_prompt`   | 角色、工作顺序和行为边界           | 写稳定规则，不把临时业务数据塞进提示词               |
+| `middleware`      | 模型、工具和状态生命周期的横切逻辑 | 用于重试、校验、摘要、日志和统一策略                 |
+| `subagents`       | 可委派的专业子 Agent               | 只拆边界清楚、值得隔离上下文的子任务                 |
+| `backend`         | 虚拟文件系统的存储方式             | 根据线程隔离、跨线程共享和执行环境选型               |
+| `permissions`     | 文件系统的路径级访问控制           | 默认按最小权限开放读写范围                           |
+| `skills`          | 按需加载的能力目录                 | 放流程、参考资料、脚本和模板                         |
+| `memory`          | 启动时加载的 `AGENTS.md` 文件      | 放稳定偏好、项目约定和长期规则                       |
+| `interrupt_on`    | 工具调用前的人工确认策略           | 删除、发布、通知等高风险动作应暂停                   |
+| `response_format` | 最终结构化结果的 Schema            | 下游需要稳定字段时使用                               |
+
+下面是一份组合关系示意，不是要求一次把所有参数都配齐：
+
+```python title="agent.py"
+from deepagents import create_deep_agent
+
+
+agent = create_deep_agent(
+    model=model,
+    tools=tools,
+    system_prompt=system_prompt,
+    middleware=middleware,
+    subagents=subagents,
+    backend=backend,
+    permissions=permissions,
+    skills=["./skills/"],
+    memory=["./AGENTS.md"],
+    interrupt_on=interrupt_on,
+    response_format=Report,
+    checkpointer=checkpointer,
+)
+```
+
+## 默认已经具备什么
+
+只传 `model` 时，Deep Agents 通常已经包含下面这组核心能力：
+
+| 默认能力                   | 主要作用                                 | 需要注意                                               |
+| -------------------------- | ---------------------------------------- | ------------------------------------------------------ |
+| `FilesystemMiddleware`     | 提供虚拟文件的读取、写入、搜索和编辑能力 | 默认 Backend 是 `StateBackend`，不等于直接访问本机磁盘 |
+| `SubAgentMiddleware`       | 提供通用子 Agent 和任务委派能力          | 通用子 Agent 默认加入，但可由 Profile 关闭             |
+| `SummarizationMiddleware`  | 对过长消息历史进行压缩                   | 修改触发阈值时需要替换默认实例                         |
+| `PatchToolCallsMiddleware` | 修复中断恢复或异常历史里的悬空 Tool Call | 属于运行稳定性能力，不是业务工具                       |
+| Prompt Caching             | 为支持缓存的模型复用稳定提示词前缀       | 不支持的模型会跳过，不代表所有 Provider 都实际缓存     |
+
+Skills、Memory、异步子 Agent 和 Human-in-the-loop 不是无条件启用的能力，只有传入对应参数后才会进入 Middleware 栈。
+
+<Aside type="note" title="默认能力不等于默认持久化">
+  Agent 能读写虚拟文件，不代表文件会跨线程或跨进程保存。实际生命周期由 Backend、Checkpointer 和
+  Store 共同决定。
+</Aside>
+
+## 1. 模型
+
+模型既可以使用 `provider:model` 字符串，也可以传入已经初始化的模型实例。
+
+<Tabs>
+  <TabItem label="模型字符串">
+
+```python
+from deepagents import create_deep_agent
+
+
+agent = create_deep_agent(model="openai:gpt-5.5")
+```
+
+这种方式适合快速启动和切换 Provider，初始化参数使用集成的默认值。
+
+  </TabItem>
+  <TabItem label="模型实例">
+
+```python
+from deepagents import create_deep_agent
+from langchain.chat_models import init_chat_model
+
+
+model = init_chat_model(
+    model="openai:gpt-5.5",
+    temperature=0,
+    timeout=60,
+    max_retries=2,
+)
+
+agent = create_deep_agent(model=model)
+```
+
+需要显式控制温度、超时、重试、最大输出或 Provider 特有参数时，使用模型实例更清楚。
+
+  </TabItem>
+</Tabs>
+
+模型选型不能只比较回答质量，还要确认 Tool Calling、结构化输出、上下文长度、流式事件和提示词缓存是否满足任务需要。
+
+## 2. 工具
+
+`tools` 可以接收普通 Python 函数、LangChain Tool，以及从 MCP Server 加载的工具。无论来源是什么，模型最终看到的都是工具名、描述和输入 Schema。
+
+```python
+from deepagents import create_deep_agent
+from langchain.tools import tool
+
+
+@tool
+def query_order(order_no: str) -> dict:
+    """按订单号查询当前状态和最近一条运输节点。"""
+    return {
+        "order_no": order_no,
+        "status": "in_transit",
+        "latest_node": "上海分拨中心",
+    }
+
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[query_order],
+)
+```
+
+工具设计时我会重点检查：
+
+- 参数必须有类型标注，复杂输入使用明确的 Schema。
+- Docstring 说明“什么时候调用”和“返回什么”，不要只重复函数名。
+- 工具返回业务事实，不在工具内部偷偷拼接最终回答。
+- 写操作要考虑幂等、超时、重试和审计。
+- 工具异常要返回可诊断信息，不能只吞掉错误。
+
+MCP 工具的接入步骤也是先从 Adapter 获取工具列表，再把它们传给 `create_deep_agent`。MCP 负责工具发现和调用协议，权限、超时、错误处理和人工审批仍然需要在 Agent 侧明确配置。
+
+<Aside type="caution" title="工具不是越多越好">
+  大量含义相近的工具会增加模型选择成本。优先合并重复能力、缩小参数范围，并在不同角色之间隔离不需要共享的工具。
+</Aside>
+
+## 3. 系统提示词
+
+`system_prompt` 接受字符串，也可以传 `SystemMessage`。我通常把它拆成四部分：角色、执行顺序、工具规则和输出边界。
+
+```python
+from deepagents import create_deep_agent
+
+
+system_prompt = """
+你是企业订单异常处理助手。
+
+处理问题时遵循下面的顺序：
+1. 先调用工具查询订单和运输事实。
+2. 明确区分已确认事实、判断和建议。
+3. 资料不足时说明缺口，不补造业务状态。
+4. 涉及删除、改派或通知客户时，等待人工确认。
+"""
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[query_order],
+    system_prompt=system_prompt,
+)
+```
+
+稳定行为写进系统提示词；用户身份、请求级密钥和 Feature Flag 更适合放进 Runtime Context；大量领域资料则应交给 Skills、Memory 或 Retrieval。
+
+## 4. Middleware
+
+Middleware 用来处理横切逻辑，例如模型重试、工具校验、PII 处理、上下文压缩、日志和人工审批。它不适合承载完整业务流程。
+
+### 追加与替换
+
+传入的 Middleware 会合并进 Deep Agents 的默认栈：
+
+- `.name` 没有匹配默认项时，作为新增 Middleware 插入默认核心栈之后。
+- `.name` 与默认项相同时，替换原来的实例，而不是把配置合并进去。
+- 同名替换能力要求 `deepagents>=0.7`。
+
+下面通过替换摘要 Middleware，调整触发时机和保留的最近消息数：
+
+```python
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.middleware import SummarizationMiddleware
+
+
+model = "openai:gpt-5.5"
+backend = StateBackend()
+
+agent = create_deep_agent(
+    model=model,
+    backend=backend,
+    middleware=[
+        SummarizationMiddleware(
+            model=model,
+            backend=backend,
+            trigger=("tokens", 100000),
+            keep=("messages", 20),
+        )
+    ],
+)
+```
+
+<Aside type="danger" title="替换不会继承旧配置">
+  替换 `FilesystemMiddleware` 时，必须在新实例里重新传入 Backend、Permissions
+  和工具白名单。`create_deep_agent` 顶层的同名配置不会自动合并到替换实例中。
+</Aside>
+
+### 并发安全
+
+不要在 Middleware 实例上累加请求状态。子 Agent、并行工具和不同线程的调用可能同时复用同一个实例，把计数或临时值写进 `self` 会产生竞态。需要跨节点传递的数据应放进 Graph State，需要请求级数据时使用 Runtime Context。
+
+通用子 Agent 会继承主 Agent 对默认 Middleware 的替换；通过 `subagents=` 声明的专业子 Agent 不会自动继承主 Agent 的自定义 Middleware，需要在子 Agent 自己的配置里显式添加。
+
+## 5. 子 Agent
+
+子 Agent 适合隔离专业任务和大段上下文。定义时最重要的是让主 Agent 能根据 `description` 判断什么时候应该委派。
+
+```python
+from deepagents import create_deep_agent
+
+
+research_subagent = {
+    "name": "research-agent",
+    "description": "调查需要多轮检索和证据汇总的问题",
+    "system_prompt": "先核对资料，再返回简短的事实摘要和证据缺口。",
+    "tools": [internet_search],
+    "model": "openai:gpt-5.5",
+}
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    subagents=[research_subagent],
+)
+```
+
+`model` 可以省略，省略后使用主 Agent 的模型。只有当子任务边界明确、上下文隔离有价值、返回结果可以压缩时，我才会创建专门的子 Agent。
+
+## 6. Backend 与权限
+
+Backend 决定文件工具看到的文件系统，以及文件可以保存多久。默认使用 `StateBackend`。
+
+| Backend             | 生命周期和范围                              | 适用场景                       | 主要风险                                           |
+| ------------------- | ------------------------------------------- | ------------------------------ | -------------------------------------------------- |
+| `StateBackend`      | 文件保存在 Graph State 中，同一线程内可恢复 | Demo、短任务、线程级临时文件   | 不会自动跨线程共享，需要 Checkpointer 才能跨轮恢复 |
+| `FilesystemBackend` | 直接映射本地目录                            | 本地研发、代码仓库和已有文件   | Agent 获得真实磁盘读写能力，必须限制根目录和权限   |
+| `StoreBackend`      | 文件放入持久化 Store，可跨线程访问          | 用户记忆、共享资料和长期文件   | 需要设计命名空间、隔离和并发更新策略               |
+| `CompositeBackend`  | 根据虚拟路径把请求路由到不同 Backend        | 临时工作区与长期记忆分层存储   | 路由规则不清会造成文件放错位置                     |
+| Sandbox 类后端      | 文件与命令在隔离环境中运行                  | 安装依赖、执行测试和不可信代码 | 需要资源限制、超时和环境清理                       |
+
+<Tabs>
+  <TabItem label="默认状态文件系统">
+
+```python
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=StateBackend(),
+)
+```
+
+文件属于线程状态，不会直接写入本机目录。
+
+  </TabItem>
+  <TabItem label="本地文件系统">
+
+```python
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=FilesystemBackend(
+        root_dir="./workspace",
+        virtual_mode=True,
+    ),
+)
+```
+
+Agent 只能以配置的根目录作为工作区，但它操作的是真实文件，仍然需要结合权限规则和人工审批。
+
+  </TabItem>
+</Tabs>
+
+`permissions` 用于路径级访问控制。我的默认策略是先只开放读取，再按业务需要增加写入目录；删除、覆盖和执行能力不应仅依赖提示词约束。
+
+## 7. Skills 与 Memory
+
+Skills 和 Memory 都依赖文件，但加载时机不同：
+
+| 能力   | 加载时机                                       | 适合存放                               |
+| ------ | ---------------------------------------------- | -------------------------------------- |
+| Skills | 启动时只暴露目录和元数据，任务需要时再读取正文 | 专业流程、参考资料、脚本、模板         |
+| Memory | Agent 启动时加载                               | 编码规范、项目约定、稳定偏好、长期规则 |
+
+```python
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+
+
+backend = FilesystemBackend(
+    root_dir=".",
+    virtual_mode=True,
+)
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=backend,
+    skills=["./skills/"],
+    memory=["./AGENTS.md"],
+)
+```
+
+`skills` 和 `memory` 只是告诉 Agent 去哪里加载内容，不会替我创建文件。对应目录和 `AGENTS.md` 必须已经存在于同一个 Backend 中。
+
+使用 `StateBackend` 时，虚拟路径必须以 `/` 开头，并在调用前把文件写入 State；使用 `FilesystemBackend` 时，路径映射到配置的本地根目录。路径写法和 Backend 不一致，是最常见的加载失败原因之一。
+
+<Aside type="caution" title="不要把 Skills 和 Memory 混成一份大文档">
+  每次运行都要遵守的规则放 Memory；只在特定任务中使用的长流程和资料放
+  Skills。全部启动加载会持续占用上下文，全部按需加载又可能遗漏关键约束。
+</Aside>
+
+## 8. Human-in-the-loop
+
+`interrupt_on` 可以按工具配置是否暂停，以及允许人工做出哪些决定。启用人工介入时必须配置 Checkpointer，系统需要保存暂停前的状态，才能从同一线程继续执行。
+
+```python
+from deepagents import create_deep_agent
+from langchain.tools import tool
+from langgraph.checkpoint.memory import MemorySaver
+
+
+@tool
+def remove_file(path: str) -> str:
+    """删除指定文件。"""
+    return f"Deleted {path}"
+
+
+@tool
+def read_file(path: str) -> str:
+    """读取指定文件。"""
+    return f"Contents of {path}"
+
+
+@tool
+def notify_customer(message: str) -> str:
+    """向客户发送通知。"""
+    return "Notification sent"
+
+
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[remove_file, read_file, notify_customer],
+    interrupt_on={
+        "remove_file": True,
+        "read_file": False,
+        "notify_customer": {
+            "allowed_decisions": ["approve", "reject"],
+        },
+    },
+    checkpointer=checkpointer,
+)
+```
+
+设置为 `True` 时，默认可提供 `approve`、`edit`、`reject` 和 `respond` 等决定；也可以像通知工具一样缩小允许范围。恢复执行时必须继续使用原来的 `thread_id`，并确保工具本身能够防止重复执行。
+
+## 9. Profiles
+
+Profile 适合封装“跟随模型变化”的配置，而不是“跟随某次调用变化”的配置。它可以包含基础提示词、提示词后缀、工具描述覆盖、排除的工具或 Middleware，以及通用子 Agent 的调整。
+
+```python
+from deepagents import HarnessProfile, register_harness_profile
+
+
+register_harness_profile(
+    "openai:gpt-5.5",
+    HarnessProfile(
+        system_prompt_suffix="最终回答控制在 200 字以内。",
+    ),
+)
+```
+
+这样切换到匹配模型时会自动应用配置，不需要在每个 `create_deep_agent` 调用点重复判断 Provider。
+
+## 10. 结构化输出
+
+下游程序需要固定字段时，通过 `response_format` 传入 Pydantic Model。生成结果经过校验后保存在 State 的 `structured_response` 中，而不是只存在最后一条消息里。
+
+```python
+from deepagents import create_deep_agent
+from pydantic import BaseModel, Field
+
+
+class OrderAssessment(BaseModel):
+    order_no: str = Field(description="订单号")
+    status: str = Field(description="当前状态")
+    requires_manual_follow_up: bool = Field(description="是否需要人工跟进")
+    reason: str = Field(description="判断依据")
+
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[query_order],
+    response_format=OrderAssessment,
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "检查订单 SO20261004001 是否需要人工跟进。",
+            }
+        ]
+    }
+)
+
+assessment = result["structured_response"]
+print(assessment.requires_manual_follow_up, assessment.reason)
+```
+
+Schema 应只包含下游确实需要的字段。字段过多、描述含糊或嵌套过深，会增加模型生成失败和校验重试的概率。
+
+## 推荐扩展顺序
+
+<Steps>
+
+1. **先稳定模型和工具**：确认模型直连、工具直调和 Tool Call 都正常。
+2. **补系统提示词**：明确执行顺序、事实边界和输出要求。
+3. **选择 Backend 和权限**：先确定文件生命周期，再开放读写范围。
+4. **接入 Skills 和 Memory**：确认文件确实存在于相同 Backend。
+5. **加入子 Agent 和 Middleware**：一次只增加一个角色或一项横切能力。
+6. **设置人工审批和结构化输出**：补齐暂停恢复、幂等和 Schema 校验。
+7. **最后做整体观测**：检查消息、工具调用、文件变化、委派和恢复链路。
+
+</Steps>
+
+## 常见错误
+
+| 现象                     | 常见原因                                       | 处理方式                                  |
+| ------------------------ | ---------------------------------------------- | ----------------------------------------- |
+| 模型参数不生效           | 使用了模型字符串，只能采用默认初始化参数       | 改为初始化模型实例并显式传入参数          |
+| Agent 不调用工具         | Docstring、类型标注或工具边界不清楚            | 只保留一个工具，先验证最小 Tool Call      |
+| Skills 或 Memory 找不到  | 路径属于本地磁盘，但 Agent 使用 `StateBackend` | 统一 Backend 和路径语义，并先写入目标文件 |
+| 本地文件被意外修改       | `FilesystemBackend` 根目录或权限过宽           | 缩小根目录、配置最小权限并增加审批        |
+| 默认 Middleware 配置丢失 | 同名实例发生完整替换，不是增量合并             | 在替换实例中重新传入所有依赖和配置        |
+| 并发时状态错乱           | Middleware 把请求状态保存在实例字段中          | 使用 Graph State 或 Runtime Context       |
+| 专业子 Agent 行为不一致  | 误以为它会继承主 Agent 的自定义 Middleware     | 在子 Agent 配置中显式声明 Middleware      |
+| 人工审批无法恢复         | 没有 Checkpointer，或恢复时更换了 `thread_id`  | 保存状态并使用同一线程继续执行            |
+| 读取不到结构化结果       | 只查看了最后一条 AI Message                    | 从 `result["structured_response"]` 读取   |
+
+<Aside type="tip" title="我的判断标准">
+  如果一个配置无法单独测试，就说明这一层拆得还不够清楚。先把它缩小到可以独立验证，再与其他能力组合。
+</Aside>

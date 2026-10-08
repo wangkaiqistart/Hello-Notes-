@@ -1,15 +1,257 @@
 ---
 title: Deep Agents 模型配置
-description: 选择模型、配置 Provider 并理解模型能力差异
+description: 选择支持工具调用的模型，并正确配置参数、Provider Profile 和运行时切换
 sidebar:
   label: 模型配置
   order: 4
 ---
 
-模型选择不只是换一个 model 字符串。我会记录不同 Provider 的工具调用、结构化输出、上下文长度、缓存和成本差异，并把凭证配置和业务代码分开。
+import { Aside, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
 
-## 后续整理重点
+## 先判断模型是否合适
 
-- 官方支持的 Provider 写法。
-- 工具调用和流式能力的兼容性。
-- 生产环境模型切换和降级策略。
+Deep Agents 依赖聊天模型完成多轮推理和工具调用，所以“能生成文本”只是最低条件。模型检查顺序是：
+
+1. 是否支持 Tool Calling。
+2. 工具参数是否能稳定遵循 Schema。
+3. 是否支持项目需要的结构化输出、流式和多模态能力。
+4. 上下文长度、响应延迟、重试行为和成本是否支持。
+5. 在文件操作、检索、工具使用、记忆和长对话等任务上的表现是否符合业务要求。
+
+<Aside type="caution" title="评测通过不等于可以直接上线">
+  模型评测只能说明它在一组任务上的表现，不能替代真实业务数据、权限边界、成本和故障恢复测试。尤其要单独验证工具调用，而不是只看最终回答是否流畅。
+</Aside>
+
+## 支持的模型写法
+
+在 `create_deep_agent` 中传入 `provider:model` 格式的字符串：
+
+```python
+from deepagents import create_deep_agent
+
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+)
+```
+
+冒号前的 Provider 前缀决定使用哪个 LangChain 集成，冒号后的内容原样作为 Provider 的模型标识。不同 Provider 的命名规则不同，有的使用简单名称，有的要求完整命名空间或部署路径。
+
+| Provider   | 模型字符串示例                                | 常见凭据变量           |
+| ---------- | --------------------------------------------- | ---------------------- |
+| Google     | `google_genai:gemini-3.6-flash`               | `GOOGLE_API_KEY`       |
+| OpenAI     | `openai:gpt-5.5`                              | `OPENAI_API_KEY`       |
+| Anthropic  | `anthropic:claude-sonnet-5`                   | `ANTHROPIC_API_KEY`    |
+| OpenRouter | `openrouter:z-ai/glm-5.2`                     | `OPENROUTER_API_KEY`   |
+| Fireworks  | `fireworks:accounts/fireworks/models/glm-5p2` | `FIREWORKS_API_KEY`    |
+| Baseten    | `baseten:zai-org/GLM-5.2`                     | `BASETEN_API_KEY`      |
+| Ollama     | `ollama:north-mini-code-1.0`                  | 本地或托管 Ollama 配置 |
+
+模型标识会随 Provider 的模型目录变化。遇到初始化错误时，先确认前缀、完整模型名和凭据属于同一个 Provider，不要只修改冒号后的最后一段。
+
+### 先考虑哪些模型
+
+下面是适合做第一轮验证的候选，不是固定推荐清单：
+
+| 类型               | 可先试的模型                                     | 适合观察什么                       |
+| ------------------ | ------------------------------------------------ | ---------------------------------- |
+| 通用闭源模型       | `gpt-5.5`、`gemini-3.6-flash`、`claude-opus-4-7` | 工具调用、长任务规划和复杂指令遵循 |
+| 推理或长上下文模型 | `gemini-3.1-pro-preview`、`claude-opus-4-6`      | 复杂分析、跨文件上下文和总结质量   |
+| Open-weight 模型   | `GLM-5.2`、`Kimi-K2.7 Code`、`MiniMax-M3`        | 成本、部署位置和私有化可行性       |
+
+不能只根据模型名称决定选型。先用同一组工具和同一组业务问题做小规模对比，再记录质量、延迟、失败率和单次成本。
+
+## 字符串还是模型实例
+
+### 使用模型字符串
+
+模型字符串适合快速启动和切换 Provider。Deep Agents 会根据字符串调用 `init_chat_model`，使用默认初始化参数。
+
+```python
+from deepagents import create_deep_agent
+
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+)
+```
+
+### 使用初始化后的模型实例
+
+需要温度、超时、重试、思考级别、最大输出或 Provider 特有选项时，直接初始化模型实例：
+
+```python
+from deepagents import create_deep_agent
+from langchain.chat_models import init_chat_model
+
+
+model = init_chat_model(
+    model="google_genai:gemini-3.6-flash",
+    thinking_level="medium",
+    timeout=120,
+    max_retries=2,
+)
+
+agent = create_deep_agent(model=model)
+```
+
+也可以使用 Provider 的模型类。两种方式的判断标准是一样的：需要统一参数时使用 `init_chat_model`，需要 Provider 特有 API 时再使用具体模型类。
+
+<Aside type="note" title="参数没有生效时先看这里">
+  如果把模型写成字符串，模型初始化参数只能通过默认配置进入。想明确设置
+  `temperature`、`timeout`、`max_retries` 或其他 Provider 参数，就传入已经配置好的模型实例。
+</Aside>
+
+## Provider Profile
+
+Provider Profile 用来给模型字符串补充初始化参数。它和 Customization 页面里的 Harness Profile 不同：
+
+| 类型             | 作用对象       | 典型内容                                             |
+| ---------------- | -------------- | ---------------------------------------------------- |
+| Provider Profile | 模型如何初始化 | `temperature`、超时、重试、Provider 参数             |
+| Harness Profile  | Agent 如何工作 | 系统提示词后缀、工具覆盖、Middleware 和子 Agent 配置 |
+
+Provider Profile 可以按 Provider 级别注册，也可以按具体模型注册。模型级配置会叠加在 Provider 级配置之上：
+
+```python
+from deepagents import ProviderProfile, register_provider_profile
+
+
+# 所有 OpenAI 模型默认使用较低温度。
+register_provider_profile(
+    "openai",
+    ProviderProfile(init_kwargs={"temperature": 0}),
+)
+
+# 只给这个模型增加额外的推理参数，同时继承上面的 temperature=0。
+register_provider_profile(
+    "openai:gpt-5.5",
+    ProviderProfile(init_kwargs={"reasoning_effort": "medium"}),
+)
+```
+
+这个机制只对 `provider:model` 字符串生效。若已经传入初始化后的模型实例，实例里的参数优先，Provider Profile 不会再次套用。
+
+## OpenAI Responses API
+
+使用 `openai:...` 模型字符串时，当前集成默认走 Responses API。需要控制 API 形态或数据保存策略时，不要只改字符串，改用模型实例：
+
+```python
+from deepagents import create_deep_agent
+from langchain.chat_models import init_chat_model
+
+
+# 改用 Chat Completions 路径。
+model = init_chat_model(
+    "openai:gpt-5.5",
+    use_responses_api=False,
+)
+agent = create_deep_agent(model=model)
+```
+
+如果希望继续使用 Responses API，但关闭服务端保存，同时保留加密推理内容，可以显式设置：
+
+```python
+from langchain.chat_models import init_chat_model
+
+
+model = init_chat_model(
+    "openai:gpt-5.5",
+    use_responses_api=True,
+    store=False,
+    include=["reasoning.encrypted_content"],
+)
+```
+
+这里的 `store`、`include` 和 `use_responses_api` 属于模型初始化参数，不是 `create_deep_agent` 的通用参数。数据保存策略还需要结合组织合规和日志留存规则单独确认。
+
+## 运行时选择模型
+
+如果产品允许用户在界面上选择模型，不需要为每个模型重新创建一套 Agent。可以把模型名放入 Runtime Context，再通过 `wrap_model_call` 在每次模型调用前替换模型。
+
+```python
+from dataclasses import dataclass
+from typing import Callable
+
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
+from langchain.chat_models import init_chat_model
+
+
+@dataclass
+class Context:
+    model: str
+
+
+@wrap_model_call
+def configurable_model(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    model_name = request.runtime.context.model
+    model = init_chat_model(model_name)
+    return handler(request.override(model=model))
+
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    middleware=[configurable_model],
+    context_schema=Context,
+)
+
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "你好"}]},
+    context=Context(model="openai:gpt-5.5"),
+)
+```
+
+运行时切换要特别注意三点：
+
+- 用户提供的模型标识必须经过白名单校验，不能直接把任意字符串交给 `init_chat_model`。
+- 不同模型的工具调用、上下文长度和输出格式可能不同，切换前要做能力检查。
+- 如果模型实例还需要自定义超时、重试或 Provider 参数，应在 Middleware 内按模型配置，而不是每次临时创建默认实例。
+
+## 如何做模型评估
+
+我会把模型评估拆成几个可观测维度，而不是只看一个总分：
+
+| 维度          | 验证问题                                     |
+| ------------- | -------------------------------------------- |
+| 文件操作      | 能否按要求读、写、搜索和修改文件             |
+| Retrieval     | 能否找到正确资料，并区分证据和猜测           |
+| Tool Use      | 能否选择正确工具，并传入符合 Schema 的参数   |
+| Memory        | 能否读取稳定约定，并避免把临时信息当长期规则 |
+| Conversation  | 多轮对话中是否保留必要上下文                 |
+| Summarization | 压缩历史后是否仍保留任务关键事实             |
+
+评估集通过后还要补一轮业务验收：真实工具权限、超时、网络波动、敏感信息、并发和成本都可能改变最终结果。
+
+## 模型配置的排查顺序
+
+<Steps>
+
+1. **确认凭据**：环境变量名称和模型 Provider 一致。
+2. **确认模型标识**：先单独调用模型，再接入 Deep Agents。
+3. **确认 Tool Calling**：用一个最小工具检查调用和参数 Schema。
+4. **确认参数入口**：模型字符串只适合默认配置，复杂参数改用模型实例或 Provider Profile。
+5. **确认运行时能力**：检查结构化输出、流式、多模态和上下文长度。
+6. **确认业务表现**：用固定问题比较质量、延迟、失败率和成本。
+
+</Steps>
+
+## 常见问题
+
+| 现象                          | 常见原因                                       | 处理方式                                                     |
+| ----------------------------- | ---------------------------------------------- | ------------------------------------------------------------ |
+| `model_provider` 或模型名错误 | Provider 前缀与模型标识不匹配                  | 使用完整的 `provider:model`，确认命名空间和部署名            |
+| 模型能回答但不调用工具        | 模型不支持 Tool Calling，或工具 Schema 不清楚  | 更换支持 Tool Calling 的模型，并用单工具最小例验证           |
+| 温度、超时或重试没有生效      | 仍然传的是模型字符串                           | 通过 `init_chat_model` 或 Provider 模型类创建实例            |
+| Provider Profile 没有生效     | 实际传入的是预配置模型实例                     | 只对模型字符串使用 Provider Profile，或把参数放进实例        |
+| 运行时切换后请求失败          | 新模型不具备原模型的工具或上下文能力           | 建立模型白名单和能力矩阵，再允许切换                         |
+| OpenAI 行为和预期不同         | 默认走 Responses API，或数据保存参数未显式配置 | 用模型实例明确设置 `use_responses_api`、`store` 和 `include` |
+| 评测分数不错但业务效果差      | 评测任务与实际工具、数据和权限边界不一致       | 增加真实业务 Trace、失败样本和成本指标                       |
+
+<Aside type="tip" title="我的选型结论">
+  先选一个支持 Tool
+  Calling、调试成本低的模型跑通链路，再用同一套工具和评估问题比较候选模型。模型更换应该是可配置的，不应该散落在业务代码的每个调用点。
+</Aside>

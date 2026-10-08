@@ -42,8 +42,6 @@ export default defineConfig({
 										'frameworks/deepagents/getting-started/quickstart',
 										'frameworks/deepagents/getting-started/customization',
 										'frameworks/deepagents/getting-started/models',
-										'frameworks/deepagents/getting-started/comparison-with-claude-agent-sdk',
-										'frameworks/deepagents/getting-started/changelog',
 									],
 								},
 								{
@@ -152,6 +150,62 @@ export default defineConfig({
 						{ label: '记忆系统', items: [{ autogenerate: { directory: 'agent/memory' } }] },
 						{ label: '上下文工程', items: [{ autogenerate: { directory: 'agent/context-engineering' } }] },
 						{ label: 'Harness', items: [{ autogenerate: { directory: 'agent/harness' } }] },
+					],
+				},
+				{
+					label: 'AI 编程',
+					items: [
+						'ai-programming',
+						{
+							label: '认知篇',
+							items: [
+								'ai-programming/cognition/essence-and-value',
+								'ai-programming/cognition/tool-landscape',
+								'ai-programming/cognition/human-ai-workflow',
+								'ai-programming/cognition/trend-snapshot-2026',
+							],
+						},
+						{
+							label: '方法论',
+							items: [
+								'ai-programming/methodology/sdd-and-harness',
+								'ai-programming/methodology/spec-kit-and-openspec',
+								'ai-programming/methodology/skills-and-superpowers',
+							],
+						},
+						{
+							label: '工程实践',
+							items: [
+								'ai-programming/engineering/agent-five-components',
+								'ai-programming/engineering/software-engineering',
+								'ai-programming/engineering/skill-formation',
+							],
+						},
+						{
+							label: '项目案例',
+							items: [
+								{
+									label: 'OryxOS',
+									items: [
+										'ai-programming/projects/oryxos',
+										'ai-programming/projects/oryxos/research',
+										'ai-programming/projects/oryxos/requirements',
+										'ai-programming/projects/oryxos/technical-design',
+										'ai-programming/projects/oryxos/ai-development-guide',
+									],
+								},
+								{
+									label: 'When',
+									items: [
+										'ai-programming/projects/when',
+										'ai-programming/projects/when/research',
+										'ai-programming/projects/when/requirements',
+										'ai-programming/projects/when/technical-design',
+										'ai-programming/projects/when/ai-development-guide',
+									],
+								},
+							],
+						},
 					],
 				},
 				{

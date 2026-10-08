@@ -1,0 +1,21 @@
+---
+title: OryxOS：业界调研
+description: Agent OS 的定义、业界空白与企业级边界
+sidebar:
+  label: 业界调研
+  order: 1
+---
+
+## Agent OS 是什么
+
+Agent OS 是运行和管理多个 Agent 的底座，向上提供 Agent 生命周期、渠道、身份和审计能力，向下连接模型、工具、记忆和企业系统。它不等同于单个 Agent Runtime。
+
+## 为什么企业需要私有底座
+
+企业场景关注的不只是 Agent 能否调用工具，还包括数据留在自有基础设施、权限可控、操作可追溯、Skill 来源可信，以及多 Agent 能否共享基础能力。
+
+## OryxOS 的定位
+
+OryxOS 选择 Java 和 Spring 生态，先交付可执行的 Agent Runtime 内核，再逐步补齐多租户、SSO、完整审计、Tool 治理和分布式能力。
+
+它不试图替代所有编排平台，也不把“能调用一次模型”包装成完整 Agent OS。定位边界本身就是项目设计的一部分。

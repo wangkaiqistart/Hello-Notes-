@@ -1,0 +1,38 @@
+.ai-programming-diagram {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 1.75rem auto 2.25rem;
+}
+
+.ai-programming-diagram__surface {
+  overflow: hidden;
+  background: var(--sl-color-gray-6);
+  border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 72%, transparent);
+  border-radius: 8px;
+}
+
+.ai-programming-diagram img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+.ai-programming-diagram figcaption {
+  margin-top: 0.7rem;
+  color: var(--sl-color-gray-3);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 30rem) {
+  .ai-programming-diagram {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .ai-programming-diagram__surface {
+    border-radius: 6px;
+  }
+}

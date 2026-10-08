@@ -1,11 +1,335 @@
 ---
-title: 生产化准备
-description: 把 Deep Agents 从示例推进到可观测、可恢复的生产运行
+title: Deep Agents 生产化准备
+description: 把 Deep Agents 从本地原型推进到可观测、可恢复、可隔离的生产运行
 sidebar:
-  label: 概览
+  label: 生产化准备
   order: 1
 ---
 
-我的关注点是生产环境的运行边界：状态保存在哪里、失败后如何继续、如何观测一次 Agent run，以及哪些能力应该交给 LangSmith 或部署平台。
+import { Aside, Steps } from '@astrojs/starlight/components';
 
-- [容错与恢复](./fault-tolerance/)
+本页记录我把 Deep Agents 从“能跑”推进到“可长期运行”时会先确认的事情。重点不是部署命令，而是把会话、身份、记忆、执行环境、权限和恢复机制分开设计。
+
+## 先建立生产模型
+
+一个生产 Agent 至少有三类边界。边界没有分清时，最容易出现串会话、串用户记忆，或者把本应隔离的文件暴露给其他请求。
+
+| 对象        | 我把它理解成          | 默认应该承载什么                         |
+| ----------- | --------------------- | ---------------------------------------- |
+| `Thread`    | 一次连续对话          | 消息历史、检查点、临时文件和本次任务状态 |
+| `User`      | 发起请求的人          | 用户身份、授权范围、个人偏好和用户级记忆 |
+| `Assistant` | 一套固定的 Agent 配置 | 模型、工具、提示词、共享说明和运行策略   |
+
+`thread_id` 解决“这是不是同一个对话”，`context` 解决“这一次调用代表谁、带着什么运行参数”。两者不能互相替代。
+
+<Aside type="caution" title="生产化的第一条判断">
+  只要一个状态需要跨请求保留，就要明确它属于 Thread、User 还是
+  Assistant。没有归属的状态最终会落到进程全局变量里，重启、并发和多租户都会把问题放大。
+</Aside>
+
+## 选择部署路径
+
+生产部署通常有两条路。第一条把 Agent 项目交给托管运行时，第二条自己管理部署服务和应用代码。
+
+| 路径                | 适合场景                                       | 平台负责的部分                                        | 我仍要负责的部分                                 |
+| ------------------- | ---------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------ |
+| Managed Deep Agents | 想快速得到标准运行时，Agent 主要由项目文件组成 | 构建、运行、线程、Store、Checkpointer、观测和基础运维 | Agent 代码、工具权限、记忆范围、业务鉴权和验收   |
+| 自定义部署          | 需要自定义路由、鉴权、应用协议或基础设施       | 按自己的方式提供运行服务和资源                        | 线程管理、持久化、鉴权、重试、扩缩容、日志和告警 |
+
+无论选择哪条路，都建议先把项目入口和运行配置固定下来。下面这个 `langgraph.json` 是最小骨架，实际字段以项目使用的部署方式为准：
+
+```json title="langgraph.json"
+{
+  "dependencies": ["."],
+  "graphs": {
+    "agent": "./agent.py:agent"
+  },
+  "env": ".env"
+}
+```
+
+我会把三个字段分别看成：
+
+- `dependencies`：构建时需要安装的包，当前目录作为包安装时会读取项目依赖文件。
+- `graphs`：对外暴露的 Agent 标识，以及它对应的 Python 文件和变量。
+- `env`：构建和运行时需要的环境变量入口；密钥本身不写入配置文件。
+
+## 每次调用都带上两个标识
+
+生产调用最小需要稳定的 `thread_id` 和本次运行的 `context`。前者进入 Checkpointer，后者只在当前调用期间提供给工具和 Middleware。
+
+```python title="agent.py"
+from dataclasses import dataclass
+
+from deepagents import create_deep_agent
+from langchain_core.utils.uuid import uuid7
+
+
+@dataclass
+class Context:
+    user_id: str
+    request_id: str
+
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    context_schema=Context,
+)
+
+thread_id = str(uuid7())
+config = {"configurable": {"thread_id": thread_id}}
+
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "整理这份销售数据"}]},
+    config=config,
+    context=Context(user_id="user-123", request_id="req-456"),
+)
+
+# 同一对话继续执行时复用 thread_id；每次请求可以生成新的 request_id。
+agent.invoke(
+    {"messages": [{"role": "user", "content": "再按月份汇总一次"}]},
+    config=config,
+    context=Context(user_id="user-123", request_id="req-457"),
+)
+```
+
+我会在应用层生成 `thread_id`，不要让模型决定它。新对话生成新 ID，追问则复用旧 ID。`context` 中可以放用户 ID、功能开关、租户信息和请求追踪 ID，但不要把长期记忆直接塞进里面。
+
+## 多租户：鉴权、授权、凭据分开
+
+多租户问题可以拆成三层，每层的责任不同：
+
+| 层次               | 要回答的问题                              | 推荐做法                                                      |
+| ------------------ | ----------------------------------------- | ------------------------------------------------------------- |
+| 用户身份           | 当前请求到底是谁发起的                    | 在入口处完成认证，并把不可伪造的身份放进运行上下文            |
+| 资源授权           | 这个用户能否读写当前 Thread、Store 和文件 | 在服务端按用户或租户过滤资源，拒绝越权访问                    |
+| Agent 代表用户行动 | 工具访问外部系统时使用谁的凭据            | 使用按用户授权的 OAuth 或凭据代理，不把用户密钥硬编码进 Agent |
+
+团队成员对部署资源的角色权限，和最终用户对业务数据的权限不是一回事。前者控制谁可以配置、发布和查看运行记录；后者控制一次 Agent 调用能看到哪些业务资源。
+
+如果 Agent 需要代表用户访问外部服务，我会采用下面的顺序：
+
+1. 入口完成用户认证，得到稳定的用户身份。
+2. 工具调用时按用户身份申请或读取短期凭据。
+3. 凭据只在工具调用边界使用，不写入消息、文件、Memory 或普通日志。
+4. 授权失败要返回可识别的业务错误，不让模型猜测权限结果。
+
+## 异步和持久化是生产默认项
+
+LLM、数据库、文件系统、MCP 和 Sandbox 都是 I/O 密集型操作。生产代码优先使用异步版本：
+
+- 工具实现 `async def`，避免把网络等待占用在线程池。
+- 自定义 Middleware 同时实现异步钩子，例如 `abefore_agent`。
+- 创建 Sandbox、连接 MCP 和上传文件都要显式 `await`。
+- 应用层统一处理超时、取消和重试，不要让每个工具各自发明一套规则。
+
+Deep Agents 建立在 LangGraph 的持久化执行模型上。每一步状态都可以写入 Checkpointer，因此长任务在进程崩溃、超时或人工暂停后，能够从最近的检查点继续，而不是重新执行已经完成的工具调用。
+
+持久化还带来三个实用能力：
+
+- 人工审批可以暂停很久，恢复时仍然接着原来的状态执行。
+- 可以检查历史检查点，定位是哪一步产生了错误结果。
+- 付款、写入生产数据等不可逆操作前，可以保留操作前的状态快照。
+
+<Aside type="note" title="恢复不等于自动重试一切">
+  Checkpointer
+  负责保存和恢复状态，不会自动解决副作用。会发邮件、扣款、写数据库的工具仍然需要幂等键、超时策略和重复执行保护。
+</Aside>
+
+## Memory 的范围要先于实现
+
+Memory 的核心不是“存起来”，而是定义哪些人可以看到、修改和继承这些内容。
+
+| 范围         | 命名空间示意     | 适合内容                  | 风险                                      |
+| ------------ | ---------------- | ------------------------- | ----------------------------------------- |
+| User         | `(user_id)`      | 个人偏好、个人工作习惯    | 需要验证用户身份，不能信任客户端传入的 ID |
+| Assistant    | `(assistant_id)` | 一套 Agent 共享的工作说明 | 任何能使用该 Assistant 的用户都可能读到   |
+| Organization | `(org_id)`       | 组织级政策、合规规则      | 适合只读；让 Agent 写入容易形成提示词注入 |
+
+Deep Agents 默认的文件空间属于当前 Thread。需要跨会话保存时，再把特定路径路由到 StoreBackend；同时保留一个线程级的 StateBackend 作为临时工作区，可以用 CompositeBackend 组合：
+
+```python
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(
+                namespace=lambda runtime: (
+                    runtime.server_info.user.identity,
+                ),
+            ),
+        },
+    ),
+    system_prompt="""
+你可以使用 /memories/ 保存跨会话信息。
+每次对话开始先读取已有记忆；只有明确稳定、值得长期保留的信息才写入。
+""",
+)
+```
+
+共享 Memory 必须当成不可信输入处理。组织级规则最好由应用代码写入，Agent 只读；需要更细的控制时，用 Permissions 或 Backend policy hook 限制写入路径。
+
+## 执行环境：文件后端和 Sandbox 分开选
+
+先判断 Agent 是否真的需要执行代码：
+
+| 需求                               | 选择                         | 生产判断                                                                    |
+| ---------------------------------- | ---------------------------- | --------------------------------------------------------------------------- |
+| 只读写文档、结果文件               | 文件系统 Backend             | 根据 Thread 或跨会话需求选择 StateBackend、StoreBackend 或 CompositeBackend |
+| 运行 Python、Shell、安装包         | Sandbox                      | 需要独立容器、资源限制、生命周期和文件传输策略                              |
+| 访问宿主机目录或直接执行宿主机命令 | 本地文件或本地 Shell Backend | 只适合本地开发，不应直接放进部署环境                                        |
+
+### Sandbox 的生命周期
+
+Sandbox 可以按 Thread 或 Assistant 复用。两种范围都能工作，但状态成本和隔离级别不同：
+
+| 范围      | 行为                              | 适合场景                 | 需要额外处理                   |
+| --------- | --------------------------------- | ------------------------ | ------------------------------ |
+| Thread    | 每个对话一个独立环境，超时后清理  | 临时分析、一次性代码执行 | 创建和销毁成本、冷启动时间     |
+| Assistant | 同一 Assistant 的多个对话共享环境 | 保留仓库、依赖和构建缓存 | 磁盘增长、跨用户污染和并发写入 |
+
+如果按 Thread 或 Assistant 查找 Sandbox，Agent 入口通常需要写成异步工厂，从 `config["configurable"]` 读取对应 ID，再创建或复用环境：
+
+```python
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langchain_core.runnables import RunnableConfig
+from langsmith.sandbox import SandboxClient
+
+
+client = SandboxClient()
+
+
+async def agent(config: RunnableConfig):
+    thread_id = config["configurable"]["thread_id"]
+    sandbox = client.get_or_create_sandbox(
+        name=f"thread-{thread_id}",
+        idle_ttl_seconds=3600,
+    )
+    return create_deep_agent(
+        model="openai:gpt-5.5",
+        backend=LangSmithSandbox(sandbox=sandbox),
+    )
+```
+
+这里的 `get_or_create_sandbox` 表示应用自己的查找或创建封装，具体 SDK 方法会随 Sandbox Provider 变化。关键不在方法名，而在于：同一范围使用稳定名称、配置 TTL，并且不让用户输入直接拼成任意资源路径。
+
+### 文件传输和密钥
+
+Sandbox 与应用进程隔离后，应用不能直接读取其中的文件。把文件边界设计成显式操作：
+
+- Agent 开始前上传用户文件、Skill 脚本、配置和必要的记忆。
+- Agent 结束后下载报告、图表和导出文件。
+- 文件名先做路径穿越校验，不接受 `..`、通配符和任意绝对路径。
+- 同步 Memory 时只允许访问固定目录，不能把整个 Sandbox 打包回 Store。
+
+密钥优先通过凭据代理注入到出站请求中，让 Sandbox 代码只看到普通 API 请求，不看到真实密钥。必须由 Agent 服务端使用的共享密钥可以放在部署平台的 Workspace Secret 中。
+
+<Aside type="caution" title="不要把密钥塞进 Sandbox">
+  不要通过环境变量、上传文件或提示词把密钥送进 Sandbox。Sandbox 内的 Agent
+  代码可以读取可访问的文件和环境变量，日志也可能把它们带出去。
+</Aside>
+
+## Guardrails：权限、容错、隐私三层一起做
+
+### 权限
+
+Permissions 用声明式规则控制文件和目录的读写。规则按声明顺序匹配，第一条命中的规则生效。我会先拒绝敏感目录，再放行 Agent 的工作目录；不要只写允许规则而忘记默认边界。
+
+### 容错
+
+限流、重试、Fallback 和错误归因属于独立的容错设计。工具重试只能覆盖可重试的瞬时错误，不能把参数错误、权限错误和不可逆副作用重复执行。更完整的策略放在 `fault-tolerance.mdx`，本页只保留生产化时的边界判断。
+
+### 隐私
+
+如果输入可能包含邮箱、银行卡号或其他 PII，可以在进入模型和写入日志前处理：
+
+```python
+from deepagents import create_deep_agent
+from langchain.agents.middleware import PIIMiddleware
+
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    middleware=[
+        PIIMiddleware("email", strategy="redact", apply_to_input=True),
+        PIIMiddleware("credit_card", strategy="mask", apply_to_input=True),
+    ],
+)
+```
+
+常见策略有：
+
+- `redact`：替换成固定占位符，适合不需要还原的字段。
+- `mask`：保留部分字符，适合用户仍需确认尾号的场景。
+- `hash`：得到稳定摘要，适合去重或关联分析。
+- `block`：发现敏感内容直接拒绝请求。
+
+隐私 Middleware 不能替代日志脱敏、数据库加密和访问审计；它只是把风险拦在模型边界之前。
+
+## 前端连接和长任务展示
+
+前端可以通过 `useStream` 订阅 Agent 的消息、子 Agent 进度和自定义状态。生产接入时至少要配置部署地址、断线重连和长任务的递归上限：
+
+```tsx
+import { useStream } from '@langchain/react';
+
+function App() {
+  const stream = useStream({
+    apiUrl: '<DEPLOYMENT_URL>',
+    assistantId: 'agent',
+  });
+
+  function submit(text: string) {
+    stream.submit(
+      { messages: [{ type: 'human', content: text }] },
+      {
+        streamSubgraphs: true,
+        config: { recursionLimit: 10000 },
+      },
+    );
+  }
+
+  return null;
+}
+```
+
+`streamSubgraphs: true` 适合把子 Agent 的进度展示给用户；`recursionLimit` 只是防止过早截断，不代表任务一定能完成。前端仍然要处理运行失败、用户取消、连接恢复和最终结果落盘。
+
+## 我的生产化顺序
+
+<Steps>
+
+1. **固定会话模型**：先定义 `thread_id` 的生成、复用和过期规则。
+2. **补齐运行上下文**：把用户身份、租户、请求 ID 和功能开关放进 `context`，不从消息内容猜身份。
+3. **接入持久化**：配置 Checkpointer，决定哪些数据放 Thread，哪些数据进入 Store。
+4. **隔离执行环境**：只读写文件用 Backend，需要执行代码再引入 Sandbox，并明确生命周期。
+5. **建立权限和隐私边界**：保护敏感路径、共享 Memory 和 PII，再开放更多工具。
+6. **补上容错和观测**：为工具设置超时、重试和幂等键，记录请求 ID、Thread ID、工具耗时和失败原因。
+7. **接入前端并压测**：验证流式输出、断线恢复、并发、长任务和 Sandbox 清理。
+
+</Steps>
+
+## 常见错误
+
+| 现象                        | 根因                                   | 我会怎么排查                                  |
+| --------------------------- | -------------------------------------- | --------------------------------------------- |
+| 新请求看到了旧对话          | 复用了不该复用的 `thread_id`           | 先打印请求 ID、用户 ID 和 Thread ID 的映射    |
+| 用户之间读到了同一份 Memory | Namespace 没有包含用户或租户维度       | 检查 Store 路由和服务端身份来源               |
+| 重试后产生重复副作用        | 工具没有幂等键或把所有错误都重试       | 区分瞬时错误、参数错误、权限错误和业务副作用  |
+| 任务恢复后又重复执行工具    | 工具副作用没有和 Checkpoint 配套       | 给写操作加幂等保护，并核对恢复点              |
+| Sandbox 越用越大            | Assistant 级环境没有 TTL 或清理机制    | 增加 TTL、快照和定期清理，限制磁盘与内存      |
+| 服务器重启后文件丢失        | 把临时 StateBackend 当成长期存储       | 持久文件路由到 Store 或专用持久化后端         |
+| 密钥出现在日志或工具结果    | 通过环境变量、文件或提示词传进 Sandbox | 改用凭据代理，统一做日志脱敏                  |
+| 长任务被前端截断            | 递归上限过低或连接断开未恢复           | 提高 `recursionLimit`，补齐重连和最终状态查询 |
+
+<Aside type="tip" title="我的结论">
+  生产化不是把本地 Agent
+  放进一个更大的机器，而是把状态归属、权限边界、执行隔离和恢复点显式化。先让一次调用可追踪、可恢复，再逐步增加
+  Memory、Sandbox、子 Agent 和更复杂的工具链。
+</Aside>
