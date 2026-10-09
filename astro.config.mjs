@@ -173,39 +173,6 @@ export default defineConfig({
 								'ai-programming/methodology/skills-and-superpowers',
 							],
 						},
-						{
-							label: '工程实践',
-							items: [
-								'ai-programming/engineering/agent-five-components',
-								'ai-programming/engineering/software-engineering',
-								'ai-programming/engineering/skill-formation',
-							],
-						},
-						{
-							label: '项目案例',
-							items: [
-								{
-									label: 'OryxOS',
-									items: [
-										'ai-programming/projects/oryxos',
-										'ai-programming/projects/oryxos/research',
-										'ai-programming/projects/oryxos/requirements',
-										'ai-programming/projects/oryxos/technical-design',
-										'ai-programming/projects/oryxos/ai-development-guide',
-									],
-								},
-								{
-									label: 'When',
-									items: [
-										'ai-programming/projects/when',
-										'ai-programming/projects/when/research',
-										'ai-programming/projects/when/requirements',
-										'ai-programming/projects/when/technical-design',
-										'ai-programming/projects/when/ai-development-guide',
-									],
-								},
-							],
-						},
 					],
 				},
 				{
