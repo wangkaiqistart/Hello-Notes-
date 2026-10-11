@@ -184,12 +184,6 @@ export default defineConfig({
 					],
 				},
 				{
-					label: '工具指南',
-					items: [
-						{ label: 'Codex', items: [{ autogenerate: { directory: 'tools/codex' } }] },
-					],
-				},
-				{
 					label: '实战项目',
 					items: [{ autogenerate: { directory: 'projects' } }],
 				},
