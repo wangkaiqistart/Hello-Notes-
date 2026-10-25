@@ -1,0 +1,44 @@
+--- 03-draft.md
++++ translation.md
+@@ -14,7 +14,7 @@
+ 1. 模型返回完整响应。
+ 2. Spring AI 根据目标类型的 JSON Schema 校验输出。
+ 3. 校验通过后，将 JSON 转换为目标 Java 对象。
+-4. 如果失败，将具体错误补充到用户提示词，再请求模型，默认最多尝试 3 次。
++4. 如果失败，将具体错误补充到用户提示词，再请求模型，默认在首次调用后最多重试 **3 次**，总计最多调用 **4 次**。
+ 
+ 错误包含具体原因，例如缺少必需字段 `actor`，或要求 `array` 却返回 `string`。模型下一轮能看到问题所在，重试会带上纠正依据。
+ 
+@@ -28,9 +28,11 @@
+ 
+ **校验需要完整响应，不支持流式调用。**
+ 
++达到重试上限也不代表最后一轮已符合 Schema。在 2.0.2 中，Advisor 会返回最后一轮响应，再由转换器解析；应用仍需处理解析异常，以及可解析但不满足业务要求的结果。
++
+ ### 定制 StructuredOutputValidationAdvisor
+ 
+-默认使用 Spring AI 的 `JsonMapper`。需要调整尝试次数、提供现有 Schema 或使用其他映射器时，可以自己构建 Advisor 并注册到 `ChatClient`；显式注册的实例替换自动注册实例：
++默认使用 Spring AI 的 `JsonMapper`。需要调整重试次数、提供现有 Schema 或使用其他映射器时，可以自己构建 Advisor 并注册到 `ChatClient`：
+ 
+ ```java
+ var validationAdvisor = StructuredOutputValidationAdvisor.builder()
+@@ -42,6 +44,10 @@
+     .defaultAdvisors(validationAdvisor)
+     .build();
+ ```
++
++`maxRepeatAttempts(5)` 表示首次调用后最多重试 5 次，总计最多调用 6 次。设置为 `0` 时只进行首次调用。
++
++手动注册后，直接使用普通 `.entity(ActorsFilms.class)`，不要再叠加 `spec -> spec.validateSchema()`；在 2.0.2 中，后者会额外加入一个默认校验 Advisor。
+ 
+ 也可以使用已有 Schema 字符串：
+ 
+@@ -57,7 +63,7 @@
+ 
+ - 使用 JSON Schema `DRAFT_2020_12` 校验响应。
+ - 校验失败时，将错误消息加入下一轮用户提示词。
+-- 在尝试次数限制内重复请求；默认最多尝试 3 次。
++- 在重试上限内重复请求；默认额外重试最多 3 次。
+ - 累计各轮 Token 用量，最终 `ChatResponse` 报告整个流程的用量，详见[多步流程的累计用量](/frameworks/spring-ai/core/chat-response-metadata/#多步流程的累计用量)。
+ - 可以通过构建器的 `jsonMapper(...)` 指定自定义 `JsonMapper`。
+ 

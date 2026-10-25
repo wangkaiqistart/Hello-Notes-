@@ -1,0 +1,21 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/moderation.html",
+  "version": "2.0.2",
+  "images": [],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Moderation Models"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html",
+      "label": "OpenAI Moderation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html",
+      "label": "Mistral AI Moderation"
+    }
+  ]
+}

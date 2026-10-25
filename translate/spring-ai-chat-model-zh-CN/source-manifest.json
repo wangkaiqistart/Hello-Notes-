@@ -1,0 +1,182 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+  "version": "2.0.2",
+  "images": [
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/spring-ai-message-api.jpg",
+      "alt": "Spring AI Message API"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/chat-model-conversions.png",
+      "alt": "chat model conversions"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/spring-ai-chat-completions-clients.jpg",
+      "alt": "spring ai chat completions clients"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/spring-ai-chat-api.jpg",
+      "alt": "spring ai chat api"
+    }
+  ],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Chat Model API"
+    },
+    {
+      "id": "_api_overview",
+      "text": "API Overview"
+    },
+    {
+      "id": "_chatmodel",
+      "text": "ChatModel"
+    },
+    {
+      "id": "_streamingchatmodel",
+      "text": "StreamingChatModel"
+    },
+    {
+      "id": "_prompt",
+      "text": "Prompt"
+    },
+    {
+      "id": "_message",
+      "text": "Message"
+    },
+    {
+      "id": "_chat_options",
+      "text": "Chat Options"
+    },
+    {
+      "id": "ChatResponse",
+      "text": "ChatResponse"
+    },
+    {
+      "id": "Generation",
+      "text": "Generation"
+    },
+    {
+      "id": "_available_implementations",
+      "text": "Available Implementations"
+    },
+    {
+      "id": "_chat_model_api",
+      "text": "Chat Model API"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/concepts.html#_models",
+      "label": "AI Models"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_available_implementations",
+      "label": "Available Implementations"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+      "label": "Chat Models Comparison"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_api_overview",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_chatmodel",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/chat/model/ChatModel.java",
+      "label": "ChatModel"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_streamingchatmodel",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/chat/model/StreamingChatModel.java",
+      "label": "StreamingChatModel"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_prompt",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-client-chat/src/main/java/org/springframework/ai/chat/prompt/Prompt.java",
+      "label": "Prompt"
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/chat/messages/Message.java",
+      "label": "Message"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_message",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/prompt.html",
+      "label": "Prompts"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_chat_options",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatclient.html",
+      "label": "ChatClient"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#ChatResponse",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/chat/model/ChatResponse.java",
+      "label": "ChatResponse"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#Generation",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/chat/model/Generation.java",
+      "label": "Generation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_available_implementations",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+      "label": "OpenAI Chat Completion"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html",
+      "label": "Ollama Chat Completion"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/bedrock.html",
+      "label": "Amazon Bedrock"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html",
+      "label": "Mistral AI Chat Completion"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/anthropic-chat.html",
+      "label": "Anthropic Chat Completion"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html",
+      "label": "Qxotic jinfer Chat"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+      "label": "Chat Models Comparison"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_chat_model_api",
+      "label": ""
+    }
+  ]
+}

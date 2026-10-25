@@ -1,0 +1,161 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html",
+  "version": "2.0.2",
+  "images": [],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Text-To-Speech (TTS) API"
+    },
+    {
+      "id": "_supported_providers",
+      "text": "Supported Providers"
+    },
+    {
+      "id": "_common_interface",
+      "text": "Common Interface"
+    },
+    {
+      "id": "_texttospeechmodel",
+      "text": "TextToSpeechModel"
+    },
+    {
+      "id": "_streamingtexttospeechmodel",
+      "text": "StreamingTextToSpeechModel"
+    },
+    {
+      "id": "_texttospeechprompt",
+      "text": "TextToSpeechPrompt"
+    },
+    {
+      "id": "_texttospeechresponse",
+      "text": "TextToSpeechResponse"
+    },
+    {
+      "id": "_writing_provider_agnostic_code",
+      "text": "Writing Provider-Agnostic Code"
+    },
+    {
+      "id": "_basic_service_example",
+      "text": "Basic Service Example"
+    },
+    {
+      "id": "_advanced_example_multi_provider_support",
+      "text": "Advanced Example: Multi-Provider Support"
+    },
+    {
+      "id": "_streaming_audio_example",
+      "text": "Streaming Audio Example"
+    },
+    {
+      "id": "_rest_controller_example",
+      "text": "REST Controller Example"
+    },
+    {
+      "id": "streaming-consume-inputstream",
+      "text": "Consuming the Stream as a Blocking InputStream"
+    },
+    {
+      "id": "_configuration_based_provider_selection",
+      "text": "Configuration-Based Provider Selection"
+    },
+    {
+      "id": "_using_portable_options",
+      "text": "Using Portable Options"
+    },
+    {
+      "id": "_working_with_provider_specific_features",
+      "text": "Working with Provider-Specific Features"
+    },
+    {
+      "id": "_best_practices_for_portable_code",
+      "text": "Best Practices for Portable Code"
+    },
+    {
+      "id": "_provider_specific_features",
+      "text": "Provider-Specific Features"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_supported_providers",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech/openai-speech.html",
+      "label": "OpenAI’s Speech API"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech/elevenlabs-speech.html",
+      "label": "Eleven Labs Text-To-Speech API"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech/jinfer-speech.html",
+      "label": "Qxotic jinfer Text-To-Speech (local, in-JVM)"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_common_interface",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_texttospeechmodel",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_streamingtexttospeechmodel",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_texttospeechprompt",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_texttospeechresponse",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_writing_provider_agnostic_code",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_basic_service_example",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_advanced_example_multi_provider_support",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_streaming_audio_example",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_rest_controller_example",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#streaming-consume-inputstream",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_configuration_based_provider_selection",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_using_portable_options",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_working_with_provider_specific_features",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_best_practices_for_portable_code",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html#_provider_specific_features",
+      "label": ""
+    }
+  ]
+}

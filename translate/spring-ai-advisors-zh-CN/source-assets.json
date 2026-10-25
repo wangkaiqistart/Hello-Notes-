@@ -1,0 +1,20 @@
+[
+  {
+    "sourceUrl": "https://docs.spring.io/spring-ai/reference/_images/advisors-api-classes.jpg",
+    "sourcePath": "public/images/frameworks/spring-ai/advisors-api-classes.jpg",
+    "sha256": "7f7eb7a81e776d112a1bd678dc3a8146cfe616345f700f090766aafa51d53f97",
+    "localizedPath": "public/images/frameworks/spring-ai/advisors-api-classes-zh.svg"
+  },
+  {
+    "sourceUrl": "https://docs.spring.io/spring-ai/reference/_images/advisors-flow.jpg",
+    "sourcePath": "public/images/frameworks/spring-ai/advisors-flow.jpg",
+    "sha256": "1d8eb61e33bdb8c9f1ed0e85cd5f111ffb830dd87b978035c2232a1bb310624a",
+    "localizedPath": "public/images/frameworks/spring-ai/advisors-flow-zh.svg"
+  },
+  {
+    "sourceUrl": "https://docs.spring.io/spring-ai/reference/_images/advisors-non-stream-vs-stream.jpg",
+    "sourcePath": "public/images/frameworks/spring-ai/advisors-non-stream-vs-stream.jpg",
+    "sha256": "9a70762e19a74ed16275bd420c343149f8112951575bfe8b91b6dc4f8ad2f634",
+    "localizedPath": "public/images/frameworks/spring-ai/advisors-non-stream-vs-stream-zh.svg"
+  }
+]

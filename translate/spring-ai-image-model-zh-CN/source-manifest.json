@@ -1,0 +1,113 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/imageclient.html",
+  "version": "2.0.2",
+  "images": [],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Image Model API"
+    },
+    {
+      "id": "_api_overview",
+      "text": "API Overview"
+    },
+    {
+      "id": "_image_model",
+      "text": "Image Model"
+    },
+    {
+      "id": "_imageprompt",
+      "text": "ImagePrompt"
+    },
+    {
+      "id": "_imagemessage",
+      "text": "ImageMessage"
+    },
+    {
+      "id": "_imageoptions",
+      "text": "ImageOptions"
+    },
+    {
+      "id": "_imageresponse",
+      "text": "ImageResponse"
+    },
+    {
+      "id": "_imagegeneration",
+      "text": "ImageGeneration"
+    },
+    {
+      "id": "_available_implementations",
+      "text": "Available Implementations"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/concepts.html#_models",
+      "label": "AI Models"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/imageclient.html#_api_overview",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/imageclient.html#_image_model",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/image/ImageModel.java",
+      "label": "ImageModel"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/imageclient.html#_imageprompt",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/image/ImagePrompt.java",
+      "label": "ImagePrompt"
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/image/ImageMessage.java",
+      "label": "ImageMessage"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/imageclient.html#_imagemessage",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/imageclient.html#_imageoptions",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/imageclient.html#_imageresponse",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/image/ImageResponse.java",
+      "label": "ImageResponse"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/imageclient.html#_imagegeneration",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/image/ImageGeneration.java",
+      "label": "ImageGeneration"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/imageclient.html#_available_implementations",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/image/openai-image.html",
+      "label": "OpenAI Image Generation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/image/stabilityai-image.html",
+      "label": "StabilityAI Image Generation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/image/google-genai-image.html",
+      "label": "Google GenAI Image Generation"
+    }
+  ]
+}

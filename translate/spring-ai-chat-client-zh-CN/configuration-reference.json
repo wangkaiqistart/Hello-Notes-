@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-25",
+  "version": "2.0.2",
+  "documentation": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+  "sourcesJar": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-autoconfigure-model-openai/2.0.2/spring-ai-autoconfigure-model-openai-2.0.2-sources.jar",
+  "sourcesSha256": "685ddb2894ed622845ca30cd145af4e81aea1b0c23e9575ed6466adc81c361bc",
+  "sourceClass": "org.springframework.ai.model.openai.autoconfigure.OpenAiChatProperties",
+  "prefix": "spring.ai.openai.chat",
+  "field": "model",
+  "deprecatedProperty": "spring.ai.openai.chat.options.model",
+  "replacement": "spring.ai.openai.chat.model",
+  "sourceBlocksUnchanged": 37,
+  "addedSetupBlocks": 3,
+  "totalBlocks": 40,
+  "apiCall": "NOT_RUN"
+}

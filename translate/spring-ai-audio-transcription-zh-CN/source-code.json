@@ -1,0 +1,18 @@
+[
+  {
+    "language": "java",
+    "code": "public interface TranscriptionModel extends Model<AudioTranscriptionPrompt, AudioTranscriptionResponse> {\n\n    /**\n     * Transcribes the audio from the given prompt.\n     */\n    AudioTranscriptionResponse call(AudioTranscriptionPrompt transcriptionPrompt);\n\n    /**\n     * A convenience method for transcribing an audio resource.\n     */\n    default String transcribe(Resource resource) {\n        AudioTranscriptionPrompt prompt = new AudioTranscriptionPrompt(resource);\n        return this.call(prompt).getResult().getOutput();\n    }\n\n    /**\n     * A convenience method for transcribing an audio resource with options.\n     */\n    default String transcribe(Resource resource, AudioTranscriptionOptions options) {\n        AudioTranscriptionPrompt prompt = new AudioTranscriptionPrompt(resource, options);\n        return this.call(prompt).getResult().getOutput();\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "Resource audioFile = new FileSystemResource(\"/path/to/audio.mp3\");\nAudioTranscriptionPrompt prompt = new AudioTranscriptionPrompt(\n    audioFile,\n    options\n);"
+  },
+  {
+    "language": "java",
+    "code": "AudioTranscriptionResponse response = model.call(prompt);\nString transcribedText = response.getResult().getOutput();\nAudioTranscriptionResponseMetadata metadata = response.getMetadata();"
+  },
+  {
+    "language": "java",
+    "code": "@Service\npublic class TranscriptionService {\n\n    private final TranscriptionModel transcriptionModel;\n\n    public TranscriptionService(TranscriptionModel transcriptionModel) {\n        this.transcriptionModel = transcriptionModel;\n    }\n\n    public String transcribeAudio(Resource audioFile) {\n        return transcriptionModel.transcribe(audioFile);\n    }\n\n    public String transcribeWithOptions(Resource audioFile, AudioTranscriptionOptions options) {\n        AudioTranscriptionPrompt prompt = new AudioTranscriptionPrompt(audioFile, options);\n        AudioTranscriptionResponse response = transcriptionModel.call(prompt);\n        return response.getResult().getOutput();\n    }\n}"
+  }
+]

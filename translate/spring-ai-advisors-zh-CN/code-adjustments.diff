@@ -1,0 +1,50 @@
+Block 1
+--- source
++++ translation
+@@ -1,18 +1,18 @@
+-ChatMemory chatMemory = ... // Initialize your chat memory store
+-VectorStore vectorStore = ... // Initialize your vector store
++ChatMemory chatMemory = ... // 初始化对话记忆存储
++VectorStore vectorStore = ... // 初始化向量存储
+ 
+ var chatClient = ChatClient.builder(chatModel)
+     .defaultAdvisors(
+-        MessageChatMemoryAdvisor.builder(chatMemory).build(), // chat-memory advisor
+-        QuestionAnswerAdvisor.builder(vectorStore).build()    // RAG advisor
++        MessageChatMemoryAdvisor.builder(chatMemory).build(), // 对话记忆 Advisor
++        QuestionAnswerAdvisor.builder(vectorStore).build()    // RAG Advisor
+     )
+     .build();
+ 
+ var conversationId = "678";
+ 
+-String response = this.chatClient.prompt()
+-    // Set advisor parameters at runtime
++String response = chatClient.prompt()
++    // 运行时设置 Advisor 参数
+     .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, conversationId))
+     .user(userText)
+     .call()
+-	.content();+	.content();
+
+Block 11
+--- source
++++ translation
+@@ -4,11 +4,13 @@
+     return  Mono.just(chatClientRequest)
+             .publishOn(Schedulers.boundedElastic())
+             .map(request -> {
+-                // This can be executed by blocking and non-blocking Threads.
+-                // Advisor before next section
++                // 可在阻塞或非阻塞线程调用的场景中使用。
++                // 调用下游前的处理
++                return request;
+             })
+             .flatMapMany(request -> chain.nextStream(request))
+             .map(response -> {
+-                // Advisor after next section
++                // 下游返回后的处理
++                return response;
+             });
+-}+}
+

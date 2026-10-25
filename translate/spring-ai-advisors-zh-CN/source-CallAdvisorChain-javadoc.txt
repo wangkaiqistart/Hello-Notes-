@@ -1,0 +1,68 @@
+SKIP NAVIGATION LINKS
+OVERVIEW
+PACKAGE
+CLASS
+USE
+TREE
+DEPRECATED
+INDEX
+HELP
+SUMMARY: 
+NESTED | 
+FIELD | 
+CONSTR | 
+METHOD
+DETAIL: 
+FIELD | 
+CONSTR | 
+METHOD
+SEARCH:  
+Package org.springframework.ai.chat.client.advisor.api
+Interface CallAdvisorChain
+All Superinterfaces:
+AdvisorChain
+All Known Subinterfaces:
+BaseAdvisorChain
+All Known Implementing Classes:
+DefaultAroundAdvisorChain
+public interface CallAdvisorChain
+extends AdvisorChain
+A chain of CallAdvisor instances orchestrating the execution of a ChatClientRequest on the next CallAdvisor in the chain.
+Since:
+1.0.0
+Author:
+Christian Tzolov, Dariusz Jedrzejczyk, Thomas Vitale
+Method Summary
+All MethodsInstance MethodsAbstract Methods
+Modifier and Type
+Method
+Description
+CallAdvisorChain
+copy(CallAdvisor after)
+Creates a new CallAdvisorChain copy that contains all advisors after the specified advisor.
+List<CallAdvisor>
+getCallAdvisors()
+Returns the list of all the CallAdvisor instances included in this chain at the time of its creation.
+ChatClientResponse
+nextCall(ChatClientRequest chatClientRequest)
+Invokes the next CallAdvisor in the CallAdvisorChain with the given request.
+Methods inherited from interface org.springframework.ai.chat.client.advisor.api.AdvisorChain
+getObservationRegistry
+Method Details
+nextCall
+ChatClientResponse nextCall(ChatClientRequest chatClientRequest)
+Invokes the next CallAdvisor in the CallAdvisorChain with the given request.
+getCallAdvisors
+List<CallAdvisor> getCallAdvisors()
+Returns the list of all the CallAdvisor instances included in this chain at the time of its creation.
+copy
+CallAdvisorChain copy(CallAdvisor after)
+Creates a new CallAdvisorChain copy that contains all advisors after the specified advisor.
+Parameters:
+after - the CallAdvisor after which to copy the chain
+Returns:
+a new CallAdvisorChain containing all advisors after the specified advisor
+Throws:
+IllegalArgumentException - if the specified advisor is not part of the chain
+
+Copyright © 1980 Broadcom Inc.. All rights reserved.

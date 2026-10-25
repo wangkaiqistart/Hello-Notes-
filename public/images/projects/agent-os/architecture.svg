@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Agent OS 分层架构</title>
+  <desc id="desc">Agent OS 由接入层、ReAct 引擎、核心能力层、支撑模块层和存储层组成。</desc>
+  <style>
+    .bg { fill: #171717; }
+    .band { fill: #232323; stroke: #3a3a3a; stroke-width: 2; }
+    .box { fill: #2d2d2d; stroke: #ff8a3d; stroke-width: 2; }
+    .title { fill: #f3f4f6; font: 700 42px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .subtitle { fill: #9ca3af; font: 400 21px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .layer { fill: #ff9b52; font: 700 24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .label { fill: #f3f4f6; font: 700 20px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .body { fill: #cbd5e1; font: 400 17px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .rule { fill: #3a3a3a; }
+  </style>
+  <rect class="bg" width="1440" height="900" rx="8"/>
+  <text class="title" x="56" y="68">Agent OS 分层架构</text>
+  <rect class="rule" x="56" y="101" width="1328" height="2"/>
+  <text class="subtitle" x="56" y="143">入口与运行引擎保持稳定，能力、支撑和存储按职责解耦</text>
+
+  <g transform="translate(56 185)">
+    <rect class="band" width="1328" height="100" rx="6"/>
+    <text class="layer" x="28" y="58">接入层</text>
+    <rect class="box" x="245" y="24" width="250" height="52" rx="4"/><text class="label" x="370" y="57">CLI / Chat</text>
+    <rect class="box" x="545" y="24" width="250" height="52" rx="4"/><text class="label" x="670" y="57">HTTP API</text>
+    <rect class="box" x="845" y="24" width="250" height="52" rx="4"/><text class="label" x="970" y="57">Webhook / 消息渠道</text>
+  </g>
+  <g transform="translate(56 305)">
+    <rect class="band" width="1328" height="110" rx="6"/>
+    <text class="layer" x="28" y="64">ReAct 引擎</text>
+    <rect class="box" x="245" y="28" width="850" height="54" rx="4"/><text class="label" x="670" y="62">Reason → Act → Observe → Stop</text>
+  </g>
+  <g transform="translate(56 435)">
+    <rect class="band" width="1328" height="140" rx="6"/>
+    <text class="layer" x="28" y="80">核心能力层</text>
+    <rect class="box" x="245" y="35" width="190" height="70" rx="4"/><text class="label" x="340" y="65">Provider</text><text class="body" x="340" y="91">模型路由</text>
+    <rect class="box" x="465" y="35" width="190" height="70" rx="4"/><text class="label" x="560" y="65">Memory</text><text class="body" x="560" y="91">会话与长期记忆</text>
+    <rect class="box" x="685" y="35" width="190" height="70" rx="4"/><text class="label" x="780" y="65">Tool</text><text class="body" x="780" y="91">执行与插件</text>
+    <rect class="box" x="905" y="35" width="190" height="70" rx="4"/><text class="label" x="1000" y="65">Web Service</text><text class="body" x="1000" y="91">对外接口</text>
+  </g>
+  <g transform="translate(56 595)">
+    <rect class="band" width="1328" height="120" rx="6"/>
+    <text class="layer" x="28" y="70">支撑模块层</text>
+    <rect class="box" x="245" y="32" width="250" height="56" rx="4"/><text class="label" x="370" y="67">Profile / Bootstrap</text>
+    <rect class="box" x="545" y="32" width="250" height="56" rx="4"/><text class="label" x="670" y="67">SessionManager</text>
+    <rect class="box" x="845" y="32" width="250" height="56" rx="4"/><text class="label" x="970" y="67">Sandbox / Registry</text>
+  </g>
+  <g transform="translate(56 735)">
+    <rect class="band" width="1328" height="110" rx="6"/>
+    <text class="layer" x="28" y="64">存储层</text>
+    <rect class="box" x="245" y="28" width="250" height="54" rx="4"/><text class="label" x="370" y="62">Session / SQLite</text>
+    <rect class="box" x="545" y="28" width="250" height="54" rx="4"/><text class="label" x="670" y="62">调用记录 / 日志</text>
+    <rect class="box" x="845" y="28" width="250" height="54" rx="4"/><text class="label" x="970" y="62">配置 / Memory</text>
+  </g>
+</svg>

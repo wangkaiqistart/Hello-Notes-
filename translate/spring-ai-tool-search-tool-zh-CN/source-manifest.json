@@ -1,0 +1,198 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html",
+  "version": "2.0.2",
+  "images": [
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-search-tool-calling-flow.png",
+      "alt": "Tool Search Tool Calling Flow"
+    }
+  ],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Tool Search Tool"
+    },
+    {
+      "id": "how-it-works",
+      "text": "How It Works"
+    },
+    {
+      "id": "when-to-use",
+      "text": "When to Use"
+    },
+    {
+      "id": "installation",
+      "text": "Installation"
+    },
+    {
+      "id": "quick-start",
+      "text": "Quick Start"
+    },
+    {
+      "id": "session-scoping",
+      "text": "Session Scoping"
+    },
+    {
+      "id": "search-strategies",
+      "text": "Search Strategies"
+    },
+    {
+      "id": "vector-tool-index",
+      "text": "VectorToolIndex (Semantic)"
+    },
+    {
+      "id": "lucene-tool-index",
+      "text": "LuceneToolIndex (Keyword)"
+    },
+    {
+      "id": "regex-tool-index",
+      "text": "RegexToolIndex (Pattern)"
+    },
+    {
+      "id": "configuration",
+      "text": "Configuration"
+    },
+    {
+      "id": "tool-index-api",
+      "text": "ToolIndex API"
+    },
+    {
+      "id": "index-eviction",
+      "text": "Index Eviction"
+    },
+    {
+      "id": "spring-boot-auto-configuration",
+      "text": "Spring Boot Auto-Configuration"
+    },
+    {
+      "id": "tool-index-auto-selection",
+      "text": "ToolIndex Auto-Selection"
+    },
+    {
+      "id": "properties-reference",
+      "text": "Configuration Properties Reference"
+    },
+    {
+      "id": "example-configurations",
+      "text": "Example Configurations"
+    },
+    {
+      "id": "see-also",
+      "text": "See Also"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://spring.io/blog/2025/12/11/spring-ai-tool-search-tools-tzolov",
+      "label": "Smart Tool Selection blog post"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#scaling-to-hundreds-of-tools",
+      "label": "Scaling to Hundreds of Tools"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#how-it-works",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#session-scoping",
+      "label": "Session Scoping"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#when-to-use",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#installation",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#quick-start",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#spring-boot-auto-configuration",
+      "label": "Spring Boot Auto-Configuration"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#session-scoping",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#search-strategies",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#vector-tool-index",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#lucene-tool-index",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#regex-tool-index",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#configuration",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#builder-options",
+      "label": "ToolCallingAdvisor Builder Options"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#index-eviction",
+      "label": "Index Eviction"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#tool-index-api",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#index-eviction",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#spring-boot-auto-configuration",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#custom-tool-advisor-autoconfig",
+      "label": "Custom ToolAdvisor: Auto-Configuration Integration"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#tool-index-auto-selection",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#properties-reference",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#example-configurations",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html#see-also",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#scaling-to-hundreds-of-tools",
+      "label": "Tool Calling: Scaling to Hundreds of Tools"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html",
+      "label": "ToolCallingAdvisor"
+    },
+    {
+      "href": "https://spring.io/blog/2025/12/11/spring-ai-tool-search-tools-tzolov",
+      "label": "Smart Tool Selection: 34–64% Token Savings"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/guides/dynamic-tool-search.html",
+      "label": "Dynamic Tool Discovery guide"
+    }
+  ]
+}

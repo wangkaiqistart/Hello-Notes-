@@ -1,0 +1,69 @@
+--- 03-draft.md
++++ translation.md
+@@ -40,7 +40,7 @@
+ 
+ 提供方可能只支持 JSON Schema 的一部分。常见限制涉及 `$ref`、深层嵌套数组、`allOf` / `anyOf` / `oneOf`、正则表达式与递归类型。原生约束也不能替代应用的业务校验。
+ 
+-**Ollama：部分推理模型可能返回普通文本。** 来源列举 `qwen3:8b`、`qwen3.5:9b` 等内置思考模式的模型：它们可能输出推理过程，导致 `BeanOutputConverter` 无法解析，例如：
++**Ollama：部分推理模型可能返回普通文本。** `qwen3:8b`、`qwen3.5:9b` 等内置思考模式的模型存在这类情况：它们可能输出推理过程，导致 `BeanOutputConverter` 无法解析，例如：
+ 
+ ```text
+ StreamReadException: Unrecognized token 'The': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+@@ -60,18 +60,18 @@
+ **OpenAI：Schema 顶层必须是对象，不能直接是数组。** 启用原生输出后直接请求 `List<T>` 会导致 API 错误：
+ 
+ ```java
+-// Does NOT work with OpenAI native structured output:
++// OpenAI 原生结构化输出不支持下面的顶层数组：
+ List<ActorsFilms> films = chatClient.prompt()
+     .user("Generate filmographies for Tom Hanks and Bill Murray.")
+     .call()
+     .entity(new ParameterizedTypeReference<List<ActorsFilms>>() {},
+-            spec -> spec.useProviderStructuredOutput()); // fails with OpenAI
++            spec -> spec.useProviderStructuredOutput()); // OpenAI 会报错
+ ```
+ 
+ 可将列表包进一个 record，或使用默认提示词方式：
+ 
+ ```java
+-// Option 1: wrap the list in a container record
++// 方案 1：用 record 包装列表
+ record FilmographyList(List<ActorsFilms> films) {}
+ 
+ FilmographyList result = chatClient.prompt()
+@@ -80,7 +80,7 @@
+     .entity(FilmographyList.class, spec -> spec.useProviderStructuredOutput());
+ List<ActorsFilms> films = result.films();
+ 
+-// Option 2: use the default prompt-based approach (no native output required)
++// 方案 2：使用默认提示词方式，不启用原生输出
+ List<ActorsFilms> films = chatClient.prompt()
+     .user("Generate filmographies for Tom Hanks and Bill Murray.")
+     .call()
+@@ -94,14 +94,14 @@
+ `useProviderStructuredOutput()` 是单次转换的开关。也可以使用 `AdvisorParams.ENABLE_NATIVE_STRUCTURED_OUTPUT`，在本次请求上设置，或在构建器上设置默认值：
+ 
+ ```java
+-// Per request
++// 按请求启用
+ ActorsFilms films = chatClient.prompt()
+     .advisors(AdvisorParams.ENABLE_NATIVE_STRUCTURED_OUTPUT)
+     .user("Generate the filmography for a random actor.")
+     .call()
+     .entity(ActorsFilms.class);
+ 
+-// Globally on the builder
++// 在构建器上设置默认值
+ @Bean
+ ChatClient chatClient(ChatClient.Builder builder) {
+     return builder
+@@ -116,7 +116,7 @@
+ 
+ | 提供方                                                                                                  | 专用配置与含义                                                                                                                                         |
+ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+-| [OpenAI](https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_structured_outputs)      | `JSON_OBJECT` 要求有效 JSON；`JSON_SCHEMA` 搭配 Schema 约束结构。来源列出 `spring.ai.openai.chat.response-format` 选项。                               |
+-| [Ollama](https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html)                          | 来源在内置 JSON 模式中列出 `spring.ai.ollama.chat.format=json`；模型的原生 Schema 支持另见上文。                                                       |
++| [OpenAI](https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_structured_outputs)      | `JSON_OBJECT` 要求有效 JSON；`JSON_SCHEMA` 搭配 Schema 约束结构。通过 `spring.ai.openai.chat.response-format.type` 等选项配置。                        |
++| [Ollama](https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html)                          | `spring.ai.ollama.chat.format` 可以设为 `json`，也可以传入 JSON Schema 对象约束结构；具体模型仍需验证。                                                |
+ | [Qxotic jinfer](https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#structured-output) | `JinferChatOptions.grammar(...)` 通过 [GBNF 语法](https://github.com/ggml-org/llama.cpp/blob/master/grammars/README.md)约束输出。                      |
+ | [Mistral AI](https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html)                   | `spring.ai.mistralai.chat.response-format` 设为 `{ "type": "json_object" }` 开启 JSON 模式；`{ "type": "json_schema" }` 搭配 Schema 开启原生结构约束。 |

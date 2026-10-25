@@ -1,0 +1,34 @@
+[
+  {
+    "language": "java",
+    "code": "ChatModel chatModel = ...\nToolCallback[] tools = ToolCallbacks.from(new DateTimeTools());\n\nChatOptions chatOptions = ToolCallingChatOptions.builder()\n    .toolCallbacks(tools)\n    .build();\n\nPrompt prompt = new Prompt(\"What day is tomorrow?\", chatOptions);\nChatResponse response = chatModel.call(prompt);"
+  },
+  {
+    "language": "java",
+    "code": "ToolCallback[] dateTimeTools = ToolCallbacks.from(new DateTimeTools());\n\nChatModel chatModel = OllamaChatModel.builder()\n    .ollamaApi(OllamaApi.builder().build())\n    .options(ToolCallingChatOptions.builder()\n        .toolCallbacks(dateTimeTools)\n        .build())\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "ChatModel chatModel = OllamaChatModel.builder()\n    .options(ToolCallingChatOptions.builder()\n        .toolCallbacks(defaultTools)  // 5 default tools\n        .build())\n    .build();\n\nChatOptions runtimeOptions = ToolCallingChatOptions.builder()\n    .toolCallbacks(otherTool)          // 1 tool\n    .build();\n\nChatResponse response = chatModel.call(new Prompt(\"...\", runtimeOptions));\n// The model sees ONLY otherTool — defaultTools were replaced, not appended."
+  },
+  {
+    "language": "java",
+    "code": "List<ToolCallback> combined = new ArrayList<>(Arrays.asList(defaultTools));\ncombined.add(otherTool);\n\nChatOptions runtimeOptions = ToolCallingChatOptions.builder()\n    .toolCallbacks(combined)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "ChatModel chatModel = ...\nToolCallingManager toolCallingManager = ToolCallingManager.builder().build();\n\nToolCallback[] tools = ToolCallbacks.from(new WeatherTools());\nChatOptions chatOptions = ToolCallingChatOptions.builder()\n    .toolCallbacks(tools)\n    .build();\n\nPrompt prompt = new Prompt(\"What is the weather in Amsterdam and Paris?\", chatOptions);\nChatResponse response = chatModel.call(prompt);\n\nwhile (response.hasToolCalls()) {\n    ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response);\n\n    if (result.returnDirect()) {\n        // Tool's returnDirect=true — break out without sending back to the model\n        return result.conversationHistory();\n    }\n\n    prompt = new Prompt(result.conversationHistory(), chatOptions);\n    response = chatModel.call(prompt);\n}\n\nString finalAnswer = response.getResult().getOutput().getText();"
+  },
+  {
+    "language": "java",
+    "code": "ChatModel chatModel = ...\nToolCallingManager toolCallingManager = ToolCallingManager.builder().build();\n\nToolCallback[] tools = ToolCallbacks.from(new WeatherTools());\nChatOptions chatOptions = ToolCallingChatOptions.builder()\n    .toolCallbacks(tools)\n    .build();\n\nPrompt prompt = new Prompt(\"What is the weather in Amsterdam and Paris?\", chatOptions);\n\nwhile (true) {\n    AtomicReference<ChatResponse> aggregated = new AtomicReference<>();\n\n    new MessageAggregator().aggregate(\n        chatModel.stream(prompt).doOnNext(chunk -> forwardToSse(chunk)),\n        aggregated::set\n    ).blockLast();\n\n    ChatResponse response = aggregated.get();\n    if (!response.hasToolCalls()) {\n        break;\n    }\n\n    ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response);\n    if (result.returnDirect()) {\n        break;\n    }\n    prompt = new Prompt(result.conversationHistory(), chatOptions);\n}"
+  },
+  {
+    "language": "java",
+    "code": "ChatOptions chatOptions = ToolCallingChatOptions.builder()\n    .toolCallbacks(ToolCallbacks.from(new CustomerTools()))\n    .toolContext(Map.of(\"tenantId\", \"acme\"))\n    .build();\n\nPrompt prompt = new Prompt(\"Tell me about customer 42\", chatOptions);\nchatModel.call(prompt);"
+  },
+  {
+    "language": "java",
+    "code": "ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response);\n\nif (result.returnDirect()) {\n    // Skip the next model call — return the tool result to the caller\n    return result.conversationHistory();\n}"
+  }
+]

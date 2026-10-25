@@ -1,0 +1,1548 @@
+<article class="doc">
+<h1 id="page-title" class="page">Tool Calling</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>Tool calling</em> — the ability for an AI model to invoke application-defined functions and act on their results — is the essential building block of agentic AI systems. A model that can only generate text is a chatbot; a model that can discover information, take action, and loop until a goal is reached is an agent.</p>
+</div>
+<div class="imageblock right text-center">
+<div class="content">
+<img src="../_images/tools/spring-ai-agent-loop.png" alt="The agent loop" width="300">
+</div>
+</div>
+<div class="paragraph">
+<p>Tools are used for two broad purposes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Information retrieval</strong> — augmenting the model’s knowledge with data from databases, web services, file systems, or search engines. Examples: fetching the current weather, querying customer records, looking up the latest news.</p>
+</li>
+<li>
+<p><strong>Taking action</strong> — executing operations in your system. Examples: sending an email, booking a flight, updating a record, triggering a workflow.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Although we speak of "tool calling" as a model capability, it is the application that owns the tool calling logic. The model can request a tool call and provide input arguments; the application is responsible for executing the tool and returning the result. The model never receives direct access to the APIs behind your tools — a critical security consideration.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_architecture_overview"><a class="anchor" href="#_architecture_overview"></a>Architecture Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring AI 2.0 makes the tool calling loop a first-class, composable component of the `ChatClient’s advisor chain. The flow at a glance:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You define tools (<a href="#defining-tools">Defining Tools</a>) and pass them to <code>ChatClient</code>.</p>
+</li>
+<li>
+<p><code>ChatClient</code> auto-registers a <code>ToolCallingAdvisor</code> (<a href="#the-tool-calling-loop">The Tool Calling Loop</a>) that drives the loop.</p>
+</li>
+<li>
+<p>The model decides which tools to call; <code>ToolCallingManager</code> executes them; the loop continues until the model produces a response without tool calls.</p>
+</li>
+<li>
+<p>Other advisors in the chain — memory, observability, retries, custom logic — compose with the loop through a single dial: <strong>advisor ordering</strong> (<a href="#memory-and-the-tool-loop">Memory and the Tool Loop</a>).</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This architecture replaces the per-<code>ChatModel</code> tool execution loops of Spring AI 1.x. Calling <code>ChatModel</code> directly is still supported for low-level use cases — see <a href="tools/chatmodel-tool-calling.html" class="xref page">ChatModel Tool Calling</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Check the <a href="chat/comparison.html" class="xref page">Chat Model Comparisons</a> to see which models support tool calling.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="quick-start"><a class="anchor" href="#quick-start"></a>Quick Start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Define a tool by annotating a method with <code>@Tool</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="fold-block is-hidden-folded">import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.context.i18n.LocaleContextHolder;
+
+</span><span class="fold-block">class DateTimeTools {
+
+    @Tool(description = "Get the current date and time in the user's timezone")
+    String getCurrentDateTime() {
+        return LocalDateTime.now().atZone(LocaleContextHolder.getTimeZone().toZoneId()).toString();
+    }
+
+    @Tool(description = "Set a user alarm for the given time, provided in ISO-8601 format")
+    void setAlarm(String time) {
+        LocalDateTime alarmTime = LocalDateTime.parse(time, DateTimeFormatter.ISO_DATE_TIME);
+        System.out.println("Alarm set for " + alarmTime);
+    }
+}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pass the tools to <code>ChatClient</code> via <code>.tools()</code> and ask a question that requires them:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatModel chatModel = ...
+
+String response = ChatClient.create(chatModel)
+        .prompt("Can you set an alarm 10 minutes from now?")
+        .tools(new DateTimeTools())
+        .call()
+        .content();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The model decides to call <code>getCurrentDateTime()</code>, then <code>setAlarm(…​)</code> with the computed time. Spring AI handles the full round-trip automatically.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="defining-tools"><a class="anchor" href="#defining-tools"></a>Defining Tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring AI offers three ways to define tools, from highest-level to most explicit:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 60%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Style</th>
+<th class="tableblock halign-left valign-top">Use when</th>
+<th class="tableblock halign-left valign-top">Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Declarative <code>@Tool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">You own the method and want minimal ceremony</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#declarative-tool">Declarative</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MethodToolCallback</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">You need programmatic control over a method-backed tool</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#method-tool-callback">Programmatic: Method</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FunctionToolCallback</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">You want to expose a <code>Function</code> / <code>Supplier</code> / <code>Consumer</code> lambda or method reference</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#function-tool-callback">Programmatic: Function</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>All three produce <code>ToolCallback</code> instances that flow through the same loop. You can mix styles freely.</p>
+</div>
+<div class="sect2">
+<h3 id="declarative-tool"><a class="anchor" href="#declarative-tool"></a>Declarative: <code>@Tool</code></h3>
+<div class="paragraph">
+<p>Annotate any method — public, package-private, private; static or instance — with <code>@Tool</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">class WeatherTools {
+
+    @Tool(description = "Get the current weather for a given city")
+    public String getWeather(String city) {
+        return weatherService.fetch(city);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>@Tool</code> annotation supports:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>name</code> — the tool name. Defaults to the method name. Must be unique within the tool set provided to a model.</p>
+</li>
+<li>
+<p><code>description</code> — what the tool does and when to use it. Strongly recommended; without it the model has no guidance on when to call the tool.</p>
+</li>
+<li>
+<p><code>returnDirect</code> — return the result directly to the caller instead of feeding it back to the model. See <a href="#return-direct">Return Direct</a>.</p>
+</li>
+<li>
+<p><code>resultConverter</code> — the <code>ToolCallResultConverter</code> to use. See <a href="#result-conversion">Result Conversion</a>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For AOT compilation (GraalVM native image), the class containing the <code>@Tool</code> methods must be a Spring bean (e.g. <code>@Component</code>). Otherwise, annotate it with <code>@RegisterReflection(memberCategories = MemberCategory.INVOKE_DECLARED_METHODS)</code>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Add <code>@ToolParam</code> to describe individual parameters:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">class WeatherTools {
+
+    @Tool(description = "Get the weather for a city at a specific time")
+    public String getWeather(
+            @ToolParam(description = "City name") String city,
+            @ToolParam(description = "Time in ISO-8601 format", required = false) String at) {
+        return weatherService.fetch(city, at);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default all parameters are required. <code>@ToolParam(required = false)</code> or <code>@Nullable</code> makes a parameter optional. See <a href="#json-schema">JSON Schema</a> for the full schema customization options.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="method-tool-callback"><a class="anchor" href="#method-tool-callback"></a>Programmatic: <code>MethodToolCallback</code></h3>
+<div class="paragraph">
+<p>For dynamic tool registration — when you don’t control the source class, or you want to build the tool definition at runtime — use <code>MethodToolCallback</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Method method = ReflectionUtils.findMethod(WeatherTools.class, "getWeather", String.class);
+
+MethodToolCallback callback = MethodToolCallback.builder()
+    .toolDefinition(ToolDefinitions.builder(method)
+        .description("Get the current weather for a given city")
+        .build())
+    .toolMethod(method)
+    .toolObject(new WeatherTools())
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>toolObject</code> is required for instance methods, optional for static methods. See <a href="#tool-specification-reference">Tool Specification Reference</a> for the full builder API.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="function-tool-callback"><a class="anchor" href="#function-tool-callback"></a>Programmatic: <code>FunctionToolCallback</code></h3>
+<div class="paragraph">
+<p>For tools backed by a <code>Function</code>, <code>Supplier</code>, <code>Consumer</code>, or <code>BiFunction</code> — including lambdas and method references — use <code>FunctionToolCallback</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">FunctionToolCallback callback = FunctionToolCallback.builder("currentWeather", weatherService::getWeather)
+    .description("Get the weather in location")
+    .inputType(WeatherRequest.class)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The factory takes a name and the function reference. The builder sets the description and the input type (used for JSON schema generation).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tool-callback-beans"><a class="anchor" href="#tool-callback-beans"></a><code>ToolCallback</code> Beans</h3>
+<div class="paragraph">
+<p>Spring AI automatically discovers <code>ToolCallback</code> beans in the application context and exposes them through the <code>ToolCallbackResolver</code> for name-based lookup. Define a tool once as a <code>@Bean</code> and inject it where needed:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration(proxyBeanMethods = false)
+class WeatherToolsConfig {
+
+    @Bean
+    ToolCallback currentWeather(WeatherService weatherService) {
+        return FunctionToolCallback.builder("currentWeather", weatherService::getWeather)
+            .description("Get the weather in location")
+            .inputType(WeatherRequest.class)
+            .build();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Inject and pass the bean to <code>ChatClient</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired ToolCallback currentWeather;
+
+ChatClient.create(chatModel)
+    .prompt("What's the weather in Copenhagen?")
+    .tools(currentWeather)
+    .call()
+    .content();</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Spring AI 2.0 removes the <code>SpringBeanToolCallbackResolver</code> pattern where bare <code>Function</code> beans were resolved by name via <code>toolNames(…​)</code>. Tools must now be registered as explicit <code>ToolCallback</code> beans. See <a href="../upgrade-notes.html#tool-calling-1x-to-2x" class="xref page">Upgrading Tool Calling from 1.x to 2.0</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="passing-tools"><a class="anchor" href="#passing-tools"></a>Passing Tools to ChatClient</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ChatClient</code> exposes two methods for providing tools:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// Per call — tools available only for this single request
+chatClient.prompt(...)
+    .tools(new WeatherTools(), currentWeather)
+    .call();
+
+// As defaults — tools available on every request built from this client
+ChatClient client = ChatClient.builder(chatModel)
+    .defaultTools(new WeatherTools(), currentWeather)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Both methods are <strong>heterogeneous</strong>: they accept <code>@Tool</code>-annotated POJO instances, <code>ToolCallback</code> instances, <code>ToolCallbackProvider</code> instances, and arrays or collections of any of these. You can mix styles in a single call.</p>
+</div>
+<div class="paragraph">
+<p>Per-call <code>.tools(…​)</code> <strong>appends</strong> to the client’s defaults — it does not replace them. The final tool list sent to the model is the union of <code>.defaultTools(…​)</code> and any <code>.tools(…​)</code> added at the call site.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Default tools are shared across every request built from the same <code>ChatClient.Builder</code>. They are useful for tools that should always be available, but they can also be dangerous if used carelessly — risk-tier and destructive tools should typically be added per call, not as defaults.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Tools registered via <code>ToolCallingChatOptions.toolCallbacks(…​)</code> on the underlying <code>ChatModel</code> <strong>are</strong> overridden by the request-level tool list. See <a href="tools/chatmodel-tool-calling.html" class="xref page">ChatModel Tool Calling</a> for the precedence rules.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="the-tool-calling-loop"><a class="anchor" href="#the-tool-calling-loop"></a>The Tool Calling Loop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you call <code>.call()</code> or <code>.stream()</code> on a <code>ChatClient</code> request, the request flows through the advisor chain. <code>ToolCallingAdvisor</code> — auto-registered by <code>DefaultChatClient</code> — owns the tool execution lifecycle:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/tools/spring-ai-tool-calling-advisor-flow.png" alt="Tool Calling Advisor Flow" width="800">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The advisor sends the request to the model with all registered tool definitions included.</p>
+</li>
+<li>
+<p>The model decides whether to call any tools and returns a response.</p>
+</li>
+<li>
+<p>If the response contains tool calls, the advisor:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Hands them to <code>ToolCallingManager</code>, which finds the matching <code>ToolCallback</code> and executes it.</p>
+</li>
+<li>
+<p>Appends the tool results to the conversation history.</p>
+</li>
+<li>
+<p>Sends the updated history back to the model.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Steps 2–3 repeat until the model produces a response without tool calls; that response is returned to the caller.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Both blocking (<code>.call()</code>) and streaming (<code>.stream()</code>) modes are fully supported.</p>
+</div>
+<div class="paragraph">
+<p><code>ToolCallingAdvisor</code> is a <strong>recursive advisor</strong> — it re-enters the downstream advisor chain on each iteration of the loop. The same mechanism drives structured-output validation retries and any other looped advisor pattern. See <a href="advisors-recursive.html" class="xref page">Recursive Advisors</a> for the underlying pattern.</p>
+</div>
+<div class="paragraph">
+<p><code>DefaultChatClient</code> enforces that <strong>exactly one <code>ToolAdvisor</code> is present</strong> in the chain. Attempting to register a second one fails with an explicit error.</p>
+</div>
+<div class="paragraph">
+<p>For the full <code>ToolCallingAdvisor</code> builder API, hook methods, and configuration options, see <a href="tools/tool-calling-advisor.html" class="xref page">ToolCallingAdvisor</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="memory-and-the-tool-loop"><a class="anchor" href="#memory-and-the-tool-loop"></a>Memory and the Tool Loop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Where you place <code>MessageChatMemoryAdvisor</code> relative to <code>ToolCallingAdvisor</code> (default order <code>HIGHEST_PRECEDENCE + 300</code>) determines how much conversation context the memory store captures.</p>
+</div>
+<div class="sect2">
+<h3 id="outside-the-loop"><a class="anchor" href="#outside-the-loop"></a>Outside the Loop (default)</h3>
+<div class="paragraph">
+<p><code>MessageChatMemoryAdvisor’s default order is `HIGHEST_PRECEDENCE + 200</code> — lower than <code>ToolCallingAdvisor</code>, which places it <strong>outside</strong> the loop. The memory advisor:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Loads history once before the loop starts.</p>
+</li>
+<li>
+<p>Persists only the final user message and the final assistant message after the loop completes.</p>
+</li>
+<li>
+<p>Never sees tool call requests or tool response messages.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This is the safe default and works with every <code>ChatMemoryRepository</code> implementation. It also matches the behavior of Spring AI 1.x, where the tool loop was internal to each <code>ChatModel</code> and memory could not observe tool messages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">var chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())  // outside the loop by default
+    .build();</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="inside-the-loop"><a class="anchor" href="#inside-the-loop"></a>Inside the Loop</h3>
+<div class="paragraph">
+<p>To give the model the full tool transcript on subsequent turns — so it can reason about what was already tried, which tools were called, and what they returned — place the memory advisor <strong>inside</strong> the loop by giving it an order greater than <code>ToolCallingAdvisor.DEFAULT_ORDER</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">var chatMemoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory)
+    .order(BaseAdvisor.HIGHEST_PRECEDENCE + 400)  // inside (after) ToolCallingAdvisor
+    .build();
+
+var chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(chatMemoryAdvisor)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To avoid duplicate writes, <code>ToolCallingAdvisor’s internal conversation history must be disabled when a memory advisor sits inside the loop. <strong>With the auto-registered `ToolCallingAdvisor</strong></code><strong>, this is automatic</strong> — <code>DefaultChatClient</code> detects any <code>MemoryAdvisor</code> inside the loop and disables internal history with no additional configuration. If you construct a <code>ToolCallingAdvisor</code> manually, call <code>.disableInternalConversationHistory()</code> on the builder yourself.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Disabling internal history only changes what’s forwarded to the rest of the chain each round — <a href="#tool-call-limits">tool call limits</a> still see the complete history for the current turn regardless, so limits keep working correctly with a memory advisor nested inside the loop.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/tools/spring-ai-tool-calling-with-inside-memory.png" alt="ChatMemoryAdvisor inside the ToolCallingAdvisor loop" width="800">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="backend-compatibility"><a class="anchor" href="#backend-compatibility"></a>Backend Compatibility</h3>
+<div class="paragraph">
+<p>Not every <code>ChatMemoryRepository</code> can persist tool messages. The repository has to know how to serialize <code>ToolResponseMessage</code> and tool call request messages alongside ordinary user and assistant turns — and most current implementations only model the latter.</p>
+</div>
+<div class="paragraph">
+<p>As of 2.0, the built-in repositories that support the full message set are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="chat-memory.html#_in_memory_repository" class="xref page">InMemoryChatMemoryRepository</a></p>
+</li>
+<li>
+<p><a href="chat-memory.html#_redischatmemoryrepository" class="xref page">RedisChatMemoryRepository</a></p>
+</li>
+<li>
+<p><a href="chat-memory.html#_neo4j_chatmemoryrepository" class="xref page">Neo4jChatMemoryRepository</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Any of them is safe inside the loop.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For JDBC-backed persistence with full tool-message support — plus event-sourced history, turn-aware compaction, and multi-agent branch isolation — see the <a href="https://spring-ai-community.github.io/spring-ai-session/latest/">spring-ai-session</a> community project. It is designed for exactly this scenario and is planned for inclusion in Spring AI 2.1.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="scaling-to-hundreds-of-tools"><a class="anchor" href="#scaling-to-hundreds-of-tools"></a>Scaling to Hundreds of Tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The default <code>ToolCallingAdvisor</code> sends all registered tool definitions to the model on every request. With a small tool library this is fine. At 30+ tools — or in multi-server MCP setups where a session may aggregate hundreds of tool definitions — it creates context bloat, accuracy degradation, and unnecessary token cost.</p>
+</div>
+<div class="paragraph">
+<p><code>ToolSearchToolCallingAdvisor</code> is a drop-in replacement that implements the <strong>progressive tool disclosure</strong> pattern: it indexes the full tool set once per session and injects only a built-in <code>toolSearchTool</code> the model uses to retrieve relevant tools by natural language query. Only discovered tools are included in subsequent requests.</p>
+</div>
+<div class="paragraph">
+<p>Enable it with a single property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.chat.client.tool-search-advisor.enabled=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See <a href="tools/tool-search-tool.html" class="xref page">Tool Search Tool</a> for the full configuration, indexing strategies, session-ID semantics, and tuning options.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="mcp-tools"><a class="anchor" href="#mcp-tools"></a>MCP Tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="https://modelcontextprotocol.io">Model Context Protocol</a> (MCP) is a standardized way for AI applications to consume tools, resources, and prompts from remote servers. Spring AI integrates MCP from both directions: your application can consume tools from MCP servers, and it can expose its own tools to MCP clients.</p>
+</div>
+<div class="sect2">
+<h3 id="consuming-mcp-server-tools"><a class="anchor" href="#consuming-mcp-server-tools"></a>Consuming MCP Server Tools</h3>
+<div class="paragraph">
+<p>Add the MCP client starter and configure connections to one or more MCP servers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-starter-mcp-client&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.mcp.client.stdio.connections.my-server.command=npx
+spring.ai.mcp.client.stdio.connections.my-server.args=-y,@modelcontextprotocol/server-everything</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Auto-configuration connects to all configured servers, discovers their tools, and exposes them as a <code>SyncMcpToolCallbackProvider</code> bean (or <code>AsyncMcpToolCallbackProvider</code> for the async client type).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+MCP providers are deliberately <strong>not</strong> auto-registered with the <code>ChatClient</code> — they implement <code>ToolCallbackProvider</code>, but listing tools eagerly would force a network round-trip to every connected MCP server at startup. Inject the provider and wire it explicitly:
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired SyncMcpToolCallbackProvider mcpTools;
+
+// Once, as default tools for every request
+ChatClient chatClient = ChatClient.builder(chatModel)
+    .defaultTools(mcpTools)
+    .build();
+
+// Or per call
+chatClient.prompt()
+    .user("Search the web for the latest Spring AI release notes")
+    .tools(mcpTools)
+    .call()
+    .content();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Tool callback auto-configuration is enabled by default and can be turned off with <code>spring.ai.mcp.client.toolcallback.enabled=false</code>. See <a href="mcp/mcp-client-boot-starter-docs.html" class="xref page">MCP Client Boot Starter</a> for the full configuration surface — transports, security, filtering, name-prefix generation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="exposing-mcp-server-tools"><a class="anchor" href="#exposing-mcp-server-tools"></a>Exposing Spring Tools as an MCP Server</h3>
+<div class="paragraph">
+<p>Going the other direction — exposing your Spring beans as MCP tools — is a matter of using <code>@McpTool</code> (instead of <code>@Tool</code>) and adding the MCP server starter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-starter-mcp-server-webmvc&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+public class WeatherTools {
+
+    @McpTool(description = "Get the current weather for a given city")
+    public String getWeather(
+            @McpToolParam(description = "City name") String city) {
+        return weatherService.fetch(city);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Auto-configuration scans for <code>@McpTool</code>-annotated beans, generates JSON schemas for their parameters, and registers them with the MCP server. See <a href="mcp/mcp-server-boot-starter-docs.html" class="xref page">MCP Server Boot Starter</a> for transport, security, and observability options.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="combining-local-and-mcp-tools"><a class="anchor" href="#combining-local-and-mcp-tools"></a>Combining Local and MCP Tools</h3>
+<div class="paragraph">
+<p>Local <code>@Tool</code> methods and remote MCP tools share the same <code>ToolCallback</code> interface — the model and the <code>ToolCallingAdvisor</code> don’t distinguish between them. <code>.tools(…​)</code> and <code>.defaultTools(…​)</code> accept both types in a single call, so you can mix freely:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">chatClient.prompt()
+    .tools(new LocalTools(), mcpTools)
+    .call()
+    .content();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A few things to be aware of in hybrid setups:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Name conflicts are only handled within the MCP side.</strong> <code>DefaultMcpToolNamePrefixGenerator</code> prefixes duplicates across MCP servers, but it doesn’t know about local <code>@Tool</code> methods. If a local tool and a remote MCP tool share a name, you need to rename one of them yourself, or use an <code>McpToolFilter</code> to drop the remote one.</p>
+</li>
+<li>
+<p><strong>Restrict what’s exposed.</strong> MCP tools come from external sources whose surface you don’t fully control. An <code>McpToolFilter</code> bean lets you select which tools enter the namespace based on server identity, tool name, or description — useful for limiting the blast radius of a chatty or untrusted MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>A name conflict between two tool sources is only caught when the merged list goes through <code>ChatClient</code>.
+<code>.tools(…​)</code> and <code>.defaultTools(…​)</code> validate the full merged list and throw <code>IllegalStateException</code> if any two callbacks share a name, so a conflict here fails the request instead of running the wrong tool.</p>
+</div>
+<div class="paragraph">
+<p>That validation does not run if you call <code>ChatModel.call()</code>/<code>.stream()</code> directly, or build your own tool-calling loop, with a hand-assembled <code>ToolCallingChatOptions</code>.
+On that path, tool execution resolves by name only: whichever callback comes first in the merged list wins, silently, with no error or log.
+A remote MCP tool that happens to share a name with a trusted local tool can therefore execute in its place.</p>
+</div>
+<div class="paragraph">
+<p>If you combine local and MCP tools outside <code>ChatClient</code>, either keep the sources namespaced so their names can’t collide (see <a href="mcp/mcp-client-boot-starter-docs.html#mcp-tool-name-prefix-generation" class="xref page">Tool Name Prefix Generation</a>), or call <code>ToolCallingChatOptions.validateToolCallbacks(…​)</code> yourself on the merged list before use.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tool-argument-augmentation"><a class="anchor" href="#tool-argument-augmentation"></a>Tool Argument Augmentation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring AI provides a utility for dynamic augmentation of tool input schemas with additional arguments. This lets you capture extra information from the model — such as reasoning, confidence, or metadata — without modifying the underlying tool implementation. The model sees the augmented schema and fills in the extra fields; your code receives them via a consumer; the original tool receives only its expected arguments, unchanged.</p>
+</div>
+<div class="paragraph">
+<p>Common use cases:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Inner thinking / reasoning</strong> — capture the model’s step-by-step reasoning before executing a tool.</p>
+</li>
+<li>
+<p><strong>Memory enhancement</strong> — extract insights to store in long-term memory.</p>
+</li>
+<li>
+<p><strong>Analytics &amp; tracking</strong> — collect metadata, user intent, or usage patterns.</p>
+</li>
+<li>
+<p><strong>Multi-agent coordination</strong> — pass agent identifiers or coordination signals.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/tools/spring-ai-tool-arg-augmenter.png" alt="Tool Argument Augmentation" width="700">
+</div>
+</div>
+<div class="sect2">
+<h3 id="augmentation-quick-start"><a class="anchor" href="#augmentation-quick-start"></a>Quick Start</h3>
+<div class="paragraph">
+<p>Define the augmented arguments as a Java record:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public record AgentThinking(
+    @ToolParam(description = "Your reasoning for calling this tool", required = true)
+    String innerThought,
+
+    @ToolParam(description = "Confidence level (low, medium, high)", required = false)
+    String confidence
+) {}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Wrap your tools with <code>AugmentedToolCallbackProvider</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">AugmentedToolCallbackProvider&lt;AgentThinking&gt; provider = AugmentedToolCallbackProvider
+    .&lt;AgentThinking&gt;builder()
+    .toolObject(new WeatherTools())     // wrap the original tools
+    .argumentType(AgentThinking.class)  // augmentation schema type
+    .argumentConsumer(event -&gt; {        // optional consumer of augmented content
+        AgentThinking thinking = event.arguments();
+        log.info("Tool: {} | Reasoning: {}", event.toolDefinition().name(), thinking.innerThought());
+    })
+    .removeExtraArgumentsAfterProcessing(true)
+    .build();
+
+ChatClient chatClient = ChatClient.builder(chatModel)
+    .defaultTools(provider)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The LLM sees the augmented schema with your additional fields. Your consumer receives the <code>AgentThinking</code> record; the original tool receives only its expected arguments.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="augmentation-components"><a class="anchor" href="#augmentation-components"></a>Core Components</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>AugmentedToolCallbackProvider&lt;T&gt;</code> — wraps tool objects or providers, augmenting all tools with the specified record type.</p>
+</li>
+<li>
+<p><code>AugmentedToolCallback&lt;T&gt;</code> — wraps individual <code>ToolCallback</code> instances.</p>
+</li>
+<li>
+<p><code>AugmentedArgumentEvent&lt;T&gt;</code> — contains <code>toolDefinition()</code>, <code>rawInput()</code>, and <code>arguments()</code> for consumers.</p>
+</li>
+<li>
+<p><code>ToolInputSchemaAugmenter</code> — low-level utility for schema manipulation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>removeExtraArgumentsAfterProcessing</code> option (default <code>true</code>) controls whether augmented arguments are passed to the original tool. Set it to <code>false</code> if the tool can ignore extra fields and you want them preserved in the input.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="user-controlled-tool-execution"><a class="anchor" href="#user-controlled-tool-execution"></a>User-Controlled Tool Execution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The auto-registered loop covers most cases, but some scenarios genuinely need you to own each iteration:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Gating tool execution on an external approval step.</p>
+</li>
+<li>
+<p>Forwarding intermediate progress to an SSE or WebSocket endpoint.</p>
+</li>
+<li>
+<p>Applying conditional logic between turns.</p>
+</li>
+<li>
+<p>Stopping the loop based on a side-channel signal.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Opt out per call by setting <code>AdvisorParams.toolCallingAdvisorAutoRegister(false)</code> on the request. You become responsible for detecting tool calls in the <code>ChatResponse</code> and executing them via <code>ToolCallingManager</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatClient chatClient = ...
+ToolCallingManager toolCallingManager = ToolCallingManager.builder().build();
+
+ToolCallback[] tools = ToolCallbacks.from(new WeatherTools());
+ChatOptions chatOptions = ToolCallingChatOptions.builder().toolCallbacks(tools).build();
+
+String question = "What is the weather in Amsterdam and Paris?";
+
+// ToolCallingAdvisor disabled — no tool loop runs automatically
+ChatClientResponse response = chatClient.prompt()
+    .user(question)
+    .options(chatOptions)
+    .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))
+    .call()
+    .chatClientResponse();
+
+Prompt prompt = new Prompt(List.of(new UserMessage(question)), chatOptions);
+
+// Drive the loop yourself — each iteration is observable and interruptible
+while (response.chatResponse() != null &amp;&amp; response.chatResponse().hasToolCalls()) {
+    ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response.chatResponse());
+    prompt = new Prompt(result.conversationHistory(), chatOptions);
+    response = chatClient.prompt()
+        .messages(result.conversationHistory())
+        .options(chatOptions)
+        .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))
+        .call()
+        .chatClientResponse();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The same pattern applies to the streaming API, where each iteration’s chunk <code>Flux</code> can be forwarded to a subscriber while being aggregated with <code>ChatClientMessageAggregator</code>. See <a href="tools/tool-calling-advisor.html#user-controlled-streaming" class="xref page">User-Controlled Streaming</a> for the full streaming variant.</p>
+</div>
+<div class="paragraph">
+<p>To disable auto-registration globally for every call from an auto-configured <code>ChatClient</code>, set:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.chat.client.tool-calling.enabled=false</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Driving the loop yourself outside the framework also bypasses observability, advisor composition, and the single-<code>ToolAdvisor</code> invariant. For most needs — including streaming intermediate progress to a UI — placing a custom advisor <strong>inside</strong> the loop (see <a href="#extending-the-loop">Extending the Loop</a>) is simpler and more composable than full opt-out.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="extending-the-loop"><a class="anchor" href="#extending-the-loop"></a>Extending the Loop: Custom <code>ToolAdvisor</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The tool loop is not a black box. <code>ToolCallingAdvisor</code> exposes hook methods at well-defined points, and <code>DefaultChatClient’s auto-configuration accepts custom implementations transparently. This is the same extension point that `ToolSearchToolCallingAdvisor</code> uses to implement progressive tool disclosure.</p>
+</div>
+<div class="paragraph">
+<p><code>ToolAdvisor</code> is a marker interface: any custom tool call advisor must implement it so that <code>DefaultChatClient</code> recognizes it, enforces the single-advisor constraint, and registers it in place of the default.</p>
+</div>
+<div class="sect2">
+<h3 id="hook-methods"><a class="anchor" href="#hook-methods"></a>Hook Methods</h3>
+<div class="paragraph">
+<p>The base <code>ToolCallingAdvisor</code> exposes four pairs of protected hook methods (one each for the call and stream paths):</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Hook</th>
+<th class="tableblock halign-left valign-top">When it fires</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doInitializeLoop</code> / <code>doInitializeLoopStream</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Once, before the first iteration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doBeforeCall</code> / <code>doBeforeStream</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before each iteration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doAfterCall</code> / <code>doAfterStream</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After each iteration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doFinalizeLoop</code> / <code>doFinalizeLoopStream</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Once, after the loop ends</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><code>ToolSearchToolCallingAdvisor</code> uses <code>doInitializeLoop</code> to index the tool set and augment the system message, and <code>doBeforeCall</code> to inject only the tools discovered so far. Any custom subclass follows the same pattern.</p>
+</div>
+<div class="paragraph">
+<p>Common use cases for a custom loop:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Approval gate</strong> — pause before executing a destructive tool and wait for human confirmation.</p>
+</li>
+<li>
+<p><strong>Observability</strong> — emit structured events for each tool call to a side channel.</p>
+</li>
+<li>
+<p><strong>Budget enforcement</strong> — count tokens or LLM calls per session and abort if limits are exceeded.</p>
+</li>
+<li>
+<p><strong>Custom tool resolution</strong> — resolve tools from a dynamic source not available at startup.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="custom-tool-advisor-autoconfig"><a class="anchor" href="#custom-tool-advisor-autoconfig"></a>Auto-Configuration Integration</h3>
+<div class="paragraph">
+<p>Custom <code>ToolAdvisor</code> implementations plug into the auto-configuration system without requiring any manual <code>ChatClient</code> wiring. The extension point is the <code>ToolCallingAdvisor.Builder&lt;?&gt;</code> bean.</p>
+</div>
+<div class="paragraph">
+<p><code>ChatClientAutoConfiguration</code> declares a default <code>ToolCallingAdvisor.Builder&lt;?&gt;</code> bean guarded by <code>@ConditionalOnMissingBean</code>. To replace it, register your own <code>ToolCallingAdvisor.Builder&lt;?&gt;</code> bean — typed as the base <code>ToolCallingAdvisor.Builder&lt;?&gt;</code> — in an auto-configuration that runs <strong>before</strong> <code>ChatClientAutoConfiguration</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@AutoConfiguration(beforeName = "org.springframework.ai.model.chat.client.autoconfigure.ChatClientAutoConfiguration")
+@ConditionalOnProperty(prefix = "my.advisor", name = "enabled", havingValue = "true")
+public class MyToolAdvisorAutoConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean
+    ToolCallingAdvisor.Builder&lt;?&gt; toolCallingAdvisorBuilder(ToolCallingManager toolCallingManager) {
+        return MyCustomToolCallingAdvisor.builder()
+            .toolCallingManager(toolCallingManager);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>ChatClient.Builder</code> then uses your custom builder to auto-register your advisor transparently. `ToolSearchToolCallingAdvisor’s auto-configuration uses exactly this mechanism.</p>
+</div>
+<div class="paragraph">
+<p>For the full <code>ToolCallingAdvisor</code> builder API and hook signatures, see <a href="tools/tool-calling-advisor.html" class="xref page">ToolCallingAdvisor</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tool-specification-reference"><a class="anchor" href="#tool-specification-reference"></a>Tool Specification Reference</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The sections above cover the common paths for defining and using tools. This reference covers the underlying interfaces and customization points.</p>
+</div>
+<div class="sect2">
+<h3 id="tool-callback"><a class="anchor" href="#tool-callback"></a><code>ToolCallback</code></h3>
+<div class="paragraph">
+<p>The <code>ToolCallback</code> interface models a tool: it carries the definition the model sees and the execution logic invoked when the model calls it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface ToolCallback {
+
+    /** Definition used by the AI model to decide when and how to call the tool. */
+    ToolDefinition getToolDefinition();
+
+    /** Metadata controlling how the tool is handled (e.g. return-direct). */
+    ToolMetadata getToolMetadata();
+
+    /** Execute with the given JSON input and return the result. */
+    String call(String toolInput);
+
+    /** Execute with the given input and tool context. */
+    String call(String toolInput, ToolContext toolContext);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring AI provides <code>MethodToolCallback</code> and <code>FunctionToolCallback</code> as built-in implementations. Implement <code>ToolCallback</code> directly when you need full control — for example, to proxy a remote tool source (as MCP integration does).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tool-definition"><a class="anchor" href="#tool-definition"></a><code>ToolDefinition</code></h3>
+<div class="paragraph">
+<p><code>ToolDefinition</code> is the contract the model sees: name, description, and input schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface ToolDefinition {
+
+    /** Unique tool name within the tool set provided to the model. */
+    String name();
+
+    /** Description used by the model to decide when to call the tool. */
+    String description();
+
+    /** JSON schema of the tool's input parameters. */
+    String inputSchema();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Build one with <code>ToolDefinition.builder()</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ToolDefinition toolDefinition = ToolDefinition.builder()
+    .name("currentWeather")
+    .description("Get the weather in location")
+    .inputSchema("""
+        {
+            "type": "object",
+            "properties": {
+                "location": { "type": "string" },
+                "unit": { "type": "string", "enum": ["C", "F"] }
+            },
+            "required": ["location", "unit"]
+        }
+    """)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For method-based tools, <code>ToolDefinitions.from(method)</code> generates a definition automatically. The class is annotated with <code>@Tool</code>? The annotation’s name and description override the method-name defaults.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="json-schema"><a class="anchor" href="#json-schema"></a>JSON Schema</h3>
+<div class="paragraph">
+<p>The input schema tells the model how to call the tool. Spring AI’s <code>JsonSchemaGenerator</code> produces the schema from a method or function’s parameter list and supports several customization annotations.</p>
+</div>
+<div class="paragraph">
+<p><strong>Parameter descriptions</strong></p>
+</div>
+<div class="paragraph">
+<p>Use any of these (Spring AI’s annotation has highest precedence):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@ToolParam(description = "…​")</code> — Spring AI</p>
+</li>
+<li>
+<p><code>@JsonClassDescription(description = "…​")</code> — Jackson</p>
+</li>
+<li>
+<p><code>@JsonPropertyDescription(description = "…​")</code> — Jackson</p>
+</li>
+<li>
+<p><code>@Schema(description = "…​")</code> — Swagger</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">class CustomerTools {
+
+    @Tool(description = "Update customer information")
+    void updateCustomerInfo(
+            Long id,
+            String name,
+            @ToolParam(description = "Email address, RFC 5322 format", required = false) String email) {
+        // ...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Required vs optional</strong></p>
+</div>
+<div class="paragraph">
+<p>By default every parameter is required. Make a parameter optional via (in order of precedence):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@ToolParam(required = false)</code> — Spring AI</p>
+</li>
+<li>
+<p><code>@JsonProperty(required = false)</code> — Jackson</p>
+</li>
+<li>
+<p><code>@Schema(required = false)</code> — Swagger</p>
+</li>
+<li>
+<p><code>@Nullable</code> — Spring Framework / JSpecify</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Defining the correct required status is critical for reducing hallucinations. A parameter marked required forces the model to provide a value; an optional one lets it omit. If you mark a parameter required but the model has no way to determine its value, it will make one up.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tool-context"><a class="anchor" href="#tool-context"></a>Tool Context</h3>
+<div class="paragraph">
+<p><code>ToolContext</code> lets you pass non-model data (tenant IDs, user IDs, request scope) to tool methods. The data is <strong>not</strong> sent to the model — it’s purely for the tool’s internal use.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/tools/tool-context.jpg" alt="Tool Context" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>The chat request carries the tool definitions plus the tool context, and Spring AI sends only the tool definitions to the model (1).
+The model decides to call a tool and returns the tool call requests to Spring AI (2), which dispatches them to the matching tool (3).
+The tool context is handed directly to the tool at invocation time (3"), so it reaches the tool without ever passing through the model.
+The tool returns its result to Spring AI (4), which sends that result back to the model (5), and the model’s final answer is returned as the chat response (6).</p>
+</div>
+<div class="paragraph">
+<p>In the example below, the <code>Map.of("tenantId", "acme")</code> passed to <code>.toolContext()</code> is the tool context from step (1), and <code>getCustomerInfo</code> reads it through its <code>ToolContext</code> parameter at step (3") — the <code>tenantId</code> reaches the tool without ever being exposed to the model.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">class CustomerTools {
+
+    @Tool(description = "Retrieve customer information")
+    Customer getCustomerInfo(Long id, ToolContext toolContext) {
+        return customerRepository.findById(id, toolContext.getContext().get("tenantId"));
+    }
+}
+
+String response = ChatClient.create(chatModel)
+        .prompt("Tell me more about the customer with ID 42")
+        .tools(new CustomerTools())
+        .toolContext(Map.of("tenantId", "acme"))
+        .call()
+        .content();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If <code>toolContext</code> is set both as a default and at the call site, the two maps are merged; runtime values take precedence over defaults.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="return-direct"><a class="anchor" href="#return-direct"></a>Return Direct</h3>
+<div class="paragraph">
+<p>By default, the result of a tool call is sent back to the model so it can continue the conversation. With <code>returnDirect = true</code>, the result bypasses the model and is returned directly to the caller — useful when the tool’s output is the final answer (e.g. a RAG retrieval) and the extra round-trip would add latency without value.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/tools/return-direct.jpg" alt="Returning tool call results directly to the caller" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>For declarative tools:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Tool(description = "Retrieve customer information", returnDirect = true)
+Customer getCustomerInfo(Long id) { ... }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For programmatic tools, set <code>returnDirect</code> via <code>ToolMetadata</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ToolMetadata toolMetadata = ToolMetadata.builder()
+    .returnDirect(true)
+    .build();</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the model requests multiple tool calls in a single round, <code>returnDirect</code> is only honored if <strong>all</strong> the called tools have <code>returnDirect = true</code>. Otherwise the results are sent back to the model.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="result-conversion"><a class="anchor" href="#result-conversion"></a>Result Conversion</h3>
+<div class="paragraph">
+<p>Tool results are converted to a <code>String</code> (the format the model expects) by a <code>ToolCallResultConverter</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@FunctionalInterface
+public interface ToolCallResultConverter {
+    String convert(Object result, Type returnType);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The default <code>DefaultToolCallResultConverter</code> uses Jackson to serialize the result. Configure a custom converter on the <code>@Tool</code> annotation (<code>resultConverter</code>) or via <code>ToolMetadata</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="method-tool-limitations"><a class="anchor" href="#method-tool-limitations"></a>Method Tool Limitations</h3>
+<div class="paragraph">
+<p>Certain types are not supported as method parameters or return values when using <code>MethodToolCallback</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Optional</code> — use <code>@Nullable</code> or <code>@ToolParam(required = false)</code> instead.</p>
+</li>
+<li>
+<p>Asynchronous types (<code>CompletableFuture</code>, <code>Future</code>).</p>
+</li>
+<li>
+<p>Reactive types (<code>Flow</code>, <code>Mono</code>, <code>Flux</code>).</p>
+</li>
+<li>
+<p>Functional types (<code>Function</code>, <code>Supplier</code>, <code>Consumer</code>).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These types are not serializable to the model and have no schema representation that the model can interpret.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="exception-handling"><a class="anchor" href="#exception-handling"></a>Exception Handling</h3>
+<div class="paragraph">
+<p>When a tool throws, the exception is wrapped in <code>ToolExecutionException</code> and handed to the <code>ToolExecutionExceptionProcessor</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@FunctionalInterface
+public interface ToolExecutionExceptionProcessor {
+    String process(ToolExecutionException exception);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The processor has two choices: produce an error message that the framework feeds back to the model (so the model can recover or apologize), or re-throw the exception so the caller handles it.</p>
+</div>
+<div class="paragraph">
+<p>The default <code>DefaultToolExecutionExceptionProcessor</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Sends the message of any <code>RuntimeException</code> back to the model.</p>
+</li>
+<li>
+<p>Always re-throws checked exceptions and `Error`s.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Configure via property:</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 30%;">
+<col style="width: 10%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.tools.throw-exception-on-error</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code>, all tool errors are thrown for the caller to handle. If <code>false</code>, errors are sent back to the model as messages.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Or by replacing the bean:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+ToolExecutionExceptionProcessor toolExecutionExceptionProcessor() {
+    return new DefaultToolExecutionExceptionProcessor(true);
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you implement your own <code>ToolCallback</code>, throw <code>ToolExecutionException</code> from <code>call()</code> when execution fails — that’s what the processor expects.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tool-call-limits"><a class="anchor" href="#tool-call-limits"></a>Tool Call Limits</h3>
+<div class="paragraph">
+<p><code>DefaultToolCallingManager</code> caps how many times a tool can be called within a turn, to guard against runaway loops:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ToolCallingManager toolCallingManager = ToolCallingManager.builder()
+    .maxCallsPerTool(40)                           // per-tool default
+    .maxCallsPerTool("search", 10)                  // override for one tool
+    .excludeToolFromLimit("getCurrentWeather")      // no limit for this tool
+    .maxTotalToolCalls(150)                         // cap across all tools combined
+    .onLimitExceeded(ToolCallLimitBehavior.THROW)   // or RETURN_ERROR_RESPONSE
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>These defaults (<code>DefaultToolCallingManager.DEFAULT_MAX_CALLS_PER_TOOL</code> / <code>DEFAULT_MAX_TOTAL_TOOL_CALLS</code>) apply even without calling these methods. Use <code>unlimitedCallsPerTool()</code> / <code>unlimitedTotalToolCalls()</code> to disable a cap entirely.</p>
+</div>
+<div class="sect3">
+<h4 id="_counting"><a class="anchor" href="#_counting"></a>Counting</h4>
+<div class="paragraph">
+<p>Counts are scoped to the current turn only: only <code>ToolResponseMessage</code> entries from the last <code>UserMessage</code> onward are tallied, so history replayed by a <code>ChatMemory</code> advisor outside the loop never inflates the count for a new turn. Nothing is cached on the manager itself — counts are recomputed from <code>prompt.getInstructions()</code> on every call, so a single <code>ToolCallingManager</code> instance stays safe to share across concurrent requests. This also means disabling `ToolCallingAdvisor’s internal conversation history (see <a href="#inside-the-loop">Inside the Loop</a>) has no effect on limit counting — it always sees the complete turn history regardless of what’s trimmed for the rest of the chain.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_behavior_when_a_limit_is_exceeded"><a class="anchor" href="#_behavior_when_a_limit_is_exceeded"></a>Behavior When a Limit Is Exceeded</h4>
+<div class="paragraph">
+<p><code>DefaultToolCallingManager</code> throws <code>ToolCallLimitExceededException</code>, carrying the tool name (<code>null</code> for a total-limit breach), the limit that was hit, and the partial <code>ToolExecutionResult</code> already executed in the current batch, so no completed work is discarded. <code>ToolCallingAdvisor</code> catches it and returns the breach as the final response - a single <code>Generation</code> (via <code>ex.buildGeneration()</code>), never one generation per tool call, so a successful call earlier in a parallel batch can’t hide the breach from callers reading only the first result. Its finish reason is <code>ToolCallLimitExceededException.FINISH_REASON</code>, and any tool calls that did succeed earlier in the batch are preserved under the <code>METADATA_PARTIAL_TOOL_RESPONSES</code> metadata key instead of being discarded.</p>
+</div>
+<div class="paragraph">
+<p>With <code>onLimitExceeded(ToolCallLimitBehavior.RETURN_ERROR_RESPONSE)</code>, the manager instead skips the call and synthesizes an error <code>ToolResponse</code> — the same mechanism used for <code>ToolExecutionException</code> — so the model is told the limit was reached and the conversation continues instead of terminating. This is also the option to reach for if you call <code>ToolCallingManager.executeToolCalls(…​)</code> directly instead of going through <code>ToolCallingAdvisor</code>.</p>
+</div>
+<div class="paragraph">
+<p>Configure via properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 30%;">
+<col style="width: 10%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.tools.limits.max-calls-per-tool-default</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Max calls to one tool per turn. <code>-1</code> disables.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>40</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.tools.limits.max-calls-per-tool.&lt;name&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Per-tool override; <code>-1</code> exempts that tool.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">—</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.tools.limits.excluded-tools</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tool names exempt from the per-tool limit.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">—</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.tools.limits.max-total-tool-calls</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Max tool calls across all tools per turn. <code>-1</code> disables.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>150</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.tools.limits.on-limit-exceeded</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>THROW</code> or <code>RETURN_ERROR_RESPONSE</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>THROW</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tool-resolution"><a class="anchor" href="#tool-resolution"></a>Tool Resolution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Most of the time, tools are passed explicitly via <code>.tools(…​)</code> and <code>.defaultTools(…​)</code>. For more dynamic scenarios — name-based resolution at runtime — Spring AI uses <code>ToolCallbackResolver</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface ToolCallbackResolver {
+
+    @Nullable
+    ToolCallback resolve(String toolName);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, <code>StaticToolCallbackResolver</code> is auto-configured with all <code>ToolCallback</code> beans in the application context, plus tools produced by <code>ToolCallbackProvider</code> beans (with the exception of MCP providers, which are excluded to avoid eager listing — see <a href="#consuming-mcp-server-tools">Consuming MCP Server Tools</a>).</p>
+</div>
+<div class="paragraph">
+<p>Replace the resolver with a custom bean if you need a different strategy (database-backed, classpath-scanned, remote):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+ToolCallbackResolver toolCallbackResolver(List&lt;ToolCallback&gt; toolCallbacks) {
+    return new StaticToolCallbackResolver(toolCallbacks);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The resolver is used internally by <code>ToolCallingManager</code> to support both <a href="#the-tool-calling-loop">advisor-controlled execution</a> and <a href="#user-controlled-tool-execution">user-controlled execution</a>.</p>
+</div>
+<div class="paragraph">
+<p>To enable the behavior — where a tool known to the resolver, but not attached to the request may be resolved by name and executed — enable the resolution fallback:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.tools.resolution.fallback.enabled=true</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 30%;">
+<col style="width: 10%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.tools.resolution.fallback.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code>, a requested tool that is absent from the request’s tool callbacks may be resolved by name through the <code>ToolCallbackResolver</code> and executed. If <code>false</code>, only the tools attached to the request can be executed.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When constructing a <code>ToolCallingManager</code> directly, the same switch is available on the builder via <code>.resolutionFallbackEnabled(true)</code> (default <code>false</code>).</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Enabling the resolution fallback makes every tool reachable through the resolver executable whenever the model names it, regardless of what a request attached — including risk-tier and destructive tools. Enable it only when you fully control which tools the resolver exposes.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="observability"><a class="anchor" href="#observability"></a>Observability</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring AI emits Micrometer observations for tool calls under the <code>spring.ai.tool</code> name. Each observation captures:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Tool name and definition metadata.</p>
+</li>
+<li>
+<p>Execution duration.</p>
+</li>
+<li>
+<p>Tracing context (when a <code>Tracer</code> is available).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>See <a href="../observability/index.html#_tool_calling" class="xref page">Tool Calling Observability</a> for the full attribute reference.</p>
+</div>
+<div class="paragraph">
+<p>Tool call arguments and results can optionally be exported as span attributes; this is disabled by default for sensitivity reasons. See <a href="../observability/index.html#_tool_call_arguments_and_result_data" class="xref page">Tool Call Arguments and Result Data</a> to enable it.</p>
+</div>
+<div class="sect2">
+<h3 id="logging"><a class="anchor" href="#logging"></a>Logging</h3>
+<div class="paragraph">
+<p>All main operations log at <code>DEBUG</code>. Enable with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging.level.org.springframework.ai=DEBUG</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="chatmodel-tool-calling"><a class="anchor" href="#chatmodel-tool-calling"></a>ChatModel Tool Calling</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For users who want to drive <code>ChatModel</code> directly — without <code>ChatClient</code> and without <code>ToolCallingAdvisor</code> — Spring AI supports a low-level tool calling path. This is the right choice when you need full control over the request/response cycle and don’t need the advisor chain’s composition features.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="tools/chatmodel-tool-calling.html" class="xref page">ChatModel Tool Calling</a> for the API, precedence rules between default and runtime tools, and worked examples.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The per-<code>ChatModel</code> internal tool execution loop of Spring AI 1.x has been removed. Calling <code>ChatModel</code> with tools sends the tool definitions to the model and returns the model’s response — tool calls in that response are <strong>not</strong> executed automatically. You drive the loop yourself, or use <code>ChatClient</code> (which auto-registers <code>ToolCallingAdvisor</code> for you).
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+</article>

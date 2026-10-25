@@ -1,0 +1,1171 @@
+<article class="doc">
+<h1 id="page-title" class="page">Chat Memory</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Large language models (LLMs) are stateless, meaning they do not retain information about previous interactions. This can be a limitation when you want to maintain context or state across multiple interactions. To address this, Spring AI provides chat memory features that allow you to store and retrieve information across multiple interactions with the LLM.</p>
+</div>
+<div class="paragraph">
+<p>The <code>ChatMemory</code> abstraction allows you to implement various types of memory to support different use cases. The underlying storage of the messages is handled by the <code>ChatMemoryRepository</code>, whose sole responsibility is to store and retrieve messages. It’s up to the <code>ChatMemory</code> implementation to decide which messages to keep and when to remove them. Examples of strategies could include keeping the last N messages, keeping messages for a certain time period, or keeping messages up to a certain token limit.</p>
+</div>
+<div class="paragraph">
+<p>Before choosing a memory type, it’s essential to understand the difference between chat memory and chat history.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Chat Memory</strong>. The information that a large-language model retains and uses to maintain contextual awareness throughout a conversation.</p>
+</li>
+<li>
+<p><strong>Chat History</strong>. The entire conversation history, including all messages exchanged between the user and the model.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>ChatMemory</code> abstraction is designed to manage the <em>chat memory</em>. It allows you to store and retrieve messages that are relevant to the current conversation context. However, it is not the best fit for storing the <em>chat history</em>. If you need to maintain a complete record of all the messages exchanged, you should consider using a different approach, such as relying on Spring Data for efficient storage and retrieval of the complete chat history.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_quick_start"><a class="anchor" href="#_quick_start"></a>Quick Start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring AI auto-configures a <code>ChatMemory</code> bean that you can use directly in your application. By default, it uses an in-memory repository to store messages (<code>InMemoryChatMemoryRepository</code>) and a <code>MessageWindowChatMemory</code> implementation to manage the conversation history. If a different repository is already configured (e.g., Cassandra, JDBC, or Neo4j), Spring AI will use that instead.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired
+ChatMemory chatMemory;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following sections will describe further the different memory types and repositories available in Spring AI.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_working_with_conversation_ids"><a class="anchor" href="#_working_with_conversation_ids"></a>Working with Conversation IDs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Every chat memory operation is keyed on a conversation ID.
+The <code>ChatMemory</code> and <code>ChatMemoryRepository</code> abstractions use this identifier to decide which conversation to read, append to, or delete, and it must always be provided explicitly.</p>
+</div>
+<div class="paragraph">
+<p>The conversation ID is the only thing that scopes a conversation.
+Messages are stored and retrieved for exactly the conversation ID that is supplied, so choosing how those IDs are assigned is what determines whether interactions are grouped together or kept apart.</p>
+</div>
+<div class="paragraph">
+<p>In a multi-user application, make the conversation ID unique per user (and per conversation, if a user can have more than one) so that each user’s messages stay in their own conversation.
+A common approach is to derive the ID on the server from the current user or session rather than using a fixed or shared value:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// Build the conversation ID from the current user/session so each
+// user's messages are kept in their own conversation.
+String conversationId = currentUser.getId() + ":" + httpSession.getId();
+
+chatClient.prompt()
+    .user(userInput)
+    .advisors(a -&gt; a.param(ChatMemory.CONVERSATION_ID, conversationId))
+    .call()
+    .content();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A few practices help keep conversations organized as an application grows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Assign a distinct conversation ID per user, and per conversation when a single user can hold several.</p>
+</li>
+<li>
+<p>Derive the conversation ID on the server from the user or session rather than reusing a fixed value across users.</p>
+</li>
+<li>
+<p>When listing or deleting conversations, operate on the conversation IDs that belong to the current user rather than across all conversation IDs.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_memory_types"><a class="anchor" href="#_memory_types"></a>Memory Types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>ChatMemory</code> abstraction allows you to implement various types of memory to suit different use cases. The choice of memory type can significantly impact the performance and behavior of your application. This section describes the built-in memory types provided by Spring AI and their characteristics.</p>
+</div>
+<div class="sect2">
+<h3 id="_message_window_chat_memory"><a class="anchor" href="#_message_window_chat_memory"></a>Message Window Chat Memory</h3>
+<div class="paragraph">
+<p><code>MessageWindowChatMemory</code> maintains a sliding window of messages up to a specified maximum size. When the number of messages exceeds the maximum, older messages are evicted while always preserving <code>SystemMessage</code> instances. The default window size is 20 messages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MessageWindowChatMemory memory = MessageWindowChatMemory.builder()
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is the default message type used by Spring AI to auto-configure a <code>ChatMemory</code> bean.</p>
+</div>
+<div class="sect3">
+<h4 id="_turn_boundary_eviction"><a class="anchor" href="#_turn_boundary_eviction"></a>Turn-boundary eviction</h4>
+<div class="paragraph">
+<p>When eviction is needed, <code>MessageWindowChatMemory</code> always removes whole turns rather than cutting mid-turn. A <em>turn</em> starts at a <code>UserMessage</code> and includes all subsequent assistant replies, tool calls, and tool responses up to the next <code>UserMessage</code>. If the raw eviction point lands on a non-user message (for example, an assistant reply in the middle of a tool-calling exchange), the cut is advanced forward to the next <code>UserMessage</code> so that the kept window always begins at a complete turn.</p>
+</div>
+<div class="paragraph">
+<p>This means <code>maxMessages</code> is an <em>upper bound</em> on the number of messages stored — the actual count may be somewhat lower when snapping is needed to find the next turn boundary.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If <code>maxMessages</code> is smaller than a single complete turn (for example, a multi-step tool-calling exchange that exceeds the window size), all non-system messages may be evicted until a new <code>UserMessage</code> is added. Size <code>maxMessages</code> generously enough to hold at least one representative turn for your use case.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_memory_storage"><a class="anchor" href="#_memory_storage"></a>Memory Storage</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring AI offers the <code>ChatMemoryRepository</code> abstraction for storing chat memory. This section describes the built-in repositories provided by Spring AI and how to use them, but you can also implement your own repository if needed.</p>
+</div>
+<div class="sect2">
+<h3 id="_in_memory_repository"><a class="anchor" href="#_in_memory_repository"></a>In-Memory Repository</h3>
+<div class="paragraph">
+<p><code>InMemoryChatMemoryRepository</code> stores messages in memory using a <code>ConcurrentHashMap</code>.</p>
+</div>
+<div class="paragraph">
+<p>By default, if no other repository is already configured, Spring AI auto-configures a <code>ChatMemoryRepository</code> bean of type <code>InMemoryChatMemoryRepository</code> that you can use directly in your application.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired
+ChatMemoryRepository chatMemoryRepository;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you’d rather create the <code>InMemoryChatMemoryRepository</code> manually, you can do so as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatMemoryRepository repository = new InMemoryChatMemoryRepository();</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jdbcchatmemoryrepository"><a class="anchor" href="#_jdbcchatmemoryrepository"></a>JdbcChatMemoryRepository</h3>
+<div class="paragraph">
+<p><code>JdbcChatMemoryRepository</code> is a built-in implementation that uses JDBC to store messages in a relational database. It supports multiple databases out-of-the-box and is suitable for applications that require persistent storage of chat memory.</p>
+</div>
+<div class="paragraph">
+<p>Messages are retrieved in ascending order (oldest-to-newest), which is the expected format for LLM conversation history. Ordering is maintained by a <code>sequence_id</code> column that records each message’s position within its conversation. Each message also stores a creation <code>timestamp</code>, exposed in the message metadata under the <code>JdbcChatMemoryRepository.CONVERSATION_TS</code> key as a <code>java.time.Instant</code>, so applications can display when a message was created.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong><code>JdbcChatMemoryRepository</code> does not support tool call messages.</strong>
+<code>AssistantMessage</code> instances containing tool calls and <code>ToolResponseMessage</code> instances are silently filtered out on save and will not appear in the retrieved conversation history.
+If your application uses tool calling, consider the <a href="https://spring-ai-community.github.io/spring-ai-session/latest/">Spring AI Session</a> project and the <a href="https://spring-ai-community.github.io/spring-ai-session/latest/session-jdbc/">JDBC session store</a>, which properly persist all message types.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>First, add the following dependency to your project:</p>
+</div>
+<div id="_tabs_1" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_1_maven" class="tab">
+<p>Maven</p>
+</li>
+<li id="_tabs_1_gradle" class="tab">
+<p>Gradle</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_1_maven--panel" class="tabpanel" aria-labelledby="_tabs_1_maven">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-starter-model-chat-memory-repository-jdbc&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_gradle--panel" class="tabpanel" aria-labelledby="_tabs_1_gradle">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-jdbc'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring AI provides auto-configuration for the <code>JdbcChatMemoryRepository</code>, that you can use directly in your application.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired
+JdbcChatMemoryRepository chatMemoryRepository;
+
+ChatMemory chatMemory = MessageWindowChatMemory.builder()
+    .chatMemoryRepository(chatMemoryRepository)
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you’d rather create the <code>JdbcChatMemoryRepository</code> manually, you can do so by providing a <code>JdbcTemplate</code> instance and a <code>JdbcChatMemoryRepositoryDialect</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatMemoryRepository chatMemoryRepository = JdbcChatMemoryRepository.builder()
+    .jdbcTemplate(jdbcTemplate)
+    .dialect(new PostgresChatMemoryRepositoryDialect())
+    .build();
+
+ChatMemory chatMemory = MessageWindowChatMemory.builder()
+    .chatMemoryRepository(chatMemoryRepository)
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reading_message_timestamps"><a class="anchor" href="#_reading_message_timestamps"></a>Reading Message Timestamps</h4>
+<div class="paragraph">
+<p>Each stored message records when it was created. The timestamp is available in the message metadata under the <code>JdbcChatMemoryRepository.CONVERSATION_TS</code> key as a <code>java.time.Instant</code>, which is useful for displaying message times in a UI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">List&lt;Message&gt; messages = chatMemory.get(conversationId);
+for (Message message : messages) {
+    Instant createdAt = (Instant) message.getMetadata().get(JdbcChatMemoryRepository.CONVERSATION_TS);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The timestamp is preserved when a conversation is saved again, so a message keeps its original creation time for the lifetime of the conversation.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_supported_databases_and_dialect_abstraction"><a class="anchor" href="#_supported_databases_and_dialect_abstraction"></a>Supported Databases and Dialect Abstraction</h4>
+<div class="paragraph">
+<p>Spring AI supports multiple relational databases via a dialect abstraction. The following databases are supported out-of-the-box:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PostgreSQL</p>
+</li>
+<li>
+<p>MySQL / MariaDB</p>
+</li>
+<li>
+<p>SQL Server</p>
+</li>
+<li>
+<p>HSQLDB</p>
+</li>
+<li>
+<p>Oracle Database</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The correct dialect can be auto-detected from the JDBC URL when using <code>JdbcChatMemoryRepositoryDialect.from(DataSource)</code>. You can extend support for other databases by implementing the <code>JdbcChatMemoryRepositoryDialect</code> interface.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configuration_properties"><a class="anchor" href="#_configuration_properties"></a>Configuration Properties</h4>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 62.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.jdbc.initialize-schema</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controls when to initialize the schema. Values: <code>embedded</code> (default), <code>always</code>, <code>never</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>embedded</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.jdbc.schema</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location of the schema script to use for initialization. Supports <code>classpath:</code> URLs and platform placeholders.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>classpath:org/springframework/ai/chat/memory/repository/jdbc/schema-@@platform@@.sql</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.jdbc.platform</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Platform to use in initialization scripts if the @@platform@@ placeholder is used.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>auto-detected</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_schema_initialization"><a class="anchor" href="#_schema_initialization"></a>Schema Initialization</h4>
+<div class="paragraph">
+<p>The auto-configuration will automatically create the <code>SPRING_AI_CHAT_MEMORY</code> table on startup, using a vendor-specific SQL script for your database. By default, schema initialization runs only for embedded databases (H2, HSQL, Derby, etc.).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As of 2.0.0, the schema adds a <code>sequence_id</code> column that determines message ordering, alongside the existing <code>timestamp</code> column (now exposed via message metadata). Upgrading an existing application requires adding the new column; see <a href="../upgrade-notes.html" class="xref page">Upgrade Notes</a> for the migration steps.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>You can control schema initialization using the <code>spring.ai.chat.memory.repository.jdbc.initialize-schema</code> property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.chat.memory.repository.jdbc.initialize-schema=embedded # Only for embedded DBs (default)
+spring.ai.chat.memory.repository.jdbc.initialize-schema=always   # Always initialize
+spring.ai.chat.memory.repository.jdbc.initialize-schema=never    # Never initialize (useful with Flyway/Liquibase)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To override the schema script location, use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.chat.memory.repository.jdbc.schema=classpath:/custom/path/schema-mysql.sql</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_extending_dialects"><a class="anchor" href="#_extending_dialects"></a>Extending Dialects</h4>
+<div class="paragraph">
+<p>To add support for a new database, implement the <code>JdbcChatMemoryRepositoryDialect</code> interface and provide SQL for selecting, inserting, and deleting messages. You can then pass your custom dialect to the repository builder.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatMemoryRepository chatMemoryRepository = JdbcChatMemoryRepository.builder()
+    .jdbcTemplate(jdbcTemplate)
+    .dialect(new MyCustomDbDialect())
+    .build();</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cassandrachatmemoryrepository"><a class="anchor" href="#_cassandrachatmemoryrepository"></a>CassandraChatMemoryRepository</h3>
+<div class="paragraph">
+<p><code>CassandraChatMemoryRepository</code> uses Apache Cassandra to store messages.  It is suitable for applications that require persistent storage of chat memory, especially for availability, durability, scale, and when taking advantage of time-to-live (TTL) feature.</p>
+</div>
+<div class="paragraph">
+<p><code>CassandraChatMemoryRepository</code> has a time-series schema, keeping record of all past chat windows, valuable for governance and auditing.  Setting time-to-live to some value, for example three years, is recommended.</p>
+</div>
+<div class="paragraph">
+<p>Messages are retrieved in ascending timestamp order (oldest-to-newest), which is the expected format for LLM conversation history.</p>
+</div>
+<div class="paragraph">
+<p>To use <code>CassandraChatMemoryRepository</code> first, add the dependency to your project:</p>
+</div>
+<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_2_maven" class="tab">
+<p>Maven</p>
+</li>
+<li id="_tabs_2_gradle" class="tab">
+<p>Gradle</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_2_maven--panel" class="tabpanel" aria-labelledby="_tabs_2_maven">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-starter-model-chat-memory-repository-cassandra&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_2_gradle--panel" class="tabpanel" aria-labelledby="_tabs_2_gradle">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-cassandra'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring AI provides auto-configuration for the <code>CassandraChatMemoryRepository</code> that you can use directly in your application.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired
+CassandraChatMemoryRepository chatMemoryRepository;
+
+ChatMemory chatMemory = MessageWindowChatMemory.builder()
+    .chatMemoryRepository(chatMemoryRepository)
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you’d rather create the <code>CassandraChatMemoryRepository</code> manually, you can do so by providing a <code>CassandraChatMemoryRepositoryConfig</code> instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatMemoryRepository chatMemoryRepository = CassandraChatMemoryRepository
+    .create(CassandraChatMemoryRepositoryConfig.builder().withCqlSession(cqlSession));
+
+ChatMemory chatMemory = MessageWindowChatMemory.builder()
+    .chatMemoryRepository(chatMemoryRepository)
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configuration_properties_2"><a class="anchor" href="#_configuration_properties_2"></a>Configuration Properties</h4>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 62.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cassandra.contactPoints</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Host(s) to initiate cluster discovery</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>127.0.0.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cassandra.port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cassandra native protocol port to connect to</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>9042</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cassandra.localDatacenter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cassandra datacenter to connect to</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>datacenter1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.cassandra.time-to-live</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time to live (TTL) for messages written in Cassandra</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.cassandra.keyspace</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cassandra keyspace</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>springframework</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.cassandra.messages-column</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cassandra column name for messages</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>springframework</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.cassandra.table</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cassandra table</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ai_chat_memory</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.cassandra.initialize-schema</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to initialize the schema on startup.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_schema_initialization_2"><a class="anchor" href="#_schema_initialization_2"></a>Schema Initialization</h4>
+<div class="paragraph">
+<p>The auto-configuration will automatically create the <code>ai_chat_memory</code> table.</p>
+</div>
+<div class="paragraph">
+<p>You can disable the schema initialization by setting the property <code>spring.ai.chat.memory.repository.cassandra.initialize-schema</code> to <code>false</code>.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong><code>CassandraChatMemoryRepository</code> does not support tool call messages.</strong>
+<code>AssistantMessage</code> instances containing tool calls and <code>ToolResponseMessage</code> instances are silently filtered out on save and will not appear in the retrieved conversation history.
+If your application uses tool calling, consider the <a href="https://spring-ai-community.github.io/spring-ai-session/latest/">Spring AI Session</a> project and the <a href="https://spring-ai-community.github.io/spring-ai-session/latest/session-jdbc/">JDBC session store</a>, which properly persist all message types.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_neo4j_chatmemoryrepository"><a class="anchor" href="#_neo4j_chatmemoryrepository"></a>Neo4j ChatMemoryRepository</h3>
+<div class="paragraph">
+<p><code>Neo4jChatMemoryRepository</code> is a built-in implementation that uses Neo4j to store chat messages as nodes and relationships in a property graph database. It is suitable for applications that want to leverage Neo4j’s graph capabilities for chat memory persistence.</p>
+</div>
+<div class="paragraph">
+<p>Messages are retrieved in ascending message index order (oldest-to-newest), which is the expected format for LLM conversation history.</p>
+</div>
+<div class="paragraph">
+<p>First, add the following dependency to your project:</p>
+</div>
+<div id="_tabs_3" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_3_maven" class="tab">
+<p>Maven</p>
+</li>
+<li id="_tabs_3_gradle" class="tab">
+<p>Gradle</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_3_maven--panel" class="tabpanel" aria-labelledby="_tabs_3_maven">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-starter-model-chat-memory-repository-neo4j&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_3_gradle--panel" class="tabpanel" aria-labelledby="_tabs_3_gradle">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-neo4j'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring AI provides auto-configuration for the <code>Neo4jChatMemoryRepository</code>, which you can use directly in your application.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired
+Neo4jChatMemoryRepository chatMemoryRepository;
+
+ChatMemory chatMemory = MessageWindowChatMemory.builder()
+    .chatMemoryRepository(chatMemoryRepository)
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you’d rather create the <code>Neo4jChatMemoryRepository</code> manually, you can do so by providing a Neo4j <code>Driver</code> instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatMemoryRepository chatMemoryRepository = Neo4jChatMemoryRepository.builder()
+    .driver(driver)
+    .build();
+
+ChatMemory chatMemory = MessageWindowChatMemory.builder()
+    .chatMemoryRepository(chatMemoryRepository)
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configuration_properties_3"><a class="anchor" href="#_configuration_properties_3"></a>Configuration Properties</h4>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 62.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.neo4j.session-label</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The label for the nodes that store conversation sessions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Session</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.neo4j.message-label</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The label for the nodes that store messages</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Message</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.neo4j.tool-call-label</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The label for nodes that store tool calls (e.g. in Assistant Messages)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ToolCall</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.neo4j.metadata-label</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The label for nodes that store message metadata</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Metadata</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.neo4j.tool-response-label</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The label for the nodes that store tool responses</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ToolResponse</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.neo4j.media-label</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The label for the nodes that store media associated with a message</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Media</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Label values must be valid Neo4j identifiers: they must start with a letter or underscore and contain only letters, digits, or underscores.
+Supplying a value that does not meet these requirements will cause an <code>IllegalArgumentException</code> to be thrown at application startup.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_index_initialization"><a class="anchor" href="#_index_initialization"></a>Index Initialization</h4>
+<div class="paragraph">
+<p>The Neo4j repository will automatically ensure that indexes are created for conversation IDs and message indices to optimize performance. If you use custom labels, indexes will be created for those labels as well. No schema initialization is required, but you should ensure your Neo4j instance is accessible to your application.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cosmosdbchatmemoryrepository"><a class="anchor" href="#_cosmosdbchatmemoryrepository"></a>CosmosDBChatMemoryRepository</h3>
+<div class="paragraph">
+<p><code>CosmosDBChatMemoryRepository</code> chat memory repository support is available as an external module maintained by the Azure Cosmos DB team. See the <a href="https://azurecosmosdb.github.io/spring-ai/docs/chat-memory.html">related documentation</a> for more information.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mongochatmemoryrepository"><a class="anchor" href="#_mongochatmemoryrepository"></a>MongoChatMemoryRepository</h3>
+<div class="paragraph">
+<p><code>MongoChatMemoryRepository</code> is a built-in implementation that uses MongoDB to store messages. It is suitable for applications that require a flexible, document-oriented database for chat memory persistence.</p>
+</div>
+<div class="paragraph">
+<p>Messages are retrieved in ascending timestamp order (oldest-to-newest), which is the expected format for LLM conversation history. This ordering is consistent across all chat memory repository implementations.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong><code>MongoChatMemoryRepository</code> does not support tool call messages.</strong>
+<code>AssistantMessage</code> instances containing tool calls and <code>ToolResponseMessage</code> instances are silently filtered out on save and will not appear in the retrieved conversation history.
+If your application uses tool calling, consider the <a href="https://spring-ai-community.github.io/spring-ai-session/latest/">Spring AI Session</a> project and the <a href="https://spring-ai-community.github.io/spring-ai-session/latest/session-jdbc/">JDBC session store</a>, which properly persist all message types.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>First, add the following dependency to your project:</p>
+</div>
+<div id="_tabs_4" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_4_maven" class="tab">
+<p>Maven</p>
+</li>
+<li id="_tabs_4_gradle" class="tab">
+<p>Gradle</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_4_maven--panel" class="tabpanel" aria-labelledby="_tabs_4_maven">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-starter-model-chat-memory-repository-mongodb&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_4_gradle--panel" class="tabpanel" aria-labelledby="_tabs_4_gradle">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-mongodb'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring AI provides auto-configuration for the <code>MongoChatMemoryRepository</code>, which you can use directly in your application.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired
+MongoChatMemoryRepository chatMemoryRepository;
+
+ChatMemory chatMemory = MessageWindowChatMemory.builder()
+    .chatMemoryRepository(chatMemoryRepository)
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you’d rather create the <code>MongoChatMemoryRepository</code> manually, you can do so by providing a <code>MongoTemplate</code> instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatMemoryRepository chatMemoryRepository = MongoChatMemoryRepository.builder()
+    .mongoTemplate(mongoTemplate)
+    .build();
+
+ChatMemory chatMemory = MessageWindowChatMemory.builder()
+    .chatMemoryRepository(chatMemoryRepository)
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configuration_properties_4"><a class="anchor" href="#_configuration_properties_4"></a>Configuration Properties</h4>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 62.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.mongo.create-indices</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should indices be created or recreated automatically on startup. Note: Changing the
+* TTL value will drop the TTL index and recreate it</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.mongo.ttl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time to live (TTL) for messages written in MongoDB, in seconds. If not set, messages will be stored indefinitely.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_collection_initialization"><a class="anchor" href="#_collection_initialization"></a>Collection Initialization</h4>
+<div class="paragraph">
+<p>The auto-configuration will automatically create the <code>ai_chat_memory</code> collection on startup if it does not already exist.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_redischatmemoryrepository"><a class="anchor" href="#_redischatmemoryrepository"></a>RedisChatMemoryRepository</h3>
+<div class="paragraph">
+<p><code>RedisChatMemoryRepository</code> is a built-in implementation that uses Redis Stack (with Redis Query Engine and RedisJSON) to store chat messages.
+It is suitable for applications that require high-performance, low-latency chat memory persistence with optional TTL (time-to-live) support and advanced querying capabilities.</p>
+</div>
+<div class="paragraph">
+<p>The repository stores messages as JSON documents and creates a search index for efficient querying.
+It also provides extended query capabilities through the <code>AdvancedRedisChatMemoryRepository</code> interface for searching messages by content, type, time range, and metadata.</p>
+</div>
+<div class="paragraph">
+<p>Messages are retrieved in ascending timestamp order (oldest-to-newest), which is the expected format for LLM conversation history.</p>
+</div>
+<div class="paragraph">
+<p>First, add the following dependency to your project:</p>
+</div>
+<div id="_tabs_5" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_5_maven" class="tab">
+<p>Maven</p>
+</li>
+<li id="_tabs_5_gradle" class="tab">
+<p>Gradle</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_5_maven--panel" class="tabpanel" aria-labelledby="_tabs_5_maven">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-starter-model-chat-memory-repository-redis&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_5_gradle--panel" class="tabpanel" aria-labelledby="_tabs_5_gradle">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-redis'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring AI provides auto-configuration for the <code>RedisChatMemoryRepository</code>, which you can use directly in your application.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired
+RedisChatMemoryRepository chatMemoryRepository;
+
+ChatMemory chatMemory = MessageWindowChatMemory.builder()
+    .chatMemoryRepository(chatMemoryRepository)
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you’d rather create the <code>RedisChatMemoryRepository</code> manually, you can do so by providing a <code>RedisClient</code> client:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">RedisClient jedisClient = RedisClient.builder().hostAndPort("localhost", 6379).build();
+
+ChatMemoryRepository chatMemoryRepository = RedisChatMemoryRepository.builder()
+    .jedisClient(jedisClient)
+    .indexName("my-chat-index")
+    .keyPrefix("my-chat:")
+    .timeToLive(Duration.ofHours(24))
+    .build();
+
+ChatMemory chatMemory = MessageWindowChatMemory.builder()
+    .chatMemoryRepository(chatMemoryRepository)
+    .maxMessages(10)
+    .build();</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configuration_properties_5"><a class="anchor" href="#_configuration_properties_5"></a>Configuration Properties</h4>
+<table class="tableblock frame-all grid-all stripes-even stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 62.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.redis.host</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Redis server host</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>localhost</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.redis.port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Redis server port</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>6379</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.redis.username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Redis ACL username</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>none</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.redis.password</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Redis server password</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>none</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.redis.index-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the Redis search index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chat-memory-idx</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.redis.key-prefix</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key prefix for chat memory entries</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chat-memory:</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.redis.time-to-live</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time to live for chat memory entries (e.g., <code>24h</code>, <code>30d</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>no expiration</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.redis.initialize-schema</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to initialize the Redis schema on startup</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.redis.max-conversation-ids</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of conversation IDs to return</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1000</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.memory.repository.redis.max-messages-per-conversation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of messages to return per conversation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1000</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_advanced_querying"><a class="anchor" href="#_advanced_querying"></a>Advanced Querying</h4>
+<div class="paragraph">
+<p>The <code>RedisChatMemoryRepository</code> also implements <code>AdvancedRedisChatMemoryRepository</code>, which provides extended query capabilities:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// Cast to access advanced features
+AdvancedRedisChatMemoryRepository advancedRepo = (AdvancedRedisChatMemoryRepository) chatMemoryRepository;
+
+// Find messages by type across all conversations
+List&lt;MessageWithConversation&gt; userMessages = advancedRepo.findByType(MessageType.USER, 100);
+
+// Find messages containing specific content
+List&lt;MessageWithConversation&gt; results = advancedRepo.findByContent("Spring AI", 50);
+
+// Find messages within a time range
+List&lt;MessageWithConversation&gt; recentMessages = advancedRepo.findByTimeRange(
+    conversationId,
+    Instant.now().minus(Duration.ofHours(1)),
+    Instant.now(),
+    100
+);
+
+// Find messages by metadata
+List&lt;MessageWithConversation&gt; priorityMessages = advancedRepo.findByMetadata("priority", "high", 50);
+
+// Execute custom Redis queries
+List&lt;MessageWithConversation&gt; customResults = advancedRepo.executeQuery("@type:USER @content:Redis", 100);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_metadata_field_indexing"><a class="anchor" href="#_metadata_field_indexing"></a>Metadata Field Indexing</h4>
+<div class="paragraph">
+<p>To enable efficient querying on custom metadata fields, you can configure metadata field definitions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.chat.memory.repository.redis.metadata-fields[0].name=priority
+spring.ai.chat.memory.repository.redis.metadata-fields[0].type=tag
+spring.ai.chat.memory.repository.redis.metadata-fields[1].name=score
+spring.ai.chat.memory.repository.redis.metadata-fields[1].type=numeric
+spring.ai.chat.memory.repository.redis.metadata-fields[2].name=category
+spring.ai.chat.memory.repository.redis.metadata-fields[2].type=tag</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Supported field types are: <code>tag</code> (for exact match filtering), <code>text</code> (for full-text search), and <code>numeric</code> (for range queries).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_schema_initialization_3"><a class="anchor" href="#_schema_initialization_3"></a>Schema Initialization</h4>
+<div class="paragraph">
+<p>The auto-configuration will automatically create the Redis search index on startup if it does not already exist.
+You can disable this behavior by setting <code>spring.ai.chat.memory.repository.redis.initialize-schema=false</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_requirements"><a class="anchor" href="#_requirements"></a>Requirements</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Redis Stack 7.0 or higher (includes Redis Query Engine and RedisJSON modules)</p>
+</li>
+<li>
+<p>Jedis client library (included as a dependency)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_memory_in_chat_client"><a class="anchor" href="#_memory_in_chat_client"></a>Memory in Chat Client</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When using the ChatClient API, you can provide a <code>ChatMemory</code> implementation to maintain conversation context across multiple interactions.</p>
+</div>
+<div class="paragraph">
+<p>Spring AI provides a few built-in Advisors that you can use to configure the memory behavior of the <code>ChatClient</code>, based on your needs.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Currently, the intermediate messages exchanged with a large-language model when performing tool calls are not stored in the memory. This is a limitation of the current implementation and will be addressed in future releases. If you need to store these messages, refer to the instructions for the <a href="tools.html#user-controlled-tool-execution" class="xref page">User Controlled Tool Execution</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>MessageChatMemoryAdvisor</code>. This advisor manages the conversation memory using the provided <code>ChatMemory</code> implementation. On each interaction, it retrieves the conversation history from the memory and includes it in the prompt as a collection of messages.</p>
+</li>
+<li>
+<p><code>VectorStoreChatMemoryAdvisor</code>. This advisor manages the conversation memory using the provided <code>VectorStore</code> implementation. On each interaction, it retrieves the conversation history from the vector store and appends it to the system message as plain text.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For example, if you want to use <code>MessageWindowChatMemory</code> with the <code>MessageChatMemoryAdvisor</code>, you can configure it as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatMemory chatMemory = MessageWindowChatMemory.builder().build();
+
+ChatClient chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
+    .build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When performing a call to the <code>ChatClient</code>, the memory will be automatically managed by the <code>MessageChatMemoryAdvisor</code>. The conversation history will be retrieved from the memory based on the specified conversation ID.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The <code>ChatMemory.CONVERSATION_ID</code> parameter is <strong>required</strong> for all memory advisors. Calls that omit this parameter will throw an <code>IllegalArgumentException</code> at runtime. There is no default conversation ID.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">String conversationId = "007";
+
+chatClient.prompt()
+    .user("Do I have license to code?")
+    .advisors(a -&gt; a.param(ChatMemory.CONVERSATION_ID, conversationId))
+    .call()
+    .content();</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_vectorstorechatmemoryadvisor"><a class="anchor" href="#_vectorstorechatmemoryadvisor"></a>VectorStoreChatMemoryAdvisor</h3>
+<div class="sect3">
+<h4 id="_custom_template"><a class="anchor" href="#_custom_template"></a>Custom Template</h4>
+<div class="paragraph">
+<p>The <code>VectorStoreChatMemoryAdvisor</code> uses a default template to augment the system message with the retrieved conversation memory. You can customize this behavior by providing your own <code>PromptTemplate</code> object via the <code>.promptTemplate()</code> builder method.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>PromptTemplate</code> provided here customizes how the advisor merges retrieved memory with the system message. This is distinct from configuring a <code>TemplateRenderer</code> on the <code>ChatClient</code> itself (using <code>.templateRenderer()</code>), which affects the rendering of the initial user/system prompt content <strong>before</strong> the advisor runs. See <a href="chatclient.html#_prompt_templates" class="xref page">ChatClient Prompt Templates</a> for more details on client-level template rendering.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>The custom <code>PromptTemplate</code> can use any <code>TemplateRenderer</code> implementation (by default, it uses <code>StPromptTemplate</code> based on the <a href="https://www.stringtemplate.org/">StringTemplate</a> engine). The important requirement is that the template must contain the following two placeholders:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>an <code>instructions</code> placeholder to receive the original system message.</p>
+</li>
+<li>
+<p>a <code>long_term_memory</code> placeholder to receive the retrieved conversation memory.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_memory_in_chat_model"><a class="anchor" href="#_memory_in_chat_model"></a>Memory in Chat Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you’re working directly with a <code>ChatModel</code> instead of a <code>ChatClient</code>, you can manage the memory explicitly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// Create a memory instance
+ChatMemory chatMemory = MessageWindowChatMemory.builder().build();
+String conversationId = "007";
+
+// First interaction
+UserMessage userMessage1 = new UserMessage("My name is James Bond");
+chatMemory.add(conversationId, userMessage1);
+ChatResponse response1 = chatModel.call(new Prompt(chatMemory.get(conversationId)));
+chatMemory.add(conversationId, response1.getResult().getOutput());
+
+// Second interaction
+UserMessage userMessage2 = new UserMessage("What is my name?");
+chatMemory.add(conversationId, userMessage2);
+ChatResponse response2 = chatModel.call(new Prompt(chatMemory.get(conversationId)));
+chatMemory.add(conversationId, response2.getResult().getOutput());
+
+// The response will contain "James Bond"</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+</article>

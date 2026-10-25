@@ -1,0 +1,144 @@
+{
+  "sourceVersion": "2.0.2",
+  "sourceCodeBlocks": 17,
+  "targetCodeBlocks": 17,
+  "method": "静态比较：去除注释与空白，保留代码字符串和 API；变更块逐项审校。未编译运行。",
+  "checks": [
+    {
+      "block": 1,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "xml",
+      "targetLanguage": "xml"
+    },
+    {
+      "block": 2,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "gradle",
+      "targetLanguage": "groovy"
+    },
+    {
+      "block": 3,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "xml",
+      "targetLanguage": "xml"
+    },
+    {
+      "block": 4,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "gradle",
+      "targetLanguage": "groovy"
+    },
+    {
+      "block": 5,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 6,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 7,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 8,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 9,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 10,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 11,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "xml",
+      "targetLanguage": "xml"
+    },
+    {
+      "block": 12,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 13,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 14,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "properties",
+      "targetLanguage": "properties"
+    },
+    {
+      "block": 15,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "properties",
+      "targetLanguage": "properties"
+    },
+    {
+      "block": 16,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "properties",
+      "targetLanguage": "properties"
+    },
+    {
+      "block": 17,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "properties",
+      "targetLanguage": "properties"
+    }
+  ]
+}

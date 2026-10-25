@@ -1,0 +1,62 @@
+[
+  {
+    "language": "java",
+    "text": "public class Prompt implements ModelRequest<List<Message>> {\n\n    private final List<Message> messages;\n\n    private ChatOptions chatOptions;\n}"
+  },
+  {
+    "language": "java",
+    "text": "public interface Content {\n\n\tString getContent();\n\n\tMap<String, Object> getMetadata();\n}\n\npublic interface Message extends Content {\n\n\tMessageType getMessageType();\n}"
+  },
+  {
+    "language": "java",
+    "text": "public interface MediaContent extends Content {\n\n\tCollection<Media> getMedia();\n\n}"
+  },
+  {
+    "language": "java",
+    "text": "public enum MessageType {\n\n\tUSER(\"user\"),\n\n\tASSISTANT(\"assistant\"),\n\n\tSYSTEM(\"system\"),\n\n\tTOOL(\"tool\");\n\n    ...\n}"
+  },
+  {
+    "language": "java",
+    "text": "public class PromptTemplate implements PromptTemplateActions, PromptTemplateMessageActions {\n\n    // Other methods to be discussed later\n}"
+  },
+  {
+    "language": "java",
+    "text": "public interface TemplateRenderer extends BiFunction<String, Map<String, Object>, String> {\n\n\t@Override\n\tString apply(String template, Map<String, Object> variables);\n\n}"
+  },
+  {
+    "language": "java",
+    "text": "PromptTemplate promptTemplate = PromptTemplate.builder()\n    .renderer(StTemplateRenderer.builder().startDelimiterToken('<').endDelimiterToken('>').build())\n    .template(\"\"\"\n            Tell me the names of 5 movies whose soundtrack was composed by <composer>.\n            \"\"\")\n    .build();\n\nString prompt = promptTemplate.render(Map.of(\"composer\", \"John Williams\"));"
+  },
+  {
+    "language": "java",
+    "text": "public interface PromptTemplateStringActions {\n\n\tString render();\n\n\tString render(Map<String, Object> model);\n\n}"
+  },
+  {
+    "language": "java",
+    "text": "public interface PromptTemplateMessageActions {\n\n\tMessage createMessage();\n\n    Message createMessage(List<Media> mediaList);\n\n\tMessage createMessage(Map<String, Object> model);\n\n}"
+  },
+  {
+    "language": "java",
+    "text": "public interface PromptTemplateActions extends PromptTemplateStringActions {\n\n\tPrompt create();\n\n\tPrompt create(ChatOptions modelOptions);\n\n\tPrompt create(Map<String, Object> model);\n\n\tPrompt create(Map<String, Object> model, ChatOptions modelOptions);\n\n}"
+  },
+  {
+    "language": "java",
+    "text": "PromptTemplate promptTemplate = new PromptTemplate(\"Tell me a {adjective} joke about {topic}\");\n\nPrompt prompt = promptTemplate.create(Map.of(\"adjective\", adjective, \"topic\", topic));\n\nreturn chatModel.call(prompt).getResult();"
+  },
+  {
+    "language": "java",
+    "text": "String userText = \"\"\"\n    Tell me about three famous pirates from the Golden Age of Piracy and why they did.\n    Write at least a sentence for each pirate.\n    \"\"\";\n\nMessage userMessage = new UserMessage(userText);\n\nString systemText = \"\"\"\n  You are a helpful AI assistant that helps people find information.\n  Your name is {name}\n  You should reply to the user's request with your name and also in the style of a {voice}.\n  \"\"\";\n\nSystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(systemText);\nMessage systemMessage = systemPromptTemplate.createMessage(Map.of(\"name\", name, \"voice\", voice));\n\nPrompt prompt = new Prompt(List.of(userMessage, systemMessage));\n\nList<Generation> response = chatModel.call(prompt).getResults();"
+  },
+  {
+    "language": "java",
+    "text": "PromptTemplate promptTemplate = PromptTemplate.builder()\n    .renderer(StTemplateRenderer.builder().startDelimiterToken('<').endDelimiterToken('>').build())\n    .template(\"\"\"\n            Tell me the names of 5 movies whose soundtrack was composed by <composer>.\n            \"\"\")\n    .build();\n\nString prompt = promptTemplate.render(Map.of(\"composer\", \"John Williams\"));"
+  },
+  {
+    "language": "java",
+    "text": "@Value(\"classpath:/prompts/system-message.st\")\nprivate Resource systemResource;"
+  },
+  {
+    "language": "java",
+    "text": "SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(systemResource);"
+  }
+]

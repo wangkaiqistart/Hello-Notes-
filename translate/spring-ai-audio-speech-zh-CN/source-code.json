@@ -1,0 +1,50 @@
+[
+  {
+    "language": "java",
+    "code": "public interface TextToSpeechModel extends Model<TextToSpeechPrompt, TextToSpeechResponse>, StreamingTextToSpeechModel {\n\n    /**\n     * Converts text to speech with default options.\n     */\n    default byte[] call(String text) {\n        // Default implementation\n    }\n\n    /**\n     * Converts text to speech with custom options.\n     */\n    TextToSpeechResponse call(TextToSpeechPrompt prompt);\n\n    /**\n     * Returns the default options for this model.\n     */\n    default TextToSpeechOptions getOptions() {\n        // Default implementation\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@FunctionalInterface\npublic interface StreamingTextToSpeechModel extends StreamingModel<TextToSpeechPrompt, TextToSpeechResponse> {\n\n    /**\n     * Streams text-to-speech responses with metadata.\n     */\n    Flux<TextToSpeechResponse> stream(TextToSpeechPrompt prompt);\n\n    /**\n     * Streams audio bytes for the given text.\n     */\n    default Flux<byte[]> stream(String text) {\n        // Default implementation\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "TextToSpeechPrompt prompt = new TextToSpeechPrompt(\n    \"Hello, this is a text-to-speech example.\",\n    options\n);"
+  },
+  {
+    "language": "java",
+    "code": "TextToSpeechResponse response = model.call(prompt);\nbyte[] audioBytes = response.getResult().getOutput();\nTextToSpeechResponseMetadata metadata = response.getMetadata();"
+  },
+  {
+    "language": "java",
+    "code": "@Service\npublic class NarrationService {\n\n    private final TextToSpeechModel textToSpeechModel;\n\n    public NarrationService(TextToSpeechModel textToSpeechModel) {\n        this.textToSpeechModel = textToSpeechModel;\n    }\n\n    public byte[] narrate(String text) {\n        // Works with any TTS provider\n        return textToSpeechModel.call(text);\n    }\n\n    public byte[] narrateWithOptions(String text, TextToSpeechOptions options) {\n        TextToSpeechPrompt prompt = new TextToSpeechPrompt(text, options);\n        TextToSpeechResponse response = textToSpeechModel.call(prompt);\n        return response.getResult().getOutput();\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Service\npublic class MultiProviderNarrationService {\n\n    private final Map<String, TextToSpeechModel> providers;\n\n    public MultiProviderNarrationService(List<TextToSpeechModel> models) {\n        // Spring will inject all available TextToSpeechModel beans\n        this.providers = models.stream()\n            .collect(Collectors.toMap(\n                model -> model.getClass().getSimpleName(),\n                model -> model\n            ));\n    }\n\n    public byte[] narrateWithProvider(String text, String providerName) {\n        TextToSpeechModel model = providers.get(providerName);\n        if (model == null) {\n            throw new IllegalArgumentException(\"Unknown provider: \" + providerName);\n        }\n        return model.call(text);\n    }\n\n    public Set<String> getAvailableProviders() {\n        return providers.keySet();\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Service\npublic class StreamingNarrationService {\n\n    private final TextToSpeechModel textToSpeechModel;\n\n    public StreamingNarrationService(TextToSpeechModel textToSpeechModel) {\n        this.textToSpeechModel = textToSpeechModel;\n    }\n\n    public Flux<byte[]> streamNarration(String text) {\n        // TextToSpeechModel extends StreamingTextToSpeechModel\n        return textToSpeechModel.stream(text);\n    }\n\n    public Flux<TextToSpeechResponse> streamWithMetadata(String text, TextToSpeechOptions options) {\n        TextToSpeechPrompt prompt = new TextToSpeechPrompt(text, options);\n        return textToSpeechModel.stream(prompt);\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@RestController\n@RequestMapping(\"/api/tts\")\npublic class TextToSpeechController {\n\n    private final TextToSpeechModel textToSpeechModel;\n\n    public TextToSpeechController(TextToSpeechModel textToSpeechModel) {\n        this.textToSpeechModel = textToSpeechModel;\n    }\n\n    @PostMapping(value = \"/synthesize\", produces = \"audio/mpeg\")\n    public ResponseEntity<byte[]> synthesize(@RequestBody SynthesisRequest request) {\n        byte[] audio = textToSpeechModel.call(request.text());\n        return ResponseEntity.ok()\n            .contentType(MediaType.parseMediaType(\"audio/mpeg\"))\n            .header(\"Content-Disposition\", \"attachment; filename=\\\"speech.mp3\\\"\")\n            .body(audio);\n    }\n\n    @GetMapping(value = \"/stream\", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)\n    public Flux<byte[]> streamSynthesis(@RequestParam String text) {\n        return textToSpeechModel.stream(text);\n    }\n\n    record SynthesisRequest(String text) {}\n}"
+  },
+  {
+    "language": "yaml",
+    "code": "# application-openai.yml\nspring:\n  ai:\n    model:\n      audio:\n        speech: openai\n    openai:\n      api-key: ${OPENAI_API_KEY}\n      audio:\n        speech:\n          options:\n            model: gpt-4o-mini-tts\n            voice: alloy\n\n# application-elevenlabs.yml\nspring:\n  ai:\n    model:\n      audio:\n        speech: elevenlabs\n    elevenlabs:\n      api-key: ${ELEVENLABS_API_KEY}\n      tts:\n        options:\n          model-id: eleven_turbo_v2_5\n          voice-id: your_voice_id"
+  },
+  {
+    "language": "bash",
+    "code": "# Use OpenAI\njava -jar app.jar --spring.profiles.active=openai\n\n# Use ElevenLabs\njava -jar app.jar --spring.profiles.active=elevenlabs"
+  },
+  {
+    "language": "java",
+    "code": "@Service\npublic class PortableNarrationService {\n\n    private final TextToSpeechModel textToSpeechModel;\n\n    public PortableNarrationService(TextToSpeechModel textToSpeechModel) {\n        this.textToSpeechModel = textToSpeechModel;\n    }\n\n    public byte[] createPortableNarration(String text) {\n        // Use provider's default options for maximum portability\n        TextToSpeechOptions options = textToSpeechModel.getOptions();\n        TextToSpeechPrompt prompt = new TextToSpeechPrompt(text, options);\n        TextToSpeechResponse response = textToSpeechModel.call(prompt);\n        return response.getResult().getOutput();\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Service\npublic class FlexibleNarrationService {\n\n    private final TextToSpeechModel textToSpeechModel;\n\n    public FlexibleNarrationService(TextToSpeechModel textToSpeechModel) {\n        this.textToSpeechModel = textToSpeechModel;\n    }\n\n    public byte[] narrate(String text, TextToSpeechOptions baseOptions) {\n        TextToSpeechOptions options = baseOptions;\n\n        // Apply provider-specific optimizations if available\n        if (textToSpeechModel instanceof OpenAiAudioSpeechModel) {\n            options = OpenAiAudioSpeechOptions.builder()\n                .from(baseOptions)\n                .model(\"gpt-4o-tts\")  // OpenAI-specific: use high-quality model\n                .speed(1.0)\n                .build();\n        } else if (textToSpeechModel instanceof ElevenLabsTextToSpeechModel) {\n            // ElevenLabs-specific options could go here\n        }\n\n        TextToSpeechPrompt prompt = new TextToSpeechPrompt(text, options);\n        TextToSpeechResponse response = textToSpeechModel.call(prompt);\n        return response.getResult().getOutput();\n    }\n}"
+  }
+]

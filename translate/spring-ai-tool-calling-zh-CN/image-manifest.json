@@ -1,0 +1,44 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-agent-loop.png",
+    "path": "public/images/frameworks/spring-ai/tools/spring-ai-agent-loop.png",
+    "sha256": "9b217f3deb243a74b546200d9a1502f94b075aa5dced7d65f7c2cfa0b0229491",
+    "width": 738,
+    "height": 499
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-calling-advisor-flow.png",
+    "path": "public/images/frameworks/spring-ai/tools/spring-ai-tool-calling-advisor-flow.png",
+    "sha256": "e710f1280fd0a407339de3c2cd21a168b25a87054c7895be5b9e2ba3ab45b477",
+    "width": 3370,
+    "height": 1409
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-calling-with-inside-memory.png",
+    "path": "public/images/frameworks/spring-ai/tools/spring-ai-tool-calling-with-inside-memory.png",
+    "sha256": "6d7b4c8df4e127e1942f725bbd7d981fdb53220aa9da82aaf10c246c5dc01adb",
+    "width": 5042,
+    "height": 2225
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-arg-augmenter.png",
+    "path": "public/images/frameworks/spring-ai/tools/spring-ai-tool-arg-augmenter.png",
+    "sha256": "e38ae90b0015f6a2310167aedc17f62572230d0745b9779ad91b8ecc97b0df49",
+    "width": 3248,
+    "height": 1690
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/tools/tool-context.jpg",
+    "path": "public/images/frameworks/spring-ai/tools/tool-context.jpg",
+    "sha256": "333b1c9053230e47a2b6ee68db841376b7668379511d7c0a583de63dd7358115",
+    "width": 5314,
+    "height": 3010
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/tools/return-direct.jpg",
+    "path": "public/images/frameworks/spring-ai/tools/return-direct.jpg",
+    "sha256": "698b421c51227ccaf17db08c5b333b08c3ddc7a31bc4b3d56feb3279ed9ed066",
+    "width": 5317,
+    "height": 3008
+  }
+]

@@ -1,0 +1,333 @@
+<article class="doc">
+<h1 id="page-title" class="page">Chat Model API</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Chat Model API offers developers the ability to integrate AI-powered chat completion capabilities into their applications. It leverages pre-trained language models, such as GPT (Generative Pre-trained Transformer), to generate human-like responses to user inputs in natural language.</p>
+</div>
+<div class="paragraph">
+<p>The API typically works by sending a prompt or partial conversation to the AI model, which then generates a completion or continuation of the conversation based on its training data and understanding of natural language patterns. The completed response is then returned to the application, which can present it to the user or use it for further processing.</p>
+</div>
+<div class="paragraph">
+<p>The <code>Spring AI Chat Model API</code> is designed to be a simple and portable interface for interacting with various <a href="../concepts.html#_models" class="xref page">AI Models</a>, allowing developers to switch between different models with minimal code changes.
+This design aligns with Spring’s philosophy of modularity and interchangeability.</p>
+</div>
+<div class="paragraph">
+<p>Also with the help of companion classes like <code>Prompt</code> for input encapsulation and <code>ChatResponse</code> for output handling, the Chat Model API unifies the communication with AI Models.
+It manages the complexity of request preparation and response parsing, offering a direct and simplified API interaction.</p>
+</div>
+<div class="paragraph">
+<p>You can find more about available implementations in the <a href="#_available_implementations">Available Implementations</a> section as well as detailed comparison in the <a href="chat/comparison.html" class="xref page">Chat Models Comparison</a> section.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_overview"><a class="anchor" href="#_api_overview"></a>API Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section provides a guide to the Spring AI Chat Model API interface and associated classes.</p>
+</div>
+<div class="sect2">
+<h3 id="_chatmodel"><a class="anchor" href="#_chatmodel"></a>ChatModel</h3>
+<div class="paragraph">
+<p>Here is the <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/chat/model/ChatModel.java">ChatModel</a> interface definition:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface ChatModel extends Model&lt;Prompt, ChatResponse&gt;, StreamingChatModel {
+
+	default String call(String message) {...}
+
+    @Override
+	ChatResponse call(Prompt prompt);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>call()</code> method with a <code>String</code> parameter simplifies initial use, avoiding the complexities of the more sophisticated <code>Prompt</code> and <code>ChatResponse</code> classes.
+In real-world applications, it is more common to use the <code>call()</code> method that takes a <code>Prompt</code> instance and returns a <code>ChatResponse</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_streamingchatmodel"><a class="anchor" href="#_streamingchatmodel"></a>StreamingChatModel</h3>
+<div class="paragraph">
+<p>Here is the <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/chat/model/StreamingChatModel.java">StreamingChatModel</a> interface definition:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface StreamingChatModel extends StreamingModel&lt;Prompt, ChatResponse&gt; {
+
+    default Flux&lt;String&gt; stream(String message) {...}
+
+    @Override
+	Flux&lt;ChatResponse&gt; stream(Prompt prompt);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>stream()</code> method takes a <code>String</code> or <code>Prompt</code> parameter similar to <code>ChatModel</code> but it streams the responses using the reactive Flux API.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prompt"><a class="anchor" href="#_prompt"></a>Prompt</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-client-chat/src/main/java/org/springframework/ai/chat/prompt/Prompt.java">Prompt</a> is a <code>ModelRequest</code> that encapsulates a list of <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/chat/messages/Message.java">Message</a> objects and optional model request options.
+The following listing shows a truncated version of the <code>Prompt</code> class, excluding constructors and other utility methods:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class Prompt implements ModelRequest&lt;List&lt;Message&gt;&gt; {
+
+    private final List&lt;Message&gt; messages;
+
+    private ChatOptions modelOptions;
+
+	@Override
+	public ChatOptions getOptions() {...}
+
+	@Override
+	public List&lt;Message&gt; getInstructions() {...}
+
+    // constructors and utility methods omitted
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_message"><a class="anchor" href="#_message"></a>Message</h4>
+<div class="paragraph">
+<p>The <code>Message</code> interface encapsulates a <code>Prompt</code> textual content, a collection of metadata attributes, and a categorization known as <code>MessageType</code>.</p>
+</div>
+<div class="paragraph">
+<p>The interface is defined as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface Content {
+
+	String getText();
+
+	Map&lt;String, Object&gt; getMetadata();
+}
+
+public interface Message extends Content {
+
+	MessageType getMessageType();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The multimodal message types implement also the <code>MediaContent</code> interface providing a list of <code>Media</code> content objects.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface MediaContent extends Content {
+
+	Collection&lt;Media&gt; getMedia();
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>Message</code> interface has various implementations that correspond to the categories of messages that an AI model can process:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/spring-ai-message-api.jpg" alt="Spring AI Message API" width="800">
+</div>
+</div>
+<div class="paragraph">
+<p>The chat completion endpoint, distinguish between message categories based on conversational roles, effectively mapped by the <code>MessageType</code>.</p>
+</div>
+<div class="paragraph">
+<p>For instance, OpenAI recognizes message categories for distinct conversational roles such as <code>system</code>, <code>user</code>, <code>function</code>, or <code>assistant</code>.</p>
+</div>
+<div class="paragraph">
+<p>While the term <code>MessageType</code> might imply a specific message format, in this context it effectively designates the role a message plays in the dialogue.</p>
+</div>
+<div class="paragraph">
+<p>For AI models that do not use specific roles, the <code>UserMessage</code> implementation acts as a standard category, typically representing user-generated inquiries or instructions.
+To understand the practical application and the relationship between <code>Prompt</code> and <code>Message</code>, especially in the context of these roles or message categories, see the detailed explanations in the <a href="prompt.html" class="xref page">Prompts</a> section.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_chat_options"><a class="anchor" href="#_chat_options"></a>Chat Options</h4>
+<div class="paragraph">
+<p>Represents the options that can be passed to the AI model. The <code>ChatOptions</code> class is a subclass of <code>ModelOptions</code> and is used to define few portable options that can be passed to the AI model.
+The <code>ChatOptions</code> class is defined as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface ChatOptions extends ModelOptions {
+
+	String getModel();
+	Double getFrequencyPenalty();
+	Integer getMaxTokens();
+	Double getPresencePenalty();
+	List&lt;String&gt; getStopSequences();
+	Double getTemperature();
+	Integer getTopK();
+	Double getTopP();
+	ChatOptions.Builder&lt;?&gt; mutate();
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Additionally, every model specific ChatModel/StreamingChatModel implementation can have its own options that can be passed to the AI model. For example, the OpenAI Chat Completion model has its own options like <code>logitBias</code>, <code>seed</code>, and <code>user</code>.</p>
+</div>
+<div class="paragraph">
+<p>Spring AI provides a sophisticated system for configuring and using Chat Models.
+It allows for default configuration to be set at start-up, while also providing the flexibility to override these settings on a per-request basis.
+This approach enables developers to easily work with different AI models and adjust parameters as needed, all within a consistent interface provided by the Spring AI framework.</p>
+</div>
+<div class="paragraph">
+<p>When using <code>ChatModel.call() / ChatModel/stream()</code>, the passed prompt needs to contain a full set of options that will completely take precedence over options set in the model (or use <code>null</code> options in the <code>Prompt</code> to use the model’s defaults).</p>
+</div>
+<div class="paragraph">
+<p>The <a href="chatclient.html" class="xref page">ChatClient</a> abstraction allows for an incremental approach where users can provide a "delta" customizer that overrides the default options on a per-request basis.</p>
+</div>
+<div class="paragraph">
+<p>Following flow diagram illustrates how Spring AI handles the configuration and execution of Chat Models:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/chat-model-conversions.png" alt="chat model conversions" width="800px">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start-up Configuration - The ChatModel/StreamingChatModel is initialized with "Start-Up" Chat Options.
+These options are set during the ChatModel initialization and are meant to provide default configurations.</p>
+</li>
+<li>
+<p>Runtime Configuration - For each request, the Prompt can contain a Runtime Chat Options: These fully override the start-up options.</p>
+</li>
+<li>
+<p>Input Processing - The "Convert Input" step transforms the input instructions into native, model-specific formats.</p>
+</li>
+<li>
+<p>Output Processing - The "Convert Output" step transforms the model’s response into a standardized <code>ChatResponse</code> format.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ChatResponse"><a class="anchor" href="#ChatResponse"></a>ChatResponse</h3>
+<div class="paragraph">
+<p>The structure of the <code>ChatResponse</code> class is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class ChatResponse implements ModelResponse&lt;Generation&gt; {
+
+    private final ChatResponseMetadata chatResponseMetadata;
+	private final List&lt;Generation&gt; generations;
+
+	@Override
+	public ChatResponseMetadata getMetadata() {...}
+
+    @Override
+	public List&lt;Generation&gt; getResults() {...}
+
+    // other methods omitted
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/chat/model/ChatResponse.java">ChatResponse</a> class holds the AI Model’s output, with each <code>Generation</code> instance containing one of potentially multiple outputs resulting from a single prompt.</p>
+</div>
+<div class="paragraph">
+<p>The <code>ChatResponse</code> class also carries a <code>ChatResponseMetadata</code> metadata about the AI Model’s response.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Generation"><a class="anchor" href="#Generation"></a>Generation</h3>
+<div class="paragraph">
+<p>Finally, the <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/chat/model/Generation.java">Generation</a> class extends from the <code>ModelResult</code> to represent the model output (assistant message) and related metadata:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class Generation implements ModelResult&lt;AssistantMessage&gt; {
+
+	private final AssistantMessage assistantMessage;
+	private ChatGenerationMetadata chatGenerationMetadata;
+
+	@Override
+	public AssistantMessage getOutput() {...}
+
+	@Override
+	public ChatGenerationMetadata getMetadata() {...}
+
+    // other methods omitted
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_available_implementations"><a class="anchor" href="#_available_implementations"></a>Available Implementations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This diagram illustrates the unified interfaces, <code>ChatModel</code> and <code>StreamingChatModel</code>, are used for interacting with various AI chat models from different providers, allowing easy integration and switching between different AI services while maintaining a consistent API for the client application.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/spring-ai-chat-completions-clients.jpg" alt="spring ai chat completions clients" width="1000px">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="chat/openai-chat.html" class="xref page">OpenAI Chat Completion</a> (streaming, multi-modality &amp; function-calling support)</p>
+</li>
+<li>
+<p><a href="chat/ollama-chat.html" class="xref page">Ollama Chat Completion</a> (streaming, multi-modality &amp; function-calling support)</p>
+</li>
+<li>
+<p><a href="bedrock.html" class="xref page">Amazon Bedrock</a></p>
+</li>
+<li>
+<p><a href="chat/mistralai-chat.html" class="xref page">Mistral AI Chat Completion</a> (streaming &amp; function-calling support)</p>
+</li>
+<li>
+<p><a href="chat/anthropic-chat.html" class="xref page">Anthropic Chat Completion</a> (streaming &amp; function-calling support)</p>
+</li>
+<li>
+<p><a href="chat/jinfer-chat.html" class="xref page">Qxotic jinfer Chat</a> (in-JVM local inference; streaming, multi-modality &amp; function-calling support)</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Find a detailed comparison of the available Chat Models in the <a href="chat/comparison.html" class="xref page">Chat Models Comparison</a> section.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_chat_model_api"><a class="anchor" href="#_chat_model_api"></a>Chat Model API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Spring AI Chat Model API is built on top of the Spring AI <code>Generic Model API</code> providing Chat specific abstractions and implementations.
+This allows an easy integration and switching between different AI services while maintaining a consistent API for the client application.
+The following class diagram illustrates the main classes and interfaces of the Spring AI Chat Model API.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/spring-ai-chat-api.jpg" alt="spring ai chat api" width="1000px">
+</div>
+</div>
+</div>
+</div>
+
+</article>

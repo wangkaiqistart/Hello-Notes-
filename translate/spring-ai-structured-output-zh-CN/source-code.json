@@ -1,0 +1,42 @@
+[
+  {
+    "index": 0,
+    "lang": "java",
+    "text": "record ActorsFilms(String actor, List<String> movies) {}"
+  },
+  {
+    "index": 1,
+    "lang": "java",
+    "text": "ActorsFilms films = chatClient.prompt()\n    .user(\"Generate the filmography for a random actor.\")\n    .call()\n    .entity(ActorsFilms.class);"
+  },
+  {
+    "index": 2,
+    "lang": "java",
+    "text": "films.actor();     // \"Tom Hanks\"\nfilms.movies();    // [\"Forrest Gump\", \"Cast Away\", ...]"
+  },
+  {
+    "index": 3,
+    "lang": "java",
+    "text": "List<ActorsFilms> films = chatClient.prompt()\n    .user(\"Generate filmographies for three random actors.\")\n    .call()\n    .entity(new ParameterizedTypeReference<List<ActorsFilms>>() {});"
+  },
+  {
+    "index": 4,
+    "lang": "java",
+    "text": "ActorsFilms films = chatClient.prompt()\n    .user(\"Generate the filmography for a random actor.\")\n    .call()\n    .entity(ActorsFilms.class, spec -> spec.validateSchema());"
+  },
+  {
+    "index": 5,
+    "lang": "java",
+    "text": "ActorsFilms films = chatClient.prompt()\n    .user(\"Generate the filmography for a random actor.\")\n    .call()\n    .entity(ActorsFilms.class, spec -> spec.useProviderStructuredOutput());"
+  },
+  {
+    "index": 6,
+    "lang": "java",
+    "text": "ActorsFilms films = chatClient.prompt()\n    .user(\"Generate the filmography for a random actor.\")\n    .call()\n    .entity(ActorsFilms.class, spec -> spec\n        .useProviderStructuredOutput()\n        .validateSchema());"
+  },
+  {
+    "index": 7,
+    "lang": "java",
+    "text": "ResponseEntity<ChatResponse, ActorsFilms> result = chatClient.prompt()\n    .user(\"Generate the filmography for a random actor.\")\n    .call()\n    .responseEntity(ActorsFilms.class);\n\nActorsFilms films = result.entity();\nChatResponse raw = result.response();\nlong totalTokens = raw.getMetadata().getUsage().getTotalTokens();"
+  }
+]

@@ -1,0 +1,57 @@
+SKIP NAVIGATION LINKS
+OVERVIEW
+PACKAGE
+CLASS
+USE
+TREE
+DEPRECATED
+INDEX
+HELP
+SUMMARY: 
+NESTED | 
+FIELD | 
+CONSTR | 
+METHOD
+DETAIL: 
+FIELD | 
+CONSTR | 
+METHOD
+SEARCH:  
+Package org.springframework.ai.chat.client.advisor.api
+Interface StreamAdvisor
+All Superinterfaces:
+Advisor, org.springframework.core.Ordered
+All Known Subinterfaces:
+BaseAdvisor, BaseChatMemoryAdvisor
+All Known Implementing Classes:
+AbstractToolCallingAdvisorAutoRegistrationIT.ChainIterationCountingAdvisor, ChatModelStreamAdvisor, MessageChatMemoryAdvisor, QuestionAnswerAdvisor, RetrievalAugmentationAdvisor, SafeGuardAdvisor, SemanticCacheAdvisor, SimpleLoggerAdvisor, StructuredOutputValidationAdvisor, ToolCallAdvisor, ToolCallingAdvisor, ToolSearchToolCallingAdvisor, VectorStoreChatMemoryAdvisor
+public interface StreamAdvisor
+extends Advisor
+Advisor for execution flows ultimately resulting in a streaming call to an AI model.
+Since:
+1.0.0
+Author:
+Christian Tzolov, Dariusz Jedrzejczyk, Thomas Vitale
+Field Summary
+Fields inherited from interface org.springframework.ai.chat.client.advisor.api.Advisor
+DEFAULT_CHAT_MEMORY_PRECEDENCE_ORDER
+Fields inherited from interface org.springframework.core.Ordered
+HIGHEST_PRECEDENCE, LOWEST_PRECEDENCE
+Method Summary
+All MethodsInstance MethodsAbstract Methods
+Modifier and Type
+Method
+Description
+reactor.core.publisher.Flux<ChatClientResponse>
+adviseStream(ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain)
+ 
+Methods inherited from interface org.springframework.ai.chat.client.advisor.api.Advisor
+getName
+Methods inherited from interface org.springframework.core.Ordered
+getOrder
+Method Details
+adviseStream
+reactor.core.publisher.Flux<ChatClientResponse> adviseStream(ChatClientRequest chatClientRequest,
+ StreamAdvisorChain streamAdvisorChain)
+
+Copyright © 1980 Broadcom Inc.. All rights reserved.

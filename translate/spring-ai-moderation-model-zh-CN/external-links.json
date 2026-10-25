@@ -1,0 +1,134 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/image/Image.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 19019
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/image/ImageOptions.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 13428
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/moderation/ModerationResult.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 20845
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/audio.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 49625
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 67674
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/audio/speech/elevenlabs-speech.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 73038
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/audio/speech/jinfer-speech.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 61399
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/audio/speech/openai-speech.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 92704
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 55812
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions/jinfer-transcriptions.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 57968
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions/openai-transcriptions.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 74859
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 71208
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 65268
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 60718
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/image/google-genai-image.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 72553
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/image/openai-image.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 74612
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/image/stabilityai-image.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 64643
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/imageclient.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 57777
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/index.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 53833
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/moderation.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 49658
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 64076
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 70034
+  }
+]

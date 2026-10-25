@@ -1,0 +1,27 @@
+[
+  {
+    "index": 0,
+    "lang": "java",
+    "text": "var toolCallingAdvisor = ToolCallingAdvisor.builder()\n    .toolCallingManager(toolCallingManager)\n    .advisorOrder(BaseAdvisor.HIGHEST_PRECEDENCE + 300)\n    .build();\n\nvar chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(toolCallingAdvisor)\n    .build();"
+  },
+  {
+    "index": 1,
+    "lang": "java",
+    "text": "var validationAdvisor = StructuredOutputValidationAdvisor.builder()\n    .outputType(MyResponseType.class)\n    .maxRepeatAttempts(3)\n    .build();\n\nvar chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(validationAdvisor)\n    .build();"
+  },
+  {
+    "index": 2,
+    "lang": "java",
+    "text": "var validationAdvisor = StructuredOutputValidationAdvisor.builder()\n    .outputJsonSchema(myConverter.getJsonSchema())\n    .build();"
+  },
+  {
+    "index": 3,
+    "lang": "java",
+    "text": "ActorFilms actorFilms = chatClient.prompt()\n    .user(\"Generate the filmography for a random actor.\")\n    .call()\n    .entity(ActorFilms.class, spec -> spec.validateSchema());"
+  },
+  {
+    "index": 4,
+    "lang": "java",
+    "text": "UsageAccumulator usage = new UsageAccumulator();\nChatClientResponse response;\ndo {\n    response = callAdvisorChain.copy(this).nextCall(request);\n    usage.addRoundResponse(response.chatResponse());\n    // ... decide whether to loop again ...\n}\nwhile (loopAgain);\nreturn usage.applyAccumulatedUsage(response);"
+  }
+]

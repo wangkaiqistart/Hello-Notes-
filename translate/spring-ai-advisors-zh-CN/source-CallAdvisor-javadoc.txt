@@ -1,0 +1,57 @@
+SKIP NAVIGATION LINKS
+OVERVIEW
+PACKAGE
+CLASS
+USE
+TREE
+DEPRECATED
+INDEX
+HELP
+SUMMARY: 
+NESTED | 
+FIELD | 
+CONSTR | 
+METHOD
+DETAIL: 
+FIELD | 
+CONSTR | 
+METHOD
+SEARCH:  
+Package org.springframework.ai.chat.client.advisor.api
+Interface CallAdvisor
+All Superinterfaces:
+Advisor, org.springframework.core.Ordered
+All Known Subinterfaces:
+BaseAdvisor, BaseChatMemoryAdvisor
+All Known Implementing Classes:
+AbstractToolCallingAdvisorAutoRegistrationIT.ChainIterationCountingAdvisor, ChatModelCallAdvisor, MessageChatMemoryAdvisor, QuestionAnswerAdvisor, RetrievalAugmentationAdvisor, SafeGuardAdvisor, SemanticCacheAdvisor, SimpleLoggerAdvisor, StructuredOutputValidationAdvisor, ToolCallAdvisor, ToolCallingAdvisor, ToolSearchToolCallingAdvisor, VectorStoreChatMemoryAdvisor
+public interface CallAdvisor
+extends Advisor
+Advisor for execution flows ultimately resulting in a call to an AI model
+Since:
+1.0.0
+Author:
+Christian Tzolov, Dariusz Jedrzejczyk, Thomas Vitale
+Field Summary
+Fields inherited from interface org.springframework.ai.chat.client.advisor.api.Advisor
+DEFAULT_CHAT_MEMORY_PRECEDENCE_ORDER
+Fields inherited from interface org.springframework.core.Ordered
+HIGHEST_PRECEDENCE, LOWEST_PRECEDENCE
+Method Summary
+All MethodsInstance MethodsAbstract Methods
+Modifier and Type
+Method
+Description
+ChatClientResponse
+adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain)
+ 
+Methods inherited from interface org.springframework.ai.chat.client.advisor.api.Advisor
+getName
+Methods inherited from interface org.springframework.core.Ordered
+getOrder
+Method Details
+adviseCall
+ChatClientResponse adviseCall(ChatClientRequest chatClientRequest,
+ CallAdvisorChain callAdvisorChain)
+
+Copyright © 1980 Broadcom Inc.. All rights reserved.

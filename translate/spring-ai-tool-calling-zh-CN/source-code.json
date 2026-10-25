@@ -1,0 +1,154 @@
+[
+  {
+    "language": "java",
+    "code": "import org.springframework.ai.tool.annotation.Tool;\nimport org.springframework.context.i18n.LocaleContextHolder;\n\nclass DateTimeTools {\n\n    @Tool(description = \"Get the current date and time in the user's timezone\")\n    String getCurrentDateTime() {\n        return LocalDateTime.now().atZone(LocaleContextHolder.getTimeZone().toZoneId()).toString();\n    }\n\n    @Tool(description = \"Set a user alarm for the given time, provided in ISO-8601 format\")\n    void setAlarm(String time) {\n        LocalDateTime alarmTime = LocalDateTime.parse(time, DateTimeFormatter.ISO_DATE_TIME);\n        System.out.println(\"Alarm set for \" + alarmTime);\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "ChatModel chatModel = ...\n\nString response = ChatClient.create(chatModel)\n        .prompt(\"Can you set an alarm 10 minutes from now?\")\n        .tools(new DateTimeTools())\n        .call()\n        .content();"
+  },
+  {
+    "language": "java",
+    "code": "class WeatherTools {\n\n    @Tool(description = \"Get the current weather for a given city\")\n    public String getWeather(String city) {\n        return weatherService.fetch(city);\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "class WeatherTools {\n\n    @Tool(description = \"Get the weather for a city at a specific time\")\n    public String getWeather(\n            @ToolParam(description = \"City name\") String city,\n            @ToolParam(description = \"Time in ISO-8601 format\", required = false) String at) {\n        return weatherService.fetch(city, at);\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "Method method = ReflectionUtils.findMethod(WeatherTools.class, \"getWeather\", String.class);\n\nMethodToolCallback callback = MethodToolCallback.builder()\n    .toolDefinition(ToolDefinitions.builder(method)\n        .description(\"Get the current weather for a given city\")\n        .build())\n    .toolMethod(method)\n    .toolObject(new WeatherTools())\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "FunctionToolCallback callback = FunctionToolCallback.builder(\"currentWeather\", weatherService::getWeather)\n    .description(\"Get the weather in location\")\n    .inputType(WeatherRequest.class)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "@Configuration(proxyBeanMethods = false)\nclass WeatherToolsConfig {\n\n    @Bean\n    ToolCallback currentWeather(WeatherService weatherService) {\n        return FunctionToolCallback.builder(\"currentWeather\", weatherService::getWeather)\n            .description(\"Get the weather in location\")\n            .inputType(WeatherRequest.class)\n            .build();\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Autowired ToolCallback currentWeather;\n\nChatClient.create(chatModel)\n    .prompt(\"What's the weather in Copenhagen?\")\n    .tools(currentWeather)\n    .call()\n    .content();"
+  },
+  {
+    "language": "java",
+    "code": "// Per call — tools available only for this single request\nchatClient.prompt(...)\n    .tools(new WeatherTools(), currentWeather)\n    .call();\n\n// As defaults — tools available on every request built from this client\nChatClient client = ChatClient.builder(chatModel)\n    .defaultTools(new WeatherTools(), currentWeather)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "var chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())  // outside the loop by default\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "var chatMemoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory)\n    .order(BaseAdvisor.HIGHEST_PRECEDENCE + 400)  // inside (after) ToolCallingAdvisor\n    .build();\n\nvar chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(chatMemoryAdvisor)\n    .build();"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.chat.client.tool-search-advisor.enabled=true"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-mcp-client</artifactId>\n</dependency>"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.mcp.client.stdio.connections.my-server.command=npx\nspring.ai.mcp.client.stdio.connections.my-server.args=-y,@modelcontextprotocol/server-everything"
+  },
+  {
+    "language": "java",
+    "code": "@Autowired SyncMcpToolCallbackProvider mcpTools;\n\n// Once, as default tools for every request\nChatClient chatClient = ChatClient.builder(chatModel)\n    .defaultTools(mcpTools)\n    .build();\n\n// Or per call\nchatClient.prompt()\n    .user(\"Search the web for the latest Spring AI release notes\")\n    .tools(mcpTools)\n    .call()\n    .content();"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>\n</dependency>"
+  },
+  {
+    "language": "java",
+    "code": "@Component\npublic class WeatherTools {\n\n    @McpTool(description = \"Get the current weather for a given city\")\n    public String getWeather(\n            @McpToolParam(description = \"City name\") String city) {\n        return weatherService.fetch(city);\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "chatClient.prompt()\n    .tools(new LocalTools(), mcpTools)\n    .call()\n    .content();"
+  },
+  {
+    "language": "java",
+    "code": "public record AgentThinking(\n    @ToolParam(description = \"Your reasoning for calling this tool\", required = true)\n    String innerThought,\n\n    @ToolParam(description = \"Confidence level (low, medium, high)\", required = false)\n    String confidence\n) {}"
+  },
+  {
+    "language": "java",
+    "code": "AugmentedToolCallbackProvider<AgentThinking> provider = AugmentedToolCallbackProvider\n    .<AgentThinking>builder()\n    .toolObject(new WeatherTools())     // wrap the original tools\n    .argumentType(AgentThinking.class)  // augmentation schema type\n    .argumentConsumer(event -> {        // optional consumer of augmented content\n        AgentThinking thinking = event.arguments();\n        log.info(\"Tool: {} | Reasoning: {}\", event.toolDefinition().name(), thinking.innerThought());\n    })\n    .removeExtraArgumentsAfterProcessing(true)\n    .build();\n\nChatClient chatClient = ChatClient.builder(chatModel)\n    .defaultTools(provider)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "ChatClient chatClient = ...\nToolCallingManager toolCallingManager = ToolCallingManager.builder().build();\n\nToolCallback[] tools = ToolCallbacks.from(new WeatherTools());\nChatOptions chatOptions = ToolCallingChatOptions.builder().toolCallbacks(tools).build();\n\nString question = \"What is the weather in Amsterdam and Paris?\";\n\n// ToolCallingAdvisor disabled — no tool loop runs automatically\nChatClientResponse response = chatClient.prompt()\n    .user(question)\n    .options(chatOptions)\n    .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))\n    .call()\n    .chatClientResponse();\n\nPrompt prompt = new Prompt(List.of(new UserMessage(question)), chatOptions);\n\n// Drive the loop yourself — each iteration is observable and interruptible\nwhile (response.chatResponse() != null && response.chatResponse().hasToolCalls()) {\n    ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response.chatResponse());\n    prompt = new Prompt(result.conversationHistory(), chatOptions);\n    response = chatClient.prompt()\n        .messages(result.conversationHistory())\n        .options(chatOptions)\n        .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))\n        .call()\n        .chatClientResponse();\n}"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.chat.client.tool-calling.enabled=false"
+  },
+  {
+    "language": "java",
+    "code": "@AutoConfiguration(beforeName = \"org.springframework.ai.model.chat.client.autoconfigure.ChatClientAutoConfiguration\")\n@ConditionalOnProperty(prefix = \"my.advisor\", name = \"enabled\", havingValue = \"true\")\npublic class MyToolAdvisorAutoConfiguration {\n\n    @Bean\n    @ConditionalOnMissingBean\n    ToolCallingAdvisor.Builder<?> toolCallingAdvisorBuilder(ToolCallingManager toolCallingManager) {\n        return MyCustomToolCallingAdvisor.builder()\n            .toolCallingManager(toolCallingManager);\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "public interface ToolCallback {\n\n    /** Definition used by the AI model to decide when and how to call the tool. */\n    ToolDefinition getToolDefinition();\n\n    /** Metadata controlling how the tool is handled (e.g. return-direct). */\n    ToolMetadata getToolMetadata();\n\n    /** Execute with the given JSON input and return the result. */\n    String call(String toolInput);\n\n    /** Execute with the given input and tool context. */\n    String call(String toolInput, ToolContext toolContext);\n}"
+  },
+  {
+    "language": "java",
+    "code": "public interface ToolDefinition {\n\n    /** Unique tool name within the tool set provided to the model. */\n    String name();\n\n    /** Description used by the model to decide when to call the tool. */\n    String description();\n\n    /** JSON schema of the tool's input parameters. */\n    String inputSchema();\n}"
+  },
+  {
+    "language": "java",
+    "code": "ToolDefinition toolDefinition = ToolDefinition.builder()\n    .name(\"currentWeather\")\n    .description(\"Get the weather in location\")\n    .inputSchema(\"\"\"\n        {\n            \"type\": \"object\",\n            \"properties\": {\n                \"location\": { \"type\": \"string\" },\n                \"unit\": { \"type\": \"string\", \"enum\": [\"C\", \"F\"] }\n            },\n            \"required\": [\"location\", \"unit\"]\n        }\n    \"\"\")\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "class CustomerTools {\n\n    @Tool(description = \"Update customer information\")\n    void updateCustomerInfo(\n            Long id,\n            String name,\n            @ToolParam(description = \"Email address, RFC 5322 format\", required = false) String email) {\n        // ...\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "class CustomerTools {\n\n    @Tool(description = \"Retrieve customer information\")\n    Customer getCustomerInfo(Long id, ToolContext toolContext) {\n        return customerRepository.findById(id, toolContext.getContext().get(\"tenantId\"));\n    }\n}\n\nString response = ChatClient.create(chatModel)\n        .prompt(\"Tell me more about the customer with ID 42\")\n        .tools(new CustomerTools())\n        .toolContext(Map.of(\"tenantId\", \"acme\"))\n        .call()\n        .content();"
+  },
+  {
+    "language": "java",
+    "code": "@Tool(description = \"Retrieve customer information\", returnDirect = true)\nCustomer getCustomerInfo(Long id) { ... }"
+  },
+  {
+    "language": "java",
+    "code": "ToolMetadata toolMetadata = ToolMetadata.builder()\n    .returnDirect(true)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "@FunctionalInterface\npublic interface ToolCallResultConverter {\n    String convert(Object result, Type returnType);\n}"
+  },
+  {
+    "language": "java",
+    "code": "@FunctionalInterface\npublic interface ToolExecutionExceptionProcessor {\n    String process(ToolExecutionException exception);\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Bean\nToolExecutionExceptionProcessor toolExecutionExceptionProcessor() {\n    return new DefaultToolExecutionExceptionProcessor(true);\n}"
+  },
+  {
+    "language": "java",
+    "code": "ToolCallingManager toolCallingManager = ToolCallingManager.builder()\n    .maxCallsPerTool(40)                           // per-tool default\n    .maxCallsPerTool(\"search\", 10)                  // override for one tool\n    .excludeToolFromLimit(\"getCurrentWeather\")      // no limit for this tool\n    .maxTotalToolCalls(150)                         // cap across all tools combined\n    .onLimitExceeded(ToolCallLimitBehavior.THROW)   // or RETURN_ERROR_RESPONSE\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "public interface ToolCallbackResolver {\n\n    @Nullable\n    ToolCallback resolve(String toolName);\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Bean\nToolCallbackResolver toolCallbackResolver(List<ToolCallback> toolCallbacks) {\n    return new StaticToolCallbackResolver(toolCallbacks);\n}"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.tools.resolution.fallback.enabled=true"
+  },
+  {
+    "language": "properties",
+    "code": "logging.level.org.springframework.ai=DEBUG"
+  }
+]

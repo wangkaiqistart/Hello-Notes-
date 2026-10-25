@@ -1,0 +1,8 @@
+{"check": "new-model-content-integrity", "result": "PASS", "codeBlocks": 2, "translationMatchesPage": true, "javaExecuted": false}
+{"check":"responsive-browser","result":"PASS","name":"desktop","title":"Spring AI：审核模型","codeBlocks":2,"sections":[{"id":"核心-api-与结果层级","text":"核心 API 与结果层级"},{"id":"最小调用","text":"最小调用"},{"id":"三类结果分别表示什么","text":"三类结果分别表示什么"},{"id":"在应用中如何使用","text":"在应用中如何使用"},{"id":"提供方入口","text":"提供方入口"}],"images":[],"width":1440,"pageWidth":1440,"nav":true,"navGroups":["模型","Spring AI","开发框架"],"literalEmphasis":[],"links":["#核心-api-与结果层级","#最小调用","#三类结果分别表示什么","#在应用中如何使用","#提供方入口","/frameworks/spring-ai/models/"],"errors":[]}
+{"check":"responsive-browser","result":"PASS","name":"mobile","title":"Spring AI：审核模型","codeBlocks":2,"sections":[{"id":"核心-api-与结果层级","text":"核心 API 与结果层级"},{"id":"最小调用","text":"最小调用"},{"id":"三类结果分别表示什么","text":"三类结果分别表示什么"},{"id":"在应用中如何使用","text":"在应用中如何使用"},{"id":"提供方入口","text":"提供方入口"}],"images":[],"width":390,"pageWidth":390,"nav":true,"navGroups":["模型","Spring AI","开发框架"],"literalEmphasis":[],"links":["#核心-api-与结果层级","#最小调用","#三类结果分别表示什么","#在应用中如何使用","#提供方入口","/frameworks/spring-ai/models/"],"errors":[]}
+{"check": "astro-check", "result": "PASS", "errors": 0, "warnings": 0, "hints": 0}
+{"check": "production-build", "result": "PASS", "pages": 131, "existingWarnings": ["i18n collection empty", "docs/404 missing"]}
+{"check": "external-links", "result": "PASS", "pages": 22}
+{"check": "format-diff-and-final-integrity", "result": "PASS", "translationMatchesPage": true}
+{"check": "visual-review", "result": "PASS", "viewports": [1440, 390], "javaExecuted": false}

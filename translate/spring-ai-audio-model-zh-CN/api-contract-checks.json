@@ -1,0 +1,32 @@
+[
+  {
+    "class": "TranscriptionModel",
+    "member": "transcribe(org.springframework.core.io.Resource)",
+    "result": "PASS"
+  },
+  {
+    "class": "TranscriptionModel",
+    "member": "transcribe(org.springframework.core.io.Resource,org.springframework.ai.audio.transcription.AudioTranscriptionOptions)",
+    "result": "PASS"
+  },
+  {
+    "class": "TextToSpeechModel",
+    "member": "call(java.lang.String)",
+    "result": "PASS"
+  },
+  {
+    "class": "TextToSpeechModel",
+    "member": "call(org.springframework.ai.audio.tts.TextToSpeechPrompt)",
+    "result": "PASS"
+  },
+  {
+    "class": "StreamingTextToSpeechModel",
+    "member": "stream(java.lang.String)",
+    "result": "PASS"
+  },
+  {
+    "class": "StreamingTextToSpeechModel",
+    "member": "stream(org.springframework.ai.audio.tts.TextToSpeechPrompt)",
+    "result": "PASS"
+  }
+]

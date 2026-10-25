@@ -5,6 +5,9 @@ import starlight from '@astrojs/starlight';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://notes.wwkq.top',
+	redirects: {
+		'/frameworks/spring-ai/core/advisors-recursive/': '/frameworks/spring-ai/core/advisors/#递归-advisors',
+	},
 	integrations: [
 		starlight({
 			title: 'Hi, Agent!',
@@ -28,6 +31,41 @@ export default defineConfig({
 				{
 					label: '开发框架',
 					items: [
+						{
+							label: 'Spring AI',
+							items: [
+								'frameworks/spring-ai',
+								'frameworks/spring-ai/concepts',
+								'frameworks/spring-ai/getting-started/quickstart',
+								'frameworks/spring-ai/core/chat-client',
+								'frameworks/spring-ai/core/advisors',
+								'frameworks/spring-ai/core/prompts',
+								'frameworks/spring-ai/core/chat-response-metadata',
+								'frameworks/spring-ai/core/structured-output',
+								'frameworks/spring-ai/core/multimodality',
+								{
+									label: '模型',
+									items: [
+										'frameworks/spring-ai/models',
+										'frameworks/spring-ai/models/chat-model',
+										'frameworks/spring-ai/models/embedding-model',
+										'frameworks/spring-ai/models/image-model',
+										'frameworks/spring-ai/models/audio-model',
+										'frameworks/spring-ai/models/moderation-model',
+									],
+								},
+								'frameworks/spring-ai/core/chat-memory',
+								{
+									label: '工具调用',
+									items: [
+										'frameworks/spring-ai/tools/tool-calling',
+										'frameworks/spring-ai/tools/tool-calling-advisor',
+										'frameworks/spring-ai/tools/tool-search-tool',
+										'frameworks/spring-ai/tools/chatmodel-tool-calling',
+									],
+								},
+							],
+						},
 						{ label: 'LangChain', items: [{ autogenerate: { directory: 'frameworks/langchain' } }] },
 						{ label: 'LangGraph', items: [{ autogenerate: { directory: 'frameworks/langgraph' } }] },
 						{ label: 'LlamaIndex', items: [{ autogenerate: { directory: 'frameworks/llamaindex' } }] },

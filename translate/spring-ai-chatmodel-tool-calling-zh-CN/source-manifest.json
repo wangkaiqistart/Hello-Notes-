@@ -1,0 +1,165 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html",
+  "version": "2.0.2",
+  "images": [],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "ChatModel Tool Calling"
+    },
+    {
+      "id": "when-to-use",
+      "text": "When to Use ChatModel Directly"
+    },
+    {
+      "id": "no-internal-tool-execution",
+      "text": "No Internal Tool Execution"
+    },
+    {
+      "id": "passing-tools",
+      "text": "Passing Tools to ChatModel"
+    },
+    {
+      "id": "per-request-tools",
+      "text": "Per-Request Tools"
+    },
+    {
+      "id": "default-tools",
+      "text": "Default Tools (Configured on the Model)"
+    },
+    {
+      "id": "override-semantics",
+      "text": "Override Semantics"
+    },
+    {
+      "id": "driving-the-loop-manually",
+      "text": "Driving the Loop Manually"
+    },
+    {
+      "id": "blocking-loop",
+      "text": "Blocking"
+    },
+    {
+      "id": "streaming-loop",
+      "text": "Streaming"
+    },
+    {
+      "id": "tool-context",
+      "text": "Tool Context"
+    },
+    {
+      "id": "return-direct",
+      "text": "Return Direct"
+    },
+    {
+      "id": "see-also",
+      "text": "See Also"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+      "label": "ChatClient"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html",
+      "label": "ToolCallingAdvisor"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#when-to-use",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#no-internal-tool-execution",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#driving-the-loop-manually",
+      "label": "Driving the Loop Manually"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html#tool-calling-1x-to-2x",
+      "label": "Upgrading Tool Calling from 1.x to 2.0"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#passing-tools",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#per-request-tools",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#driving-the-loop-manually",
+      "label": "Driving the Loop Manually"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#default-tools",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#override-semantics",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#passing-tools",
+      "label": "Passing Tools to ChatClient"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#driving-the-loop-manually",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#blocking-loop",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#return-direct",
+      "label": "Return Direct"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#streaming-loop",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#user-controlled-streaming",
+      "label": "ToolCallingAdvisor: User-Controlled Streaming"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#tool-context",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-context",
+      "label": "Tool Context"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#return-direct",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#return-direct",
+      "label": "Return Direct"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html#see-also",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+      "label": "Tool Calling"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html",
+      "label": "ToolCallingAdvisor"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#user-controlled-streaming",
+      "label": "User-Controlled Streaming with ChatClient"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html#tool-calling-1x-to-2x",
+      "label": "Upgrading Tool Calling from 1.x to 2.0"
+    }
+  ]
+}

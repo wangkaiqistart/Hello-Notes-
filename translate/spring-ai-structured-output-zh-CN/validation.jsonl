@@ -1,0 +1,14 @@
+{"check": "source-comparison", "result": "PASS", "sourceVersion": "2.0.2", "sourceCodeBlocks": 8, "translatedCodeBlocks": 8, "codeChanges": "none", "majorSections": 6, "subsections": 3, "cheatSheetRows": 8, "images": 1, "finalMatchesPage": true, "javaExecution": "NOT_RUN"}
+{"check":"browser","result":"PASS","name":"desktop","httpStatus":200,"title":"Spring AI：结构化输出","viewport":1440,"pageWidth":1440,"codeBlocks":8,"sections":6,"subsections":3,"images":1,"imageDetails":[{"loaded":true,"alt":"结构化输出默认流程：由返回类型生成 Schema，加入系统上下文，模型返回 JSON 后转换为 Java 对象","fits":true}],"tableRows":[8],"brokenAnchors":[],"nav":true,"errors":[],"metadataLink":"PASS"}
+{"check":"svg-and-image-link","result":"PASS","name":"desktop","texts":22,"overflow":[]}
+{"check":"browser","result":"PASS","name":"mobile","httpStatus":200,"title":"Spring AI：结构化输出","viewport":390,"pageWidth":390,"codeBlocks":8,"sections":6,"subsections":3,"images":1,"imageDetails":[{"loaded":true,"alt":"结构化输出默认流程：由返回类型生成 Schema，加入系统上下文，模型返回 JSON 后转换为 Java 对象","fits":true}],"tableRows":[8],"brokenAnchors":[],"nav":true,"errors":[],"metadataLink":"PASS"}
+{"check":"svg-and-image-link","result":"PASS","name":"mobile","texts":22,"overflow":[]}
+{"check": "source-image-integrity", "result": "PASS", "sourcePngUnchanged": true, "embeddedPngMatchesSource": true}
+{"check": "response-entity-javadoc", "result": "PASS", "version": "2.0.2", "httpStatus": 200, "class": "org.springframework.ai.chat.client.ResponseEntity"}
+{"check": "astro-check", "result": "PASS", "errors": 0, "warnings": 0, "hints": 0}
+{"check": "astro-build", "result": "PASS", "pages": 123, "existingWarnings": ["i18n empty", "docs/404 missing"]}
+{"check": "format-and-diff", "result": "PASS", "scope": "touched Markdown and MDX; existing configuration formatting preserved"}
+{"check":"browser","result":"PASS","name":"desktop","httpStatus":200,"title":"Spring AI：结构化输出","viewport":1440,"pageWidth":1440,"codeBlocks":8,"sections":6,"subsections":3,"literalEmphasis":false,"images":1,"imageDetails":[{"loaded":true,"alt":"结构化输出默认流程：由返回类型生成 Schema，加入系统上下文，模型返回 JSON 后转换为 Java 对象","fits":true}],"tableRows":[8],"brokenAnchors":[],"nav":true,"errors":[],"metadataLink":"PASS"}
+{"check":"svg-and-image-link","result":"PASS","name":"desktop","texts":22,"overflow":[]}
+{"check":"browser","result":"PASS","name":"mobile","httpStatus":200,"title":"Spring AI：结构化输出","viewport":390,"pageWidth":390,"codeBlocks":8,"sections":6,"subsections":3,"literalEmphasis":false,"images":1,"imageDetails":[{"loaded":true,"alt":"结构化输出默认流程：由返回类型生成 Schema，加入系统上下文，模型返回 JSON 后转换为 Java 对象","fits":true}],"tableRows":[8],"brokenAnchors":[],"nav":true,"errors":[],"metadataLink":"PASS"}
+{"check":"svg-and-image-link","result":"PASS","name":"mobile","texts":22,"overflow":[]}

@@ -1,0 +1,206 @@
+{
+  "version": "2.0.2",
+  "sourceArtifacts": [
+    "spring-ai-model",
+    "spring-ai-client-chat",
+    "spring-ai-tool-search-advisor",
+    "spring-ai-tool-search-tool",
+    "spring-ai-autoconfigure-tool-search-advisor",
+    "spring-ai-autoconfigure-model-tool",
+    "spring-ai-ollama"
+  ],
+  "sourceBaseUrl": "https://repo.maven.apache.org/maven2/org/springframework/ai/",
+  "supplementaryEvidence": "Jackson 2.22 annotations; not an assertion of Spring AI BOM version",
+  "validationType": "static source assertions, not Java execution",
+  "checks": [
+    {
+      "claim": "ChatClient.options 接收 Builder",
+      "file": "api/DefaultChatClient.java",
+      "assertion": "ChatClientRequestSpec options(B customizer)",
+      "line": 1011,
+      "result": "PASS"
+    },
+    {
+      "claim": "工具 Advisor 默认顺序",
+      "file": "api/ToolCallingAdvisor.java",
+      "assertion": "DEFAULT_ORDER = Ordered.HIGHEST_PRECEDENCE + 300",
+      "line": 75,
+      "result": "PASS"
+    },
+    {
+      "claim": "工具执行结果可构造响应",
+      "file": "api/ToolExecutionResult.java",
+      "assertion": "static List<Generation> buildGenerations(ToolExecutionResult toolExecutionResult)",
+      "line": 67,
+      "result": "PASS"
+    },
+    {
+      "claim": "直接返回要求本批次所有工具",
+      "file": "api/DefaultToolCallingManager.java",
+      "assertion": "returnDirect = returnDirect && toolCallback.getToolMetadata().returnDirect()",
+      "line": 303,
+      "result": "PASS"
+    },
+    {
+      "claim": "每工具默认 40 次",
+      "file": "api/DefaultToolCallingManager.java",
+      "assertion": "DEFAULT_MAX_CALLS_PER_TOOL = 40",
+      "line": 100,
+      "result": "PASS"
+    },
+    {
+      "claim": "单轮总计默认 150 次",
+      "file": "api/DefaultToolCallingManager.java",
+      "assertion": "DEFAULT_MAX_TOTAL_TOOL_CALLS = 150",
+      "line": 107,
+      "result": "PASS"
+    },
+    {
+      "claim": "Advisor Builder 保留子类复制入口",
+      "file": "api/ToolCallingAdvisor.java",
+      "assertion": "Builder<?> copy = newCopy()",
+      "line": 604,
+      "result": "PASS"
+    },
+    {
+      "claim": "观察 Advisor 需要名称",
+      "file": "api/Advisor.java",
+      "assertion": "String getName()",
+      "line": 45,
+      "result": "PASS"
+    },
+    {
+      "claim": "finishReason 属于 Generation",
+      "file": "api/ChatGenerationMetadata.java",
+      "assertion": "String getFinishReason()",
+      "line": 43,
+      "result": "PASS"
+    },
+    {
+      "claim": "Ollama Builder 接收专用选项",
+      "file": "api/OllamaChatModel.java",
+      "assertion": "public Builder options(OllamaChatOptions options)",
+      "line": 531,
+      "result": "PASS"
+    },
+    {
+      "claim": "Method callback 配置转换器",
+      "file": "api/MethodToolCallback.java",
+      "assertion": "Builder toolCallResultConverter(ToolCallResultConverter toolCallResultConverter)",
+      "line": 250,
+      "result": "PASS"
+    },
+    {
+      "claim": "Function callback 配置转换器",
+      "file": "api/FunctionToolCallback.java",
+      "assertion": "Builder<I, O> toolCallResultConverter(ToolCallResultConverter toolCallResultConverter)",
+      "line": 223,
+      "result": "PASS"
+    },
+    {
+      "claim": "Schema AUTO 仍视为必需",
+      "file": "api/AbstractSpringAiSchemaModule.java",
+      "assertion": "schemaAnnotation.requiredMode() == Schema.RequiredMode.AUTO",
+      "line": 111,
+      "result": "PASS"
+    },
+    {
+      "claim": "异常名单按继承关系匹配",
+      "file": "api/DefaultToolExecutionExceptionProcessor.java",
+      "assertion": "rethrown.isAssignableFrom(cause.getClass())",
+      "line": 62,
+      "result": "PASS"
+    },
+    {
+      "claim": "自动配置 OAuth 异常重抛名单",
+      "file": "api/ToolCallingAutoConfiguration.java",
+      "assertion": "rethrownExceptions.add(oauth2Exception)",
+      "line": 126,
+      "result": "PASS"
+    },
+    {
+      "claim": "搜索模型参数优先于回退",
+      "file": "api/ToolSearchTool.java",
+      "assertion": "maxResults = (maxResults != null) ? maxResults : this.advisorMaxResults",
+      "line": 59,
+      "result": "PASS"
+    },
+    {
+      "claim": "Regex 默认返回数量",
+      "file": "api/RegexToolIndex.java",
+      "assertion": "DEFAULT_MAX_RESULTS = 10",
+      "line": 60,
+      "result": "PASS"
+    },
+    {
+      "claim": "Lucene 默认返回数量",
+      "file": "api/LuceneToolIndex.java",
+      "assertion": "DEFAULT_MAX_RESULTS = 10",
+      "line": 81,
+      "result": "PASS"
+    },
+    {
+      "claim": "Vector 默认返回数量",
+      "file": "api/VectorToolIndex.java",
+      "assertion": "DEFAULT_MAX_RESULTS = 10",
+      "line": 65,
+      "result": "PASS"
+    },
+    {
+      "claim": "搜索自动配置默认关闭",
+      "file": "api/ToolSearchAdvisorProperties.java",
+      "assertion": "private boolean enabled = false",
+      "line": 46,
+      "result": "PASS"
+    },
+    {
+      "claim": "搜索默认会话标识",
+      "file": "api/ToolSearchAdvisorProperties.java",
+      "assertion": "private String sessionIdKeyName = ChatMemory.CONVERSATION_ID",
+      "line": 75,
+      "result": "PASS"
+    },
+    {
+      "claim": "搜索默认累积工具引用",
+      "file": "api/ToolSearchAdvisorProperties.java",
+      "assertion": "private boolean referenceToolNameAccumulation = true",
+      "line": 82,
+      "result": "PASS"
+    },
+    {
+      "claim": "搜索 LRU 默认 1000",
+      "file": "api/ToolSearchAdvisorProperties.java",
+      "assertion": "private int lruMaxSessions = 1000",
+      "line": 176,
+      "result": "PASS"
+    },
+    {
+      "claim": "Lucene 默认阈值",
+      "file": "api/ToolSearchAdvisorProperties.java",
+      "assertion": "private float minScoreThreshold = 0.25f",
+      "line": 214,
+      "result": "PASS"
+    },
+    {
+      "claim": "工具集合指纹变动触发更新",
+      "file": "api/ToolSearchToolCallingAdvisor.java",
+      "assertion": "if (!fingerprint.equals(current))",
+      "line": 216,
+      "result": "PASS"
+    },
+    {
+      "claim": "Jackson 属性描述使用 value",
+      "file": "api/JsonPropertyDescription.java",
+      "assertion": "String value() default \"\"",
+      "line": 28,
+      "result": "PASS"
+    },
+    {
+      "claim": "Jackson 类描述为类型注解",
+      "file": "api/JsonClassDescription.java",
+      "assertion": "@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})",
+      "line": 17,
+      "result": "PASS"
+    }
+  ]
+}

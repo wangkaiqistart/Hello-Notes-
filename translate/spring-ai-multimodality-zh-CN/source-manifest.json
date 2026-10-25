@@ -1,0 +1,62 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/multimodality.html",
+  "version": "2.0.2",
+  "images": [
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/spring-ai-message-api.jpg",
+      "alt": "Spring AI Message API"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/multimodal.test.png",
+      "alt": "Multimodal Test Image"
+    }
+  ],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Multimodality API"
+    },
+    {
+      "id": "_spring_ai_multimodality",
+      "text": "Spring AI Multimodality"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/multimodality.html#_spring_ai_multimodality",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatclient.html",
+      "label": "ChatClient"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/anthropic-chat.html#_multi_modal_support",
+      "label": "Anthropic Claude"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/bedrock-converse.html#_multimodal",
+      "label": "AWS Bedrock Converse"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html#_multimodal",
+      "label": "Mistral AI (e.g. Mistral Pixtral models)"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html#_multimodal",
+      "label": "Ollama (e.g. LLaVA, BakLLaVA, Llama models)"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_multimodal",
+      "label": "OpenAI (e.g. GPT models)"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/google-genai-chat.html#_multimodal",
+      "label": "Google Gemini"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#_multimodal",
+      "label": "Qxotic jinfer (e.g. Gemma 4, LFM2.5-VL, Qwen 3.5 models)"
+    }
+  ]
+}

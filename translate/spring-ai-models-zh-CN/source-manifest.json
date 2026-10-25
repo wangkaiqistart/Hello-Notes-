@@ -1,0 +1,130 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/index.html",
+  "version": "2.0.2",
+  "images": [
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/model-hierarchy.jpg",
+      "alt": "Model hierarchy"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/spring-ai-chat-completions-clients.jpg",
+      "alt": "spring ai chat completions clients"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/tools/tool-calling-01.jpg",
+      "alt": "The main sequence of actions for tool calling"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/etl-pipeline.jpg",
+      "alt": "etl pipeline"
+    }
+  ],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Spring AI API"
+    },
+    {
+      "id": "_introduction",
+      "text": "Introduction"
+    },
+    {
+      "id": "_ai_model_api",
+      "text": "AI Model API"
+    },
+    {
+      "id": "_vector_store_api",
+      "text": "Vector Store API"
+    },
+    {
+      "id": "_tool_calling_api",
+      "text": "Tool Calling API"
+    },
+    {
+      "id": "_chatclient_api",
+      "text": "ChatClient API"
+    },
+    {
+      "id": "_advisors_api",
+      "text": "Advisors API"
+    },
+    {
+      "id": "_mcp_model_context_protocol",
+      "text": "MCP (Model Context Protocol)"
+    },
+    {
+      "id": "_auto_configuration",
+      "text": "Auto Configuration"
+    },
+    {
+      "id": "_etl_data_engineering",
+      "text": "ETL Data Engineering"
+    },
+    {
+      "id": "_feedback_and_contributions",
+      "text": "Feedback and Contributions"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_introduction",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_ai_model_api",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_vector_store_api",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_tool_calling_api",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+      "label": "Tool Calling"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_chatclient_api",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatclient.html",
+      "label": "ChatClient API"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_advisors_api",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/advisors.html",
+      "label": "Advisors API"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_mcp_model_context_protocol",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html",
+      "label": "MCP (Model Context Protocol)"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_auto_configuration",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_etl_data_engineering",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_feedback_and_contributions",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/discussions",
+      "label": "GitHub discussions"
+    }
+  ]
+}

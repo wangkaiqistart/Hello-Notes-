@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="292" viewBox="0 0 800 292" role="img" aria-labelledby="title desc" lang="zh-CN">
+<title id="title">中英文 Token 切分示例</title>
+<desc id="desc">使用 cl100k_base 实际分词：这是一个测试。切为“这”“是”“一个”“测试”“。”共五个 Token；ChatGPT generates tokens. 切为 Chat、G、PT、带前导空格的 generates、带前导空格的 tokens、句点，共六个 Token。</desc>
+<rect width="800" height="292" fill="white"/>
+<g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" fill="#202020">
+<text x="24" y="30" font-size="22" fill="#202020">中文：5 个 Token</text>
+<rect x="24.0" y="46" width="52.0" height="48" fill="#d8c7f0"/>
+<text x="50.0" y="79" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32">这</text>
+<rect x="80.0" y="46" width="52.0" height="48" fill="#c7e9cf"/>
+<text x="106.0" y="79" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32">是</text>
+<rect x="136.0" y="46" width="84.0" height="48" fill="#f9d8ab"/>
+<text x="178.0" y="79" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32">一个</text>
+<rect x="224.0" y="46" width="84.0" height="48" fill="#f1babc"/>
+<text x="266.0" y="79" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32">测试</text>
+<rect x="312.0" y="46" width="52.0" height="48" fill="#c2e2ef"/>
+<text x="338.0" y="79" text-anchor="middle" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32">。</text>
+<text x="24" y="166" font-size="22" fill="#202020">英文：6 个 Token</text>
+<rect x="24.0" y="182" width="97.2" height="48" fill="#d8c7f0"/>
+<text x="72.6" y="215" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="32">Chat</text>
+<rect x="125.2" y="182" width="39.3" height="48" fill="#c7e9cf"/>
+<text x="144.8" y="215" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="32">G</text>
+<rect x="168.5" y="182" width="58.6" height="48" fill="#f9d8ab"/>
+<text x="197.8" y="215" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="32">PT</text>
+<rect x="231.1" y="182" width="213.0" height="48" fill="#f1babc"/>
+<text x="337.6" y="215" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="32">·generates</text>
+<rect x="448.1" y="182" width="155.1" height="48" fill="#c2e2ef"/>
+<text x="525.6" y="215" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="32">·tokens</text>
+<rect x="607.2" y="182" width="39.3" height="48" fill="#d8c7f0"/>
+<text x="626.9" y="215" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="32">.</text>
+<text x="24" y="122" font-size="21" fill="#5c6066">“一个”“测试”各对应一个 Token。</text>
+<text x="24" y="270" font-size="19" fill="#5c6066">分词器：cl100k_base；· 表示空格</text>
+</g></svg>

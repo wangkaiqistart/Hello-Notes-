@@ -1,0 +1,13 @@
+--- source-example-1
++++ translated-example-1
+@@ -1,8 +1,8 @@
+ var imageResource = new ClassPathResource("/multimodal.test.png");
+ 
+ var userMessage = UserMessage.builder()
+-    .text("Explain what do you see in this picture?") // content
+-    .media(new Media(MimeTypeUtils.IMAGE_PNG, this.imageResource)) // media
++    .text("Explain what do you see in this picture?") // 文本问题
++    .media(new Media(MimeTypeUtils.IMAGE_PNG, imageResource)) // 图片媒体
+     .build();
+ 
+-ChatResponse response = chatModel.call(new Prompt(this.userMessage));+ChatResponse response = chatModel.call(new Prompt(userMessage));

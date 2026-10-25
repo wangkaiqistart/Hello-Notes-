@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 560" role="img" aria-labelledby="title desc">
+  <title id="title">运维告警 Agent 闭环</title>
+  <desc id="desc">Webhook 触发运维 Agent，查询日志、召回记忆、重启服务并发送通知，过程可审计。</desc>
+  <style>
+    .bg { fill: #171717; }.panel { fill: #232323; stroke: #3a3a3a; stroke-width: 2; }.accent { fill: #ff8a3d; }
+    .title { fill: #f3f4f6; font: 700 38px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .label { fill: #ff9b52; font: 700 21px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .body { fill: #e5e7eb; font: 400 17px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .small { fill: #9ca3af; font: 400 16px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .arrow { stroke: #ff8a3d; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+  </style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="accent"/></marker></defs>
+  <rect class="bg" width="1440" height="560" rx="8"/>
+  <text class="title" x="56" y="62">示例：运维告警的自动闭环</text>
+  <g transform="translate(50 170)">
+    <rect class="panel" width="220" height="160" rx="6"/><text class="label" x="110" y="55">Webhook</text><text class="body" x="110" y="95">接收超时告警</text><text class="small" x="110" y="130">Environment / Channel</text>
+  </g>
+  <g transform="translate(310 170)"><rect class="panel" width="220" height="160" rx="6"/><text class="label" x="110" y="55">log_query</text><text class="body" x="110" y="95">查询最近错误日志</text><text class="small" x="110" y="130">Tool + Sandbox</text></g>
+  <g transform="translate(570 170)"><rect class="panel" width="220" height="160" rx="6"/><text class="label" x="110" y="55">Memory</text><text class="body" x="110" y="95">召回历史经验</text><text class="small" x="110" y="130">已知故障与措施</text></g>
+  <g transform="translate(830 170)"><rect class="panel" width="220" height="160" rx="6"/><text class="label" x="110" y="55">restart_service</text><text class="body" x="110" y="95">执行恢复并健康检查</text><text class="small" x="110" y="130">高风险操作需授权</text></g>
+  <g transform="translate(1090 170)"><rect class="panel" width="300" height="160" rx="6"/><text class="label" x="150" y="55">notify</text><text class="body" x="150" y="95">企业微信发送结果</text><text class="small" x="150" y="130">成功、失败和日志链接</text></g>
+  <path class="arrow" d="M270 250 H300"/><path class="arrow" d="M530 250 H560"/><path class="arrow" d="M790 250 H820"/><path class="arrow" d="M1050 250 H1080"/>
+  <rect class="panel" x="210" y="410" width="1020" height="76" rx="6"/><text class="body" x="720" y="443">每一步写入 Session，并记录调用者、工具、结果摘要和时间</text><text class="small" x="720" y="470">无人值守不等于无边界：权限、超时、审计和人工接管必须可用</text>
+</svg>

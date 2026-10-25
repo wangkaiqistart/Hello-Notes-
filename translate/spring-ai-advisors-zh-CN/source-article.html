@@ -1,0 +1,750 @@
+<article class="doc">
+<div class="breadcrumbs-container">
+  <nav class="breadcrumbs" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="../index.html">Spring AI</a></li>
+      <li>Reference</li>
+      <li><a href="chatclient.html">Chat Client API</a></li>
+      <li><a href="advisors.html">Advisors</a></li>
+    </ul>
+  </nav>
+</div><h1 id="page-title" class="page">Advisors API</h1>
+<aside class="toc embedded"><div class="toc-menu"><h3>Advisors API</h3><ul><li data-level="1"><a href="#_core_components">Core Components</a></li><li data-level="2"><a href="#_advisor_order">Advisor Order</a></li><li data-level="1"><a href="#_api_overview">API Overview</a></li><li data-level="1"><a href="#_implementing_an_advisor">Implementing an Advisor</a></li><li data-level="2"><a href="#_examples">Examples</a></li><li data-level="2"><a href="#_streaming_vs_non_streaming">Streaming vs Non-Streaming</a></li><li data-level="2"><a href="#_best_practices">Best Practices</a></li><li data-level="1"><a href="#_breaking_api_changes">Breaking API Changes</a></li><li data-level="2"><a href="#_advisor_interfaces">Advisor Interfaces</a></li><li data-level="2"><a href="#_context_map_handling">Context Map Handling</a></li></ul></div></aside><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Spring AI Advisors API provides a flexible and powerful way to intercept, modify, and enhance AI-driven interactions in your Spring applications.
+By leveraging the Advisors API, developers can create more sophisticated, reusable, and maintainable AI components.</p>
+</div>
+<div class="paragraph">
+<p>The key benefits include encapsulating recurring Generative AI patterns, transforming data sent to and from Large Language Models (LLMs), and providing portability across various models and use cases.</p>
+</div>
+<div class="paragraph">
+<p>You can configure existing advisors using the <a href="chatclient.html#_advisor_configuration_in_chatclient" class="xref page">ChatClient API</a> as shown in the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatMemory chatMemory = ... <span class="hljs-comment">// Initialize your chat memory store</span>
+VectorStore vectorStore = ... <span class="hljs-comment">// Initialize your vector store</span>
+
+<span class="hljs-keyword">var</span> chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(
+        MessageChatMemoryAdvisor.builder(chatMemory).build(), <span class="hljs-comment">// chat-memory advisor</span>
+        QuestionAnswerAdvisor.builder(vectorStore).build()    <span class="hljs-comment">// RAG advisor</span>
+    )
+    .build();
+
+<span class="hljs-keyword">var</span> conversationId = <span class="hljs-string">"678"</span>;
+
+String response = <span class="hljs-keyword">this</span>.chatClient.prompt()
+    <span class="hljs-comment">// Set advisor parameters at runtime</span>
+    .advisors(advisor -&gt; advisor.param(ChatMemory.CONVERSATION_ID, conversationId))
+    .user(userText)
+    .call()
+	.content();</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It is recommended to register the advisors at build time using builder’s <code>defaultAdvisors()</code> method.</p>
+</div>
+<div class="paragraph">
+<p>Advisors also participate in the Observability stack, so you can view metrics and traces related to their execution.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="retrieval-augmented-generation.html#_questionansweradvisor" class="xref page">Learn about Question Answer Advisor</a></p>
+</li>
+<li>
+<p><a href="chat-memory.html#_memory_in_chat_client" class="xref page">Learn about Chat Memory Advisor</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_core_components"><a class="anchor" href="#_core_components"></a>Core Components</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The API consists of <code>CallAdvisor</code> and <code>CallAdvisorChain</code> for non-streaming scenarios, and <code>StreamAdvisor</code> and <code>StreamAdvisorChain</code> for streaming scenarios.
+It also includes <code>ChatClientRequest</code> to represent the unsealed Prompt request, <code>ChatClientResponse</code> for the Chat Completion response. Both hold an <code>advise-context</code> to share state across the advisor chain.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/advisors-api-classes.jpg" alt="Advisors API Classes" width="600">
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>adviseCall()</code> and the <code>adviseStream()</code> are the key advisor methods, typically performing actions such as examining the unsealed Prompt data, customizing and augmenting the Prompt data, invoking the next entity in the advisor chain, optionally blocking the request, examining the chat completion response, and throwing exceptions to indicate processing errors.</p>
+</div>
+<div class="paragraph">
+<p>In addition the <code>getOrder()</code> method determines advisor order in the chain, while <code>getName()</code> provides a unique advisor name.</p>
+</div>
+<div class="paragraph">
+<p>The Advisor Chain, created by the Spring AI framework, allows sequential invocation of multiple advisors ordered by their <code>getOrder()</code> values.
+The lower values are executed first.
+The last advisor, added automatically, sends the request to the LLM.</p>
+</div>
+<div class="paragraph">
+<p>Following flow diagram illustrates the interaction between the advisor chain and the Chat Model:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/advisors-flow.jpg" alt="Advisors API Flow" width="400">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The Spring AI framework creates an <code>ChatClientRequest</code> from user’s <code>Prompt</code> along with an empty advisor <code>context</code> object.</p>
+</li>
+<li>
+<p>Each advisor in the chain processes the request, potentially modifying it. Alternatively, it can choose to block the request by not making the call to invoke the next entity. In the latter case, the advisor is responsible for filling out the response.</p>
+</li>
+<li>
+<p>The final advisor, provided by the framework, sends the request to the <code>Chat Model</code>.</p>
+</li>
+<li>
+<p>The Chat Model’s response is then passed back through the advisor chain and converted into <code>ChatClientResponse</code>. Later includes the shared advisor <code>context</code> instance.</p>
+</li>
+<li>
+<p>Each advisor can process or modify the response.</p>
+</li>
+<li>
+<p>The final <code>ChatClientResponse</code> is returned to the client by extracting the <code>ChatCompletion</code>.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_advisor_order"><a class="anchor" href="#_advisor_order"></a>Advisor Order</h3>
+<div class="paragraph">
+<p>The execution order of advisors in the chain is determined by the <code>getOrder()</code> method. Key points to understand:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Advisors with lower order values are executed first.</p>
+</li>
+<li>
+<p>The advisor chain operates as a stack:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The first advisor in the chain is the first to process the request.</p>
+</li>
+<li>
+<p>It is also the last to process the response.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>To control execution order:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Set the order close to <code>Ordered.HIGHEST_PRECEDENCE</code> to ensure an advisor is executed first in the chain (first for request processing, last for response processing).</p>
+</li>
+<li>
+<p>Set the order close to <code>Ordered.LOWEST_PRECEDENCE</code> to ensure an advisor is executed last in the chain (last for request processing, first for response processing).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Higher values are interpreted as lower priority.</p>
+</li>
+<li>
+<p>If multiple advisors have the same order value, their execution order is not guaranteed.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The seeming contradiction between order and execution sequence is due to the stack-like nature of the advisor chain:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>An advisor with the highest precedence (lowest order value) is added to the top of the stack.</p>
+</li>
+<li>
+<p>It will be the first to process the request as the stack unwinds.</p>
+</li>
+<li>
+<p>It will be the last to process the response as the stack rewinds.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>As a reminder, here are the semantics of the Spring <code>Ordered</code> interface:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Ordered</span> </span>{
+
+    <span class="hljs-comment">/**
+     * Constant for the highest precedence value.
+     * <span class="hljs-doctag">@see</span> java.lang.Integer#MIN_VALUE
+     */</span>
+    <span class="hljs-keyword">int</span> HIGHEST_PRECEDENCE = Integer.MIN_VALUE;
+
+    <span class="hljs-comment">/**
+     * Constant for the lowest precedence value.
+     * <span class="hljs-doctag">@see</span> java.lang.Integer#MAX_VALUE
+     */</span>
+    <span class="hljs-keyword">int</span> LOWEST_PRECEDENCE = Integer.MAX_VALUE;
+
+    <span class="hljs-comment">/**
+     * Get the order value of this object.
+     * &lt;p&gt;Higher values are interpreted as lower priority. As a consequence,
+     * the object with the lowest value has the highest priority (somewhat
+     * analogous to Servlet {<span class="hljs-doctag">@code</span> load-on-startup} values).
+     * &lt;p&gt;Same order values will result in arbitrary sort positions for the
+     * affected objects.
+     * <span class="hljs-doctag">@return</span> the order value
+     * <span class="hljs-doctag">@see</span> #HIGHEST_PRECEDENCE
+     * <span class="hljs-doctag">@see</span> #LOWEST_PRECEDENCE
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getOrder</span><span class="hljs-params">()</span></span>;
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For use cases that need to be first in the chain on both the input and output sides:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Use separate advisors for each side.</p>
+</li>
+<li>
+<p>Configure them with different order values.</p>
+</li>
+<li>
+<p>Use the advisor context to share state between them.</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_overview"><a class="anchor" href="#_api_overview"></a>API Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The main Advisor interfaces are located in the package <code>org.springframework.ai.chat.client.advisor.api</code>. Here are the key interfaces you’ll encounter when creating your own advisor:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Advisor</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Ordered</span> </span>{
+
+	<span class="hljs-function">String <span class="hljs-title">getName</span><span class="hljs-params">()</span></span>;
+
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The two sub-interfaces for synchronous and reactive Advisors are</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">CallAdvisor</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Advisor</span> </span>{
+
+	<span class="hljs-function">ChatClientResponse <span class="hljs-title">adviseCall</span><span class="hljs-params">(
+		ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain)</span></span>;
+
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">StreamAdvisor</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Advisor</span> </span>{
+
+	<span class="hljs-function">Flux&lt;ChatClientResponse&gt; <span class="hljs-title">adviseStream</span><span class="hljs-params">(
+		ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain)</span></span>;
+
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To continue the chain of Advice, use <code>CallAdvisorChain</code> and <code>StreamAdvisorChain</code> in your Advice implementation:</p>
+</div>
+<div class="paragraph">
+<p>The interfaces are</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">CallAdvisorChain</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AdvisorChain</span> </span>{
+
+	<span class="hljs-comment">/**
+	 * Invokes the next {<span class="hljs-doctag">@link</span> CallAdvisor} in the {<span class="hljs-doctag">@link</span> CallAdvisorChain} with the given
+	 * request.
+	 */</span>
+	<span class="hljs-function">ChatClientResponse <span class="hljs-title">nextCall</span><span class="hljs-params">(ChatClientRequest chatClientRequest)</span></span>;
+
+	<span class="hljs-comment">/**
+	 * Returns the list of all the {<span class="hljs-doctag">@link</span> CallAdvisor} instances included in this chain at
+	 * the time of its creation.
+	 */</span>
+	<span class="hljs-function">List&lt;CallAdvisor&gt; <span class="hljs-title">getCallAdvisors</span><span class="hljs-params">()</span></span>;
+
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">StreamAdvisorChain</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AdvisorChain</span> </span>{
+
+	<span class="hljs-comment">/**
+	 * Invokes the next {<span class="hljs-doctag">@link</span> StreamAdvisor} in the {<span class="hljs-doctag">@link</span> StreamAdvisorChain} with the
+	 * given request.
+	 */</span>
+	<span class="hljs-function">Flux&lt;ChatClientResponse&gt; <span class="hljs-title">nextStream</span><span class="hljs-params">(ChatClientRequest chatClientRequest)</span></span>;
+
+	<span class="hljs-comment">/**
+	 * Returns the list of all the {<span class="hljs-doctag">@link</span> StreamAdvisor} instances included in this chain
+	 * at the time of its creation.
+	 */</span>
+	<span class="hljs-function">List&lt;StreamAdvisor&gt; <span class="hljs-title">getStreamAdvisors</span><span class="hljs-params">()</span></span>;
+
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementing_an_advisor"><a class="anchor" href="#_implementing_an_advisor"></a>Implementing an Advisor</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To create an advisor, implement either <code>CallAdvisor</code> or <code>StreamAdvisor</code> (or both). The key method to implement is <code>nextCall()</code> for non-streaming or <code>nextStream()</code> for streaming advisors.</p>
+</div>
+<div class="sect2">
+<h3 id="_examples"><a class="anchor" href="#_examples"></a>Examples</h3>
+<div class="paragraph">
+<p>We will provide few hands-on examples to illustrate how to implement advisors for observing and augmenting use-cases.</p>
+</div>
+<div class="sect3">
+<h4 id="_logging_advisor"><a class="anchor" href="#_logging_advisor"></a>Logging Advisor</h4>
+<div class="paragraph">
+<p>We can implement a simple logging advisor that logs the <code>ChatClientRequest</code> before and the <code>ChatClientResponse</code> after the call to the next advisor in the chain.
+Note that the advisor only observes the request and response and does not modify them.
+This implementation support both non-streaming and streaming scenarios.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SimpleLoggerAdvisor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">CallAdvisor</span>, <span class="hljs-title">StreamAdvisor</span> </span>{
+
+	<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger logger = LoggerFactory.getLogger(SimpleLoggerAdvisor<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+
+	<span class="hljs-meta">@Override</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getName</span><span class="hljs-params">()</span> </span>{ <i class="conum" data-value="1"></i><b>(<span class="hljs-number">1</span>)</b>
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getClass().getSimpleName();
+	}
+
+	<span class="hljs-meta">@Override</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getOrder</span><span class="hljs-params">()</span> </span>{ <i class="conum" data-value="2"></i><b>(<span class="hljs-number">2</span>)</b>
+		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+	}
+
+
+	<span class="hljs-meta">@Override</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> ChatClientResponse <span class="hljs-title">adviseCall</span><span class="hljs-params">(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain)</span> </span>{
+		logRequest(chatClientRequest);
+
+		ChatClientResponse chatClientResponse = callAdvisorChain.nextCall(chatClientRequest);
+
+		logResponse(chatClientResponse);
+
+		<span class="hljs-keyword">return</span> chatClientResponse;
+	}
+
+	<span class="hljs-meta">@Override</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> Flux&lt;ChatClientResponse&gt; <span class="hljs-title">adviseStream</span><span class="hljs-params">(ChatClientRequest chatClientRequest,
+			StreamAdvisorChain streamAdvisorChain)</span> </span>{
+		logRequest(chatClientRequest);
+
+		Flux&lt;ChatClientResponse&gt; chatClientResponses = streamAdvisorChain.nextStream(chatClientRequest);
+
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ChatClientMessageAggregator().aggregateChatClientResponse(chatClientResponses, <span class="hljs-keyword">this</span>::logResponse); <i class="conum" data-value="3"></i><b>(<span class="hljs-number">3</span>)</b>
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">logRequest</span><span class="hljs-params">(ChatClientRequest request)</span> </span>{
+		logger.debug(<span class="hljs-string">"request: {}"</span>, request);
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">logResponse</span><span class="hljs-params">(ChatClientResponse chatClientResponse)</span> </span>{
+		logger.debug(<span class="hljs-string">"response: {}"</span>, chatClientResponse);
+	}
+
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Provides a unique name for the advisor.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>You can control the order of execution by setting the order value. Lower values execute first.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>MessageAggregator</code> is a utility class that aggregates the Flux responses into a single ChatClientResponse.
+This can be useful for logging or other processing that observe the entire response rather than individual items in the stream.
+Note that you can not alter the response in the <code>MessageAggregator</code> as it is a read-only operation.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_re_reading_re2_advisor"><a class="anchor" href="#_re_reading_re2_advisor"></a>Re-Reading (Re2) Advisor</h4>
+<div class="paragraph">
+<p>The "<a href="https://arxiv.org/pdf/2309.06275" class="external" target="_blank">Re-Reading Improves Reasoning in Large Language Models</a>" article introduces a technique called Re-Reading (Re2) that improves the reasoning capabilities of Large Language Models.
+The Re2 technique requires augmenting the input prompt like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>{Input_Query}
+Read the question again: {Input_Query}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Implementing an advisor that applies the Re2 technique to the user’s input query can be done like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReReadingAdvisor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">BaseAdvisor</span> </span>{
+
+	<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String DEFAULT_RE2_ADVISE_TEMPLATE = <span class="hljs-string">""</span><span class="hljs-string">"
+			{re2_input_query}
+			Read the question again: {re2_input_query}
+			"</span><span class="hljs-string">""</span>;
+
+	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String re2AdviseTemplate;
+
+	<span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> order = <span class="hljs-number">0</span>;
+
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ReReadingAdvisor</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">this</span>(DEFAULT_RE2_ADVISE_TEMPLATE);
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ReReadingAdvisor</span><span class="hljs-params">(String re2AdviseTemplate)</span> </span>{
+		<span class="hljs-keyword">this</span>.re2AdviseTemplate = re2AdviseTemplate;
+	}
+
+	<span class="hljs-meta">@Override</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> ChatClientRequest <span class="hljs-title">before</span><span class="hljs-params">(ChatClientRequest chatClientRequest, AdvisorChain advisorChain)</span> </span>{ <i class="conum" data-value="1"></i><b>(<span class="hljs-number">1</span>)</b>
+		String augmentedUserText = PromptTemplate.builder()
+			.template(<span class="hljs-keyword">this</span>.re2AdviseTemplate)
+			.variables(Map.of(<span class="hljs-string">"re2_input_query"</span>, chatClientRequest.prompt().getUserMessage().getText()))
+			.build()
+			.render();
+
+		<span class="hljs-keyword">return</span> chatClientRequest.mutate()
+			.prompt(chatClientRequest.prompt().augmentUserMessage(augmentedUserText))
+			.build();
+	}
+
+	<span class="hljs-meta">@Override</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> ChatClientResponse <span class="hljs-title">after</span><span class="hljs-params">(ChatClientResponse chatClientResponse, AdvisorChain advisorChain)</span> </span>{
+		<span class="hljs-keyword">return</span> chatClientResponse;
+	}
+
+	<span class="hljs-meta">@Override</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getOrder</span><span class="hljs-params">()</span> </span>{ <i class="conum" data-value="2"></i><b>(<span class="hljs-number">2</span>)</b>
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.order;
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">public</span> ReReadingAdvisor <span class="hljs-title">withOrder</span><span class="hljs-params">(<span class="hljs-keyword">int</span> order)</span> </span>{
+		<span class="hljs-keyword">this</span>.order = order;
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+	}
+
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>before</code> method augments the user’s input query applying the Re-Reading technique.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>You can control the order of execution by setting the order value. Lower values execute first.</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_spring_ai_built_in_advisors"><a class="anchor" href="#_spring_ai_built_in_advisors"></a>Spring AI Built-in Advisors</h4>
+<div class="paragraph">
+<p>Spring AI framework provides several built-in advisors to enhance your AI interactions. Here’s an overview of the available advisors:</p>
+</div>
+<div class="sect4">
+<h5 id="_chat_memory_advisors"><a class="anchor" href="#_chat_memory_advisors"></a>Chat Memory Advisors</h5>
+<div class="paragraph">
+<p>These advisors manage conversation history in a chat memory store:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>MessageChatMemoryAdvisor</code></p>
+<div class="paragraph">
+<p>Retrieves memory and adds it as a collection of messages to the prompt. This approach maintains the structure of the conversation history.  Note, not all AI Models support this approach.</p>
+</div>
+</li>
+<li>
+<p><code>VectorStoreChatMemoryAdvisor</code></p>
+<div class="paragraph">
+<p>Retrieves memory from a VectorStore and adds it into the prompt’s system text. This advisor is useful for efficiently searching and retrieving relevant information from large datasets.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_question_answering_advisor"><a class="anchor" href="#_question_answering_advisor"></a>Question Answering Advisor</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>QuestionAnswerAdvisor</code></p>
+<div class="paragraph">
+<p>This advisor uses a vector store to provide question-answering capabilities, implementing the Naive RAG (Retrieval-Augmented Generation) pattern.</p>
+</div>
+</li>
+<li>
+<p><code>RetrievalAugmentationAdvisor</code></p>
+<div class="paragraph">
+<p>Advisor that implements common Retrieval Augmented Generation (RAG) flows using the building blocks defined in the <code>org.springframework.ai.rag</code> package and following the Modular RAG Architecture.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_reasoning_advisor"><a class="anchor" href="#_reasoning_advisor"></a>Reasoning Advisor</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ReReadingAdvisor</code></p>
+<div class="paragraph">
+<p>Implements a re-reading strategy for LLM reasoning, dubbed RE2, to enhance understanding in the input phase.
+Based on the article: <a href="https://arxiv.org/pdf/2309.06275" class="external" target="_blank">Re-Reading Improves Reasoning in LLMs</a>.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_tool_calling_advisor"><a class="anchor" href="#_tool_calling_advisor"></a>Tool Calling Advisor</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ToolCallingAdvisor</code></p>
+<div class="paragraph">
+<p>Handles the tool calling loop as part of the advisor chain. This advisor is always auto-registered by <code>ChatClient</code> (unless explicitly disabled), so tools injected at runtime by another advisor are supported even when no static tools are configured. It executes tool calls requested by the model and sends the results back, iterating until no more tool calls are needed. Implements <code>ToolAdvisor</code>, which is a marker interface that prevents a second <code>ToolCallingAdvisor</code> from being auto-registered.</p>
+</div>
+<div class="paragraph">
+<p>For full documentation, see <a href="advisors-recursive.html#_toolcallingadvisor" class="xref page">Recursive Advisors - ToolCallingAdvisor</a> and <a href="chatclient.html#_tool_calling" class="xref page">ChatClient - Tool Calling</a>.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_content_safety_advisor"><a class="anchor" href="#_content_safety_advisor"></a>Content Safety Advisor</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>SafeGuardAdvisor</code></p>
+<div class="paragraph">
+<p>A simple advisor designed to prevent the model from generating harmful or inappropriate content.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_streaming_vs_non_streaming"><a class="anchor" href="#_streaming_vs_non_streaming"></a>Streaming vs Non-Streaming</h3>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/advisors-non-stream-vs-stream.jpg" alt="Advisors Streaming vs Non-Streaming Flow" width="800">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Non-streaming advisors work with complete requests and responses.</p>
+</li>
+<li>
+<p>Streaming advisors handle requests and responses as continuous streams, using reactive programming concepts (e.g., Flux for responses).</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> Flux&lt;ChatClientResponse&gt; <span class="hljs-title">adviseStream</span><span class="hljs-params">(ChatClientRequest chatClientRequest, StreamAdvisorChain chain)</span> </span>{
+
+    <span class="hljs-keyword">return</span>  Mono.just(chatClientRequest)
+            .publishOn(Schedulers.boundedElastic())
+            .map(request -&gt; {
+                <span class="hljs-comment">// This can be executed by blocking and non-blocking Threads.</span>
+                <span class="hljs-comment">// Advisor before next section</span>
+            })
+            .flatMapMany(request -&gt; chain.nextStream(request))
+            .map(response -&gt; {
+                <span class="hljs-comment">// Advisor after next section</span>
+            });
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_best_practices"><a class="anchor" href="#_best_practices"></a>Best Practices</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Keep advisors focused on specific tasks for better modularity.</p>
+</li>
+<li>
+<p>Use the <code>adviseContext</code> to share state between advisors when necessary.</p>
+</li>
+<li>
+<p>Implement both streaming and non-streaming versions of your advisor for maximum flexibility.</p>
+</li>
+<li>
+<p>Carefully consider the order of advisors in your chain to ensure proper data flow.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_breaking_api_changes"><a class="anchor" href="#_breaking_api_changes"></a>Breaking API Changes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_advisor_interfaces"><a class="anchor" href="#_advisor_interfaces"></a>Advisor Interfaces</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>In 1.0 M2, there were separate <code>RequestAdvisor</code> and <code>ResponseAdvisor</code> interfaces.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>RequestAdvisor</code> was invoked before the <code>ChatModel.call</code> and <code>ChatModel.stream</code> methods.</p>
+</li>
+<li>
+<p><code>ResponseAdvisor</code> was called after these methods.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>In 1.0 M3, these interfaces have been replaced with:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CallAroundAdvisor</code></p>
+</li>
+<li>
+<p><code>StreamAroundAdvisor</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>The <code>StreamResponseMode</code>, previously part of <code>ResponseAdvisor</code>, has been removed.</p>
+</li>
+<li>
+<p>In 1.0.0 these interfaces have been replaced:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CallAroundAdvisor</code> → <code>CallAdvisor</code>, <code>StreamAroundAdvisor</code> → <code>StreamAdvisor</code>, <code>CallAroundAdvisorChain</code> → <code>CallAdvisorChain</code> and <code>StreamAroundAdvisorChain</code> → <code>StreamAdvisorChain</code>.</p>
+</li>
+<li>
+<p><code>AdvisedRequest</code> → <code>ChatClientRequest</code> and <code>AdivsedResponse</code> → <code>ChatClientResponse</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_context_map_handling"><a class="anchor" href="#_context_map_handling"></a>Context Map Handling</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>In 1.0 M2:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The context map was a separate method argument.</p>
+</li>
+<li>
+<p>The map was mutable and passed along the chain.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>In 1.0 M3:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The context map is now part of the <code>AdvisedRequest</code> and <code>AdvisedResponse</code> records.</p>
+</li>
+<li>
+<p>The map is immutable.</p>
+</li>
+<li>
+<p>To update the context, use the <code>updateContext</code> method, which creates a new unmodifiable map with the updated contents.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="chatclient.html">Chat Client API</a></span>
+  <span class="next"><a href="advisors-recursive.html">Recursive Advisors</a></span>
+</nav>
+</article>

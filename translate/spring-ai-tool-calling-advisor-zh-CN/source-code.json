@@ -1,0 +1,50 @@
+[
+  {
+    "language": "java",
+    "code": "var toolCallingAdvisor = ToolCallingAdvisor.builder()\n    .toolCallingManager(toolCallingManager)\n    .advisorOrder(BaseAdvisor.HIGHEST_PRECEDENCE + 300)\n    .build();\n\nvar chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(toolCallingAdvisor)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "@FunctionalInterface\npublic interface ToolExecutionEligibilityChecker {\n    boolean isToolCallResponse(@Nullable ChatResponse chatResponse);\n}"
+  },
+  {
+    "language": "java",
+    "code": "ToolExecutionEligibilityChecker strictChecker = response ->\n    response != null\n        && response.hasToolCalls()\n        && \"tool_calls\".equals(response.getMetadata().getFinishReason());\n\nvar advisor = ToolCallingAdvisor.builder()\n    .toolExecutionEligibilityChecker(strictChecker)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "var toolCallingAdvisor = ToolCallingAdvisor.builder()\n    .disableInternalConversationHistory()  // memory advisor inside the loop handles history\n    .advisorOrder(BaseAdvisor.HIGHEST_PRECEDENCE + 300)\n    .build();\n\nvar chatMemoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory)\n    .order(BaseAdvisor.HIGHEST_PRECEDENCE + 400)  // inside the loop\n    .build();\n\nvar chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(chatMemoryAdvisor, toolCallingAdvisor)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "protected ChatClientRequest doInitializeLoop(\n        ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain);\n\nprotected ChatClientRequest doBeforeCall(\n        ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain);\n\nprotected ChatClientResponse doAfterCall(\n        ChatClientResponse chatClientResponse, CallAdvisorChain callAdvisorChain);\n\nprotected ChatClientResponse doFinalizeLoop(\n        ChatClientResponse chatClientResponse, CallAdvisorChain callAdvisorChain);\n\nprotected List<Message> doGetNextInstructionsForToolCall(\n        ChatClientRequest chatClientRequest,\n        ChatClientResponse chatClientResponse,\n        ToolExecutionResult toolExecutionResult);"
+  },
+  {
+    "language": "java",
+    "code": "protected ChatClientRequest doInitializeLoopStream(\n        ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain);\n\nprotected ChatClientRequest doBeforeStream(\n        ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain);\n\nprotected ChatClientResponse doAfterStream(\n        ChatClientResponse chatClientResponse, StreamAdvisorChain streamAdvisorChain);\n\nprotected Flux<ChatClientResponse> doFinalizeLoopStream(\n        Flux<ChatClientResponse> chatClientResponseFlux, StreamAdvisorChain streamAdvisorChain);\n\nprotected List<Message> doGetNextInstructionsForToolCallStream(\n        ChatClientRequest chatClientRequest,\n        ChatClientResponse chatClientResponse,\n        ToolExecutionResult toolExecutionResult);"
+  },
+  {
+    "language": "java",
+    "code": "public class MyAuditingToolCallingAdvisor extends ToolCallingAdvisor {\n\n    private final AuditService audit;\n\n    @Override\n    protected ChatClientResponse doAfterCall(\n            ChatClientResponse response, CallAdvisorChain chain) {\n        var toolCalls = response.chatResponse().getResult().getOutput().getToolCalls();\n        for (var call : toolCalls) {\n            audit.recordIntent(call.name(), call.arguments());\n        }\n        return response;\n    }\n\n    public static Builder<?> builder() {\n        return new Builder<>();\n    }\n\n    public static class Builder<T extends Builder<T>> extends ToolCallingAdvisor.Builder<T> {\n\n        private AuditService audit;\n\n        public T audit(AuditService audit) {\n            this.audit = audit;\n            return self();\n        }\n\n        @Override\n        public MyAuditingToolCallingAdvisor build() {\n            // Use the inherited fields from ToolCallingAdvisor.Builder via the protected getters.\n            return new MyAuditingToolCallingAdvisor(\n                getToolCallingManager(),\n                getToolExecutionEligibilityChecker(),\n                getAdvisorOrder(),\n                isConversationHistoryEnabled(),\n                audit);\n        }\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "ChatClient chatClient = ...\nToolCallingManager toolCallingManager = ToolCallingManager.builder().build();\n\nToolCallback[] tools = ToolCallbacks.from(new WeatherTools());\nChatOptions chatOptions = ToolCallingChatOptions.builder().toolCallbacks(tools).build();\n\nString question = \"What is the weather in Amsterdam and Paris?\";\nPrompt prompt = new Prompt(List.of(new UserMessage(question)), chatOptions);\n\nAtomicReference<ChatClientResponse> ref = new AtomicReference<>();\n\nnew ChatClientMessageAggregator().aggregateChatClientResponse(\n    chatClient.prompt()\n        .messages(prompt.getInstructions())\n        .options(chatOptions)\n        .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))\n        .stream()\n        .chatClientResponse()\n        .doOnNext(chunk -> forwardToSse(chunk)),  // side-channel emission\n    ref::set\n).blockLast();\n\nChatClientResponse response = ref.get();\n\nwhile (response.chatResponse() != null && response.chatResponse().hasToolCalls()) {\n    ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response.chatResponse());\n    prompt = new Prompt(result.conversationHistory(), chatOptions);\n\n    AtomicReference<ChatClientResponse> nextRef = new AtomicReference<>();\n    new ChatClientMessageAggregator().aggregateChatClientResponse(\n        chatClient.prompt()\n            .messages(result.conversationHistory())\n            .options(chatOptions)\n            .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))\n            .stream()\n            .chatClientResponse()\n            .doOnNext(chunk -> forwardToSse(chunk)),\n        nextRef::set\n    ).blockLast();\n\n    response = nextRef.get();\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class ToolCallObservingAdvisor implements CallAdvisor, StreamAdvisor {\n\n    private final Consumer<ChatClientResponse> observer;\n\n    @Override\n    public int getOrder() {\n        return Ordered.HIGHEST_PRECEDENCE + 400;  // inside ToolCallingAdvisor (order 300)\n    }\n\n    @Override\n    public ChatClientResponse adviseCall(ChatClientRequest request, CallAdvisorChain chain) {\n        // Each iteration's request includes ToolResponseMessages from prior iterations\n        request.prompt().getInstructions().forEach(msg -> log.debug(\"Message: {}\", msg));\n        ChatClientResponse response = chain.nextCall(request);\n        observer.accept(response);\n        return response;\n    }\n\n    @Override\n    public Flux<ChatClientResponse> adviseStream(ChatClientRequest request, StreamAdvisorChain chain) {\n        // Observe every chunk including tool-call request chunks\n        return chain.nextStream(request).doOnNext(observer);\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "var chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(new ToolCallObservingAdvisor(chunk -> forwardToSse(chunk)))\n    .build();\n\nString response = chatClient.prompt()\n    .user(\"What is the weather in Amsterdam and Paris?\")\n    .tools(new WeatherTools())\n    .call()\n    .content();"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.chat.client.tool-calling.enabled=false"
+  },
+  {
+    "language": "java",
+    "code": "chatClient.prompt(\"What day is tomorrow?\")\n    .tools(new DateTimeTools())\n    .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))\n    .call()\n    .content();"
+  }
+]

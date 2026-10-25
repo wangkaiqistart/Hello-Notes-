@@ -1,0 +1,70 @@
+[
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-tool-search-advisor</artifactId>\n</dependency>"
+  },
+  {
+    "language": "gradle",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-tool-search-advisor'\n}"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-tool-search-advisor</artifactId>\n</dependency>"
+  },
+  {
+    "language": "gradle",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-tool-search-advisor'\n}"
+  },
+  {
+    "language": "java",
+    "code": "// 1. Configure a ToolIndex (semantic, keyword, or regex)\n@Bean\nToolIndex toolIndex(VectorStore vectorStore) {\n    return new VectorToolIndex(vectorStore);\n}\n\n// 2. Build the advisor\nvar toolSearchAdvisor = ToolSearchToolCallingAdvisor.builder()\n    .toolIndex(toolIndex)\n    .maxResults(5)\n    .build();\n\n// 3. Register with ChatClient — tools are indexed but NOT sent to the LLM up front\nChatClient chatClient = ChatClient.builder(chatModel)\n    .defaultTools(new MyTools())\n    .defaultAdvisors(toolSearchAdvisor)\n    .build();\n\n// 4. Make a request — supply a session ID via the advisor context\nString answer = chatClient.prompt(\"Help me plan what to wear today in Amsterdam\")\n    .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, \"user-42-session\"))\n    .call()\n    .content();"
+  },
+  {
+    "language": "java",
+    "code": "chatClient.prompt()\n    .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, \"user-42-session\"))\n    .user(\"...\")\n    .call()\n    .content();"
+  },
+  {
+    "language": "java",
+    "code": "var advisor = ToolSearchToolCallingAdvisor.builder()\n    .toolIndex(toolIndex)\n    .sessionIdKeyName(\"tenantId\")\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "@Bean\nToolIndex vectorToolIndex(VectorStore vectorStore) {\n    return new VectorToolIndex(vectorStore);\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Bean\nToolIndex luceneToolIndex() {\n    return new LuceneToolIndex();          // default minimum score 0.25\n    // return new LuceneToolIndex(0.4f);   // custom minimum score threshold\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Bean\nToolIndex regexToolIndex() {\n    return new RegexToolIndex();\n}"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-tool-search-tool</artifactId>\n</dependency>"
+  },
+  {
+    "language": "java",
+    "code": "public interface ToolIndex {\n\n    void indexTool(String sessionId, ToolReference toolReference);\n\n    /** Default implementation loops over indexTool. */\n    void indexTools(String sessionId, List<ToolReference> toolReferences);\n\n    ToolSearchResponse search(ToolSearchRequest request);\n\n    void clearIndex(String sessionId);\n}"
+  },
+  {
+    "language": "java",
+    "code": "// Default: LRU cap of 1000 sessions — no configuration needed\nvar advisor = ToolSearchToolCallingAdvisor.builder()\n    .toolIndex(toolIndex)\n    .build();\n\n// Never evict — manage session lifetime yourself\nvar advisor = ToolSearchToolCallingAdvisor.builder()\n    .toolIndex(toolIndex)\n    .evictionStrategy(NeverEvictStrategy.INSTANCE)\n    .build();\n\n// Always evict — re-index every request (useful for testing)\nvar advisor = ToolSearchToolCallingAdvisor.builder()\n    .toolIndex(toolIndex)\n    .evictionStrategy(AlwaysEvictStrategy.INSTANCE)\n    .build();\n\n// LRU with custom cap\nvar advisor = ToolSearchToolCallingAdvisor.builder()\n    .toolIndex(toolIndex)\n    .evictionStrategy(new LruEvictionStrategy(200))\n    .build();\n\n// Evict sessions idle for more than 30 minutes\nvar advisor = ToolSearchToolCallingAdvisor.builder()\n    .toolIndex(toolIndex)\n    .evictionStrategy(new TtlEvictionStrategy(Duration.ofMinutes(30)))\n    .build();\n\n// Combine: TTL + LRU cap\nvar advisor = ToolSearchToolCallingAdvisor.builder()\n    .toolIndex(toolIndex)\n    .evictionStrategy(new CompositeEvictionStrategy(\n        new TtlEvictionStrategy(Duration.ofMinutes(30)),\n        new LruEvictionStrategy(200)))\n    .build();"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.chat.client.tool-search-advisor.enabled=true"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.chat.client.tool-search-advisor.enabled=true\nspring.ai.chat.client.tool-search-advisor.tool-index-type=lucene\nspring.ai.chat.client.tool-search-advisor.lucene.min-score-threshold=0.4\nspring.ai.chat.client.tool-search-advisor.eviction.ttl=30m"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.chat.client.tool-search-advisor.enabled=true\nspring.ai.chat.client.tool-search-advisor.tool-index-type=vector"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.chat.client.tool-search-advisor.enabled=true\nspring.ai.chat.client.tool-search-advisor.tool-index-type=vector\nspring.ai.chat.client.tool-search-advisor.session-id-key-name=tenantId"
+  }
+]

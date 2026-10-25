@@ -1,0 +1,23 @@
+[
+  {
+    "sourceUrl": "https://docs.spring.io/spring-ai/reference/_images/structured-output-architecture.jpg",
+    "sourceFile": "structured-output-architecture.jpg",
+    "sha256": "d7849fa62ce671bd4a1cef17b2d61bd80191ac61cf39ed98c8226a8f86fe3ec9",
+    "localizedFile": "spring-ai-structured-output-zh.svg",
+    "reused": true
+  },
+  {
+    "sourceUrl": "https://docs.spring.io/spring-ai/reference/_images/structured-output-api.jpg",
+    "sourceFile": "structured-output-api.jpg",
+    "sha256": "e781ede2c11d864c2291c88e51445325904cd23a7a7f802c31a26b34281dedfe",
+    "localizedFile": "structured-output-api-zh.svg",
+    "reused": false
+  },
+  {
+    "sourceUrl": "https://docs.spring.io/spring-ai/reference/_images/structured-output-hierarchy4.jpg",
+    "sourceFile": "structured-output-hierarchy4.jpg",
+    "sha256": "b18813f3b4b81fd847d08bf90d7e94a2274de310d9e72b1beae64167fd05636f",
+    "localizedFile": "structured-output-hierarchy-zh.svg",
+    "reused": false
+  }
+]

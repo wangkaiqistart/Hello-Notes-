@@ -1,0 +1,85 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html",
+  "version": "2.0.2",
+  "images": [],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Transcription API"
+    },
+    {
+      "id": "_supported_providers",
+      "text": "Supported Providers"
+    },
+    {
+      "id": "_common_interface",
+      "text": "Common Interface"
+    },
+    {
+      "id": "_transcriptionmodel",
+      "text": "TranscriptionModel"
+    },
+    {
+      "id": "_audiotranscriptionprompt",
+      "text": "AudioTranscriptionPrompt"
+    },
+    {
+      "id": "_audiotranscriptionresponse",
+      "text": "AudioTranscriptionResponse"
+    },
+    {
+      "id": "_writing_provider_agnostic_code",
+      "text": "Writing Provider-Agnostic Code"
+    },
+    {
+      "id": "_basic_service_example",
+      "text": "Basic Service Example"
+    },
+    {
+      "id": "_provider_specific_features",
+      "text": "Provider-Specific Features"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html#_supported_providers",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions/openai-transcriptions.html",
+      "label": "OpenAI’s Whisper API"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions/jinfer-transcriptions.html",
+      "label": "Qxotic jinfer Transcriptions (local, in-JVM)"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html#_common_interface",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html#_transcriptionmodel",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html#_audiotranscriptionprompt",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html#_audiotranscriptionresponse",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html#_writing_provider_agnostic_code",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html#_basic_service_example",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html#_provider_specific_features",
+      "label": ""
+    }
+  ]
+}

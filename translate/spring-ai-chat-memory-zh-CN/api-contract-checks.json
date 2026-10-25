@@ -1,0 +1,99 @@
+{
+  "version": "2.0.2",
+  "sourceArtifacts": [
+    "spring-ai-client-chat",
+    "spring-ai-model",
+    "spring-ai-model-chat-memory-repository-cassandra",
+    "spring-ai-autoconfigure-model-chat-memory-repository-cassandra",
+    "spring-ai-vector-store-advisor"
+  ],
+  "mavenBaseUrl": "https://repo.maven.apache.org/maven2/org/springframework/ai/",
+  "javadocBaseUrl": "https://docs.spring.io/spring-ai/docs/2.0.2/api/",
+  "checks": [
+    {
+      "claim": "Cassandra 配置前缀",
+      "file": "source-cassandra-properties.java",
+      "assertion": "CONFIG_PREFIX = \"spring.ai.chat.memory.repository.cassandra\"",
+      "result": "PASS"
+    },
+    {
+      "claim": "Cassandra 消息列默认值",
+      "file": "source-CassandraChatMemoryRepositoryConfig.java",
+      "assertion": "DEFAULT_MESSAGES_COLUMN_NAME = \"messages\"",
+      "result": "PASS"
+    },
+    {
+      "claim": "create 接收配置对象",
+      "file": "source-CassandraChatMemoryRepository.java",
+      "assertion": "create(CassandraChatMemoryRepositoryConfig conf)",
+      "result": "PASS"
+    },
+    {
+      "claim": "Cassandra 配置构建器的 build()",
+      "file": "javadoc-cassandra-builder.html",
+      "assertion": "id=\"build()\"",
+      "result": "PASS"
+    },
+    {
+      "claim": "默认记忆 Advisor 位于工具循环外",
+      "file": "source-ToolCallingAdvisor.java",
+      "assertion": "so that memory advisors at their default order are placed outside this",
+      "result": "PASS"
+    },
+    {
+      "claim": "工具循环可向后续链路传递上下文",
+      "file": "source-ToolCallingAdvisor.java",
+      "assertion": "return toolExecutionResult.conversationHistory();",
+      "result": "PASS"
+    },
+    {
+      "claim": "窗口裁剪对齐用户消息",
+      "file": "source-MessageWindowChatMemory.java",
+      "assertion": "getMessageType() != MessageType.USER",
+      "result": "PASS"
+    },
+    {
+      "claim": "默认消息窗口为 20 条",
+      "file": "source-MessageWindowChatMemory.java",
+      "assertion": "DEFAULT_MAX_MESSAGES = 20",
+      "result": "PASS"
+    },
+    {
+      "claim": "记忆 Advisor 要求会话 ID",
+      "file": "source-BaseChatMemoryAdvisor.java",
+      "assertion": "conversationId cannot be null",
+      "result": "PASS"
+    },
+    {
+      "claim": "记忆 Advisor 保存用户与助手消息",
+      "file": "source-MessageChatMemoryAdvisor.java",
+      "assertion": "this.chatMemory.add",
+      "result": "PASS"
+    },
+    {
+      "claim": "向量记忆的模板配置方法",
+      "file": "javadoc-vector-memory-builder.html",
+      "assertion": "systemPromptTemplate",
+      "result": "PASS"
+    },
+    {
+      "claim": "系统消息占位符",
+      "file": "source-VectorStoreChatMemoryAdvisor.java",
+      "assertion": "{instructions}",
+      "result": "PASS"
+    },
+    {
+      "claim": "检索记忆占位符",
+      "file": "source-VectorStoreChatMemoryAdvisor.java",
+      "assertion": "{long_term_memory}",
+      "result": "PASS"
+    },
+    {
+      "claim": "模板配置实际方法名",
+      "file": "source-VectorStoreChatMemoryAdvisor.java",
+      "assertion": "public Builder systemPromptTemplate(PromptTemplate systemPromptTemplate)",
+      "result": "PASS"
+    }
+  ],
+  "javaExecuted": false
+}

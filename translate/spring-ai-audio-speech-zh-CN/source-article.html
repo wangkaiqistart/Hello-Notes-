@@ -1,0 +1,437 @@
+<article class="doc">
+<h1 id="page-title" class="page">Text-To-Speech (TTS) API</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring AI provides a unified API for Text-To-Speech (TTS) through the <code>TextToSpeechModel</code> and <code>StreamingTextToSpeechModel</code> interfaces. This allows you to write portable code that works across different TTS providers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_supported_providers"><a class="anchor" href="#_supported_providers"></a>Supported Providers</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="speech/openai-speech.html" class="xref page">OpenAI’s Speech API</a></p>
+</li>
+<li>
+<p><a href="speech/elevenlabs-speech.html" class="xref page">Eleven Labs Text-To-Speech API</a></p>
+</li>
+<li>
+<p><a href="speech/jinfer-speech.html" class="xref page">Qxotic jinfer Text-To-Speech (local, in-JVM)</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_common_interface"><a class="anchor" href="#_common_interface"></a>Common Interface</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All TTS providers implement the following shared interfaces:</p>
+</div>
+<div class="sect2">
+<h3 id="_texttospeechmodel"><a class="anchor" href="#_texttospeechmodel"></a>TextToSpeechModel</h3>
+<div class="paragraph">
+<p>The <code>TextToSpeechModel</code> interface provides methods for converting text to speech:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface TextToSpeechModel extends Model&lt;TextToSpeechPrompt, TextToSpeechResponse&gt;, StreamingTextToSpeechModel {
+
+    /**
+     * Converts text to speech with default options.
+     */
+    default byte[] call(String text) {
+        // Default implementation
+    }
+
+    /**
+     * Converts text to speech with custom options.
+     */
+    TextToSpeechResponse call(TextToSpeechPrompt prompt);
+
+    /**
+     * Returns the default options for this model.
+     */
+    default TextToSpeechOptions getOptions() {
+        // Default implementation
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_streamingtexttospeechmodel"><a class="anchor" href="#_streamingtexttospeechmodel"></a>StreamingTextToSpeechModel</h3>
+<div class="paragraph">
+<p>The <code>StreamingTextToSpeechModel</code> interface provides methods for streaming audio in real-time:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@FunctionalInterface
+public interface StreamingTextToSpeechModel extends StreamingModel&lt;TextToSpeechPrompt, TextToSpeechResponse&gt; {
+
+    /**
+     * Streams text-to-speech responses with metadata.
+     */
+    Flux&lt;TextToSpeechResponse&gt; stream(TextToSpeechPrompt prompt);
+
+    /**
+     * Streams audio bytes for the given text.
+     */
+    default Flux&lt;byte[]&gt; stream(String text) {
+        // Default implementation
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_texttospeechprompt"><a class="anchor" href="#_texttospeechprompt"></a>TextToSpeechPrompt</h3>
+<div class="paragraph">
+<p>The <code>TextToSpeechPrompt</code> class encapsulates the input text and options:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">TextToSpeechPrompt prompt = new TextToSpeechPrompt(
+    "Hello, this is a text-to-speech example.",
+    options
+);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_texttospeechresponse"><a class="anchor" href="#_texttospeechresponse"></a>TextToSpeechResponse</h3>
+<div class="paragraph">
+<p>The <code>TextToSpeechResponse</code> class contains the generated audio and metadata:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">TextToSpeechResponse response = model.call(prompt);
+byte[] audioBytes = response.getResult().getOutput();
+TextToSpeechResponseMetadata metadata = response.getMetadata();</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_writing_provider_agnostic_code"><a class="anchor" href="#_writing_provider_agnostic_code"></a>Writing Provider-Agnostic Code</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of the key benefits of the shared TTS interfaces is the ability to write code that works with any TTS provider without modification. The actual provider (OpenAI, ElevenLabs, etc.) is determined by your Spring Boot configuration, allowing you to switch providers without changing application code.</p>
+</div>
+<div class="sect2">
+<h3 id="_basic_service_example"><a class="anchor" href="#_basic_service_example"></a>Basic Service Example</h3>
+<div class="paragraph">
+<p>The shared interfaces allow you to write code that works with any TTS provider:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Service
+public class NarrationService {
+
+    private final TextToSpeechModel textToSpeechModel;
+
+    public NarrationService(TextToSpeechModel textToSpeechModel) {
+        this.textToSpeechModel = textToSpeechModel;
+    }
+
+    public byte[] narrate(String text) {
+        // Works with any TTS provider
+        return textToSpeechModel.call(text);
+    }
+
+    public byte[] narrateWithOptions(String text, TextToSpeechOptions options) {
+        TextToSpeechPrompt prompt = new TextToSpeechPrompt(text, options);
+        TextToSpeechResponse response = textToSpeechModel.call(prompt);
+        return response.getResult().getOutput();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This service works seamlessly with OpenAI, ElevenLabs, or any other TTS provider, with the actual implementation determined by your Spring Boot configuration.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_advanced_example_multi_provider_support"><a class="anchor" href="#_advanced_example_multi_provider_support"></a>Advanced Example: Multi-Provider Support</h3>
+<div class="paragraph">
+<p>You can build applications that support multiple TTS providers simultaneously:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Service
+public class MultiProviderNarrationService {
+
+    private final Map&lt;String, TextToSpeechModel&gt; providers;
+
+    public MultiProviderNarrationService(List&lt;TextToSpeechModel&gt; models) {
+        // Spring will inject all available TextToSpeechModel beans
+        this.providers = models.stream()
+            .collect(Collectors.toMap(
+                model -&gt; model.getClass().getSimpleName(),
+                model -&gt; model
+            ));
+    }
+
+    public byte[] narrateWithProvider(String text, String providerName) {
+        TextToSpeechModel model = providers.get(providerName);
+        if (model == null) {
+            throw new IllegalArgumentException("Unknown provider: " + providerName);
+        }
+        return model.call(text);
+    }
+
+    public Set&lt;String&gt; getAvailableProviders() {
+        return providers.keySet();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_streaming_audio_example"><a class="anchor" href="#_streaming_audio_example"></a>Streaming Audio Example</h3>
+<div class="paragraph">
+<p>The shared interfaces also support streaming for real-time audio generation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Service
+public class StreamingNarrationService {
+
+    private final TextToSpeechModel textToSpeechModel;
+
+    public StreamingNarrationService(TextToSpeechModel textToSpeechModel) {
+        this.textToSpeechModel = textToSpeechModel;
+    }
+
+    public Flux&lt;byte[]&gt; streamNarration(String text) {
+        // TextToSpeechModel extends StreamingTextToSpeechModel
+        return textToSpeechModel.stream(text);
+    }
+
+    public Flux&lt;TextToSpeechResponse&gt; streamWithMetadata(String text, TextToSpeechOptions options) {
+        TextToSpeechPrompt prompt = new TextToSpeechPrompt(text, options);
+        return textToSpeechModel.stream(prompt);
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rest_controller_example"><a class="anchor" href="#_rest_controller_example"></a>REST Controller Example</h3>
+<div class="paragraph">
+<p>Building a REST API with provider-agnostic TTS:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@RestController
+@RequestMapping("/api/tts")
+public class TextToSpeechController {
+
+    private final TextToSpeechModel textToSpeechModel;
+
+    public TextToSpeechController(TextToSpeechModel textToSpeechModel) {
+        this.textToSpeechModel = textToSpeechModel;
+    }
+
+    @PostMapping(value = "/synthesize", produces = "audio/mpeg")
+    public ResponseEntity&lt;byte[]&gt; synthesize(@RequestBody SynthesisRequest request) {
+        byte[] audio = textToSpeechModel.call(request.text());
+        return ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType("audio/mpeg"))
+            .header("Content-Disposition", "attachment; filename=\"speech.mp3\"")
+            .body(audio);
+    }
+
+    @GetMapping(value = "/stream", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public Flux&lt;byte[]&gt; streamSynthesis(@RequestParam String text) {
+        return textToSpeechModel.stream(text);
+    }
+
+    record SynthesisRequest(String text) {}
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="streaming-consume-inputstream"><a class="anchor" href="#streaming-consume-inputstream"></a>Consuming the Stream as a Blocking <code>InputStream</code></h3>
+<div class="paragraph">
+<p>Some APIs only accept a <code>java.io.InputStream</code> rather than a reactive <code>Flux</code>.
+An audio-playback library or code that writes incrementally to disk with blocking I/O are typical examples.
+Bridging a <code>Flux&lt;byte[]&gt;</code> into an <code>InputStream</code> is straightforward, but it is worth being precise about what such a bridge actually guarantees.</p>
+</div>
+<div class="paragraph">
+<p>A well-behaved bridge should request one chunk at a time from the <code>Flux</code>, so it never buffers more than a single already-received chunk ahead of what the <code>InputStream</code> consumer has read.
+It should also cancel the underlying subscription when the <code>InputStream</code> is closed before reaching end-of-stream, so a consumer that stops early, for example aborting playback, releases the provider connection immediately instead of leaving it running until the response would otherwise have completed.
+A bridge built on <code>Flux#toIterable()</code> cannot offer that second property, since its iterator exposes no way to cancel the subscription.
+Bridging through a <code>reactor.core.publisher.BaseSubscriber</code> gives you both properties: request one element at a time from <code>hookOnNext</code>, and cancel from <code>close()</code> via <code>Subscriber.dispose()</code>.</p>
+</div>
+<div class="paragraph">
+<p>Pausing the <code>InputStream</code> consumer does propagate real backpressure to providers whose client uses HTTP/2, such as OpenAI’s.
+The underlying transport, OkHttp, only sends the <code>WINDOW_UPDATE</code> frame that tells the server to send more data once application code actually reads the buffered bytes, so a stalled consumer eventually stops the server from sending further data on that connection.
+That effect is real but coarse-grained: it engages once a whole HTTP/2 flow-control window’s worth of unread data has accumulated, commonly tens of kilobytes, not after a single unread chunk.
+It also only guarantees that the transport stops sending; whether a given provider’s backend actually slows down generating audio once its send buffer fills, rather than continuing to buffer server-side, is provider-specific and not something a client-side bridge can control or verify.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+A complete, tested reference implementation, <code>FluxInputStream</code>, is available in <code>OpenAiAudioSpeechModelIT</code> in the <code>spring-ai-openai</code> module’s test sources.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration_based_provider_selection"><a class="anchor" href="#_configuration_based_provider_selection"></a>Configuration-Based Provider Selection</h3>
+<div class="paragraph">
+<p>Switch between providers using Spring profiles or properties:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># application-openai.yml
+spring:
+  ai:
+    model:
+      audio:
+        speech: openai
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      audio:
+        speech:
+          options:
+            model: gpt-4o-mini-tts
+            voice: alloy
+
+# application-elevenlabs.yml
+spring:
+  ai:
+    model:
+      audio:
+        speech: elevenlabs
+    elevenlabs:
+      api-key: ${ELEVENLABS_API_KEY}
+      tts:
+        options:
+          model-id: eleven_turbo_v2_5
+          voice-id: your_voice_id</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then activate the desired provider:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Use OpenAI
+java -jar app.jar --spring.profiles.active=openai
+
+# Use ElevenLabs
+java -jar app.jar --spring.profiles.active=elevenlabs</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_portable_options"><a class="anchor" href="#_using_portable_options"></a>Using Portable Options</h3>
+<div class="paragraph">
+<p>For maximum portability, use only the common <code>TextToSpeechOptions</code> interface methods:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Service
+public class PortableNarrationService {
+
+    private final TextToSpeechModel textToSpeechModel;
+
+    public PortableNarrationService(TextToSpeechModel textToSpeechModel) {
+        this.textToSpeechModel = textToSpeechModel;
+    }
+
+    public byte[] createPortableNarration(String text) {
+        // Use provider's default options for maximum portability
+        TextToSpeechOptions options = textToSpeechModel.getOptions();
+        TextToSpeechPrompt prompt = new TextToSpeechPrompt(text, options);
+        TextToSpeechResponse response = textToSpeechModel.call(prompt);
+        return response.getResult().getOutput();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_working_with_provider_specific_features"><a class="anchor" href="#_working_with_provider_specific_features"></a>Working with Provider-Specific Features</h3>
+<div class="paragraph">
+<p>When you need provider-specific features, you can still use them while maintaining a portable codebase:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Service
+public class FlexibleNarrationService {
+
+    private final TextToSpeechModel textToSpeechModel;
+
+    public FlexibleNarrationService(TextToSpeechModel textToSpeechModel) {
+        this.textToSpeechModel = textToSpeechModel;
+    }
+
+    public byte[] narrate(String text, TextToSpeechOptions baseOptions) {
+        TextToSpeechOptions options = baseOptions;
+
+        // Apply provider-specific optimizations if available
+        if (textToSpeechModel instanceof OpenAiAudioSpeechModel) {
+            options = OpenAiAudioSpeechOptions.builder()
+                .from(baseOptions)
+                .model("gpt-4o-tts")  // OpenAI-specific: use high-quality model
+                .speed(1.0)
+                .build();
+        } else if (textToSpeechModel instanceof ElevenLabsTextToSpeechModel) {
+            // ElevenLabs-specific options could go here
+        }
+
+        TextToSpeechPrompt prompt = new TextToSpeechPrompt(text, options);
+        TextToSpeechResponse response = textToSpeechModel.call(prompt);
+        return response.getResult().getOutput();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_best_practices_for_portable_code"><a class="anchor" href="#_best_practices_for_portable_code"></a>Best Practices for Portable Code</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Depend on Interfaces</strong>: Always inject <code>TextToSpeechModel</code> rather than concrete implementations</p>
+</li>
+<li>
+<p><strong>Use Common Options</strong>: Stick to <code>TextToSpeechOptions</code> interface methods for maximum portability</p>
+</li>
+<li>
+<p><strong>Handle Metadata Gracefully</strong>: Different providers return different metadata; handle it generically</p>
+</li>
+<li>
+<p><strong>Test with Multiple Providers</strong>: Ensure your code works with at least two TTS providers</p>
+</li>
+<li>
+<p><strong>Document Provider Assumptions</strong>: If you rely on specific provider behavior, document it clearly</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_provider_specific_features"><a class="anchor" href="#_provider_specific_features"></a>Provider-Specific Features</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>While the shared interfaces provide portability, each provider also offers specific features through provider-specific options classes (e.g., <code>OpenAiAudioSpeechOptions</code>, <code>ElevenLabsSpeechOptions</code>). These classes implement the <code>TextToSpeechOptions</code> interface while adding provider-specific capabilities.</p>
+</div>
+</div>
+</div>
+
+</article>

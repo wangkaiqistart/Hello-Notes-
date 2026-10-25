@@ -1,0 +1,6 @@
+{"check": "source-comparison", "result": "PASS", "sourceVersion": "2.0.2", "sourceCodeBlocks": 8, "translatedCodeBlocks": 8, "codeChanges": "comments and whitespace only", "majorSections": 5, "subsections": 2, "providerTableRows": 8, "images": 0, "finalMatchesPage": true, "javaExecution": "NOT_RUN"}
+{"check":"browser","result":"PASS","name":"desktop","httpStatus":200,"title":"Spring AI：聊天响应元数据","viewport":1440,"pageWidth":1440,"codeBlocks":8,"sections":5,"subsections":2,"images":0,"tableRows":[3,4,4,8],"brokenAnchors":[],"nav":true,"errors":[],"promptsLink":"PASS"}
+{"check":"browser","result":"PASS","name":"mobile","httpStatus":200,"title":"Spring AI：聊天响应元数据","viewport":390,"pageWidth":390,"codeBlocks":8,"sections":5,"subsections":2,"images":0,"tableRows":[3,4,4,8],"brokenAnchors":[],"nav":true,"errors":[],"promptsLink":"PASS"}
+{"check": "astro-check", "result": "PASS", "errors": 0, "warnings": 0, "hints": 0}
+{"check": "astro-build", "result": "PASS", "pages": 122, "existingWarnings": ["i18n empty", "docs/404 missing"]}
+{"check": "format-and-diff", "result": "PASS", "scope": "touched Markdown and MDX, git diff --check; preserve existing config formatting"}

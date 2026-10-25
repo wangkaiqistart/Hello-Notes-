@@ -1,0 +1,533 @@
+---
+title: Spring AI：Advisors 调用链与递归
+description: 理解 Advisor 处理链、执行顺序与自定义实现，进一步学习工具调用、结构校验循环和累计用量。
+sidebar:
+  label: Advisors API
+  order: 1
+---
+
+Advisors API 用于拦截、修改和增强模型交互，把常见的生成式 AI 处理模式封装为可复用组件。例如，在调用前补充对话历史或检索资料，在调用后记录日志、检查或转换结果。
+
+本篇先介绍基础调用链与自定义实现，再说明递归 Advisor 如何重复执行下游步骤。初学时先掌握执行顺序和循环范围，自定义循环与用量统计可结合工具调用实践深入。
+
+这些处理独立于具体模型，有助于跨模型复用。通过 [ChatClient](/frameworks/spring-ai/core/chat-client/) 配置现有 Advisor：
+
+```java
+ChatMemory chatMemory = ... // 初始化对话记忆存储
+VectorStore vectorStore = ... // 初始化向量存储
+
+var chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(
+        MessageChatMemoryAdvisor.builder(chatMemory).build(), // 对话记忆 Advisor
+        QuestionAnswerAdvisor.builder(vectorStore).build()    // RAG Advisor
+    )
+    .build();
+
+var conversationId = "678";
+
+String response = chatClient.prompt()
+    // 运行时设置 Advisor 参数
+    .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, conversationId))
+    .user(userText)
+    .call()
+	.content();
+```
+
+建议在构建客户端时通过 `defaultAdvisors()` 注册默认 Advisor，在单次调用中传入会话 ID 等运行时参数。示例中的 `...` 代表需要自行初始化的组件。
+
+Advisor 也参与[可观测性](https://docs.spring.io/spring-ai/reference/observability/index.html)，可以查看执行指标和追踪。具体应用见[问答 Advisor](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html#_questionansweradvisor)与[对话记忆](https://docs.spring.io/spring-ai/reference/api/chat-memory.html)。
+
+## 核心组件与执行流程
+
+API 分为同步和流式两组：
+
+| 场景   | Advisor         | 处理链               | 响应                       |
+| ------ | --------------- | -------------------- | -------------------------- |
+| 非流式 | `CallAdvisor`   | `CallAdvisorChain`   | `ChatClientResponse`       |
+| 流式   | `StreamAdvisor` | `StreamAdvisorChain` | `Flux<ChatClientResponse>` |
+
+`ChatClientRequest` 携带尚可增强的 `Prompt`，`ChatClientResponse` 携带模型响应；两者都包含上下文，用于在链中传递状态。
+
+Advisor 的关键方法是 `adviseCall()` 与 `adviseStream()`，可用于检查或增强请求、继续调用下游、检查或修改响应，或抛出异常报告处理错误。`getOrder()` 决定顺序，`getName()` 提供标识名称。
+
+下图保留各接口的继承与聚合关系：重点看同步、流式两条分支，以及 Advisor 与对应处理链的方法区别。
+
+[![Advisors API 类型关系：Advisor 继承 Ordered，分为 CallAdvisor 与 StreamAdvisor，由相应 Chain 继续调用下游](/images/frameworks/spring-ai/advisors-api-classes-zh.svg)](/images/frameworks/spring-ai/advisors-api-classes-zh.svg)
+
+类名和方法名保留 API 原名，图例已中文化；点击可查看大图。
+
+框架按 `getOrder()` 创建有序链，并在末端加入负责模型调用的内部 Advisor。一次交互的流程如下：
+
+1. 根据用户请求构建 `ChatClientRequest`，初始化 Advisor 上下文。
+2. 各 Advisor 依次处理请求，可修改或增强内容。也可以不调用下游而短路，此时必须自行提供响应。
+3. 框架的内部 Advisor 将请求交给 `ChatModel`。
+4. 模型响应沿处理链返回，包装为带上下文的 `ChatClientResponse`。
+5. 各 Advisor 可以检查或修改返回结果。
+6. 客户端按所选终结方法获取模型响应或其他结果。
+
+下图对应这六步：请求从左侧向下进入模型，响应从右侧向上返回。
+
+[![Advisor 六步流程：构建请求、调用前处理、请求模型、模型响应、调用后处理、提取结果](/images/frameworks/spring-ai/advisors-flow-zh.svg)](/images/frameworks/spring-ai/advisors-flow-zh.svg)
+
+黄色内部节点连接 Advisor 链与聊天模型；点击可查看大图。
+
+### Advisor 顺序
+
+**`order` 越小，请求处理越早，响应处理越晚。** 处理链类似嵌套调用：最先进入的 Advisor 最后退出。
+
+| 配置                              | 请求阶段       | 响应阶段       |
+| --------------------------------- | -------------- | -------------- |
+| 接近 `Ordered.HIGHEST_PRECEDENCE` | 靠前执行       | 靠后执行       |
+| 接近 `Ordered.LOWEST_PRECEDENCE`  | 靠后执行       | 靠前执行       |
+| 相同 `order`                      | 不保证相互顺序 | 不保证相互顺序 |
+
+Spring `Ordered` 的含义如下：
+
+```java
+public interface Ordered {
+
+    /**
+     * 最高优先级常量。
+     * @see java.lang.Integer#MIN_VALUE
+     */
+    int HIGHEST_PRECEDENCE = Integer.MIN_VALUE;
+
+    /**
+     * 最低优先级常量。
+     * @see java.lang.Integer#MAX_VALUE
+     */
+    int LOWEST_PRECEDENCE = Integer.MAX_VALUE;
+
+    /**
+     * 获取当前对象的顺序值。
+     * <p>值越大，优先级越低。
+     * 最小值对应最高优先级，类似于
+     * Servlet 的 {@code load-on-startup}。
+     * <p>顺序值相同时，
+     * 相应对象的排序位置不确定。
+     * @return 顺序值
+     * @see #HIGHEST_PRECEDENCE
+     * @see #LOWEST_PRECEDENCE
+     */
+    int getOrder();
+}
+```
+
+如果希望某项处理在请求和响应两侧都最先执行，应拆成两个 Advisor，分别设置顺序；需要共享状态时通过上下文传递。
+
+## API 接口
+
+主要接口位于 `org.springframework.ai.chat.client.advisor.api`。
+
+`Advisor` 继承 `Ordered`，并要求提供名称：
+
+```java
+public interface Advisor extends Ordered {
+
+	String getName();
+
+}
+```
+
+同步接口负责单个完整响应：
+
+```java
+public interface CallAdvisor extends Advisor {
+
+	ChatClientResponse adviseCall(
+		ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain);
+
+}
+```
+
+流式接口返回响应流：
+
+```java
+public interface StreamAdvisor extends Advisor {
+
+	Flux<ChatClientResponse> adviseStream(
+		ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain);
+
+}
+```
+
+在实现中，通过对应 Chain 调用下一个 Advisor：
+
+```java
+public interface CallAdvisorChain extends AdvisorChain {
+
+	/**
+	 * 使用指定请求调用 {@link CallAdvisorChain} 中的下一个 {@link CallAdvisor}。
+	 *
+	 */
+	ChatClientResponse nextCall(ChatClientRequest chatClientRequest);
+
+	/**
+	 * 返回链创建时包含的全部 {@link CallAdvisor} 实例。
+	 *
+	 */
+	List<CallAdvisor> getCallAdvisors();
+
+}
+```
+
+```java
+public interface StreamAdvisorChain extends AdvisorChain {
+
+	/**
+	 * 使用指定请求调用 {@link StreamAdvisorChain} 中的下一个 {@link StreamAdvisor}。
+	 *
+	 */
+	Flux<ChatClientResponse> nextStream(ChatClientRequest chatClientRequest);
+
+	/**
+	 * 返回链创建时包含的全部 {@link StreamAdvisor} 实例。
+	 *
+	 */
+	List<StreamAdvisor> getStreamAdvisors();
+
+}
+```
+
+`getCallAdvisors()`、`getStreamAdvisors()` 返回链创建时包含的相应 Advisor 列表。
+
+## 实现自定义 Advisor
+
+可以实现 `CallAdvisor`、`StreamAdvisor`，或同时实现两者。同步处理实现 `adviseCall()`，流式处理实现 `adviseStream()`；继续执行下游时分别调用 `nextCall()`、`nextStream()`。
+
+### 日志 Advisor
+
+以下示例在调用下游前记录请求，返回后记录响应，只观察数据，不修改内容，并同时支持两种调用方式：
+
+```java
+public class SimpleLoggerAdvisor implements CallAdvisor, StreamAdvisor {
+
+	private static final Logger logger = LoggerFactory.getLogger(SimpleLoggerAdvisor.class);
+
+	@Override
+	public String getName() {
+		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public int getOrder() {
+		return 0;
+	}
+
+
+	@Override
+	public ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
+		logRequest(chatClientRequest);
+
+		ChatClientResponse chatClientResponse = callAdvisorChain.nextCall(chatClientRequest);
+
+		logResponse(chatClientResponse);
+
+		return chatClientResponse;
+	}
+
+	@Override
+	public Flux<ChatClientResponse> adviseStream(ChatClientRequest chatClientRequest,
+			StreamAdvisorChain streamAdvisorChain) {
+		logRequest(chatClientRequest);
+
+		Flux<ChatClientResponse> chatClientResponses = streamAdvisorChain.nextStream(chatClientRequest);
+
+		return new ChatClientMessageAggregator().aggregateChatClientResponse(chatClientResponses, this::logResponse);
+	}
+
+	private void logRequest(ChatClientRequest request) {
+		logger.debug("request: {}", request);
+	}
+
+	private void logResponse(ChatClientResponse chatClientResponse) {
+		logger.debug("response: {}", chatClientResponse);
+	}
+
+}
+```
+
+- `getName()` 返回名称；示例使用类名。
+- `getOrder()` 返回顺序值；越小越早处理请求。
+- `ChatClientMessageAggregator` 将流中的响应汇总给日志回调，便于观察完整回答。该回调只读，不能用它修改响应；调用方仍接收原有响应流。
+
+### 重读策略：Re2
+
+论文 [Re-Reading Improves Reasoning in Large Language Models](https://arxiv.org/pdf/2309.06275) 提出重读策略：在输入中再次呈现同一问题。
+
+```text
+{Input_Query}
+Read the question again: {Input_Query}
+```
+
+可以通过 `BaseAdvisor` 的 `before()` 增强用户消息，再由 `after()` 原样返回结果：
+
+```java
+public class ReReadingAdvisor implements BaseAdvisor {
+
+	private static final String DEFAULT_RE2_ADVISE_TEMPLATE = """
+			{re2_input_query}
+			Read the question again: {re2_input_query}
+			""";
+
+	private final String re2AdviseTemplate;
+
+	private int order = 0;
+
+	public ReReadingAdvisor() {
+		this(DEFAULT_RE2_ADVISE_TEMPLATE);
+	}
+
+	public ReReadingAdvisor(String re2AdviseTemplate) {
+		this.re2AdviseTemplate = re2AdviseTemplate;
+	}
+
+	@Override
+	public ChatClientRequest before(ChatClientRequest chatClientRequest, AdvisorChain advisorChain) {
+		String augmentedUserText = PromptTemplate.builder()
+			.template(this.re2AdviseTemplate)
+			.variables(Map.of("re2_input_query", chatClientRequest.prompt().getUserMessage().getText()))
+			.build()
+			.render();
+
+		return chatClientRequest.mutate()
+			.prompt(chatClientRequest.prompt().augmentUserMessage(augmentedUserText))
+			.build();
+	}
+
+	@Override
+	public ChatClientResponse after(ChatClientResponse chatClientResponse, AdvisorChain advisorChain) {
+		return chatClientResponse;
+	}
+
+	@Override
+	public int getOrder() {
+		return this.order;
+	}
+
+	public ReReadingAdvisor withOrder(int order) {
+		this.order = order;
+		return this;
+	}
+
+}
+```
+
+`before()` 读取原问题、渲染模板并构建新请求；`withOrder()` 调整执行顺序。该策略的实际收益应结合所用模型与任务评估。
+
+### 内置 Advisor
+
+| 类别       | Advisor                        | 用途                                                                             |
+| ---------- | ------------------------------ | -------------------------------------------------------------------------------- |
+| 对话记忆   | `MessageChatMemoryAdvisor`     | 读取历史记录并作为消息集合加入提示词，保留对话结构；需确认模型支持相应消息形式。 |
+| 对话记忆   | `VectorStoreChatMemoryAdvisor` | 从向量存储检索相关历史，加入提示词的系统文本。                                   |
+| 问答与 RAG | `QuestionAnswerAdvisor`        | 通过向量存储实现基础 Naive RAG。                                                 |
+| 问答与 RAG | `RetrievalAugmentationAdvisor` | 使用 `org.springframework.ai.rag` 组件构建模块化 RAG 流程。                      |
+| 重读策略   | `ReReadingAdvisor`             | 在输入阶段应用 Re2 策略。                                                        |
+| 工具调用   | `ToolCallingAdvisor`           | 在链中执行工具循环：运行工具并回传结果，直到无需继续调用工具。                   |
+| 内容防护   | `SafeGuardAdvisor`             | 简单的内容防护，用于限制有害或不当内容。                                         |
+
+除非明确禁用，`ChatClient` 会自动注册 `ToolCallingAdvisor`，即使没有静态工具配置，也能处理其他 Advisor 在运行时加入的工具。`ToolAdvisor` 标记接口用于识别已有工具处理能力，避免再自动添加第二个工具 Advisor。
+
+完整循环见[工具调用循环](#toolcallingadvisor工具调用循环)，自动注册与禁用方式见 [ChatClient：工具调用](/frameworks/spring-ai/core/chat-client/#工具调用)。
+
+### 流式与非流式
+
+非流式 Advisor 处理完整请求和响应；流式 Advisor 仍接收一个请求，但响应通过 `Flux` 逐步传递。
+
+下图对比两条路径：左侧返回单个 `ChatClientResponse`，右侧返回 `Flux<ChatClientResponse>`。
+
+[![非流式和流式 Advisor 对比：同步响应为单个对象，流式响应为 Flux，二者使用各自的处理链](/images/frameworks/spring-ai/advisors-non-stream-vs-stream-zh.svg)](/images/frameworks/spring-ai/advisors-non-stream-vs-stream-zh.svg)
+
+两条路径都按请求进入、响应返回的方向执行；点击可查看大图。
+
+以下代码展示流式处理的结构，在下游调用前后插入逻辑：
+
+```java
+@Override
+public Flux<ChatClientResponse> adviseStream(ChatClientRequest chatClientRequest, StreamAdvisorChain chain) {
+
+    return  Mono.just(chatClientRequest)
+            .publishOn(Schedulers.boundedElastic())
+            .map(request -> {
+                // 可在阻塞或非阻塞线程调用的场景中使用。
+                // 调用下游前的处理
+                return request;
+            })
+            .flatMapMany(request -> chain.nextStream(request))
+            .map(response -> {
+                // 下游返回后的处理
+                return response;
+            });
+}
+```
+
+上例是处理链骨架。应根据实际任务补充前后处理逻辑，并合理选择调度器。
+
+### 实践建议
+
+- 每个 Advisor 聚焦单一职责，便于组合与复用。
+- 需要跨 Advisor 传递状态时，使用上下文。
+- 按应用需要支持同步与流式路径，避免只实现一侧却用于另一侧。
+- 明确每个 Advisor 的顺序，检查前一个步骤的输出是否满足后续步骤要求。
+
+## 递归 Advisors
+
+递归 Advisor 可以多次执行其后的处理链，直到满足停止条件。常见用途包括：
+
+- 反复执行模型请求的工具，直到模型不再要求调用工具。
+- 校验结构化输出，失败后重新请求。
+- 评估结果，并修改请求后再次调用模型。
+- 根据重试条件调整请求后继续执行。
+
+核心方法是 `CallAdvisorChain.copy(CallAdvisor after)`：根据原链创建一条新链，只包含指定 Advisor **之后**的部分。递归 Advisor 可按需要重复调用这条下游子链。
+
+这样既能让下游 Advisor 观察、拦截每轮交互，保留顺序与可观测性，也不会重新执行递归 Advisor 之前的组件。
+
+下图用黄色虚线标出可重复执行的范围：上游 `ABC` 位于循环外，`XYZ` 和模型位于下游；递归 Advisor 的条件判断决定继续循环还是向上返回。
+
+<a href="/images/frameworks/spring-ai/advisors-recursive-zh.svg">
+  <img
+    src="/images/frameworks/spring-ai/advisors-recursive-zh.svg"
+    alt="递归 Advisor 循环范围：上游 ABC 在循环外，下游 XYZ 和模型可重复执行，由条件判断决定是否结束"
+    width="291"
+  />
+</a>
+
+重点看虚线循环范围及上下行箭头；点击可查看大图。
+
+Spring AI 提供两个内置实现：工具调用循环与结构化输出校验。
+
+### ToolCallingAdvisor：工具调用循环
+
+`ToolCallingAdvisor` 在 Advisor 链中驱动工具调用，而不是依赖每个 `ChatModel` 内部实现循环。它是 `ChatClient` 组织工具增强对话的默认机制。
+
+主要行为：
+
+- 反复执行下游链，直到 `ToolExecutionEligibilityChecker` 判断无需继续工具调用。
+- 通过 `callAdvisorChain.copy(this)` 创建下游子链，其他下游 Advisor 可以观察并拦截每轮执行。
+- 支持直接返回：工具结果要求 `returnDirect = true` 时退出循环，将工具结果直接交给调用方，不再发回模型。
+- 实现 `ToolAdvisor` 标记接口，供 `DefaultChatClient` 识别已有工具 Advisor，避免重复自动注册；自定义子类也能作为替代实现。
+- 累加每轮模型调用的 Token 用量，最终 `ChatResponse` 返回整个循环的累计值。
+
+手动配置示例：
+
+```java
+var toolCallingAdvisor = ToolCallingAdvisor.builder()
+    .toolCallingManager(toolCallingManager)
+    .advisorOrder(BaseAdvisor.HIGHEST_PRECEDENCE + 300)
+    .build();
+
+var chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(toolCallingAdvisor)
+    .build();
+```
+
+当前版本中，除非明确禁用，工具 Advisor 即使没有静态工具也会自动注册，以支持运行时动态加入工具。
+
+自动注册和禁用方式见 [ChatClient：工具调用](/frameworks/spring-ai/core/chat-client/#工具调用)。构建器、扩展钩子、记忆 Advisor 顺序、用户控制执行及自定义子类，见 [ToolCallingAdvisor](https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html)。
+
+更多资料：
+
+- [工具调用循环](https://docs.spring.io/spring-ai/reference/api/tools.html#the-tool-calling-loop)：了解它在整体工具调用架构中的位置。
+- [Tool Search Tool](https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html)：通过扩展钩子实现按需暴露工具的子类示例。
+- [多步流程的累计用量](/frameworks/spring-ai/core/chat-response-metadata/#多步流程的累计用量)：理解循环的 Token 统计。
+
+### StructuredOutputValidationAdvisor：结构校验循环
+
+`StructuredOutputValidationAdvisor` 按 JSON Schema 校验模型输出；失败后补充具体错误并重新请求，直到成功或达到次数上限。
+
+主要能力：
+
+- 从目标 Java 类型生成 Schema，或接收现有 Schema 字符串。
+- 校验模型返回的 JSON，失败时将错误信息加入提示词，帮助模型自行纠正。
+- 默认首次调用后最多重试 **3 次**，总计最多调用 **4 次**；通过 `maxRepeatAttempts` 调整重试上限。
+- 使用 `callAdvisorChain.copy(this)` 重复执行下游链。
+- 累加所有尝试的用量，最终报告累计值，而不只是最后一次的用量。
+- 可选配置自定义 `JsonMapper`。
+
+**`outputType` 与 `outputJsonSchema` 互斥，只能选择其中一种。**
+
+根据 Java 类型生成 Schema：
+
+```java
+var validationAdvisor = StructuredOutputValidationAdvisor.builder()
+    .outputType(MyResponseType.class)
+    .maxRepeatAttempts(3)
+    .build();
+
+var chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(validationAdvisor)
+    .build();
+```
+
+使用已有 Schema：
+
+```java
+var validationAdvisor = StructuredOutputValidationAdvisor.builder()
+    .outputJsonSchema(myConverter.getJsonSchema())
+    .build();
+```
+
+也可以直接在 `entity()` 中启用校验，无需手动创建 Advisor：
+
+```java
+ActorFilms actorFilms = chatClient.prompt()
+    .user("Generate the filmography for a random actor.")
+    .call()
+    .entity(ActorFilms.class, spec -> spec.validateSchema());
+```
+
+高层用法见[结构化输出](/frameworks/spring-ai/core/structured-output/)，详细流程见 [Schema 校验与自动纠正](/frameworks/spring-ai/core/structured-output/#schema-校验与自动纠正)。
+
+### 自定义递归 Advisor 的用量累计
+
+递归 Advisor 一次执行可能调用多次模型。如果只返回最后一轮响应，调用方就只能看到最后一轮用量。
+
+`org.springframework.ai.chat.client.advisor.UsageAccumulator` 用于累计这些用量：
+
+1. 每次 `adviseCall()` 创建一个新实例。
+2. 每轮得到响应后，调用 `addRoundResponse(...)` 累加用量。
+3. 返回前，用 `applyAccumulatedUsage(...)` 将累计值写入最终响应。
+
+如果实现流式循环，应在 `Flux.defer` 内创建实例，使它属于本次订阅。不要跨调用或跨订阅复用同一个累计器。
+
+```java
+UsageAccumulator usage = new UsageAccumulator();
+ChatClientResponse response;
+do {
+    response = callAdvisorChain.copy(this).nextCall(request);
+    usage.addRoundResponse(response.chatResponse());
+    // ... 根据本轮结果决定是否继续，并更新下一轮请求 ...
+}
+while (loopAgain);
+return usage.applyAccumulatedUsage(response);
+```
+
+上例是循环骨架：`request`、`loopAgain` 和停止策略需由实现者提供，并按每轮结果更新。
+
+底层计算由 `org.springframework.ai.support.UsageCalculator` 的 `accumulateResponseUsage`、`withUsage` 等方法完成，`UsageAccumulator` 对其进行了封装。
+
+多个模型调用合并后，提供方原生用量对象不能合并，`getNativeUsage()` 会返回 `null`，详见[累计用量的限制](/frameworks/spring-ai/core/chat-response-metadata/#多步流程的累计用量)。
+
+## 历史 API 迁移
+
+以下是来源保留的历史变更，阅读旧文章或迁移旧代码时再对照；当前实现以 2.0.2 API 为准。
+
+### Advisor 接口演变
+
+| 版本   | 变化                                                                                                    |
+| ------ | ------------------------------------------------------------------------------------------------------- |
+| 1.0 M2 | 使用 `RequestAdvisor` 与 `ResponseAdvisor`，分别在 `ChatModel.call()` / `stream()` 前后执行。           |
+| 1.0 M3 | 改为 `CallAroundAdvisor` 与 `StreamAroundAdvisor`；移除原 `ResponseAdvisor` 中的 `StreamResponseMode`。 |
+| 1.0.0  | `CallAroundAdvisor` → `CallAdvisor`；`StreamAroundAdvisor` → `StreamAdvisor`；对应 Chain 同步改名。     |
+| 1.0.0  | `AdvisedRequest` → `ChatClientRequest`；`AdvisedResponse` → `ChatClientResponse`。                      |
+
+### 上下文 Map 的历史变化
+
+- **1.0 M2**：上下文作为独立方法参数，是沿链传递的可变 Map。
+- **1.0 M3**：上下文并入当时的 `AdvisedRequest` / `AdvisedResponse` record，改为不可变 Map；历史 API 用 `updateContext()` 创建包含变更的新不可修改 Map。
+
+上面的 `updateContext()` 是旧版迁移说明，不能直接当作当前 `ChatClientRequest` 的方法使用。
+
+来源：[Advisors API](https://docs.spring.io/spring-ai/reference/api/advisors.html)、[Recursive Advisors](https://docs.spring.io/spring-ai/reference/api/advisors-recursive.html)。文档版本：2.0.2；核验日期：2026-10-25。

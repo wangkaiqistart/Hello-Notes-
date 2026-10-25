@@ -1,0 +1,10 @@
+[
+  {
+    "language": "java",
+    "code": "var imageResource = new ClassPathResource(\"/multimodal.test.png\");\n\nvar userMessage = UserMessage.builder()\n    .text(\"Explain what do you see in this picture?\") // content\n    .media(new Media(MimeTypeUtils.IMAGE_PNG, this.imageResource)) // media\n    .build();\n\nChatResponse response = chatModel.call(new Prompt(this.userMessage));"
+  },
+  {
+    "language": "java",
+    "code": "String response = ChatClient.create(chatModel).prompt()\n\t\t.user(u -> u.text(\"Explain what do you see on this picture?\")\n\t\t\t\t    .media(MimeTypeUtils.IMAGE_PNG, new ClassPathResource(\"/multimodal.test.png\")))\n\t\t.call()\n\t\t.content();"
+  }
+]

@@ -1,0 +1,187 @@
+[
+  {
+    "index": 0,
+    "lang": "java",
+    "text": "@RestController\nclass MyController {\n\n    private final ChatClient chatClient;\n\n    public MyController(ChatClient.Builder chatClientBuilder) {\n        this.chatClient = chatClientBuilder.build();\n    }\n\n    @GetMapping(\"/ai\")\n    String generation(String userInput) {\n        return this.chatClient.prompt()\n            .user(userInput)\n            .call()\n            .content();\n    }\n}"
+  },
+  {
+    "index": 1,
+    "lang": "java",
+    "text": "@Configuration\nclass ChatClientConfig {\n\n    @Bean\n    ChatClient defaultChatClient(ChatClient.Builder builder) {\n        return builder.build();\n    }\n\n    @Bean\n    ChatClient customChatClient(ChatClient.Builder builder) {\n        return builder.defaultSystem(\"You are a helpful assistant.\").build();\n    }\n}"
+  },
+  {
+    "index": 2,
+    "lang": "java",
+    "text": "import io.micrometer.observation.ObservationRegistry;\nimport org.springframework.ai.anthropic.AnthropicChatModel;\nimport org.springframework.ai.chat.client.ChatClient;\nimport org.springframework.ai.chat.client.advisor.ToolCallingAdvisor;\nimport org.springframework.ai.chat.client.advisor.observation.AdvisorObservationConvention;\nimport org.springframework.ai.chat.client.observation.ChatClientObservationConvention;\nimport org.springframework.ai.chat.model.ChatModel;\nimport org.springframework.ai.model.chat.client.autoconfigure.ChatClientBuilderConfigurer;\nimport org.springframework.ai.openai.OpenAiChatModel;\nimport org.springframework.beans.factory.ObjectProvider;\nimport org.springframework.context.annotation.Bean;\nimport org.springframework.context.annotation.Configuration;\nimport org.springframework.context.annotation.Primary;\n\n@Configuration\npublic class ChatClientConfig {\n\n    @Bean\n    @Primary\n    public ChatClient openAiChatClient(OpenAiChatModel chatModel, ChatClientBuilderConfigurer configurer,\n            ObjectProvider<ObservationRegistry> observationRegistry,\n            ObjectProvider<ChatClientObservationConvention> chatClientObservationConvention,\n            ObjectProvider<AdvisorObservationConvention> advisorObservationConvention,\n            ObjectProvider<ToolCallingAdvisor.Builder<?>> toolCallingAdvisorBuilder) {\n        return buildChatClient(chatModel, configurer, observationRegistry,\n                chatClientObservationConvention, advisorObservationConvention, toolCallingAdvisorBuilder);\n    }\n\n    @Bean\n    public ChatClient anthropicChatClient(AnthropicChatModel chatModel, ChatClientBuilderConfigurer configurer,\n            ObjectProvider<ObservationRegistry> observationRegistry,\n            ObjectProvider<ChatClientObservationConvention> chatClientObservationConvention,\n            ObjectProvider<AdvisorObservationConvention> advisorObservationConvention,\n            ObjectProvider<ToolCallingAdvisor.Builder<?>> toolCallingAdvisorBuilder) {\n        return buildChatClient(chatModel, configurer, observationRegistry,\n                chatClientObservationConvention, advisorObservationConvention, toolCallingAdvisorBuilder);\n    }\n\n    private ChatClient buildChatClient(ChatModel chatModel, ChatClientBuilderConfigurer configurer,\n            ObjectProvider<ObservationRegistry> observationRegistry,\n            ObjectProvider<ChatClientObservationConvention> chatClientObservationConvention,\n            ObjectProvider<AdvisorObservationConvention> advisorObservationConvention,\n            ObjectProvider<ToolCallingAdvisor.Builder<?>> toolCallingAdvisorBuilder) {\n        ChatClient.Builder builder = ChatClient.builder(chatModel,\n                observationRegistry.getIfUnique(() -> ObservationRegistry.NOOP),\n                chatClientObservationConvention.getIfUnique(),\n                advisorObservationConvention.getIfUnique(),\n                toolCallingAdvisorBuilder.getIfAvailable());\n        return configurer.configure(builder).build();\n    }\n}"
+  },
+  {
+    "index": 3,
+    "lang": "java",
+    "text": "@Configuration\npublic class ChatClientExample {\n\n    @Bean\n    CommandLineRunner cli(\n            @Qualifier(\"openAiChatClient\") ChatClient openAiChatClient,\n            @Qualifier(\"anthropicChatClient\") ChatClient anthropicChatClient) {\n\n        return args -> {\n            var scanner = new Scanner(System.in);\n            ChatClient chat;\n\n            // Model selection\n            System.out.println(\"\\nSelect your AI model:\");\n            System.out.println(\"1. OpenAI\");\n            System.out.println(\"2. Anthropic\");\n            System.out.print(\"Enter your choice (1 or 2): \");\n\n            String choice = scanner.nextLine().trim();\n\n            if (choice.equals(\"1\")) {\n                chat = openAiChatClient;\n                System.out.println(\"Using OpenAI model\");\n            } else {\n                chat = anthropicChatClient;\n                System.out.println(\"Using Anthropic model\");\n            }\n\n            // Use the selected chat client\n            System.out.print(\"\\nEnter your question: \");\n            String input = scanner.nextLine();\n            String response = chat.prompt(input).call().content();\n            System.out.println(\"ASSISTANT: \" + response);\n\n            scanner.close();\n        };\n    }\n}"
+  },
+  {
+    "index": 4,
+    "lang": "java",
+    "text": "@Service\npublic class MultiModelService {\n\n    private static final Logger logger = LoggerFactory.getLogger(MultiModelService.class);\n\n    public void multiClientFlow() {\n        try {\n            // Create a new OpenAiChatModel for Groq (Llama3)\n            OpenAiChatModel groqModel = OpenAiChatModel.builder()\n                .options(OpenAiChatOptions.builder()\n                    .baseUrl(\"https://api.groq.com/openai/v1\")\n                    .apiKey(System.getenv(\"GROQ_API_KEY\"))\n                    .model(\"llama3-70b-8192\")\n                    .temperature(0.5)\n                    .build())\n                .build();\n\n            // Create a new OpenAiChatModel for GPT-4\n            OpenAiChatModel gpt4Model = OpenAiChatModel.builder()\n                .options(OpenAiChatOptions.builder()\n                    .baseUrl(\"https://api.openai.com\")\n                    .apiKey(System.getenv(\"OPENAI_API_KEY\"))\n                    .model(\"gpt-4\")\n                    .temperature(0.7)\n                    .build())\n                .build();\n\n            // Simple prompt for both models\n            String prompt = \"What is the capital of France?\";\n\n            String groqResponse = ChatClient.builder(groqModel).build().prompt(prompt).call().content();\n            String gpt4Response = ChatClient.builder(gpt4Model).build().prompt(prompt).call().content();\n\n            logger.info(\"Groq (Llama3) response: {}\", groqResponse);\n            logger.info(\"OpenAI GPT-4 response: {}\", gpt4Response);\n        }\n        catch (Exception e) {\n            logger.error(\"Error in multi-client flow\", e);\n        }\n    }\n}"
+  },
+  {
+    "index": 5,
+    "lang": "java",
+    "text": "ChatResponse chatResponse = chatClient.prompt()\n    .user(\"Tell me a joke\")\n    .call()\n    .chatResponse();"
+  },
+  {
+    "index": 6,
+    "lang": "java",
+    "text": "record ActorFilms(String actor, List<String> movies) {}"
+  },
+  {
+    "index": 7,
+    "lang": "java",
+    "text": "ActorFilms actorFilms = chatClient.prompt()\n    .user(\"Generate the filmography for a random actor.\")\n    .call()\n    .entity(ActorFilms.class);"
+  },
+  {
+    "index": 8,
+    "lang": "java",
+    "text": "List<ActorFilms> actorFilms = chatClient.prompt()\n    .user(\"Generate the filmography of 5 movies for Tom Hanks and Bill Murray.\")\n    .call()\n    .entity(new ParameterizedTypeReference<List<ActorFilms>>() {});"
+  },
+  {
+    "index": 9,
+    "lang": "java",
+    "text": "ActorFilms actorFilms = chatClient.prompt()\n    .user(\"Generate the filmography for a random actor.\")\n    .call()\n    .entity(ActorFilms.class, spec -> spec\n        .useProviderStructuredOutput()\n        .validateSchema());"
+  },
+  {
+    "index": 10,
+    "lang": "java",
+    "text": "Flux<String> output = chatClient.prompt()\n    .user(\"Tell me a joke\")\n    .stream()\n    .content();"
+  },
+  {
+    "index": 11,
+    "lang": "java",
+    "text": "var converter = new BeanOutputConverter<>(new ParameterizedTypeReference<List<ActorsFilms>>() {});\n\nFlux<String> flux = this.chatClient.prompt()\n    .user(u -> u.text(\"\"\"\n                        Generate the filmography for a random actor.\n                        {format}\n                      \"\"\")\n            .param(\"format\", this.converter.getFormat()))\n    .stream()\n    .content();\n\nString content = this.flux.collectList().block().stream().collect(Collectors.joining());\n\nList<ActorsFilms> actorFilms = this.converter.convert(this.content);"
+  },
+  {
+    "index": 12,
+    "lang": "java",
+    "text": "String answer = ChatClient.create(chatModel).prompt()\n    .user(u -> u\n            .text(\"Tell me the names of 5 movies whose soundtrack was composed by {composer}\")\n            .param(\"composer\", \"John Williams\"))\n    .call()\n    .content();"
+  },
+  {
+    "index": 13,
+    "lang": "java",
+    "text": "String answer = ChatClient.create(chatModel).prompt()\n    .user(u -> u\n            .text(\"Tell me the names of 5 movies whose soundtrack was composed by <composer>\")\n            .param(\"composer\", \"John Williams\"))\n    .templateRenderer(StTemplateRenderer.builder().startDelimiterToken('<').endDelimiterToken('>').build())\n    .call()\n    .content();"
+  },
+  {
+    "index": 14,
+    "lang": "java",
+    "text": "// Adding individual metadata key-value pairs\nString response = chatClient.prompt()\n    .user(u -> u.text(\"What's the weather like?\")\n        .metadata(\"messageId\", \"msg-123\")\n        .metadata(\"userId\", \"user-456\")\n        .metadata(\"priority\", \"high\"))\n    .call()\n    .content();\n\n// Adding multiple metadata entries at once\nMap<String, Object> userMetadata = Map.of(\n    \"messageId\", \"msg-123\",\n    \"userId\", \"user-456\",\n    \"timestamp\", System.currentTimeMillis()\n);\n\nString response = chatClient.prompt()\n    .user(u -> u.text(\"What's the weather like?\")\n        .metadata(userMetadata))\n    .call()\n    .content();"
+  },
+  {
+    "index": 15,
+    "lang": "java",
+    "text": "// Adding metadata to system messages\nString response = chatClient.prompt()\n    .system(s -> s.text(\"You are a helpful assistant.\")\n        .metadata(\"version\", \"1.0\")\n        .metadata(\"model\", \"gpt-4\"))\n    .user(\"Tell me a joke\")\n    .call()\n    .content();"
+  },
+  {
+    "index": 16,
+    "lang": "java",
+    "text": "@Configuration\nclass Config {\n    @Bean\n    ChatClient chatClient(ChatClient.Builder builder) {\n        return builder\n            .defaultSystem(s -> s.text(\"You are a helpful assistant\")\n                .metadata(\"assistantType\", \"general\")\n                .metadata(\"version\", \"1.0\"))\n            .defaultUser(u -> u.text(\"Default user context\")\n                .metadata(\"sessionId\", \"default-session\"))\n            .build();\n    }\n}"
+  },
+  {
+    "index": 17,
+    "lang": "java",
+    "text": "// This will throw an IllegalArgumentException\nchatClient.prompt()\n    .user(u -> u.text(\"Hello\")\n        .metadata(null, \"value\"))  // Invalid: null key\n    .call()\n    .content();\n\n// This will also throw an IllegalArgumentException\nchatClient.prompt()\n    .user(u -> u.text(\"Hello\")\n        .metadata(\"key\", null))    // Invalid: null value\n    .call()\n    .content();"
+  },
+  {
+    "index": 18,
+    "lang": "java",
+    "text": "@Configuration\nclass Config {\n\n    @Bean\n    ChatClient chatClient(ChatClient.Builder builder) {\n        return builder.defaultSystem(\"You are a friendly chat bot that answers question in the voice of a Pirate\")\n                .build();\n    }\n\n}"
+  },
+  {
+    "index": 19,
+    "lang": "java",
+    "text": "@RestController\nclass AIController {\n\n\tprivate final ChatClient chatClient;\n\n\tAIController(ChatClient chatClient) {\n\t\tthis.chatClient = chatClient;\n\t}\n\n\t@GetMapping(\"/ai/simple\")\n\tpublic Map<String, String> completion(@RequestParam(value = \"message\", defaultValue = \"Tell me a joke\") String message) {\n\t\treturn Map.of(\"completion\", this.chatClient.prompt().user(message).call().content());\n\t}\n}"
+  },
+  {
+    "index": 20,
+    "lang": "bash",
+    "text": "❯ curl localhost:8080/ai/simple\n{\"completion\":\"Why did the pirate go to the comedy club? To hear some arrr-rated jokes! Arrr, matey!\"}"
+  },
+  {
+    "index": 21,
+    "lang": "java",
+    "text": "@Configuration\nclass Config {\n\n    @Bean\n    ChatClient chatClient(ChatClient.Builder builder) {\n        return builder.defaultSystem(\"You are a friendly chat bot that answers question in the voice of a {voice}\")\n                .build();\n    }\n\n}"
+  },
+  {
+    "index": 22,
+    "lang": "java",
+    "text": "@RestController\nclass AIController {\n\tprivate final ChatClient chatClient;\n\n\tAIController(ChatClient chatClient) {\n\t\tthis.chatClient = chatClient;\n\t}\n\n\t@GetMapping(\"/ai\")\n\tMap<String, String> completion(@RequestParam(value = \"message\", defaultValue = \"Tell me a joke\") String message, String voice) {\n\t\treturn Map.of(\"completion\",\n\t\t\t\tthis.chatClient.prompt()\n\t\t\t\t\t\t.system(sp -> sp.param(\"voice\", voice))\n\t\t\t\t\t\t.user(message)\n\t\t\t\t\t\t.call()\n\t\t\t\t\t\t.content());\n\t}\n\n}"
+  },
+  {
+    "index": 23,
+    "lang": "",
+    "text": "http localhost:8080/ai voice=='Robert DeNiro'\n{\n    \"completion\": \"You talkin' to me? Okay, here's a joke for ya: Why couldn't the bicycle stand up by itself? Because it was two tired! Classic, right?\"\n}"
+  },
+  {
+    "index": 24,
+    "lang": "java",
+    "text": "interface AdvisorSpec {\n    AdvisorSpec param(String k, Object v);\n    AdvisorSpec params(Map<String, Object> p);\n    AdvisorSpec advisors(Advisor... advisors);\n    AdvisorSpec advisors(List<Advisor> advisors);\n}"
+  },
+  {
+    "index": 25,
+    "lang": "java",
+    "text": "ChatClient.builder(chatModel)\n    .build()\n    .prompt()\n    .advisors(a -> a\n        .advisors(\n            MessageChatMemoryAdvisor.builder(chatMemory).build(),\n            QuestionAnswerAdvisor.builder(vectorStore).build()\n        )\n        .param(ChatMemory.CONVERSATION_ID, conversationId))\n    .user(userText)\n    .call()\n    .content();"
+  },
+  {
+    "index": 26,
+    "lang": "java",
+    "text": "ChatResponse response = ChatClient.create(chatModel).prompt()\n        .advisors(new SimpleLoggerAdvisor())\n        .user(\"Tell me a joke?\")\n        .call()\n        .chatResponse();"
+  },
+  {
+    "index": 27,
+    "lang": "",
+    "text": "logging.level.org.springframework.ai.chat.client.advisor=DEBUG"
+  },
+  {
+    "index": 28,
+    "lang": "java",
+    "text": "SimpleLoggerAdvisor(\n    Function<ChatClientRequest, String> requestToString,\n    Function<ChatResponse, String> responseToString,\n    int order\n)"
+  },
+  {
+    "index": 29,
+    "lang": "java",
+    "text": "SimpleLoggerAdvisor customLogger = new SimpleLoggerAdvisor(\n    request -> \"Custom request: \" + request.prompt().getUserMessage(),\n    response -> \"Custom response: \" + response.getResult(),\n    0\n);"
+  },
+  {
+    "index": 30,
+    "lang": "java",
+    "text": "String response = ChatClient.builder(chatModel)\n    .build()\n    .prompt(\"What day is tomorrow?\")\n    .tools(new DateTimeTools())   // ToolCallingAdvisor is auto-registered\n    .call()\n    .content();"
+  },
+  {
+    "index": 31,
+    "lang": "properties",
+    "text": "spring.ai.chat.client.tool-calling.enabled=false"
+  },
+  {
+    "index": 32,
+    "lang": "java",
+    "text": "chatClient.prompt(\"What day is tomorrow?\")\n    .tools(new DateTimeTools())\n    .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))\n    .call()\n    .content();"
+  },
+  {
+    "index": 33,
+    "lang": "java",
+    "text": "chatClient.prompt(\"What day is tomorrow?\")\n    .tools(new DateTimeTools())\n    .advisors(customAdvisor)    // auto-registration suppressed\n    .call()\n    .content();"
+  },
+  {
+    "index": 34,
+    "lang": "properties",
+    "text": "spring.ai.chat.client.tool-calling.advisor-order=0"
+  },
+  {
+    "index": 35,
+    "lang": "java",
+    "text": "@Bean\nToolCallingAdvisor.Builder<?> toolCallingAdvisorBuilder(ToolCallingManager myToolCallingManager) {\n    return ToolCallingAdvisor.builder()\n        .toolCallingManager(myToolCallingManager)\n        .advisorOrder(Ordered.LOWEST_PRECEDENCE);\n}"
+  },
+  {
+    "index": 36,
+    "lang": "java",
+    "text": "ToolCallingManager customManager = ToolCallingManager.builder()\n    // custom resolver, exception processor, etc.\n    .build();\n\nChatClient chatClient = ChatClient\n    .builder(chatModel, observationRegistry, null, null,\n            ToolCallingAdvisor.builder().toolCallingManager(customManager))\n    .build();\n\n// Every prompt that registers tools will use customManager in the auto-registered advisor\nchatClient.prompt(\"What day is tomorrow?\")\n    .tools(new DateTimeTools())\n    .call()\n    .content();"
+  }
+]

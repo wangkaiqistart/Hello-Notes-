@@ -1,0 +1,64 @@
+{
+  "tokenizer": "cl100k_base",
+  "implementation": "tiktoken",
+  "version": "0.12.0",
+  "space_marker": "·",
+  "examples": [
+    {
+      "text": "这是一个测试。",
+      "token_count": 5,
+      "tokens": [
+        {
+          "id": 44388,
+          "text": "这"
+        },
+        {
+          "id": 21043,
+          "text": "是"
+        },
+        {
+          "id": 48044,
+          "text": "一个"
+        },
+        {
+          "id": 82805,
+          "text": "测试"
+        },
+        {
+          "id": 1811,
+          "text": "。"
+        }
+      ]
+    },
+    {
+      "text": "ChatGPT generates tokens.",
+      "token_count": 6,
+      "tokens": [
+        {
+          "id": 16047,
+          "text": "Chat"
+        },
+        {
+          "id": 38,
+          "text": "G"
+        },
+        {
+          "id": 2898,
+          "text": "PT"
+        },
+        {
+          "id": 27983,
+          "text": " generates"
+        },
+        {
+          "id": 11460,
+          "text": " tokens"
+        },
+        {
+          "id": 13,
+          "text": "."
+        }
+      ]
+    }
+  ]
+}

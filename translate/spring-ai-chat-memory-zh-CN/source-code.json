@@ -1,0 +1,138 @@
+[
+  {
+    "language": "java",
+    "code": "@Autowired\nChatMemory chatMemory;"
+  },
+  {
+    "language": "java",
+    "code": "// Build the conversation ID from the current user/session so each\n// user's messages are kept in their own conversation.\nString conversationId = currentUser.getId() + \":\" + httpSession.getId();\n\nchatClient.prompt()\n    .user(userInput)\n    .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))\n    .call()\n    .content();"
+  },
+  {
+    "language": "java",
+    "code": "MessageWindowChatMemory memory = MessageWindowChatMemory.builder()\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "@Autowired\nChatMemoryRepository chatMemoryRepository;"
+  },
+  {
+    "language": "java",
+    "code": "ChatMemoryRepository repository = new InMemoryChatMemoryRepository();"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-model-chat-memory-repository-jdbc</artifactId>\n</dependency>"
+  },
+  {
+    "language": "groovy",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-jdbc'\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Autowired\nJdbcChatMemoryRepository chatMemoryRepository;\n\nChatMemory chatMemory = MessageWindowChatMemory.builder()\n    .chatMemoryRepository(chatMemoryRepository)\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "ChatMemoryRepository chatMemoryRepository = JdbcChatMemoryRepository.builder()\n    .jdbcTemplate(jdbcTemplate)\n    .dialect(new PostgresChatMemoryRepositoryDialect())\n    .build();\n\nChatMemory chatMemory = MessageWindowChatMemory.builder()\n    .chatMemoryRepository(chatMemoryRepository)\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "List<Message> messages = chatMemory.get(conversationId);\nfor (Message message : messages) {\n    Instant createdAt = (Instant) message.getMetadata().get(JdbcChatMemoryRepository.CONVERSATION_TS);\n}"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.chat.memory.repository.jdbc.initialize-schema=embedded # Only for embedded DBs (default)\nspring.ai.chat.memory.repository.jdbc.initialize-schema=always   # Always initialize\nspring.ai.chat.memory.repository.jdbc.initialize-schema=never    # Never initialize (useful with Flyway/Liquibase)"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.chat.memory.repository.jdbc.schema=classpath:/custom/path/schema-mysql.sql"
+  },
+  {
+    "language": "java",
+    "code": "ChatMemoryRepository chatMemoryRepository = JdbcChatMemoryRepository.builder()\n    .jdbcTemplate(jdbcTemplate)\n    .dialect(new MyCustomDbDialect())\n    .build();"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-model-chat-memory-repository-cassandra</artifactId>\n</dependency>"
+  },
+  {
+    "language": "groovy",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-cassandra'\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Autowired\nCassandraChatMemoryRepository chatMemoryRepository;\n\nChatMemory chatMemory = MessageWindowChatMemory.builder()\n    .chatMemoryRepository(chatMemoryRepository)\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "ChatMemoryRepository chatMemoryRepository = CassandraChatMemoryRepository\n    .create(CassandraChatMemoryRepositoryConfig.builder().withCqlSession(cqlSession));\n\nChatMemory chatMemory = MessageWindowChatMemory.builder()\n    .chatMemoryRepository(chatMemoryRepository)\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-model-chat-memory-repository-neo4j</artifactId>\n</dependency>"
+  },
+  {
+    "language": "groovy",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-neo4j'\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Autowired\nNeo4jChatMemoryRepository chatMemoryRepository;\n\nChatMemory chatMemory = MessageWindowChatMemory.builder()\n    .chatMemoryRepository(chatMemoryRepository)\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "ChatMemoryRepository chatMemoryRepository = Neo4jChatMemoryRepository.builder()\n    .driver(driver)\n    .build();\n\nChatMemory chatMemory = MessageWindowChatMemory.builder()\n    .chatMemoryRepository(chatMemoryRepository)\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-model-chat-memory-repository-mongodb</artifactId>\n</dependency>"
+  },
+  {
+    "language": "groovy",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-mongodb'\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Autowired\nMongoChatMemoryRepository chatMemoryRepository;\n\nChatMemory chatMemory = MessageWindowChatMemory.builder()\n    .chatMemoryRepository(chatMemoryRepository)\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "ChatMemoryRepository chatMemoryRepository = MongoChatMemoryRepository.builder()\n    .mongoTemplate(mongoTemplate)\n    .build();\n\nChatMemory chatMemory = MessageWindowChatMemory.builder()\n    .chatMemoryRepository(chatMemoryRepository)\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-model-chat-memory-repository-redis</artifactId>\n</dependency>"
+  },
+  {
+    "language": "groovy",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-redis'\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Autowired\nRedisChatMemoryRepository chatMemoryRepository;\n\nChatMemory chatMemory = MessageWindowChatMemory.builder()\n    .chatMemoryRepository(chatMemoryRepository)\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "RedisClient jedisClient = RedisClient.builder().hostAndPort(\"localhost\", 6379).build();\n\nChatMemoryRepository chatMemoryRepository = RedisChatMemoryRepository.builder()\n    .jedisClient(jedisClient)\n    .indexName(\"my-chat-index\")\n    .keyPrefix(\"my-chat:\")\n    .timeToLive(Duration.ofHours(24))\n    .build();\n\nChatMemory chatMemory = MessageWindowChatMemory.builder()\n    .chatMemoryRepository(chatMemoryRepository)\n    .maxMessages(10)\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "// Cast to access advanced features\nAdvancedRedisChatMemoryRepository advancedRepo = (AdvancedRedisChatMemoryRepository) chatMemoryRepository;\n\n// Find messages by type across all conversations\nList<MessageWithConversation> userMessages = advancedRepo.findByType(MessageType.USER, 100);\n\n// Find messages containing specific content\nList<MessageWithConversation> results = advancedRepo.findByContent(\"Spring AI\", 50);\n\n// Find messages within a time range\nList<MessageWithConversation> recentMessages = advancedRepo.findByTimeRange(\n    conversationId,\n    Instant.now().minus(Duration.ofHours(1)),\n    Instant.now(),\n    100\n);\n\n// Find messages by metadata\nList<MessageWithConversation> priorityMessages = advancedRepo.findByMetadata(\"priority\", \"high\", 50);\n\n// Execute custom Redis queries\nList<MessageWithConversation> customResults = advancedRepo.executeQuery(\"@type:USER @content:Redis\", 100);"
+  },
+  {
+    "language": "properties",
+    "code": "spring.ai.chat.memory.repository.redis.metadata-fields[0].name=priority\nspring.ai.chat.memory.repository.redis.metadata-fields[0].type=tag\nspring.ai.chat.memory.repository.redis.metadata-fields[1].name=score\nspring.ai.chat.memory.repository.redis.metadata-fields[1].type=numeric\nspring.ai.chat.memory.repository.redis.metadata-fields[2].name=category\nspring.ai.chat.memory.repository.redis.metadata-fields[2].type=tag"
+  },
+  {
+    "language": "java",
+    "code": "ChatMemory chatMemory = MessageWindowChatMemory.builder().build();\n\nChatClient chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())\n    .build();"
+  },
+  {
+    "language": "java",
+    "code": "String conversationId = \"007\";\n\nchatClient.prompt()\n    .user(\"Do I have license to code?\")\n    .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))\n    .call()\n    .content();"
+  },
+  {
+    "language": "java",
+    "code": "// Create a memory instance\nChatMemory chatMemory = MessageWindowChatMemory.builder().build();\nString conversationId = \"007\";\n\n// First interaction\nUserMessage userMessage1 = new UserMessage(\"My name is James Bond\");\nchatMemory.add(conversationId, userMessage1);\nChatResponse response1 = chatModel.call(new Prompt(chatMemory.get(conversationId)));\nchatMemory.add(conversationId, response1.getResult().getOutput());\n\n// Second interaction\nUserMessage userMessage2 = new UserMessage(\"What is my name?\");\nchatMemory.add(conversationId, userMessage2);\nChatResponse response2 = chatModel.call(new Prompt(chatMemory.get(conversationId)));\nchatMemory.add(conversationId, response2.getResult().getOutput());\n\n// The response will contain \"James Bond\""
+  }
+]

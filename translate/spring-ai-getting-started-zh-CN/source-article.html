@@ -1,0 +1,282 @@
+<article class="doc">
+<div class="breadcrumbs-container">
+  <nav class="breadcrumbs" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="index.html">Spring AI</a></li>
+      <li><a href="getting-started.html">Getting Started</a></li>
+    </ul>
+  </nav>
+</div><h1 id="page-title" class="page">Getting Started</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section offers jumping off points for how to get started using Spring AI.</p>
+</div>
+<div class="paragraph">
+<p>You should follow the steps in each of the following sections according to your needs.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Spring AI 2.0.x supports Spring Boot 4.0.x and 4.1.x.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-initializr"><a class="anchor" href="#spring-initializr"></a>Spring Initializr</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Head on over to <a href="https://start.spring.io/">start.spring.io</a> and select the AI Models and Vector Stores that you want to use in your new applications.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="artifact-repositories"><a class="anchor" href="#artifact-repositories"></a>Artifact Repositories</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_releases_use_maven_central"><a class="anchor" href="#_releases_use_maven_central"></a>Releases - Use Maven Central</h3>
+<div class="paragraph">
+<p>Spring AI artifacts are available in Maven Central.
+No additional repository configuration is required. Just make sure you have Maven Central enabled in your build file.</p>
+</div>
+<div id="_tabs_1" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_1_maven" class="tab">
+<p>Maven</p>
+</li>
+<li id="_tabs_1_gradle" class="tab">
+<p>Gradle</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_1_maven--panel" class="tabpanel" aria-labelledby="_tabs_1_maven">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;!-- Maven Central is included by default in Maven builds.
+     You usually don’t need to configure it explicitly,
+     but it's shown here for clarity. --&gt;
+&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;central&lt;/id&gt;
+        &lt;url&gt;https://repo.maven.apache.org/maven2&lt;/url&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_gradle--panel" class="tabpanel" aria-labelledby="_tabs_1_gradle">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">repositories {
+    mavenCentral()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_snapshots_add_snapshot_repositories"><a class="anchor" href="#_snapshots_add_snapshot_repositories"></a>Snapshots - Add Snapshot Repositories</h3>
+<div class="paragraph">
+<p>To use the latest development versions (e.g. <code>2.0.0-SNAPSHOT</code>), you need to add the following snapshot repositories in your build file.</p>
+</div>
+<div class="paragraph">
+<p>Add the following repository definitions to your Maven or Gradle build file:</p>
+</div>
+<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_2_maven" class="tab">
+<p>Maven</p>
+</li>
+<li id="_tabs_2_gradle" class="tab">
+<p>Gradle</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_2_maven--panel" class="tabpanel" aria-labelledby="_tabs_2_maven">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;spring-snapshots&lt;/id&gt;
+    &lt;name&gt;Spring Snapshots&lt;/name&gt;
+    &lt;url&gt;https://repo.spring.io/snapshot&lt;/url&gt;
+    &lt;releases&gt;
+      &lt;enabled&gt;false&lt;/enabled&gt;
+    &lt;/releases&gt;
+  &lt;/repository&gt;
+  &lt;repository&gt;
+    &lt;name&gt;Central Portal Snapshots&lt;/name&gt;
+    &lt;id&gt;central-portal-snapshots&lt;/id&gt;
+    &lt;url&gt;https://central.sonatype.com/repository/maven-snapshots/&lt;/url&gt;
+    &lt;releases&gt;
+      &lt;enabled&gt;false&lt;/enabled&gt;
+    &lt;/releases&gt;
+    &lt;snapshots&gt;
+      &lt;enabled&gt;true&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_2_gradle--panel" class="tabpanel" aria-labelledby="_tabs_2_gradle">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">repositories {
+  mavenCentral()
+  maven { url 'https://repo.spring.io/milestone' }
+  maven { url 'https://repo.spring.io/snapshot' }
+  maven {
+    name = 'Central Portal Snapshots'
+    url = 'https://central.sonatype.com/repository/maven-snapshots/'
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>NOTE:</strong> When using Maven with Spring AI snapshots, pay attention to your Maven mirror configuration. If you have configured a mirror in your <code>settings.xml</code> like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;mirror&gt;
+    &lt;id&gt;my-mirror&lt;/id&gt;
+    &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+    &lt;url&gt;https://my-company-repository.com/maven&lt;/url&gt;
+&lt;/mirror&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The wildcard <code>*</code> will redirect all repository requests to your mirror, preventing access to Spring snapshot repositories. To fix this, modify the <code>mirrorOf</code> configuration to exclude Spring repositories:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;mirror&gt;
+    &lt;id&gt;my-mirror&lt;/id&gt;
+    &lt;mirrorOf&gt;*,!spring-snapshots,!central-portal-snapshots&lt;/mirrorOf&gt;
+    &lt;url&gt;https://my-company-repository.com/maven&lt;/url&gt;
+&lt;/mirror&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This configuration allows Maven to access Spring snapshot repositories directly while still using your mirror for other dependencies.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dependency-management"><a class="anchor" href="#dependency-management"></a>Dependency Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Spring AI Bill of Materials (BOM) declares the recommended versions of all the dependencies used by a given release of Spring AI.
+This is a BOM-only version and it just contains dependency management and no plugin declarations or direct references to Spring or Spring Boot.
+You can use the Spring Boot parent POM, or use the BOM from Spring Boot (<code>spring-boot-dependencies</code>) to manage Spring Boot versions.</p>
+</div>
+<div class="paragraph">
+<p>Add the BOM to your project:</p>
+</div>
+<div id="_tabs_3" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_3_maven" class="tab">
+<p>Maven</p>
+</li>
+<li id="_tabs_3_gradle" class="tab">
+<p>Gradle</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_3_maven--panel" class="tabpanel" aria-labelledby="_tabs_3_maven">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-ai-bom&lt;/artifactId&gt;
+            &lt;version&gt;2.0.0&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_3_gradle--panel" class="tabpanel" aria-labelledby="_tabs_3_gradle">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+  implementation platform("org.springframework.ai:spring-ai-bom:2.0.0")
+  // Replace the following with the specific module dependencies (e.g., spring-ai-openai) or starter modules (e.g., spring-ai-starter-model-openai) that you wish to use
+  implementation 'org.springframework.ai:spring-ai-openai'
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Gradle users can also use the Spring AI BOM by leveraging Gradle native support for declaring dependency constraints using a Maven BOM. This is implemented by adding a 'platform' dependency handler method to the dependencies section of your Gradle build script.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="add-dependencies"><a class="anchor" href="#add-dependencies"></a>Add dependencies for specific components</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each of the following sections in the documentation shows which dependencies you need to add to your project build system.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="api/chatmodel.html" class="xref page">Chat Models</a></p>
+</li>
+<li>
+<p><a href="api/embeddings.html" class="xref page">Embeddings Models</a></p>
+</li>
+<li>
+<p><a href="api/imageclient.html" class="xref page">Image Generation Models</a></p>
+</li>
+<li>
+<p><a href="api/audio/transcriptions.html" class="xref page">Transcription Models</a></p>
+</li>
+<li>
+<p><a href="api/audio/speech.html" class="xref page">Text-To-Speech (TTS) Models</a></p>
+</li>
+<li>
+<p><a href="api/vectordbs.html" class="xref page">Vector Databases</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spring_ai_samples"><a class="anchor" href="#_spring_ai_samples"></a>Spring AI samples</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Please refer to <a href="https://github.com/spring-ai-community/awesome-spring-ai">this page</a> for more resources and samples related to Spring AI.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="concepts.html">AI Concepts</a></span>
+  <span class="next"><a href="api/chatclient.html">Chat Client API</a></span>
+</nav>
+</article>

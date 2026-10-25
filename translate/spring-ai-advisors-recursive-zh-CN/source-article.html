@@ -1,0 +1,227 @@
+<article class="doc">
+<div class="breadcrumbs-container">
+  <nav class="breadcrumbs" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="../index.html">Spring AI</a></li>
+      <li>Reference</li>
+      <li><a href="chatclient.html">Chat Client API</a></li>
+      <li><a href="advisors.html">Advisors</a></li>
+      <li><a href="advisors-recursive.html">Recursive Advisors</a></li>
+    </ul>
+  </nav>
+</div><h1 id="page-title" class="page">Recursive Advisors</h1>
+<aside class="toc embedded"><div class="toc-menu"><h3>Recursive Advisors</h3><ul><li data-level="1"><a href="#_what_is_a_recursive_advisor">What is a Recursive Advisor?</a></li><li data-level="1"><a href="#_built_in_recursive_advisors">Built-in Recursive Advisors</a></li><li data-level="2"><a href="#toolcallingadvisor">ToolCallingAdvisor</a></li><li data-level="2"><a href="#structured-output-validation-advisor">StructuredOutputValidationAdvisor</a></li><li data-level="1"><a href="#_accumulating_token_usage_in_custom_recursive_advisors">Accumulating Token Usage in Custom Recursive Advisors</a></li></ul></div></aside><div class="sect1">
+<h2 id="_what_is_a_recursive_advisor"><a class="anchor" href="#_what_is_a_recursive_advisor"></a>What is a Recursive Advisor?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="image right"><img src="../_images/advisors-recursive.png" alt="Advisors Recursive" width="230"></span>
+Recursive advisors are a special type of advisor that can loop through the downstream advisor chain multiple times.
+This pattern is useful when you need to repeatedly call the LLM until a certain condition is met, such as:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Executing tool calls in a loop until no more tools need to be called</p>
+</li>
+<li>
+<p>Validating structured output and retrying if validation fails</p>
+</li>
+<li>
+<p>Implementing evaluation logic with modifications to the request</p>
+</li>
+<li>
+<p>Implementing retry logic with modifications to the request</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>CallAdvisorChain.copy(CallAdvisor after)</code> method is the key utility that enables recursive advisor patterns.
+It creates a new advisor chain that contains only the advisors that come after the specified advisor in the original chain
+and allows the recursive advisor to call this sub-chain as needed.
+This approach ensures that:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The recursive advisor can loop through the remaining advisors in the chain</p>
+</li>
+<li>
+<p>Other advisors in the chain can observe and intercept each iteration</p>
+</li>
+<li>
+<p>The advisor chain maintains proper ordering and observability</p>
+</li>
+<li>
+<p>The recursive advisor doesn’t re-execute advisors that came before it</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_built_in_recursive_advisors"><a class="anchor" href="#_built_in_recursive_advisors"></a>Built-in Recursive Advisors</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring AI ships two built-in recursive advisors that demonstrate this pattern.</p>
+</div>
+<div class="sect2">
+<h3 id="toolcallingadvisor"><a class="anchor" href="#toolcallingadvisor"></a><code>ToolCallingAdvisor</code></h3>
+<div class="paragraph">
+<p><code>ToolCallingAdvisor</code> implements the tool calling loop as part of the advisor chain rather than relying on per-<code>ChatModel</code> internal execution. It is auto-registered by <code>DefaultChatClient</code> whenever tools are present and is the default mechanism through which <code>ChatClient</code> drives tool-augmented conversations.</p>
+</div>
+<div class="paragraph">
+<p>Highlights:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Loops through the advisor chain until the <code>ToolExecutionEligibilityChecker</code> reports no more tool calls.</p>
+</li>
+<li>
+<p>Uses <code>callAdvisorChain.copy(this)</code> to create a sub-chain for recursive calls — other advisors can observe and intercept every iteration.</p>
+</li>
+<li>
+<p>Supports return-direct: when a tool’s result has <code>returnDirect = true</code>, the advisor breaks the loop and returns the tool result to the caller without sending it back to the LLM.</p>
+</li>
+<li>
+<p>Implements the <code>ToolAdvisor</code> marker interface, which <code>DefaultChatClient</code> uses to enforce the single-tool-advisor invariant — custom subclasses register transparently as replacements.</p>
+</li>
+<li>
+<p>Accumulates token usage across every iteration of the loop, so the final <code>ChatResponse</code> reports the cumulative usage of all model calls rather than only the last one (see <a href="usage-handling.html#_cumulative_usage_across_multi_step_flows" class="xref page">Cumulative Usage Across Multi-Step Flows</a>).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Short example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">var</span> toolCallingAdvisor = ToolCallingAdvisor.builder()
+    .toolCallingManager(toolCallingManager)
+    .advisorOrder(BaseAdvisor.HIGHEST_PRECEDENCE + <span class="hljs-number">300</span>)
+    .build();
+
+<span class="hljs-keyword">var</span> chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(toolCallingAdvisor)
+    .build();</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For the full builder API, hook methods, configuration options, memory-advisor ordering interactions, user-controlled execution patterns, and the custom-subclass extension pattern, see <a href="tools/tool-calling-advisor.html" class="xref page"><code>ToolCallingAdvisor</code></a>.</p>
+</div>
+<div class="paragraph">
+<p>For the conceptual overview of how the tool loop fits into the broader tool calling architecture, see <a href="tools.html#the-tool-calling-loop" class="xref page">Tool Calling: The Tool Calling Loop</a>.</p>
+</div>
+<div class="paragraph">
+<p>For a concrete subclass that uses `ToolCallingAdvisor’s extension hooks to implement progressive tool disclosure, see <a href="tools/tool-search-tool.html" class="xref page">Tool Search Tool</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="structured-output-validation-advisor"><a class="anchor" href="#structured-output-validation-advisor"></a><code>StructuredOutputValidationAdvisor</code></h3>
+<div class="paragraph">
+<p><code>StructuredOutputValidationAdvisor</code> validates the structured JSON output against a JSON schema and retries the call if validation fails, up to a configurable number of attempts.</p>
+</div>
+<div class="paragraph">
+<p>Key features:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Derives a JSON schema from the expected output type, or accepts a pre-supplied schema string.</p>
+</li>
+<li>
+<p>Validates the LLM response against the schema.</p>
+</li>
+<li>
+<p>Retries the call when validation fails (default: up to 3 attempts).</p>
+</li>
+<li>
+<p>Augments the prompt with the validation error message on retry attempts to help the model self-correct.</p>
+</li>
+<li>
+<p>Uses <code>callAdvisorChain.copy(this)</code> to create a sub-chain for recursive calls.</p>
+</li>
+<li>
+<p>Accumulates token usage across every validation attempt, so the returned <code>ChatResponse</code> reports the cumulative usage of all retries rather than only the final attempt (see <a href="usage-handling.html#_cumulative_usage_across_multi_step_flows" class="xref page">Cumulative Usage Across Multi-Step Flows</a>).</p>
+</li>
+<li>
+<p>Optionally supports a custom <code>JsonMapper</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The advisor can be configured via <code>outputType</code> (schema derived automatically) or <code>outputJsonSchema</code> (pre-supplied schema string); the two options are mutually exclusive.</p>
+</div>
+<div class="paragraph">
+<p>Example with <code>outputType</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">var</span> validationAdvisor = StructuredOutputValidationAdvisor.builder()
+    .outputType(MyResponseType<span class="hljs-class">.<span class="hljs-keyword">class</span>)
+    .<span class="hljs-title">maxRepeatAttempts</span>(3)
+    .<span class="hljs-title">build</span>()</span>;
+
+<span class="hljs-keyword">var</span> chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(validationAdvisor)
+    .build();</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example with a pre-supplied JSON schema:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-keyword">var</span> validationAdvisor = StructuredOutputValidationAdvisor.builder()
+    .outputJsonSchema(myConverter.getJsonSchema())
+    .build();</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, enable schema validation directly on an <code>entity()</code> call without configuring the advisor manually, via the <code>EntityParamSpec</code> consumer:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ActorFilms actorFilms = chatClient.prompt()
+    .user(<span class="hljs-string">"Generate the filmography for a random actor."</span>)
+    .call()
+    .entity(ActorFilms<span class="hljs-class">.<span class="hljs-keyword">class</span>, <span class="hljs-title">spec</span> -&gt; <span class="hljs-title">spec</span>.<span class="hljs-title">validateSchema</span>())</span>;</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See <a href="structured-output/validation.html" class="xref page">Schema Validation &amp; Self-Correction</a> for the high-level usage.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_accumulating_token_usage_in_custom_recursive_advisors"><a class="anchor" href="#_accumulating_token_usage_in_custom_recursive_advisors"></a>Accumulating Token Usage in Custom Recursive Advisors</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A recursive advisor performs more than one model call per invocation, so it must accumulate the token usage of every call to report a correct cumulative total; otherwise only the last call’s usage is visible to the caller.
+Spring AI provides <code>org.springframework.ai.chat.client.advisor.UsageAccumulator</code> to make this straightforward.
+Create one instance per <code>adviseCall</code> invocation (or per stream subscription, inside a <code>Flux.defer</code>, to keep it subscription-local), fold each round’s response in with <code>addRoundResponse(…​)</code>, and stamp the cumulative total onto the final response with <code>applyAccumulatedUsage(…​)</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">UsageAccumulator usage = <span class="hljs-keyword">new</span> UsageAccumulator();
+ChatClientResponse response;
+<span class="hljs-keyword">do</span> {
+    response = callAdvisorChain.copy(<span class="hljs-keyword">this</span>).nextCall(request);
+    usage.addRoundResponse(response.chatResponse());
+    <span class="hljs-comment">// ... decide whether to loop again ...</span>
+}
+<span class="hljs-keyword">while</span> (loopAgain);
+<span class="hljs-keyword">return</span> usage.applyAccumulatedUsage(response);</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The underlying token math lives in <code>org.springframework.ai.support.UsageCalculator</code> (<code>accumulateResponseUsage</code> and <code>withUsage</code>), which <code>UsageAccumulator</code> wraps.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="advisors.html">Advisors</a></span>
+  <span class="next"><a href="prompt.html">Prompts</a></span>
+</nav>
+</article>

@@ -1,0 +1,18 @@
+[
+  {
+    "language": "java",
+    "code": "public interface EmbeddingModel extends Model<EmbeddingRequest, EmbeddingResponse> {\n\n\t@Override\n\tEmbeddingResponse call(EmbeddingRequest request);\n\n\n\t/**\n\t * Embeds the given document's content into a vector.\n\t * @param document the document to embed.\n\t * @return the embedded vector.\n\t */\n\tfloat[] embed(Document document);\n\n\t/**\n\t * Extracts the text content from a Document to be used for embedding.\n\t * By default, returns Document.getText(). Implementations that support\n\t * MetadataMode should override this to return\n\t * Document.getFormattedContent(MetadataMode) so that metadata is\n\t * included in the text sent to the embedding API.\n\t */\n\tdefault String getEmbeddingContent(Document document) {\n\t\treturn document.getText();\n\t}\n\n\t/**\n\t * Embeds the given text into a vector.\n\t * @param text the text to embed.\n\t * @return the embedded vector.\n\t */\n\tdefault float[] embed(String text) {\n\t\tAssert.notNull(text, \"Text must not be null\");\n\t\treturn this.embed(List.of(text)).iterator().next();\n\t}\n\n\t/**\n\t * Embeds a batch of texts into vectors.\n\t * @param texts list of texts to embed.\n\t * @return list of list of embedded vectors.\n\t */\n\tdefault List<float[]> embed(List<String> texts) {\n\t\tAssert.notNull(texts, \"Texts must not be null\");\n\t\treturn this.call(new EmbeddingRequest(texts, EmbeddingOptions.EMPTY))\n\t\t\t.getResults()\n\t\t\t.stream()\n\t\t\t.map(Embedding::getOutput)\n\t\t\t.toList();\n\t}\n\n\t/**\n\t * Embeds a batch of texts into vectors and returns the {@link EmbeddingResponse}.\n\t * @param texts list of texts to embed.\n\t * @return the embedding response.\n\t */\n\tdefault EmbeddingResponse embedForResponse(List<String> texts) {\n\t\tAssert.notNull(texts, \"Texts must not be null\");\n\t\treturn this.call(new EmbeddingRequest(texts, EmbeddingOptions.EMPTY));\n\t}\n\n\t/**\n\t * @return the number of dimensions of the embedded vectors. It is generative\n\t * specific.\n\t */\n\tdefault int dimensions() {\n\t\treturn embed(\"Test String\").size();\n\t}\n\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class EmbeddingRequest implements ModelRequest<List<String>> {\n\tprivate final List<String> inputs;\n\tprivate final EmbeddingOptions options;\n\t// other methods omitted\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class EmbeddingResponse implements ModelResponse<Embedding> {\n\n\tprivate List<Embedding> embeddings;\n\tprivate EmbeddingResponseMetadata metadata = new EmbeddingResponseMetadata();\n\t// other methods omitted\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class Embedding implements ModelResult<float[]> {\n\tprivate float[] embedding;\n\tprivate Integer index;\n\tprivate EmbeddingResultMetadata metadata;\n\t// other methods omitted\n}"
+  }
+]

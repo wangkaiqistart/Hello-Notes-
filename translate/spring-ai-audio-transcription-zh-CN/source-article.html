@@ -1,0 +1,146 @@
+<article class="doc">
+<h1 id="page-title" class="page">Transcription API</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring AI provides a unified API for Speech-to-Text transcription through the <code>TranscriptionModel</code> interface. This allows you to write portable code that works across different transcription providers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_supported_providers"><a class="anchor" href="#_supported_providers"></a>Supported Providers</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="transcriptions/openai-transcriptions.html" class="xref page">OpenAI’s Whisper API</a></p>
+</li>
+<li>
+<p><a href="transcriptions/jinfer-transcriptions.html" class="xref page">Qxotic jinfer Transcriptions (local, in-JVM)</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_common_interface"><a class="anchor" href="#_common_interface"></a>Common Interface</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All transcription providers implement the following shared interface:</p>
+</div>
+<div class="sect2">
+<h3 id="_transcriptionmodel"><a class="anchor" href="#_transcriptionmodel"></a>TranscriptionModel</h3>
+<div class="paragraph">
+<p>The <code>TranscriptionModel</code> interface provides methods for converting audio to text:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface TranscriptionModel extends Model&lt;AudioTranscriptionPrompt, AudioTranscriptionResponse&gt; {
+
+    /**
+     * Transcribes the audio from the given prompt.
+     */
+    AudioTranscriptionResponse call(AudioTranscriptionPrompt transcriptionPrompt);
+
+    /**
+     * A convenience method for transcribing an audio resource.
+     */
+    default String transcribe(Resource resource) {
+        AudioTranscriptionPrompt prompt = new AudioTranscriptionPrompt(resource);
+        return this.call(prompt).getResult().getOutput();
+    }
+
+    /**
+     * A convenience method for transcribing an audio resource with options.
+     */
+    default String transcribe(Resource resource, AudioTranscriptionOptions options) {
+        AudioTranscriptionPrompt prompt = new AudioTranscriptionPrompt(resource, options);
+        return this.call(prompt).getResult().getOutput();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_audiotranscriptionprompt"><a class="anchor" href="#_audiotranscriptionprompt"></a>AudioTranscriptionPrompt</h3>
+<div class="paragraph">
+<p>The <code>AudioTranscriptionPrompt</code> class encapsulates the input audio and options:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Resource audioFile = new FileSystemResource("/path/to/audio.mp3");
+AudioTranscriptionPrompt prompt = new AudioTranscriptionPrompt(
+    audioFile,
+    options
+);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_audiotranscriptionresponse"><a class="anchor" href="#_audiotranscriptionresponse"></a>AudioTranscriptionResponse</h3>
+<div class="paragraph">
+<p>The <code>AudioTranscriptionResponse</code> class contains the transcribed text and metadata:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">AudioTranscriptionResponse response = model.call(prompt);
+String transcribedText = response.getResult().getOutput();
+AudioTranscriptionResponseMetadata metadata = response.getMetadata();</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_writing_provider_agnostic_code"><a class="anchor" href="#_writing_provider_agnostic_code"></a>Writing Provider-Agnostic Code</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of the key benefits of the shared transcription interface is the ability to write code that works with any transcription provider without modification. The actual provider (OpenAI for example) is determined by your Spring Boot configuration, allowing you to switch providers without changing application code.</p>
+</div>
+<div class="sect2">
+<h3 id="_basic_service_example"><a class="anchor" href="#_basic_service_example"></a>Basic Service Example</h3>
+<div class="paragraph">
+<p>The shared interface allows you to write code that works with any transcription provider:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Service
+public class TranscriptionService {
+
+    private final TranscriptionModel transcriptionModel;
+
+    public TranscriptionService(TranscriptionModel transcriptionModel) {
+        this.transcriptionModel = transcriptionModel;
+    }
+
+    public String transcribeAudio(Resource audioFile) {
+        return transcriptionModel.transcribe(audioFile);
+    }
+
+    public String transcribeWithOptions(Resource audioFile, AudioTranscriptionOptions options) {
+        AudioTranscriptionPrompt prompt = new AudioTranscriptionPrompt(audioFile, options);
+        AudioTranscriptionResponse response = transcriptionModel.call(prompt);
+        return response.getResult().getOutput();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This service works seamlessly with OpenAI or any other transcription provider, with the actual implementation determined by your Spring Boot configuration.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_provider_specific_features"><a class="anchor" href="#_provider_specific_features"></a>Provider-Specific Features</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>While the shared interface provides portability, each provider also offers specific features through provider-specific options classes (e.g., <code>OpenAiAudioTranscriptionOptions</code>). These classes implement the <code>AudioTranscriptionOptions</code> interface while adding provider-specific capabilities.</p>
+</div>
+<div class="paragraph">
+<p>For detailed information about provider-specific features, see the individual provider documentation pages.</p>
+</div>
+</div>
+</div>
+
+</article>

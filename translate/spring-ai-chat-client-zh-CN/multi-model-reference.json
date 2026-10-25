@@ -1,0 +1,26 @@
+{
+  "version": "2.0.2",
+  "autoConfigurationChecks": [
+    {
+      "provider": "openai",
+      "sourceClass": "org/springframework/ai/model/openai/autoconfigure/OpenAiChatAutoConfiguration.java",
+      "sha256": "685ddb2894ed622845ca30cd145af4e81aea1b0c23e9575ed6466adc81c361bc",
+      "condition": "spring.ai.model.chat matches this provider or is absent"
+    },
+    {
+      "provider": "deepseek",
+      "sourceClass": "org/springframework/ai/model/deepseek/autoconfigure/DeepSeekChatAutoConfiguration.java",
+      "sha256": "2484f2aa08bf6d7e50343b4f1804dcf2eb2c7900f8eab40750a8e50b444a1770",
+      "condition": "spring.ai.model.chat matches this provider or is absent"
+    },
+    {
+      "provider": "anthropic",
+      "sourceClass": "org/springframework/ai/model/anthropic/autoconfigure/AnthropicChatAutoConfiguration.java",
+      "sha256": "e93dc719601c5651893649d9e102224000a7b3c7b79541d2483c7227a4af6522",
+      "condition": "spring.ai.model.chat matches this provider or is absent"
+    }
+  ],
+  "previousBlocksPreserved": 40,
+  "newBlocks": 2,
+  "totalBlocks": 42
+}

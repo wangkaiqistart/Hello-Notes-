@@ -1,0 +1,42 @@
+[
+  {
+    "index": 0,
+    "lang": "java",
+    "text": "ChatResponse response = chatModel.call(prompt);\n\nChatResponseMetadata metadata = response.getMetadata();\n\nString id = metadata.getId();\nString model = metadata.getModel();\nRateLimit rateLimit = metadata.getRateLimit();\nUsage usage = metadata.getUsage();\nPromptMetadata promptMetadata = metadata.getPromptMetadata();"
+  },
+  {
+    "index": 1,
+    "lang": "java",
+    "text": "interface RateLimit {\n\n\tLong getRequestsLimit();\n\n\tLong getRequestsRemaining();\n\n\tDuration getRequestsReset();\n\n\tLong getTokensLimit();\n\n\tLong getTokensRemaining();\n\n\tDuration getTokensReset();\n\n}"
+  },
+  {
+    "index": 2,
+    "lang": "java",
+    "text": "RateLimit rateLimit = metadata.getRateLimit();\n\nLong tokensRemaining = rateLimit.getTokensRemaining();\n\n// do something interesting with the RateLimit metadata"
+  },
+  {
+    "index": 3,
+    "lang": "java",
+    "text": "interface Usage {\n\n\tInteger getPromptTokens();\n\n\tInteger getCompletionTokens();\n\n\tdefault Integer getTotalTokens() { ... }\n\n\tObject getNativeUsage();\n\n}"
+  },
+  {
+    "index": 4,
+    "lang": "java",
+    "text": "@SpringBootConfiguration\npublic class Configuration {\n\n\t@Bean\n\tpublic OpenAiChatModel openAiChatModel() {\n\t\treturn OpenAiChatModel.builder()\n\t\t\t.options(OpenAiChatOptions.builder()\n\t\t\t\t.apiKey(System.getenv(\"OPENAI_API_KEY\"))\n\t\t\t\t.build())\n\t\t\t.build();\n\t}\n\n}\n\n@Service\npublic class ChatService {\n\n\tprivate final OpenAiChatModel chatModel;\n\n\tpublic ChatService(OpenAiChatModel chatModel) {\n\t\tthis.chatModel = chatModel;\n\t}\n\n\tpublic void demonstrateUsage() {\n\t\t// Create a chat prompt\n\t\tPrompt prompt = new Prompt(\"What is the weather like today?\");\n\n\t\t// Get the chat response\n\t\tChatResponse response = this.chatModel.call(prompt);\n\n\t\t// Access the usage information\n\t\tUsage usage = response.getMetadata().getUsage();\n\n\t\t// Get standard usage metrics\n\t\tSystem.out.println(\"Prompt Tokens: \" + usage.getPromptTokens());\n\t\tSystem.out.println(\"Completion Tokens: \" + usage.getCompletionTokens());\n\t\tSystem.out.println(\"Total Tokens: \" + usage.getTotalTokens());\n\n\t\t// Access native OpenAI usage data with detailed token information\n\t\tif (usage.getNativeUsage() instanceof com.openai.models.completions.CompletionUsage nativeUsage) {\n\n\t\t\t// Detailed prompt token information\n\t\t\tnativeUsage.promptTokensDetails().ifPresent(details -> {\n\t\t\t\tSystem.out.println(\"Prompt Tokens Details:\");\n\t\t\t\tdetails.audioTokens().ifPresent(tokens -> System.out.println(\"- Audio Tokens: \" + tokens));\n\t\t\t\tdetails.cachedTokens().ifPresent(tokens -> System.out.println(\"- Cached Tokens: \" + tokens));\n\t\t\t});\n\n\t\t\t// Detailed completion token information\n\t\t\tnativeUsage.completionTokensDetails().ifPresent(details -> {\n\t\t\t\tSystem.out.println(\"Completion Tokens Details:\");\n\t\t\t\tdetails.reasoningTokens().ifPresent(tokens -> System.out.println(\"- Reasoning Tokens: \" + tokens));\n\t\t\t\tdetails.acceptedPredictionTokens().ifPresent(tokens -> System.out.println(\"- Accepted Prediction Tokens: \" + tokens));\n\t\t\t\tdetails.audioTokens().ifPresent(tokens -> System.out.println(\"- Audio Tokens: \" + tokens));\n\t\t\t\tdetails.rejectedPredictionTokens().ifPresent(tokens -> System.out.println(\"- Rejected Prediction Tokens: \" + tokens));\n\t\t\t});\n\t\t}\n\t}\n}"
+  },
+  {
+    "index": 5,
+    "lang": "java",
+    "text": "ChatResponse response = chatClient.prompt(\"What is the weather like today?\")\n\t\t.call()\n\t\t.chatResponse();\n\nUsage usage = response.getMetadata().getUsage();"
+  },
+  {
+    "index": 6,
+    "lang": "java",
+    "text": "Usage usage = response.getMetadata().getUsage();\n\n// Unified cache metrics — works across all providers\nLong cacheReadTokens = usage.getCacheReadInputTokens();\nLong cacheWriteTokens = usage.getCacheWriteInputTokens();\n\nif (cacheReadTokens != null && cacheReadTokens > 0) {\n\tSystem.out.println(\"Cache hit: \" + cacheReadTokens + \" tokens read from cache\");\n}\nif (cacheWriteTokens != null && cacheWriteTokens > 0) {\n\tSystem.out.println(\"Cache write: \" + cacheWriteTokens + \" tokens written to cache\");\n}"
+  },
+  {
+    "index": 7,
+    "lang": "java",
+    "text": "ChatResponse response = chatClient.prompt(\"What is the weather in Paris?\")\n\t\t.tools(new WeatherTools())\n\t\t.call()\n\t\t.chatResponse();\n\n// Cumulative across all model calls in the tool-calling loop\nUsage usage = response.getMetadata().getUsage();\nint totalTokens = usage.getTotalTokens();"
+  }
+]

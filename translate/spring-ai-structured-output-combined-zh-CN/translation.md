@@ -1,0 +1,610 @@
+---
+title: Spring AI：结构化输出
+description: 掌握 ChatClient 对象映射、Schema 校验与提供方原生约束，理解输出转换器接口、内置实现和自定义解析。
+sidebar:
+  label: 结构化输出
+  order: 7
+---
+
+模型通常返回文本，但业务代码需要按字段分支、保存数据或调用其他服务。**结构化输出**让模型按指定结构生成内容，再将文本解析为 Java 对象。
+
+Spring AI 在 [ChatClient](/frameworks/spring-ai/core/chat-client/) 链式 API 中提供 `.entity(...)`：定义目标 Java 类型后，框架生成 JSON Schema（描述字段、类型等结构约束），将格式要求交给模型，再把响应反序列化为该类型。
+
+本篇按“高层对象映射 → 可靠性配置与自动纠正 → 原生结构约束 → 底层转换器”展开，覆盖常用 API 与需要定制时的选择。
+
+## 返回 Java 对象
+
+先用 Java `record` 定义返回结构：
+
+```java
+record ActorsFilms(String actor, List<String> movies) {}
+```
+
+调用时以 `.entity(目标类型)` 结束链式请求。与返回原始文本的 `.content()` 不同，它会返回解析后的对象：
+
+```java
+ActorsFilms films = chatClient.prompt()
+    .user("Generate the filmography for a random actor.")
+    .call()
+    .entity(ActorsFilms.class);
+```
+
+随后可以像访问其他 Java 对象一样读取字段：
+
+```java
+films.actor();     // "Tom Hanks"
+films.movies();    // ["Forrest Gump", "Cast Away", ...]
+```
+
+默认方式在内部执行三步：
+
+1. 根据 `ActorsFilms` 生成 JSON Schema。
+2. 将 Schema 补充到提示词的系统上下文，要求模型按格式回答。
+3. 将模型返回的 JSON 交给类型转换器，解析为 `ActorsFilms`。
+
+下图展示这条默认流程：蓝色虚线传递返回类型及 Schema，橙色箭头连接问题、模型与转换器，底部蓝线返回对象。
+
+[![结构化输出默认流程：由返回类型生成 Schema，加入系统上下文，模型返回 JSON 后转换为 Java 对象](/images/frameworks/spring-ai/structured-output-basic-zh.svg)](/images/frameworks/spring-ai/structured-output-basic-zh.svg)
+
+图示为提示词驱动的转换方式，格式要求并非严格保证；点击可查看大图。
+
+这种方式不依赖提供方专用的结构化输出功能，可用于 Spring AI 支持的模型。
+
+**`.entity(...)` 仅用于 `.call()`。** 对象解析需要完整响应，不能直接用于 `.stream()` 的文本片段流。这个限制覆盖本文所有重载：`Class`、`ParameterizedTypeReference`、自定义转换器，以及带可靠性配置的调用。
+
+默认 `.entity(...)` 不保证模型严格遵守 Schema。模型可能多返回字段、漏掉必需字段，或在 JSON 外加入说明文字，从而导致校验或解析问题。下面两项配置用于提高可靠性。
+
+## 泛型：List、Map 等
+
+具体类型使用 `.entity(Class)`；`List<ActorsFilms>`、`Map<String, ActorsFilms>` 等泛型类型使用 `ParameterizedTypeReference`：
+
+```java
+List<ActorsFilms> films = chatClient.prompt()
+    .user("Generate filmographies for three random actors.")
+    .call()
+    .entity(new ParameterizedTypeReference<List<ActorsFilms>>() {});
+```
+
+## 可靠性配置：EntityParamSpec
+
+所有 `.entity(...)` 和 `.responseEntity(...)` 重载都可以额外接收 `Consumer<EntityParamSpec>`。其中两项能力相互独立，也可以组合使用。
+
+### validateSchema()：校验失败后重试
+
+启用后，Spring AI 按目标类型的 Schema 校验响应；如果失败，就把具体错误补充到提示词并重新请求模型，默认首次调用后最多重试 **3 次**，总计最多调用 **4 次**。
+
+```java
+ActorsFilms films = chatClient.prompt()
+    .user("Generate the filmography for a random actor.")
+    .call()
+    .entity(ActorsFilms.class, spec -> spec.validateSchema());
+```
+
+重试次数有限，达到上限后结果仍可能不符合 Schema。详细流程与定制方式见[Schema 校验与自动纠正](#schema-校验与自动纠正)。
+
+### useProviderStructuredOutput()：请求端约束
+
+这项配置将 Schema 作为 API 级约束传递给提供方，由提供方运行时约束输出结构，而不只依靠提示词指令。
+
+```java
+ActorsFilms films = chatClient.prompt()
+    .user("Generate the filmography for a random actor.")
+    .call()
+    .entity(ActorsFilms.class, spec -> spec.useProviderStructuredOutput());
+```
+
+底层模型必须支持原生结构化输出，适用提供方和限制见[提供方原生结构化输出](#提供方原生结构化输出)。
+
+### 组合使用
+
+可以同时开启请求端约束和响应端校验：
+
+```java
+ActorsFilms films = chatClient.prompt()
+    .user("Generate the filmography for a random actor.")
+    .call()
+    .entity(ActorsFilms.class, spec -> spec
+        .useProviderStructuredOutput()
+        .validateSchema());
+```
+
+`useProviderStructuredOutput()` 从请求端降低格式不符的概率；`validateSchema()` 检查响应并纠正剩余问题，包括部分提供方边界情况或推理模型的特殊行为。下游代码对结构变化敏感时，可以组合使用。Schema 校验关注字段和类型等结构，业务规则与内容正确性仍需应用校验。
+
+## Schema 校验与自动纠正
+
+默认 `.entity(...)` 用提示词要求模型遵守结构，不能强制它照做。额外字段、必需字段缺失或 JSON 外的说明文字都可能造成格式问题；启用 `validateSchema()` 后，框架会检查响应并反馈错误，要求模型重新生成。启用方式见上文[validateSchema()](#validateschema校验失败后重试)。
+
+### 纠正循环如何执行
+
+1. 模型返回完整响应。
+2. Spring AI 根据目标类型的 JSON Schema 校验输出。
+3. 校验通过后，将 JSON 转换为目标 Java 对象。
+4. 如果失败，将具体错误补充到用户提示词，再请求模型，默认在首次调用后最多重试 **3 次**，总计最多调用 **4 次**。
+
+错误包含具体原因，例如缺少必需字段 `actor`，或要求 `array` 却返回 `string`。模型下一轮能看到问题所在，重试会带上纠正依据。
+
+下图中，橙色箭头表示请求和结果的主路径，红色回路表示校验失败后把错误加入下一轮请求；通过校验后才进入右侧类型转换器。
+
+[![Schema 校验与自动纠正：模型响应通过校验后转换为对象，失败时将错误反馈到下一轮请求](/images/frameworks/spring-ai/structured-output-self-correction-zh.svg)](/images/frameworks/spring-ai/structured-output-self-correction-zh.svg)
+
+重点看红色错误回路与右侧判断节点；点击可查看大图。
+
+这套机制由 `StructuredOutputValidationAdvisor` 实现。调用 `validateSchema()` 会自动注册它，无需手动装配。它是[递归 Advisor](/frameworks/spring-ai/core/advisors/#structuredoutputvalidationadvisor结构校验循环)，可重复执行下游链。
+
+**校验需要完整响应，不支持流式调用。**
+
+达到重试上限也不代表最后一轮已符合 Schema。在 2.0.2 中，Advisor 会返回最后一轮响应，再由转换器解析；应用仍需处理解析异常，以及可解析但不满足业务要求的结果。
+
+### 定制 StructuredOutputValidationAdvisor
+
+默认使用 Spring AI 的 `JsonMapper`。需要调整重试次数、提供现有 Schema 或使用其他映射器时，可以自己构建 Advisor 并注册到 `ChatClient`：
+
+```java
+var validationAdvisor = StructuredOutputValidationAdvisor.builder()
+    .outputType(ActorsFilms.class)
+    .maxRepeatAttempts(5)
+    .build();
+
+ChatClient chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(validationAdvisor)
+    .build();
+```
+
+`maxRepeatAttempts(5)` 表示首次调用后最多重试 5 次，总计最多调用 6 次。设置为 `0` 时只进行首次调用。
+
+手动注册后，直接使用普通 `.entity(ActorsFilms.class)`，不要再叠加 `spec -> spec.validateSchema()`；在 2.0.2 中，后者会额外加入一个默认校验 Advisor。
+
+也可以使用已有 Schema 字符串：
+
+```java
+var validationAdvisor = StructuredOutputValidationAdvisor.builder()
+    .outputJsonSchema(myConverter.getJsonSchema())
+    .build();
+```
+
+**`outputType` 与 `outputJsonSchema` 互斥，只能设置其中一种。** 前者从目标 Java 类型生成 Schema，后者直接使用传入的字符串。
+
+主要行为：
+
+- 使用 JSON Schema `DRAFT_2020_12` 校验响应。
+- 校验失败时，将错误消息加入下一轮用户提示词。
+- 在重试上限内重复请求；默认额外重试最多 3 次。
+- 累计各轮 Token 用量，最终 `ChatResponse` 报告整个流程的用量，详见[多步流程的累计用量](/frameworks/spring-ai/core/chat-response-metadata/#多步流程的累计用量)。
+- 可以通过构建器的 `jsonMapper(...)` 指定自定义 `JsonMapper`。
+
+### 与提供方原生约束组合
+
+`validateSchema()` 在响应端检查结果并触发纠正，`useProviderStructuredOutput()` 在请求端向提供方传入 Schema 约束，二者可以同时启用，调用方式见上文[组合使用](#组合使用)。
+
+这对原生支持不完整的模型尤其有用，例如部分 Ollama 推理模型可能返回普通推理文本。具体情况见[已知限制](#已知限制)。两项配置都不能替代应用的业务校验。
+
+## 同时获取对象与完整响应
+
+`.entity(...)` 只返回对象。还需要 Token 用量、观测信息等元数据时，使用 `.responseEntity(...)` 同时取得对象与底层 `ChatResponse`：
+
+```java
+ResponseEntity<ChatResponse, ActorsFilms> result = chatClient.prompt()
+    .user("Generate the filmography for a random actor.")
+    .call()
+    .responseEntity(ActorsFilms.class);
+
+ActorsFilms films = result.entity();
+ChatResponse raw = result.response();
+long totalTokens = raw.getMetadata().getUsage().getTotalTokens();
+```
+
+这里的 `ResponseEntity` 是 Spring AI 的结果容器 `org.springframework.ai.chat.client.ResponseEntity`，不同于 Spring MVC 使用的 HTTP 响应类型。它与 `.entity(...)` 支持相同类型的重载：`Class`、`ParameterizedTypeReference`、自定义 `StructuredOutputConverter`，以及 `EntityParamSpec` 配置。
+
+元数据的读取方式见[聊天响应元数据](/frameworks/spring-ai/core/chat-response-metadata/)。
+
+## 提供方原生结构化输出
+
+上文的 `useProviderStructuredOutput()` 将 Schema 作为 API 字段传给提供方，由提供方在模型运行时约束输出结构。
+
+请求会发生三项变化：
+
+- 系统提示词不再附带 JSON 格式说明，减少提示词中的格式指令与相应 Token。
+- Schema 通过提供方 API 的专用字段传递。
+- 提供方按其支持的 Schema 能力约束输出，提高格式可靠性，并可在内部优化生成过程。
+
+### 能力检测与默认回退
+
+Spring AI 检查模型的聊天选项是否实现 `StructuredOutputChatOptions`。如果没有实现，这个开关会被静默忽略，回退到默认的提示词驱动方式。
+
+原生能力默认关闭，原因是兼容性：不同模型和提供方的支持范围差异较大，旧模型可能拒绝相应请求。需要更强的 API 约束时再开启，并用实际模型版本验证。
+
+### 支持的模型
+
+以下为 2.0.2 文档列出的支持范围，调用方式均为 `useProviderStructuredOutput()`；具体型号还需确认对应提供方的能力：
+
+| 提供方        | 支持范围                                                      |
+| ------------- | ------------------------------------------------------------- |
+| OpenAI        | GPT-4o 及之后支持 JSON Schema 的模型。                        |
+| Anthropic     | Claude 3.5 Sonnet 及之后的相应模型。                          |
+| Google GenAI  | Gemini 1.5 Pro 及之后的相应模型。                             |
+| Mistral AI    | Mistral Small 及之后支持 JSON Schema 的模型。                 |
+| Ollama        | 支持 JSON Schema 的具体模型，稳定性因模型而异。               |
+| Qxotic jinfer | 全部聊天模型；将 Schema 编译为语法，在 Token 采样时施加约束。 |
+
+jinfer 的机制见 [jinfer Structured Output](https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#structured-output)。
+
+### 已知限制
+
+提供方可能只支持 JSON Schema 的一部分。常见限制涉及 `$ref`、深层嵌套数组、`allOf` / `anyOf` / `oneOf`、正则表达式与递归类型。原生约束也不能替代应用的业务校验。
+
+**Ollama：部分推理模型可能返回普通文本。** `qwen3:8b`、`qwen3.5:9b` 等内置思考模式的模型存在这类情况：它们可能输出推理过程，导致 `BeanOutputConverter` 无法解析，例如：
+
+```text
+StreamReadException: Unrecognized token 'The': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+```
+
+遇到这种情况，可以更换模型，例如 `llama3.1:latest`，或回退到默认提示词方式；也可以按上文的[组合用法](#组合使用)同时启用原生约束与 Schema 校验，让格式不符的响应进入自动重试。
+
+**OpenAI：Schema 顶层必须是对象，不能直接是数组。** 启用原生输出后直接请求 `List<T>` 会导致 API 错误：
+
+```java
+// OpenAI 原生结构化输出不支持下面的顶层数组：
+List<ActorsFilms> films = chatClient.prompt()
+    .user("Generate filmographies for Tom Hanks and Bill Murray.")
+    .call()
+    .entity(new ParameterizedTypeReference<List<ActorsFilms>>() {},
+            spec -> spec.useProviderStructuredOutput()); // OpenAI 会报错
+```
+
+可将列表包进一个 record，或使用默认提示词方式：
+
+```java
+// 方案 1：用 record 包装列表
+record FilmographyList(List<ActorsFilms> films) {}
+
+FilmographyList result = chatClient.prompt()
+    .user("Generate filmographies for Tom Hanks and Bill Murray.")
+    .call()
+    .entity(FilmographyList.class, spec -> spec.useProviderStructuredOutput());
+List<ActorsFilms> films = result.films();
+
+// 方案 2：使用默认提示词方式，不启用原生输出
+List<ActorsFilms> films = chatClient.prompt()
+    .user("Generate filmographies for Tom Hanks and Bill Murray.")
+    .call()
+    .entity(new ParameterizedTypeReference<List<ActorsFilms>>() {});
+```
+
+默认方式没有这项顶层数组限制。相关背景见 [OpenAI 社区讨论](https://community.openai.com/t/support-top-level-array-in-json-schema/896048)。
+
+### 按请求或全局启用
+
+`useProviderStructuredOutput()` 是单次转换的开关。也可以使用 `AdvisorParams.ENABLE_NATIVE_STRUCTURED_OUTPUT`，在本次请求上设置，或在构建器上设置默认值：
+
+```java
+// 按请求启用
+ActorsFilms films = chatClient.prompt()
+    .advisors(AdvisorParams.ENABLE_NATIVE_STRUCTURED_OUTPUT)
+    .user("Generate the filmography for a random actor.")
+    .call()
+    .entity(ActorsFilms.class);
+
+// 在构建器上设置默认值
+@Bean
+ChatClient chatClient(ChatClient.Builder builder) {
+    return builder
+        .defaultAdvisors(AdvisorParams.ENABLE_NATIVE_STRUCTURED_OUTPUT)
+        .build();
+}
+```
+
+### 提供方专用的 JSON 模式
+
+除了统一的开关，各提供方还有独立配置。需要区分“生成有效 JSON”和“严格符合指定 JSON Schema”：前者不保证字段与类型满足业务定义的结构。
+
+| 提供方                                                                                                  | 专用配置与含义                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [OpenAI](https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_structured_outputs)      | `JSON_OBJECT` 要求有效 JSON；`JSON_SCHEMA` 搭配 Schema 约束结构。通过 `spring.ai.openai.chat.response-format.type` 等选项配置。                        |
+| [Ollama](https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html)                          | `spring.ai.ollama.chat.format` 可以设为 `json`，也可以传入 JSON Schema 对象约束结构；具体模型仍需验证。                                                |
+| [Qxotic jinfer](https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#structured-output) | `JinferChatOptions.grammar(...)` 通过 [GBNF 语法](https://github.com/ggml-org/llama.cpp/blob/master/grammars/README.md)约束输出。                      |
+| [Mistral AI](https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html)                   | `spring.ai.mistralai.chat.response-format` 设为 `{ "type": "json_object" }` 开启 JSON 模式；`{ "type": "json_schema" }` 搭配 Schema 开启原生结构约束。 |
+
+## 输出转换器
+
+高层 `.entity(...)` 建立在 `StructuredOutputConverter<T>` 之上。通常直接使用高层 API 即可；需要处理额外包装的输出、生成 YAML / CSV，或直接调用底层 `ChatModel` 时，再使用转换器。
+
+转换器参与模型调用前后的两个阶段：调用前提供格式指令，调用后把模型返回的文本解析为目标类型。下图将这两个职责放在同一个黄色框中，模型调用位于两者之间。
+
+[![输出转换器的前后处理：输入与格式指令合并后调用模型，返回文本再转换为结构化结果](/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg)](/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg)
+
+左侧看格式指令如何进入提示词，右侧看文本如何变为对象；点击可查看大图。
+
+转换器是尽力而为的转换机制，单靠格式说明不能保证模型遵守要求。需要更可靠的结构时，可以结合 Schema 校验。它不用于工具调用协议本身的结构化数据。
+
+### 接口与数据流
+
+`StructuredOutputConverter<T>` 结合 Spring 的 `Converter<String, T>` 与 `FormatProvider`：
+
+```java
+public interface StructuredOutputConverter<T> extends Converter<String, T>, FormatProvider {
+
+    /**
+     * Returns the JSON schema for the structured output of an LLM call,
+     * or NO_JSON_SCHEMA ("") if not available.
+     */
+    default String getJsonSchema() {
+        return NO_JSON_SCHEMA;
+    }
+
+}
+```
+
+```java
+public interface FormatProvider {
+    String getFormat();
+}
+```
+
+- `getFormat()` 返回给模型的格式指令。
+- `convert(String)` 把模型返回的文本转换为目标类型 `T`。
+- `getJsonSchema()` 返回 JSON Schema；默认返回 `NO_JSON_SCHEMA`，即空字符串。
+
+下图把接口职责与调用路径对应起来：`FormatProvider` 将格式要求交给 `PromptTemplate`，模型响应再交给 `Converter<String, T>`。
+
+[![结构化输出 API 数据流：FormatProvider 提供格式指令，PromptTemplate 构造请求，ChatModel 返回响应后由 Converter 转为目标类型](/images/frameworks/spring-ai/structured-output-api-zh.svg)](/images/frameworks/spring-ai/structured-output-api-zh.svg)
+
+类名和方法名保留 API 原名，说明文字中文化；图中 `ChatModel.call(Prompt)` 返回 `ChatResponse`，提取其中的文本后才交给转换器；点击可查看大图。
+
+格式指令可以要求只返回符合 RFC 8259 的 JSON，例如：
+
+```text
+  Your response should be in JSON format.
+  The data structure for the JSON should match this Java class: java.util.HashMap
+  Do not include any explanations, only provide a RFC8259 compliant JSON response following this format without deviation.
+```
+
+直接使用底层 API 时，通常通过[提示词模板](/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词)把 `getFormat()` 的结果填入用户输入：
+
+```java
+    StructuredOutputConverter<?> outputConverter = ...;
+    String userInputTemplate = """
+        ... user text input ....
+        {format}
+        """; // 用户输入包含 format 占位符。
+    Prompt prompt = new Prompt(
+            PromptTemplate.builder()
+                    .template(userInputTemplate)
+                    .variables(Map.of("format", outputConverter.getFormat())) // 用转换器的格式指令替换占位符。
+                    .build().createMessage()
+    );
+```
+
+这是模板拼装骨架，转换器与业务输入需要由应用提供。使用高层 `.entity(...)` 时，框架负责相应的格式处理。
+
+### getJsonSchema()：连接可靠性配置
+
+`getJsonSchema()` 是 2.0 新增的默认方法，让转换器可以参与 `useProviderStructuredOutput()` 与 `validateSchema()`。
+
+自定义转换器返回有效 Schema（通常委托给 `BeanOutputConverter`）后，两项开关才能基于这个 Schema 工作。
+
+如果返回空字符串，就无法向提供方施加原生 Schema 约束。**在 2.0.2 中，此时启用 `validateSchema()` 会因缺少有效 Schema 而抛出 `IllegalArgumentException`。** 需要校验时应先实现 `getJsonSchema()`。
+
+### 内置实现与选型
+
+| 转换器                                        | 职责                                                                                                                |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `AbstractConversionServiceOutputConverter<T>` | 预置 `GenericConversionService`，供子类完成转换；不提供默认格式指令实现。                                           |
+| `AbstractMessageOutputConverter<T>`           | 预置 `MessageConverter`，供子类完成转换；不提供默认格式指令实现。                                                   |
+| `BeanOutputConverter<T>`                      | 接收 Java 类型或 `ParameterizedTypeReference`，生成 `DRAFT_2020_12` JSON Schema，并使用 `JsonMapper` 反序列化响应。 |
+| `MapOutputConverter`                          | 要求 RFC 8259 JSON，通过 `MessageConverter` 转为 `Map<String, Object>`。                                            |
+| `ListOutputConverter`                         | 要求逗号分隔的列表文本，通过 `ConversionService` 转为列表。                                                         |
+
+下图展示继承与依赖关系：`MapOutputConverter`、`ListOutputConverter` 分别基于消息转换与类型转换服务；`BeanOutputConverter` 直接实现结构化输出转换接口。
+
+[![输出转换器类关系：StructuredOutputConverter 继承格式与转换接口，Map、Bean、List 三种实现分别使用对应的转换能力](/images/frameworks/spring-ai/structured-output-hierarchy-zh.svg)](/images/frameworks/spring-ai/structured-output-hierarchy-zh.svg)
+
+空心箭头表示继承，普通箭头表示持有或依赖；点击可查看大图。
+
+### BeanOutputConverter：映射 Java 类型
+
+沿用前文的 `ActorsFilms` record（`actor` 与 `movies` 两个字段）。
+
+高层 API 通过目标类型选择对象转换方式：
+
+```java
+ActorsFilms actorsFilms = ChatClient.create(chatModel).prompt()
+        .user(u -> u.text("Generate the filmography of 5 movies for {actor}.")
+                    .param("actor", "Tom Hanks"))
+        .call()
+        .entity(ActorsFilms.class);
+```
+
+底层 `ChatModel` 则需要自己准备格式说明，再转换返回文本：
+
+```java
+BeanOutputConverter<ActorsFilms> beanOutputConverter =
+    new BeanOutputConverter<>(ActorsFilms.class);
+
+String format = beanOutputConverter.getFormat();
+
+String actor = "Tom Hanks";
+
+String template = """
+        Generate the filmography of 5 movies for {actor}.
+        {format}
+        """;
+
+Generation generation = chatModel.call(
+    PromptTemplate.builder().template(template).variables(Map.of("actor", actor, "format", format)).build().create()).getResult();
+
+ActorsFilms actorsFilms = beanOutputConverter.convert(generation.getOutput().getText());
+```
+
+**属性顺序。** `@JsonPropertyOrder` 可控制生成 Schema 中的属性顺序，适用于 record 与普通 Java 类；它描述 Schema 顺序，不保证模型输出或业务序列化的所有行为：
+
+```java
+@JsonPropertyOrder({"actor", "movies"})
+record ActorsFilms(String actor, List<String> movies) {}
+```
+
+**泛型类型。** 高层 API 使用 `ParameterizedTypeReference`：
+
+```java
+List<ActorsFilms> actorsFilms = ChatClient.create(chatModel).prompt()
+        .user("Generate the filmography of 5 movies for Tom Hanks and Bill Murray.")
+        .call()
+        .entity(new ParameterizedTypeReference<List<ActorsFilms>>() {});
+```
+
+底层方式将同一个泛型类型传给 `BeanOutputConverter`：
+
+```java
+BeanOutputConverter<List<ActorsFilms>> outputConverter = new BeanOutputConverter<>(
+        new ParameterizedTypeReference<List<ActorsFilms>>() { });
+
+String format = outputConverter.getFormat();
+String template = """
+        Generate the filmography of 5 movies for Tom Hanks and Bill Murray.
+        {format}
+        """;
+
+Prompt prompt = PromptTemplate.builder().template(template).variables(Map.of("format", format)).build().create();
+
+Generation generation = chatModel.call(prompt).getResult();
+
+List<ActorsFilms> actorsFilms = outputConverter.convert(generation.getOutput().getText());
+```
+
+### MapOutputConverter：键值结果
+
+高层 API 可以通过泛型目标类型取得 Map：
+
+```java
+Map<String, Object> result = ChatClient.create(chatModel).prompt()
+        .user(u -> u.text("Provide me a List of {subject}")
+                    .param("subject", "an array of numbers from 1 to 9 under they key name 'numbers'"))
+        .call()
+        .entity(new ParameterizedTypeReference<Map<String, Object>>() {});
+```
+
+这里指定的是目标类型；需要显式使用 `MapOutputConverter` 时，可以像下面这样在底层流程中调用，也可以将实例传给 `.entity(...)`：
+
+```java
+MapOutputConverter mapOutputConverter = new MapOutputConverter();
+
+String format = mapOutputConverter.getFormat();
+String template = """
+        Provide me a List of {subject}
+        {format}
+        """;
+
+Prompt prompt = PromptTemplate.builder().template(template)
+.variables(Map.of("subject", "an array of numbers from 1 to 9 under they key name 'numbers'", "format", format)).build().create();
+
+Generation generation = chatModel.call(prompt).getResult();
+
+Map<String, Object> result = mapOutputConverter.convert(generation.getOutput().getText());
+```
+
+### ListOutputConverter：逗号分隔列表
+
+`ListOutputConverter` 面向逗号分隔的文本列表，与“将 JSON 数组映射为 `List<T>`”不同。高层 API 传入转换器实例：
+
+```java
+List<String> flavors = ChatClient.create(chatModel).prompt()
+                .user(u -> u.text("List five {subject}")
+                            .param("subject", "ice cream flavors"))
+                .call()
+                .entity(new ListOutputConverter(new DefaultConversionService()));
+```
+
+底层 API 则自行添加格式指令并转换：
+
+```java
+ListOutputConverter listOutputConverter = new ListOutputConverter(new DefaultConversionService());
+
+String format = listOutputConverter.getFormat();
+String template = """
+        List five {subject}
+        {format}
+        """;
+
+Prompt prompt = PromptTemplate.builder().template(template).variables(Map.of("subject", "ice cream flavors", "format", format)).build().create();
+
+Generation generation = chatModel.call(prompt).getResult();
+
+List<String> list = listOutputConverter.convert(generation.getOutput().getText());
+```
+
+### 自定义转换器：提取 JSON
+
+模型可能在 JSON 前加说明文字，或使用 Markdown 代码围栏包装：
+
+````text
+Here's the filmography:
+```json
+{ "actor": "Tom Hanks", "movies": ["Forrest Gump", "Cast Away"] }
+```
+````
+
+`BeanOutputConverter` 在 2.0.2 已内置空白、思考标签和 Markdown 代码围栏清理，常见包装无需额外处理。若模型输出仍超出默认清理规则，或业务需要特定提取策略，可以自定义转换器。
+
+下面的宽容转换器先尝试提取代码围栏中的内容，再交给默认解析器。它用于说明委托扩展方式，并非处理普通围栏的必需步骤。
+
+````java
+public class LenientJsonOutputConverter<T> implements StructuredOutputConverter<T> {
+
+    private static final Pattern FENCE = Pattern.compile("```(?:json)?\\s*([\\s\\S]*?)```");
+
+    private final BeanOutputConverter<T> delegate;
+
+    public LenientJsonOutputConverter(Class<T> targetType) {
+        delegate = new BeanOutputConverter<>(targetType);
+    }
+
+    @Override public String getFormat()     { return delegate.getFormat(); }
+    @Override public String getJsonSchema() { return delegate.getJsonSchema(); }
+
+    @Override
+    public T convert(String source) {
+        var matcher = FENCE.matcher(source);
+        String json = matcher.find() ? matcher.group(1).trim() : source.trim();
+        return delegate.convert(json);
+    }
+}
+````
+
+将实例传入 `.entity(...)`：
+
+```java
+ActorsFilms films = chatClient.prompt()
+    .user("Generate the filmography for a random actor.")
+    .call()
+    .entity(new LenientJsonOutputConverter<>(ActorsFilms.class));
+```
+
+示例通过委托 `getJsonSchema()` 保留 Schema，因此仍可搭配 `validateSchema()` 和 `useProviderStructuredOutput()`。
+
+这里的正则只提取第一个符合模式的代码围栏；未匹配时会把原文本直接交给委托转换器。它不是任意混合文本的通用 JSON 提取器。
+
+### 非 JSON 格式：YAML、CSV
+
+对于 YAML 配置或 CSV 数据，实现自己的 `getFormat()` 格式指令和 `convert(...)` 解析器即可。
+
+这类转换器通常不提供 JSON Schema，可以保留 `getJsonSchema()` 默认值；此时不应启用 `validateSchema()`，原生 JSON Schema 约束也无法用于这些非 JSON 格式。格式解析与业务校验由应用负责。
+
+## 用法速查
+
+| 需求                                   | 调用方式                                                                           |
+| -------------------------------------- | ---------------------------------------------------------------------------------- |
+| 默认对象映射，不依赖原生结构化输出能力 | `.entity(Type.class)`                                                              |
+| `List<T>`、`Map<K,V>` 等泛型           | `.entity(new ParameterizedTypeReference<...>() {})`                                |
+| 格式校验失败后自动重试                 | `.entity(Type.class, spec -> spec.validateSchema())`                               |
+| 使用提供方 API 约束输出格式            | `.entity(Type.class, spec -> spec.useProviderStructuredOutput())`                  |
+| 同时启用请求约束与响应校验重试         | `.entity(Type.class, spec -> spec.useProviderStructuredOutput().validateSchema())` |
+| 获取对象及模型响应、Token 用量等元数据 | `.responseEntity(...)`，支持相同类型的重载。                                       |
+| 自定义处理或 YAML、CSV 等格式          | 实现 `StructuredOutputConverter<T>` 后传入 `.entity(...)`。                        |
+| 流式响应直接映射对象                   | 不支持本文的 `.entity(...)` 用法；它仅用于 `.call()`。                             |
+
+结构化输出默认是尽力而为的转换；需要更可靠的结构时，启用 `validateSchema()`、`useProviderStructuredOutput()`，或组合使用。
+
+`StructuredOutputConverter` 不用于[工具调用](https://docs.spring.io/spring-ai/reference/api/tools.html)；工具调用本身通过工具协议提供结构化信息。
+
+继续阅读：[Advisors：调用链与递归](/frameworks/spring-ai/core/advisors/)，理解校验循环与其他 Advisor 的组合；下一主题是[对话记忆](https://docs.spring.io/spring-ai/reference/api/chat-memory.html)。
+
+来源：[Structured Output](https://docs.spring.io/spring-ai/reference/api/structured-output.html)、[Schema Validation & Self-Correction](https://docs.spring.io/spring-ai/reference/api/structured-output/validation.html)、[Provider-Native Structured Output](https://docs.spring.io/spring-ai/reference/api/structured-output/native.html)、[Output Converters](https://docs.spring.io/spring-ai/reference/api/structured-output/converters.html)。文档版本：2.0.2；核验日期：2026-10-25。

@@ -1,0 +1,510 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+  "version": "2.0.2",
+  "images": [
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-agent-loop.png",
+      "alt": "The agent loop"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-calling-advisor-flow.png",
+      "alt": "Tool Calling Advisor Flow"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-calling-with-inside-memory.png",
+      "alt": "ChatMemoryAdvisor inside the ToolCallingAdvisor loop"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-arg-augmenter.png",
+      "alt": "Tool Argument Augmentation"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/tools/tool-context.jpg",
+      "alt": "Tool Context"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/tools/return-direct.jpg",
+      "alt": "Returning tool call results directly to the caller"
+    }
+  ],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Tool Calling"
+    },
+    {
+      "id": "_architecture_overview",
+      "text": "Architecture Overview"
+    },
+    {
+      "id": "quick-start",
+      "text": "Quick Start"
+    },
+    {
+      "id": "defining-tools",
+      "text": "Defining Tools"
+    },
+    {
+      "id": "declarative-tool",
+      "text": "Declarative: @Tool"
+    },
+    {
+      "id": "method-tool-callback",
+      "text": "Programmatic: MethodToolCallback"
+    },
+    {
+      "id": "function-tool-callback",
+      "text": "Programmatic: FunctionToolCallback"
+    },
+    {
+      "id": "tool-callback-beans",
+      "text": "ToolCallback Beans"
+    },
+    {
+      "id": "passing-tools",
+      "text": "Passing Tools to ChatClient"
+    },
+    {
+      "id": "the-tool-calling-loop",
+      "text": "The Tool Calling Loop"
+    },
+    {
+      "id": "memory-and-the-tool-loop",
+      "text": "Memory and the Tool Loop"
+    },
+    {
+      "id": "outside-the-loop",
+      "text": "Outside the Loop (default)"
+    },
+    {
+      "id": "inside-the-loop",
+      "text": "Inside the Loop"
+    },
+    {
+      "id": "backend-compatibility",
+      "text": "Backend Compatibility"
+    },
+    {
+      "id": "scaling-to-hundreds-of-tools",
+      "text": "Scaling to Hundreds of Tools"
+    },
+    {
+      "id": "mcp-tools",
+      "text": "MCP Tools"
+    },
+    {
+      "id": "consuming-mcp-server-tools",
+      "text": "Consuming MCP Server Tools"
+    },
+    {
+      "id": "exposing-mcp-server-tools",
+      "text": "Exposing Spring Tools as an MCP Server"
+    },
+    {
+      "id": "combining-local-and-mcp-tools",
+      "text": "Combining Local and MCP Tools"
+    },
+    {
+      "id": "tool-argument-augmentation",
+      "text": "Tool Argument Augmentation"
+    },
+    {
+      "id": "augmentation-quick-start",
+      "text": "Quick Start"
+    },
+    {
+      "id": "augmentation-components",
+      "text": "Core Components"
+    },
+    {
+      "id": "user-controlled-tool-execution",
+      "text": "User-Controlled Tool Execution"
+    },
+    {
+      "id": "extending-the-loop",
+      "text": "Extending the Loop: Custom ToolAdvisor"
+    },
+    {
+      "id": "hook-methods",
+      "text": "Hook Methods"
+    },
+    {
+      "id": "custom-tool-advisor-autoconfig",
+      "text": "Auto-Configuration Integration"
+    },
+    {
+      "id": "tool-specification-reference",
+      "text": "Tool Specification Reference"
+    },
+    {
+      "id": "tool-callback",
+      "text": "ToolCallback"
+    },
+    {
+      "id": "tool-definition",
+      "text": "ToolDefinition"
+    },
+    {
+      "id": "json-schema",
+      "text": "JSON Schema"
+    },
+    {
+      "id": "tool-context",
+      "text": "Tool Context"
+    },
+    {
+      "id": "return-direct",
+      "text": "Return Direct"
+    },
+    {
+      "id": "result-conversion",
+      "text": "Result Conversion"
+    },
+    {
+      "id": "method-tool-limitations",
+      "text": "Method Tool Limitations"
+    },
+    {
+      "id": "exception-handling",
+      "text": "Exception Handling"
+    },
+    {
+      "id": "tool-call-limits",
+      "text": "Tool Call Limits"
+    },
+    {
+      "id": "_counting",
+      "text": "Counting"
+    },
+    {
+      "id": "_behavior_when_a_limit_is_exceeded",
+      "text": "Behavior When a Limit Is Exceeded"
+    },
+    {
+      "id": "tool-resolution",
+      "text": "Tool Resolution"
+    },
+    {
+      "id": "observability",
+      "text": "Observability"
+    },
+    {
+      "id": "logging",
+      "text": "Logging"
+    },
+    {
+      "id": "chatmodel-tool-calling",
+      "text": "ChatModel Tool Calling"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#_architecture_overview",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#defining-tools",
+      "label": "Defining Tools"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#the-tool-calling-loop",
+      "label": "The Tool Calling Loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#memory-and-the-tool-loop",
+      "label": "Memory and the Tool Loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html",
+      "label": "ChatModel Tool Calling"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+      "label": "Chat Model Comparisons"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#quick-start",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#defining-tools",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#declarative-tool",
+      "label": "Declarative"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#method-tool-callback",
+      "label": "Programmatic: Method"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#function-tool-callback",
+      "label": "Programmatic: Function"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#declarative-tool",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#return-direct",
+      "label": "Return Direct"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#result-conversion",
+      "label": "Result Conversion"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#json-schema",
+      "label": "JSON Schema"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#method-tool-callback",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-specification-reference",
+      "label": "Tool Specification Reference"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#function-tool-callback",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-callback-beans",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html#tool-calling-1x-to-2x",
+      "label": "Upgrading Tool Calling from 1.x to 2.0"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#passing-tools",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html",
+      "label": "ChatModel Tool Calling"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#the-tool-calling-loop",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/advisors-recursive.html",
+      "label": "Recursive Advisors"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html",
+      "label": "ToolCallingAdvisor"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#memory-and-the-tool-loop",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#outside-the-loop",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#inside-the-loop",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-call-limits",
+      "label": "tool call limits"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#backend-compatibility",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_in_memory_repository",
+      "label": "InMemoryChatMemoryRepository"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_redischatmemoryrepository",
+      "label": "RedisChatMemoryRepository"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_neo4j_chatmemoryrepository",
+      "label": "Neo4jChatMemoryRepository"
+    },
+    {
+      "href": "https://spring-ai-community.github.io/spring-ai-session/latest/",
+      "label": "spring-ai-session"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#scaling-to-hundreds-of-tools",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html",
+      "label": "Tool Search Tool"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#mcp-tools",
+      "label": ""
+    },
+    {
+      "href": "https://modelcontextprotocol.io/",
+      "label": "Model Context Protocol"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#consuming-mcp-server-tools",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html",
+      "label": "MCP Client Boot Starter"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#exposing-mcp-server-tools",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html",
+      "label": "MCP Server Boot Starter"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#combining-local-and-mcp-tools",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html#mcp-tool-name-prefix-generation",
+      "label": "Tool Name Prefix Generation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-argument-augmentation",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#augmentation-quick-start",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#augmentation-components",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#user-controlled-tool-execution",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#user-controlled-streaming",
+      "label": "User-Controlled Streaming"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#extending-the-loop",
+      "label": "Extending the Loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#extending-the-loop",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#hook-methods",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#custom-tool-advisor-autoconfig",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html",
+      "label": "ToolCallingAdvisor"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-specification-reference",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-callback",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-definition",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#json-schema",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-context",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#return-direct",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#result-conversion",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#method-tool-limitations",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#exception-handling",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-call-limits",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#_counting",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#inside-the-loop",
+      "label": "Inside the Loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#_behavior_when_a_limit_is_exceeded",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-resolution",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#consuming-mcp-server-tools",
+      "label": "Consuming MCP Server Tools"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#the-tool-calling-loop",
+      "label": "advisor-controlled execution"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#user-controlled-tool-execution",
+      "label": "user-controlled execution"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#observability",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/observability/index.html#_tool_calling",
+      "label": "Tool Calling Observability"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/observability/index.html#_tool_call_arguments_and_result_data",
+      "label": "Tool Call Arguments and Result Data"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#logging",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#chatmodel-tool-calling",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html",
+      "label": "ChatModel Tool Calling"
+    }
+  ]
+}

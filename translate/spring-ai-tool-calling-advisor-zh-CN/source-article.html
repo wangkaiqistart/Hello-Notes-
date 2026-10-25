@@ -1,0 +1,562 @@
+<article class="doc">
+<h1 id="page-title" class="page">ToolCallingAdvisor</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ToolCallingAdvisor</code> is the recursive advisor that owns the tool execution lifecycle in Spring AI 2.0. It is auto-registered by <code>DefaultChatClient</code> and drives the request/response loop until the model produces a response without tool calls.</p>
+</div>
+<div class="paragraph">
+<p>This page is the reference for the builder API, configuration options, hook methods, and extension patterns. For the conceptual overview of the loop, see <a href="../tools.html#the-tool-calling-loop" class="xref page">The Tool Calling Loop</a>. For the broader recursive-advisor pattern, see <a href="../advisors-recursive.html" class="xref page">Recursive Advisors</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="overview"><a class="anchor" href="#overview"></a>Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ToolCallingAdvisor</code> implements both <code>CallAdvisor</code> and <code>StreamAdvisor</code>, plus the <code>ToolAdvisor</code> marker interface. The marker interface is what <code>DefaultChatClient</code> uses to enforce that exactly one tool advisor is present in the chain — see <a href="#single-tooladvisor-invariant">Single-ToolAdvisor Invariant</a>.</p>
+</div>
+<div class="paragraph">
+<p>The default <code>ToolCallingAdvisor.DEFAULT_ORDER</code> is <code>Ordered.HIGHEST_PRECEDENCE + 300</code>. This is higher than the default <code>MessageChatMemoryAdvisor</code> order (<code>HIGHEST_PRECEDENCE + 200</code>), which places memory advisors <strong>outside</strong> the tool loop by default. See <a href="../tools.html#memory-and-the-tool-loop" class="xref page">Memory and the Tool Loop</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="builder"><a class="anchor" href="#builder"></a>Builder</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Construct a <code>ToolCallingAdvisor</code> via <code>ToolCallingAdvisor.builder()</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">var toolCallingAdvisor = ToolCallingAdvisor.builder()
+    .toolCallingManager(toolCallingManager)
+    .advisorOrder(BaseAdvisor.HIGHEST_PRECEDENCE + 300)
+    .build();
+
+var chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(toolCallingAdvisor)
+    .build();</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Most applications don’t construct <code>ToolCallingAdvisor</code> directly — <code>DefaultChatClient</code> auto-registers one with sensible defaults. Construct it manually only when you need non-default settings or you’re replacing it with a custom subclass.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="sect2">
+<h3 id="builder-options"><a class="anchor" href="#builder-options"></a>Builder Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 66.6666%;">
+<col style="width: 16.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>toolCallingManager(ToolCallingManager)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <code>ToolCallingManager</code> instance used to execute tool calls.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Auto-built instance</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>toolExecutionEligibilityChecker(ToolExecutionEligibilityChecker)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Predicate that decides whether a model response should trigger another tool-call iteration. The default checks <code>chatResponse.hasToolCalls()</code>. Override to apply provider-specific stop-reason logic (e.g. checking a finish-reason field in addition to tool-call presence).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chatResponse → chatResponse != null &amp;&amp; chatResponse.hasToolCalls()</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>advisorOrder(int)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Order in which the advisor is applied in the chain. Must be between <code>BaseAdvisor.HIGHEST_PRECEDENCE</code> and <code>BaseAdvisor.LOWEST_PRECEDENCE</code>. Determines which other advisors run inside vs. outside the loop.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>HIGHEST_PRECEDENCE + 300</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>conversationHistoryEnabled(boolean)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the advisor maintains conversation history internally across iterations. When <code>true</code> (the default), each LLM call inside the loop receives the full history of previous tool calls and responses, managed by the advisor itself. When <code>false</code>, the advisor only forwards the latest message — useful when a <code>MemoryAdvisor</code> inside the loop is taking over history management.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>disableInternalConversationHistory()</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Shortcut for <code>conversationHistoryEnabled(false)</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="checker"><a class="anchor" href="#checker"></a><code>ToolExecutionEligibilityChecker</code></h3>
+<div class="paragraph">
+<p><code>ToolExecutionEligibilityChecker</code> is a functional interface:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@FunctionalInterface
+public interface ToolExecutionEligibilityChecker {
+    boolean isToolCallResponse(@Nullable ChatResponse chatResponse);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The default checker fires the next iteration whenever the response carries tool calls. Override it for provider-specific behavior:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ToolExecutionEligibilityChecker strictChecker = response -&gt;
+    response != null
+        &amp;&amp; response.hasToolCalls()
+        &amp;&amp; "tool_calls".equals(response.getMetadata().getFinishReason());
+
+var advisor = ToolCallingAdvisor.builder()
+    .toolExecutionEligibilityChecker(strictChecker)
+    .build();</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="conversation-history"><a class="anchor" href="#conversation-history"></a>Conversation History Behavior</h3>
+<div class="paragraph">
+<p>By default, <code>ToolCallingAdvisor</code> keeps the full conversation history (user message, model responses, tool call requests, tool responses) inside its loop. Each subsequent iteration sends the model the complete history.</p>
+</div>
+<div class="paragraph">
+<p>This is the right behavior when memory sits <strong>outside</strong> the loop, because the outer memory advisor only ever sees the final user/assistant exchange — the per-iteration history is `ToolCallingAdvisor’s private concern.</p>
+</div>
+<div class="paragraph">
+<p>Set <code>disableInternalConversationHistory()</code> when:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>You’re placing a <code>MemoryAdvisor</code> <strong>inside</strong> the loop (it will manage per-iteration history itself).</p>
+</li>
+<li>
+<p>You’re driving the loop yourself and want only the latest message forwarded.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">var toolCallingAdvisor = ToolCallingAdvisor.builder()
+    .disableInternalConversationHistory()  // memory advisor inside the loop handles history
+    .advisorOrder(BaseAdvisor.HIGHEST_PRECEDENCE + 300)
+    .build();
+
+var chatMemoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory)
+    .order(BaseAdvisor.HIGHEST_PRECEDENCE + 400)  // inside the loop
+    .build();
+
+var chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(chatMemoryAdvisor, toolCallingAdvisor)
+    .build();</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+With the auto-registered <code>ToolCallingAdvisor</code>, <code>DefaultChatClient</code> detects any <code>MemoryAdvisor</code> placed inside the loop and disables internal history automatically — you don’t need to call <code>disableInternalConversationHistory()</code> yourself. The manual call is only needed when constructing <code>ToolCallingAdvisor</code> directly. See <a href="../tools.html#inside-the-loop" class="xref page">Memory: Inside the Loop</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hooks"><a class="anchor" href="#hooks"></a>Hook Methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ToolCallingAdvisor</code> exposes protected hook methods at well-defined points in the loop. Subclasses override these hooks to customize behavior without re-implementing the loop itself.</p>
+</div>
+<div class="paragraph">
+<p>There are two parallel families — one for the call (blocking) path and one for the stream (reactive) path. A custom subclass should override the relevant pair to handle both modes.</p>
+</div>
+<div class="sect2">
+<h3 id="call-hooks"><a class="anchor" href="#call-hooks"></a>Call-Path Hooks</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">protected ChatClientRequest doInitializeLoop(
+        ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain);
+
+protected ChatClientRequest doBeforeCall(
+        ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain);
+
+protected ChatClientResponse doAfterCall(
+        ChatClientResponse chatClientResponse, CallAdvisorChain callAdvisorChain);
+
+protected ChatClientResponse doFinalizeLoop(
+        ChatClientResponse chatClientResponse, CallAdvisorChain callAdvisorChain);
+
+protected List&lt;Message&gt; doGetNextInstructionsForToolCall(
+        ChatClientRequest chatClientRequest,
+        ChatClientResponse chatClientResponse,
+        ToolExecutionResult toolExecutionResult);</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Hook</th>
+<th class="tableblock halign-left valign-top">When and what for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doInitializeLoop</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Once, before the first iteration. Use to set up session-scoped state (indexes, caches, augmented prompts).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doBeforeCall</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before each iteration. Use to inject or remove tools, mutate options, or add per-iteration context. The returned request is what gets sent to the model.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doAfterCall</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After each iteration’s model response. Use to record per-iteration observations or transform the response before the loop decides whether to continue.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doFinalizeLoop</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Once, after the loop ends. Use to emit aggregate metrics, clean up session state, or attach a final transformation.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doGetNextInstructionsForToolCall</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Decides what messages the next iteration sends to the model. The default behavior depends on <code>conversationHistoryEnabled</code>: when <code>true</code>, returns the full conversation history; when <code>false</code>, returns only the system message and the latest tool response. This only affects what’s forwarded to the rest of the chain — <a href="../tools.html#tool-call-limits" class="xref page">tool call limits</a> are always evaluated against the complete history for the current turn, independent of this setting.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="stream-hooks"><a class="anchor" href="#stream-hooks"></a>Stream-Path Hooks</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">protected ChatClientRequest doInitializeLoopStream(
+        ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain);
+
+protected ChatClientRequest doBeforeStream(
+        ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain);
+
+protected ChatClientResponse doAfterStream(
+        ChatClientResponse chatClientResponse, StreamAdvisorChain streamAdvisorChain);
+
+protected Flux&lt;ChatClientResponse&gt; doFinalizeLoopStream(
+        Flux&lt;ChatClientResponse&gt; chatClientResponseFlux, StreamAdvisorChain streamAdvisorChain);
+
+protected List&lt;Message&gt; doGetNextInstructionsForToolCallStream(
+        ChatClientRequest chatClientRequest,
+        ChatClientResponse chatClientResponse,
+        ToolExecutionResult toolExecutionResult);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The stream variants follow the same semantics as the call variants. <code>doAfterStream</code> operates on the response aggregated across the iteration’s chunks; <code>doFinalizeLoopStream</code> can transform the entire output <code>Flux</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="subclass-example"><a class="anchor" href="#subclass-example"></a>Subclass Example</h3>
+<div class="paragraph">
+<p><code>ToolSearchToolCallingAdvisor</code> is a concrete example of a <code>ToolCallingAdvisor</code> subclass. It overrides <code>doInitializeLoop</code> and <code>doInitializeLoopStream</code> to index the tool set at session start and augment the system message, and <code>doBeforeCall</code> and <code>doBeforeStream</code> to inject only the tools discovered so far on each iteration. The rest of the loop is inherited from the base class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class MyAuditingToolCallingAdvisor extends ToolCallingAdvisor {
+
+    private final AuditService audit;
+
+    @Override
+    protected ChatClientResponse doAfterCall(
+            ChatClientResponse response, CallAdvisorChain chain) {
+        var toolCalls = response.chatResponse().getResult().getOutput().getToolCalls();
+        for (var call : toolCalls) {
+            audit.recordIntent(call.name(), call.arguments());
+        }
+        return response;
+    }
+
+    public static Builder&lt;?&gt; builder() {
+        return new Builder&lt;&gt;();
+    }
+
+    public static class Builder&lt;T extends Builder&lt;T&gt;&gt; extends ToolCallingAdvisor.Builder&lt;T&gt; {
+
+        private AuditService audit;
+
+        public T audit(AuditService audit) {
+            this.audit = audit;
+            return self();
+        }
+
+        @Override
+        public MyAuditingToolCallingAdvisor build() {
+            // Use the inherited fields from ToolCallingAdvisor.Builder via the protected getters.
+            return new MyAuditingToolCallingAdvisor(
+                getToolCallingManager(),
+                getToolExecutionEligibilityChecker(),
+                getAdvisorOrder(),
+                isConversationHistoryEnabled(),
+                audit);
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The self-referential generic pattern (<code>Builder&lt;T extends Builder&lt;T&gt;&gt;</code>) lets subclass builders chain inherited setters without losing the subclass type. Override <code>newCopy()</code> and <code>copy()</code> if you need to support the copy semantics used by <code>DefaultChatClient</code> for per-call adjustments.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="single-tooladvisor-invariant"><a class="anchor" href="#single-tooladvisor-invariant"></a>Single-<code>ToolAdvisor</code> Invariant</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ToolAdvisor</code> is a marker interface. <code>DefaultChatClient</code> uses it to enforce that exactly one tool advisor is present in any given advisor chain. The invariant prevents subtle double-execution bugs from stacking two tool-calling advisors.</p>
+</div>
+<div class="paragraph">
+<p>Practically:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The auto-registered <code>ToolCallingAdvisor</code> counts as the one.</p>
+</li>
+<li>
+<p>If you register a second <code>ToolAdvisor</code>-implementing advisor (for example, a custom subclass), <code>DefaultChatClient</code> skips the default registration and uses yours — the invariant is preserved.</p>
+</li>
+<li>
+<p>If you register two custom <code>ToolAdvisor</code>-implementing advisors at the same time, the chain construction fails fast with a clear error.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To replace the default in a Spring Boot application, register your subclass via auto-configuration — see <a href="../tools.html#custom-tool-advisor-autoconfig" class="xref page">Custom ToolAdvisor: Auto-Configuration Integration</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="user-controlled-streaming"><a class="anchor" href="#user-controlled-streaming"></a>User-Controlled Streaming</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="../tools.html#user-controlled-tool-execution" class="xref page">User-controlled tool execution</a> covers the blocking variant; this section covers streaming.</p>
+</div>
+<div class="paragraph">
+<p>When driving the loop manually with <code>.stream()</code>, each iteration produces a chunk <code>Flux</code>. You aggregate the chunks for tool-call detection using <code>ChatClientMessageAggregator</code>, while still forwarding the raw stream to your downstream subscriber (e.g. an SSE endpoint):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatClient chatClient = ...
+ToolCallingManager toolCallingManager = ToolCallingManager.builder().build();
+
+ToolCallback[] tools = ToolCallbacks.from(new WeatherTools());
+ChatOptions chatOptions = ToolCallingChatOptions.builder().toolCallbacks(tools).build();
+
+String question = "What is the weather in Amsterdam and Paris?";
+Prompt prompt = new Prompt(List.of(new UserMessage(question)), chatOptions);
+
+AtomicReference&lt;ChatClientResponse&gt; ref = new AtomicReference&lt;&gt;();
+
+new ChatClientMessageAggregator().aggregateChatClientResponse(
+    chatClient.prompt()
+        .messages(prompt.getInstructions())
+        .options(chatOptions)
+        .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))
+        .stream()
+        .chatClientResponse()
+        .doOnNext(chunk -&gt; forwardToSse(chunk)),  // side-channel emission
+    ref::set
+).blockLast();
+
+ChatClientResponse response = ref.get();
+
+while (response.chatResponse() != null &amp;&amp; response.chatResponse().hasToolCalls()) {
+    ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response.chatResponse());
+    prompt = new Prompt(result.conversationHistory(), chatOptions);
+
+    AtomicReference&lt;ChatClientResponse&gt; nextRef = new AtomicReference&lt;&gt;();
+    new ChatClientMessageAggregator().aggregateChatClientResponse(
+        chatClient.prompt()
+            .messages(result.conversationHistory())
+            .options(chatOptions)
+            .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))
+            .stream()
+            .chatClientResponse()
+            .doOnNext(chunk -&gt; forwardToSse(chunk)),
+        nextRef::set
+    ).blockLast();
+
+    response = nextRef.get();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This pattern is verbose. In most cases you should prefer <a href="#observing-the-tool-calling-loop">placing a custom advisor inside the loop</a> — you keep the framework’s loop and only intercept the chunk stream.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="observing-the-tool-calling-loop"><a class="anchor" href="#observing-the-tool-calling-loop"></a>Observing the Tool-Calling Loop</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For most observation use cases — streaming intermediate progress to a UI, forwarding tool-call events to an audit log, recording per-iteration metrics — there’s no need to disable auto-registration or drive the loop yourself. Place your custom advisor <strong>inside</strong> the loop by giving it an order greater than <code>ToolCallingAdvisor.DEFAULT_ORDER</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class ToolCallObservingAdvisor implements CallAdvisor, StreamAdvisor {
+
+    private final Consumer&lt;ChatClientResponse&gt; observer;
+
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE + 400;  // inside ToolCallingAdvisor (order 300)
+    }
+
+    @Override
+    public ChatClientResponse adviseCall(ChatClientRequest request, CallAdvisorChain chain) {
+        // Each iteration's request includes ToolResponseMessages from prior iterations
+        request.prompt().getInstructions().forEach(msg -&gt; log.debug("Message: {}", msg));
+        ChatClientResponse response = chain.nextCall(request);
+        observer.accept(response);
+        return response;
+    }
+
+    @Override
+    public Flux&lt;ChatClientResponse&gt; adviseStream(ChatClientRequest request, StreamAdvisorChain chain) {
+        // Observe every chunk including tool-call request chunks
+        return chain.nextStream(request).doOnNext(observer);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Register the observing advisor alongside the auto-registered <code>ToolCallingAdvisor</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">var chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(new ToolCallObservingAdvisor(chunk -&gt; forwardToSse(chunk)))
+    .build();
+
+String response = chatClient.prompt()
+    .user("What is the weather in Amsterdam and Paris?")
+    .tools(new WeatherTools())
+    .call()
+    .content();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>ToolCallObservingAdvisor</code> runs on every iteration; the main caller still receives only the final answer because <code>ToolCallingAdvisor</code> filters tool-call chunks out of its returned stream.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="return-direct"><a class="anchor" href="#return-direct"></a>Return Direct</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When a tool’s <code>ToolMetadata</code> has <code>returnDirect = true</code>, <code>ToolCallingAdvisor</code>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Executes the tool call as normal.</p>
+</li>
+<li>
+<p>Detects the <code>returnDirect</code> flag in the <code>ToolExecutionResult</code>.</p>
+</li>
+<li>
+<p>Breaks out of the loop.</p>
+</li>
+<li>
+<p>Returns the tool execution result directly to the caller as a <code>ChatResponse</code> whose generation content is the tool’s output.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The model never sees the tool result — the round-trip is skipped. This is useful when the tool’s output is the final answer (e.g. a RAG retrieval) or when the tool should terminate the agent’s reasoning loop.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the model requests multiple tool calls in a single iteration, <code>returnDirect</code> is only honored if <strong>all</strong> the called tools have <code>returnDirect = true</code>. Otherwise the results are sent back to the model and the loop continues. See <a href="../tools.html#return-direct" class="xref page">Return Direct</a> for declaring the flag on tool definitions.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="opting-out"><a class="anchor" href="#opting-out"></a>Opting Out of Auto-Registration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To disable <code>ToolCallingAdvisor</code> auto-registration globally (for every call from an auto-configured <code>ChatClient</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.chat.client.tool-calling.enabled=false</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To disable it for a single call only:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">chatClient.prompt("What day is tomorrow?")
+    .tools(new DateTimeTools())
+    .advisors(AdvisorParams.toolCallingAdvisorAutoRegister(false))
+    .call()
+    .content();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With auto-registration off, tools passed via <code>.tools(…​)</code> are sent to the model but tool calls in the response are <strong>not</strong> executed automatically. You’re then in <a href="../tools.html#user-controlled-tool-execution" class="xref page">user-controlled mode</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="see-also"><a class="anchor" href="#see-also"></a>See Also</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="../tools.html#the-tool-calling-loop" class="xref page">Tool Calling: The Tool Calling Loop</a> — conceptual overview</p>
+</li>
+<li>
+<p><a href="../tools.html#memory-and-the-tool-loop" class="xref page">Tool Calling: Memory and the Tool Loop</a> — inside/outside ordering</p>
+</li>
+<li>
+<p><a href="../tools.html#extending-the-loop" class="xref page">Tool Calling: Extending the Loop</a> — auto-configuration extension point for custom subclasses</p>
+</li>
+<li>
+<p><a href="tool-search-tool.html" class="xref page">Tool Search Tool</a> — <code>ToolSearchToolCallingAdvisor</code>, a concrete subclass implementing progressive tool disclosure</p>
+</li>
+<li>
+<p><a href="../advisors-recursive.html" class="xref page">Recursive Advisors</a> — the underlying recursive advisor pattern</p>
+</li>
+<li>
+<p><a href="../advisors.html" class="xref page">Advisors</a> — the broader advisor system</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+</article>

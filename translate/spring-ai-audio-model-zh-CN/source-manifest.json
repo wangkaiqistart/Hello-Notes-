@@ -1,0 +1,21 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/audio.html",
+  "version": "2.0.2",
+  "images": [],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Audio Models"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html",
+      "label": "Speech-To-Text (STT) Transcription API"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html",
+      "label": "Text-To-Speech (TTS) API"
+    }
+  ]
+}

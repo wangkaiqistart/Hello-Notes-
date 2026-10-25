@@ -1,0 +1,175 @@
+---
+title: Agent OS 设计方法
+description: Agent OS 的定位、核心组件、运行循环、扩展方式和工程落地方法
+sidebar:
+  label: 设计方法
+  order: 2
+---
+
+import { Aside, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Agent OS 是面向多个 Agent 的共享运行底座。它统一提供模型接入、记忆、工具执行、运行环境、会话管理和治理能力，让业务 Agent 只需要配置自己的目标、规则和工具。
+
+<Aside type="tip" title="核心结论" icon="rocket">
+  Agent OS = LLM + Memory + Loop + Tools + Environment，再加上 Provider、插件、API 和企业治理能力。
+</Aside>
+
+## 一、核心组件
+
+| 组件        | 职责                             | 设计重点                              |
+| ----------- | -------------------------------- | ------------------------------------- |
+| LLM         | 理解任务、推理和生成工具调用意图 | 通过 Provider 屏蔽模型厂商差异        |
+| Memory      | 保存会话、长期经验和任务过程     | 明确写入、读取、过期和权限策略        |
+| Loop        | 驱动 Agent 多轮执行              | 控制迭代次数、停止条件和异常处理      |
+| Tools       | 连接文件、网络和业务系统         | 统一注册、授权、超时、重试和审计      |
+| Environment | 提供工作区和安全边界             | 最小权限、Sandbox、凭证隔离和网络控制 |
+
+![Agent 的五个核心组件：LLM、Memory、Loop、Tools 和 Environment](/images/projects/agent-os/agent-components.svg)
+
+只有模型和 Prompt 的系统通常只是一次模型调用；具备状态、工具执行、循环控制和运行隔离，才是完整的 Agent 系统。
+
+## 二、ReAct 运行循环
+
+ReAct 是 Agent 的基础执行模式：**Reason → Act → Observe**。
+
+```text
+接收任务
+  ↓
+Reason：判断下一步和工具参数
+  ↓
+Act：校验权限并执行工具
+  ↓
+Observe：把结果写回 Session
+  ↓
+继续循环，或输出最终结果
+```
+
+实现时必须定义：
+
+- 最大迭代次数，防止无限循环；
+- 完成、失败、转人工和高风险中止条件；
+- 上下文过长时的压缩或截断策略；
+- 工具超时、参数错误、权限拒绝和业务失败的处理方式；
+- 模型调用、工具调用、操作者和结果摘要的审计记录。
+
+![ReAct 运行循环：用户消息经过 Reason、Act、Observe，结果回填 Session 后继续下一轮](/images/projects/agent-os/react-loop.svg)
+
+ReAct 不是隐藏在框架里的魔法，而是一条可以被测试和审计的循环。`Session` 至少要保存用户消息、模型响应、工具调用和工具结果；当历史超过模型上下文窗口时，应优先压缩或截断较早内容，同时保留当前任务所需的关键信息。
+
+## 三、组件协同示例
+
+以运维告警为例，Agent 可以在受控权限下完成“接收告警 → 查询日志 → 召回历史经验 → 重启服务 → 通知结果”的闭环。每一步都经过 Tool Registry 和 Sandbox，结果回填 Session，失败或高风险操作可以转人工。
+
+![运维告警 Agent 闭环：从 Webhook 触发到日志查询、服务恢复和结果通知](/images/projects/agent-os/alert-flow.svg)
+
+这个例子体现了五个组件的分工：Environment 接收并隔离运行，Loop 驱动多轮决策，Tools 执行具体动作，Memory 提供历史经验，LLM 负责理解和规划。
+
+## 四、架构设计顺序
+
+<Steps>
+
+1. **确定边界**：明确系统服务单个 Agent，还是多个 Agent；明确与 Workflow、业务应用的分层关系。
+
+2. **跑通最小闭环**：用一个模型、一个工具和一个入口跑通 ReAct，再扩展记忆、插件和 API。
+
+3. **抽象 Provider**：切换模型时不修改 Agent 业务逻辑。
+
+4. **设计分层记忆**：区分会话记忆、长期记忆和任务记忆，控制每类记忆的可见范围。
+
+5. **建立 Tool Registry**：集中管理工具描述、参数校验、权限、超时、重试和审计。
+
+6. **隔离运行环境**：限制文件、网络、进程和凭证访问，危险操作需要审批或人工确认。
+
+7. **开放接入 API**：提供会话、Agent 调用、Profile、Memory、Tool 和系统状态接口。
+
+</Steps>
+
+推荐的分层结构：
+
+| 层次    | 职责                                           |
+| ------- | ---------------------------------------------- |
+| 接入层  | CLI、HTTP、消息渠道                            |
+| Loop 层 | ReAct 循环、停止条件、异常恢复                 |
+| 能力层  | Provider、Memory、Tool、Web Service            |
+| 支撑层  | Profile、SessionManager、ToolRegistry、Sandbox |
+| 存储层  | Session、调用记录、结构化日志和配置            |
+
+![Agent OS 分层架构：接入层、ReAct 引擎、核心能力层、支撑模块层和存储层](/images/projects/agent-os/architecture.svg)
+
+分层的关键不是把类拆得更多，而是让入口、循环、能力和基础设施可以独立演进。业务 Agent 主要通过 Profile 和 Tool 组合能力，不直接依赖底层存储或模型厂商实现。
+
+## 五、Tool 扩展方式
+
+工具扩展按复杂度分三档，优先选择成本最低的方式：
+
+<Tabs>
+  <TabItem label="零代码：Skill + MCP" icon="open-book">
+    用 `SKILL.md` 描述任务和工具，复用已有 MCP Server，适合固定流程和资料处理。
+  </TabItem>
+  <TabItem label="轻代码：MCP Server" icon="code">
+    用任意语言封装 ERP、CRM、CMDB 等外部系统，通过 MCP 暴露给 Agent。
+  </TabItem>
+  <TabItem label="重代码：原生 Tool" icon="terminal">
+    在 Java/Spring 中直接注册 Tool，复用事务、权限和业务服务，适合核心业务能力。
+  </TabItem>
+</Tabs>
+
+选择原则：能用 Skill 和现有 MCP 解决，就不写代码；需要封装外部系统时使用 MCP；涉及强类型、事务、性能或复杂权限时使用原生 Tool。
+
+![Tool 三档扩展方式：从零代码 Skill + MCP，到轻代码 MCP Server，再到重代码原生 Tool](/images/projects/agent-os/tool-extension.svg)
+
+## 六、企业治理要求
+
+安全和审计必须进入底层设计，不能在上线后再补：
+
+| 领域     | 最低要求                                   |
+| -------- | ------------------------------------------ |
+| 多租户   | 数据、配置、会话、工具和日志隔离           |
+| 身份权限 | 按用户、租户、Agent 和 Tool 授权           |
+| 凭证保护 | 密钥和 Token 不进入 Prompt、日志和普通记忆 |
+| 操作安全 | 文件、网络和进程采用白名单与最小权限       |
+| 审计追踪 | 记录调用者、工具、参数摘要、结果和时间     |
+| 系统集成 | 对 ERP、CRM、监控等系统提供稳定接口        |
+| 私有部署 | 支持企业自有 K8s、虚拟机或物理机           |
+
+## 七、用 Harness 驱动 AI Coding
+
+开发 Agent OS 时，使用 Harness 把 AI 的工作纳入可控流程：
+
+1. 在 `constitution.md` 中写清技术栈、边界、禁止事项和不可妥协的工程原则。
+2. 在 `spec.md` 中描述 User Story、范围和可运行的验收结果。
+3. 在 `plan.md` 中明确模块边界、数据流、关键取舍和协作关系。
+4. 在 `tasks.md` 中把实现拆成可运行、可验证的小任务，标记依赖和接口契约。
+5. 每完成一个任务，执行测试、构建、Lint、人工 Review，并做规格与代码的一致性分析。
+6. 将稳定做法沉淀为 Skill、模板、脚本和项目规则。
+
+![Harness 驱动的 AI Coding 流程：constitution、spec、plan、tasks 逐步约束实现并进入验证](/images/projects/agent-os/ai-coding-flow.svg)
+
+<Aside type="note" title="工程原则" icon="information">
+  Harness 不是更长的 Prompt，而是由目标、上下文、规则、工具、环境、检查和交付标准组成的执行系统。
+</Aside>
+
+## 八、最小实现顺序
+
+1. `Provider + CLI`：跑通一次模型调用。
+2. `ReAct + HTTP Tool`：验证工具调用和结果回填。
+3. `Session`：持久化消息、工具调用和结果。
+4. `Memory Tool`：实现长期记忆的保存和召回。
+5. `Sandbox Tools`：在白名单和隔离环境中扩展文件、Shell 能力。
+6. `SkillLoader + MCP Client`：支持低代码扩展。
+7. `HTTP API + 结构化日志`：支持外部系统接入和问题追踪。
+8. `权限、审计和部署`：补齐企业运行条件。
+
+## 九、设计评审清单
+
+- 系统边界和服务对象是否明确？
+- 模型是否通过 Provider 抽象？
+- Loop 是否有最大轮数、停止条件和异常路径？
+- Memory 是否区分会话、长期和任务记忆？
+- Tool 是否统一注册、授权、超时、重试和审计？
+- 文件、网络、进程和凭证权限是否受控？
+- 是否支持 Skill、MCP 和原生 Tool 分级扩展？
+- API 是否具备鉴权、幂等、限流和可观测性？
+- 是否有固定测试集、回归验证和独立 Checker？
+
+> **设计 Agent OS，先跑通 Loop，再扩展能力；先建立边界，再追求自主性；先保证可验证，再追求规模化。**

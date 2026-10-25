@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/spring-ai-message-api.jpg",
+    "path": "public/images/frameworks/spring-ai/spring-ai-message-api.jpg",
+    "sha256": "a3cce358f7f9a1cb3d6eae90f4f63ee314def1dfce8839290813b65f55e89699"
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/multimodal.test.png",
+    "path": "public/images/frameworks/spring-ai/multimodal.test.png",
+    "sha256": "20c56de7ad081e0b100a7aaf9e6d95bcb64cccd4925c5bb9de6d352fb6fd1bee"
+  }
+]

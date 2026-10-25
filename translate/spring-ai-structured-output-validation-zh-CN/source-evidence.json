@@ -1,0 +1,6 @@
+{
+  "version": "2.0.2",
+  "sourceJarUrl": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-client-chat/2.0.2/spring-ai-client-chat-2.0.2-sources.jar",
+  "sourceJarSha256": "ba17a8aab86b8fb360a70028667b8650393af84064d6c7a875ff2cb50adc6a65",
+  "cdnAdvisorSourceMatchesMaven": true
+}

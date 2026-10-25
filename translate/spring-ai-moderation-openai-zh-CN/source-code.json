@@ -1,0 +1,34 @@
+[
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-model-openai</artifactId>\n</dependency>"
+  },
+  {
+    "language": "groovy",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-model-openai'\n}"
+  },
+  {
+    "language": "java",
+    "code": "OpenAiModerationOptions moderationOptions = OpenAiModerationOptions.builder()\n    .model(\"omni-moderation-latest\")\n    .build();\n\nModerationPrompt moderationPrompt = new ModerationPrompt(\"Text to be moderated\", this.moderationOptions);\nModerationResponse response = openAiModerationModel.call(this.moderationPrompt);\n\n// Access the moderation results\nModeration moderation = moderationResponse.getResult().getOutput();\n\n// Print general information\nSystem.out.println(\"Moderation ID: \" + moderation.getId());\nSystem.out.println(\"Model used: \" + moderation.getModel());\n\n// Access the moderation results (there's usually only one, but it's a list)\nfor (ModerationResult result : moderation.getResults()) {\n    System.out.println(\"\\nModeration Result:\");\n    System.out.println(\"Flagged: \" + result.isFlagged());\n\n    // Access categories\n    Categories categories = this.result.getCategories();\n    System.out.println(\"\\nCategories:\");\n    System.out.println(\"Sexual: \" + categories.isSexual());\n    System.out.println(\"Hate: \" + categories.isHate());\n    System.out.println(\"Harassment: \" + categories.isHarassment());\n    System.out.println(\"Self-Harm: \" + categories.isSelfHarm());\n    System.out.println(\"Sexual/Minors: \" + categories.isSexualMinors());\n    System.out.println(\"Hate/Threatening: \" + categories.isHateThreatening());\n    System.out.println(\"Violence/Graphic: \" + categories.isViolenceGraphic());\n    System.out.println(\"Self-Harm/Intent: \" + categories.isSelfHarmIntent());\n    System.out.println(\"Self-Harm/Instructions: \" + categories.isSelfHarmInstructions());\n    System.out.println(\"Harassment/Threatening: \" + categories.isHarassmentThreatening());\n    System.out.println(\"Violence: \" + categories.isViolence());\n\n    // Access category scores\n    CategoryScores scores = this.result.getCategoryScores();\n    System.out.println(\"\\nCategory Scores:\");\n    System.out.println(\"Sexual: \" + scores.getSexual());\n    System.out.println(\"Hate: \" + scores.getHate());\n    System.out.println(\"Harassment: \" + scores.getHarassment());\n    System.out.println(\"Self-Harm: \" + scores.getSelfHarm());\n    System.out.println(\"Sexual/Minors: \" + scores.getSexualMinors());\n    System.out.println(\"Hate/Threatening: \" + scores.getHateThreatening());\n    System.out.println(\"Violence/Graphic: \" + scores.getViolenceGraphic());\n    System.out.println(\"Self-Harm/Intent: \" + scores.getSelfHarmIntent());\n    System.out.println(\"Self-Harm/Instructions: \" + scores.getSelfHarmInstructions());\n    System.out.println(\"Harassment/Threatening: \" + scores.getHarassmentThreatening());\n    System.out.println(\"Violence: \" + scores.getViolence());\n}"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-openai</artifactId>\n</dependency>"
+  },
+  {
+    "language": "groovy",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-openai'\n}"
+  },
+  {
+    "language": "java",
+    "code": "OpenAiModerationApi openAiModerationApi = new OpenAiModerationApi(System.getenv(\"OPENAI_API_KEY\"));\n\nOpenAiModerationModel openAiModerationModel = new OpenAiModerationModel(this.openAiModerationApi);\n\nOpenAiModerationOptions moderationOptions = OpenAiModerationOptions.builder()\n    .model(\"omni-moderation-latest\")\n    .build();\n\nModerationPrompt moderationPrompt = new ModerationPrompt(\"Text to be moderated\", this.moderationOptions);\nModerationResponse response = this.openAiModerationModel.call(this.moderationPrompt);"
+  },
+  {
+    "language": "java",
+    "code": "@FunctionalInterface\npublic interface OpenAiHttpClientBuilderCustomizer {\n    void customize(SpringAiOpenAiHttpClient.Builder builder);\n}"
+  },
+  {
+    "language": "java",
+    "code": "var chatModel = OpenAiChatModel.builder()\n    .options(OpenAiChatOptions.builder().model(\"gpt-4o\").build())\n    .httpClientBuilderCustomizer(myCustomizer)\n    .build();"
+  }
+]

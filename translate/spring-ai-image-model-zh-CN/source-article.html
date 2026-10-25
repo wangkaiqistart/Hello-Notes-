@@ -1,0 +1,206 @@
+<article class="doc">
+<h1 id="page-title" class="page">Image Model API</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>Spring Image Model API</code> is designed to be a simple and portable interface for interacting with various <a href="../concepts.html#_models" class="xref page">AI Models</a> specialized in image generation, allowing developers to switch between different image-related models with minimal code changes.
+This design aligns with Spring’s philosophy of modularity and interchangeability, ensuring developers can quickly adapt their applications to different AI capabilities related to image processing.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, with the support of companion classes like <code>ImagePrompt</code> for input encapsulation and <code>ImageResponse</code> for output handling, the Image Model API unifies the communication with AI Models dedicated to image generation.
+It manages the complexity of request preparation and response parsing, offering a direct and simplified API interaction for image-generation functionalities.</p>
+</div>
+<div class="paragraph">
+<p>The Spring Image Model API is built on top of the Spring AI <code>Generic Model API</code>, providing image-specific abstractions and implementations.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_overview"><a class="anchor" href="#_api_overview"></a>API Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section provides a guide to the Spring Image Model API interface and associated classes.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_image_model"><a class="anchor" href="#_image_model"></a>Image Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here is the <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/image/ImageModel.java">ImageModel</a> interface definition:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@FunctionalInterface
+public interface ImageModel extends Model&lt;ImagePrompt, ImageResponse&gt; {
+
+	ImageResponse call(ImagePrompt request);
+
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_imageprompt"><a class="anchor" href="#_imageprompt"></a>ImagePrompt</h3>
+<div class="paragraph">
+<p>The <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/image/ImagePrompt.java">ImagePrompt</a> is a <code>ModelRequest</code> that encapsulates a list of <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/image/ImageMessage.java">ImageMessage</a> objects and optional model request options.
+The following listing shows a truncated version of the <code>ImagePrompt</code> class, excluding constructors and other utility methods:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class ImagePrompt implements ModelRequest&lt;List&lt;ImageMessage&gt;&gt; {
+
+    private final List&lt;ImageMessage&gt; messages;
+
+	private ImageOptions imageModelOptions;
+
+    @Override
+	public List&lt;ImageMessage&gt; getInstructions() {...}
+
+	@Override
+	public ImageOptions getOptions() {...}
+
+    // constructors and utility methods omitted
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_imagemessage"><a class="anchor" href="#_imagemessage"></a>ImageMessage</h4>
+<div class="paragraph">
+<p>The <code>ImageMessage</code> class encapsulates the text to use and the weight that the text should have in influencing the generated image.  For models that support weights, they can be positive or negative.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class ImageMessage {
+
+	private String text;
+
+	private Float weight;
+
+    public String getText() {...}
+
+	public Float getWeight() {...}
+
+   // constructors and utility methods omitted
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_imageoptions"><a class="anchor" href="#_imageoptions"></a>ImageOptions</h4>
+<div class="paragraph">
+<p>Represents the options that can be passed to the Image generation model. The <code>ImageOptions</code> interface extends the <code>ModelOptions</code> interface and is used to define few portable options that can be passed to the AI model.</p>
+</div>
+<div class="paragraph">
+<p>The <code>ImageOptions</code> interface is defined as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface ImageOptions extends ModelOptions {
+
+	Integer getN();
+
+	String getModel();
+
+	Integer getWidth();
+
+	Integer getHeight();
+
+	String getResponseFormat(); // openai - url or base64 : stability ai byte[] or base64
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Additionally, every model specific ImageModel implementation can have its own options that can be passed to the AI model. For example, the OpenAI Image Generation model has its own options like <code>quality</code>, <code>style</code>, etc.</p>
+</div>
+<div class="paragraph">
+<p>This is a powerful feature that allows developers to use model specific options when starting the application and then override them at runtime using the <code>ImagePrompt</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_imageresponse"><a class="anchor" href="#_imageresponse"></a>ImageResponse</h3>
+<div class="paragraph">
+<p>The structure of the <code>ImageResponse</code> class is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class ImageResponse implements ModelResponse&lt;ImageGeneration&gt; {
+
+	private final ImageResponseMetadata imageResponseMetadata;
+
+	private final List&lt;ImageGeneration&gt; imageGenerations;
+
+	@Override
+	public ImageGeneration getResult() {
+		// get the first result
+	}
+
+	@Override
+	public List&lt;ImageGeneration&gt; getResults() {...}
+
+	@Override
+	public ImageResponseMetadata getMetadata() {...}
+
+    // other methods omitted
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/image/ImageResponse.java">ImageResponse</a> class holds the AI Model’s output, with each <code>ImageGeneration</code> instance containing one of potentially multiple outputs resulting from a single prompt.</p>
+</div>
+<div class="paragraph">
+<p>The <code>ImageResponse</code> class also carries a <code>ImageResponseMetadata</code> object holding metadata about the AI Model’s response.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_imagegeneration"><a class="anchor" href="#_imagegeneration"></a>ImageGeneration</h3>
+<div class="paragraph">
+<p>Finally, the <a href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-model/src/main/java/org/springframework/ai/image/ImageGeneration.java">ImageGeneration</a> class extends from the <code>ModelResult</code> to represent the output response and related metadata about this result:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class ImageGeneration implements ModelResult&lt;Image&gt; {
+
+	private ImageGenerationMetadata imageGenerationMetadata;
+
+	private Image image;
+
+    @Override
+	public Image getOutput() {...}
+
+	@Override
+	public ImageGenerationMetadata getMetadata() {...}
+
+    // other methods omitted
+
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_available_implementations"><a class="anchor" href="#_available_implementations"></a>Available Implementations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ImageModel</code> implementations are provided for the following Model providers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="image/openai-image.html" class="xref page">OpenAI Image Generation</a></p>
+</li>
+<li>
+<p><a href="image/stabilityai-image.html" class="xref page">StabilityAI Image Generation</a></p>
+</li>
+<li>
+<p><a href="image/google-genai-image.html" class="xref page">Google GenAI Image Generation</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+</article>

@@ -1,0 +1,55 @@
+[
+  {
+    "url": "https://azurecosmosdb.github.io/spring-ai/docs/chat-memory.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 8246,
+    "retry": true
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 107975
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 123081
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 301357
+  },
+  {
+    "url": "https://spring-ai-community.github.io/spring-ai-session/latest/",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 40502
+  },
+  {
+    "url": "https://spring-ai-community.github.io/spring-ai-session/latest/session-jdbc/",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 47550
+  },
+  {
+    "url": "https://www.stringtemplate.org/",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 8422
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/chat/client/advisor/vectorstore/VectorStoreChatMemoryAdvisor.Builder.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "anchors": [
+      "systemPromptTemplate(org.springframework.ai.chat.prompt.PromptTemplate)"
+    ],
+    "bytes": 16645,
+    "evidence": "javadoc-vector-memory-builder.html"
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "language": "java",
+    "code": "public interface ChatModel extends Model<Prompt, ChatResponse>, StreamingChatModel {\n\n\tdefault String call(String message) {...}\n\n    @Override\n\tChatResponse call(Prompt prompt);\n}"
+  },
+  {
+    "language": "java",
+    "code": "public interface StreamingChatModel extends StreamingModel<Prompt, ChatResponse> {\n\n    default Flux<String> stream(String message) {...}\n\n    @Override\n\tFlux<ChatResponse> stream(Prompt prompt);\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class Prompt implements ModelRequest<List<Message>> {\n\n    private final List<Message> messages;\n\n    private ChatOptions modelOptions;\n\n\t@Override\n\tpublic ChatOptions getOptions() {...}\n\n\t@Override\n\tpublic List<Message> getInstructions() {...}\n\n    // constructors and utility methods omitted\n}"
+  },
+  {
+    "language": "java",
+    "code": "public interface Content {\n\n\tString getText();\n\n\tMap<String, Object> getMetadata();\n}\n\npublic interface Message extends Content {\n\n\tMessageType getMessageType();\n}"
+  },
+  {
+    "language": "java",
+    "code": "public interface MediaContent extends Content {\n\n\tCollection<Media> getMedia();\n\n}"
+  },
+  {
+    "language": "java",
+    "code": "public interface ChatOptions extends ModelOptions {\n\n\tString getModel();\n\tDouble getFrequencyPenalty();\n\tInteger getMaxTokens();\n\tDouble getPresencePenalty();\n\tList<String> getStopSequences();\n\tDouble getTemperature();\n\tInteger getTopK();\n\tDouble getTopP();\n\tChatOptions.Builder<?> mutate();\n\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class ChatResponse implements ModelResponse<Generation> {\n\n    private final ChatResponseMetadata chatResponseMetadata;\n\tprivate final List<Generation> generations;\n\n\t@Override\n\tpublic ChatResponseMetadata getMetadata() {...}\n\n    @Override\n\tpublic List<Generation> getResults() {...}\n\n    // other methods omitted\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class Generation implements ModelResult<AssistantMessage> {\n\n\tprivate final AssistantMessage assistantMessage;\n\tprivate ChatGenerationMetadata chatGenerationMetadata;\n\n\t@Override\n\tpublic AssistantMessage getOutput() {...}\n\n\t@Override\n\tpublic ChatGenerationMetadata getMetadata() {...}\n\n    // other methods omitted\n}"
+  }
+]

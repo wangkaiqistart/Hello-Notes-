@@ -1,0 +1,129 @@
+SKIP NAVIGATION LINKS
+OVERVIEW
+PACKAGE
+CLASS
+USE
+TREE
+DEPRECATED
+INDEX
+HELP
+SUMMARY: 
+NESTED | 
+FIELD | 
+CONSTR | 
+METHOD
+DETAIL: 
+FIELD | 
+CONSTR | 
+METHOD
+SEARCH:  
+Package org.springframework.ai.chat.client
+Record Class ChatClientRequest
+java.lang.Object
+java.lang.Record
+org.springframework.ai.chat.client.ChatClientRequest
+Record Components:
+prompt - The prompt to be sent to the AI model
+context - The contextual data through the execution chain
+public record ChatClientRequest(Prompt prompt, Map<String,@Nullable Object> context)
+extends Record
+Represents a request processed by a ChatClient that ultimately is used to build a Prompt to be sent to an AI model.
+Since:
+1.0.0
+Author:
+Thomas Vitale
+Nested Class Summary
+Nested Classes
+Modifier and Type
+Class
+Description
+static final class 
+ChatClientRequest.Builder
+ 
+Constructor Summary
+Constructors
+Constructor
+Description
+ChatClientRequest(Prompt prompt, Map<String,@Nullable Object> context)
+Creates an instance of a ChatClientRequest record class.
+Method Summary
+All MethodsStatic MethodsInstance MethodsConcrete Methods
+Modifier and Type
+Method
+Description
+static ChatClientRequest.Builder
+builder()
+ 
+Map<String,@Nullable Object>
+context()
+Returns the value of the context record component.
+ChatClientRequest
+copy()
+ 
+final boolean
+equals(Object o)
+Indicates whether some other object is "equal to" this one.
+final int
+hashCode()
+Returns a hash code value for this object.
+ChatClientRequest.Builder
+mutate()
+ 
+Prompt
+prompt()
+Returns the value of the prompt record component.
+final String
+toString()
+Returns a string representation of this record class.
+Methods inherited from class java.lang.Object
+clone, finalize, getClass, notify, notifyAll, wait, wait, wait
+Constructor Details
+ChatClientRequest
+public ChatClientRequest(Prompt prompt,
+ Map<String,@Nullable Object> context)
+Creates an instance of a ChatClientRequest record class.
+Parameters:
+prompt - the value for the prompt record component
+context - the value for the context record component
+Method Details
+copy
+public ChatClientRequest copy()
+mutate
+public ChatClientRequest.Builder mutate()
+builder
+public static ChatClientRequest.Builder builder()
+toString
+public final String toString()
+Returns a string representation of this record class. The representation contains the name of the class, followed by the name and value of each of the record components.
+Specified by:
+toString in class Record
+Returns:
+a string representation of this object
+hashCode
+public final int hashCode()
+Returns a hash code value for this object. The value is derived from the hash code of each of the record components.
+Specified by:
+hashCode in class Record
+Returns:
+a hash code value for this object
+equals
+public final boolean equals(Object o)
+Indicates whether some other object is "equal to" this one. The objects are equal if the other object is of the same class and if all the record components are equal. All components in this record class are compared with Objects::equals(Object,Object).
+Specified by:
+equals in class Record
+Parameters:
+o - the object with which to compare
+Returns:
+true if this object is the same as the o argument; false otherwise.
+prompt
+public Prompt prompt()
+Returns the value of the prompt record component.
+Returns:
+the value of the prompt record component
+context
+public Map<String,@Nullable Object> context()
+Returns the value of the context record component.
+Returns:
+the value of the context record component
+
+Copyright © 1980 Broadcom Inc.. All rights reserved.

@@ -1,0 +1,321 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html",
+  "version": "2.0.2",
+  "images": [],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Chat Memory"
+    },
+    {
+      "id": "_quick_start",
+      "text": "Quick Start"
+    },
+    {
+      "id": "_working_with_conversation_ids",
+      "text": "Working with Conversation IDs"
+    },
+    {
+      "id": "_memory_types",
+      "text": "Memory Types"
+    },
+    {
+      "id": "_message_window_chat_memory",
+      "text": "Message Window Chat Memory"
+    },
+    {
+      "id": "_turn_boundary_eviction",
+      "text": "Turn-boundary eviction"
+    },
+    {
+      "id": "_memory_storage",
+      "text": "Memory Storage"
+    },
+    {
+      "id": "_in_memory_repository",
+      "text": "In-Memory Repository"
+    },
+    {
+      "id": "_jdbcchatmemoryrepository",
+      "text": "JdbcChatMemoryRepository"
+    },
+    {
+      "id": "_reading_message_timestamps",
+      "text": "Reading Message Timestamps"
+    },
+    {
+      "id": "_supported_databases_and_dialect_abstraction",
+      "text": "Supported Databases and Dialect Abstraction"
+    },
+    {
+      "id": "_configuration_properties",
+      "text": "Configuration Properties"
+    },
+    {
+      "id": "_schema_initialization",
+      "text": "Schema Initialization"
+    },
+    {
+      "id": "_extending_dialects",
+      "text": "Extending Dialects"
+    },
+    {
+      "id": "_cassandrachatmemoryrepository",
+      "text": "CassandraChatMemoryRepository"
+    },
+    {
+      "id": "_configuration_properties_2",
+      "text": "Configuration Properties"
+    },
+    {
+      "id": "_schema_initialization_2",
+      "text": "Schema Initialization"
+    },
+    {
+      "id": "_neo4j_chatmemoryrepository",
+      "text": "Neo4j ChatMemoryRepository"
+    },
+    {
+      "id": "_configuration_properties_3",
+      "text": "Configuration Properties"
+    },
+    {
+      "id": "_index_initialization",
+      "text": "Index Initialization"
+    },
+    {
+      "id": "_cosmosdbchatmemoryrepository",
+      "text": "CosmosDBChatMemoryRepository"
+    },
+    {
+      "id": "_mongochatmemoryrepository",
+      "text": "MongoChatMemoryRepository"
+    },
+    {
+      "id": "_configuration_properties_4",
+      "text": "Configuration Properties"
+    },
+    {
+      "id": "_collection_initialization",
+      "text": "Collection Initialization"
+    },
+    {
+      "id": "_redischatmemoryrepository",
+      "text": "RedisChatMemoryRepository"
+    },
+    {
+      "id": "_configuration_properties_5",
+      "text": "Configuration Properties"
+    },
+    {
+      "id": "_advanced_querying",
+      "text": "Advanced Querying"
+    },
+    {
+      "id": "_metadata_field_indexing",
+      "text": "Metadata Field Indexing"
+    },
+    {
+      "id": "_schema_initialization_3",
+      "text": "Schema Initialization"
+    },
+    {
+      "id": "_requirements",
+      "text": "Requirements"
+    },
+    {
+      "id": "_memory_in_chat_client",
+      "text": "Memory in Chat Client"
+    },
+    {
+      "id": "_vectorstorechatmemoryadvisor",
+      "text": "VectorStoreChatMemoryAdvisor"
+    },
+    {
+      "id": "_custom_template",
+      "text": "Custom Template"
+    },
+    {
+      "id": "_memory_in_chat_model",
+      "text": "Memory in Chat Model"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_quick_start",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_working_with_conversation_ids",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_memory_types",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_message_window_chat_memory",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_turn_boundary_eviction",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_memory_storage",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_in_memory_repository",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_jdbcchatmemoryrepository",
+      "label": ""
+    },
+    {
+      "href": "https://spring-ai-community.github.io/spring-ai-session/latest/",
+      "label": "Spring AI Session"
+    },
+    {
+      "href": "https://spring-ai-community.github.io/spring-ai-session/latest/session-jdbc/",
+      "label": "JDBC session store"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_reading_message_timestamps",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_supported_databases_and_dialect_abstraction",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_configuration_properties",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_schema_initialization",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+      "label": "Upgrade Notes"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_extending_dialects",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_cassandrachatmemoryrepository",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_configuration_properties_2",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_schema_initialization_2",
+      "label": ""
+    },
+    {
+      "href": "https://spring-ai-community.github.io/spring-ai-session/latest/",
+      "label": "Spring AI Session"
+    },
+    {
+      "href": "https://spring-ai-community.github.io/spring-ai-session/latest/session-jdbc/",
+      "label": "JDBC session store"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_neo4j_chatmemoryrepository",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_configuration_properties_3",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_index_initialization",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_cosmosdbchatmemoryrepository",
+      "label": ""
+    },
+    {
+      "href": "https://azurecosmosdb.github.io/spring-ai/docs/chat-memory.html",
+      "label": "related documentation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_mongochatmemoryrepository",
+      "label": ""
+    },
+    {
+      "href": "https://spring-ai-community.github.io/spring-ai-session/latest/",
+      "label": "Spring AI Session"
+    },
+    {
+      "href": "https://spring-ai-community.github.io/spring-ai-session/latest/session-jdbc/",
+      "label": "JDBC session store"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_configuration_properties_4",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_collection_initialization",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_redischatmemoryrepository",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_configuration_properties_5",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_advanced_querying",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_metadata_field_indexing",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_schema_initialization_3",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_requirements",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_memory_in_chat_client",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#user-controlled-tool-execution",
+      "label": "User Controlled Tool Execution"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_vectorstorechatmemoryadvisor",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_custom_template",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatclient.html#_prompt_templates",
+      "label": "ChatClient Prompt Templates"
+    },
+    {
+      "href": "https://www.stringtemplate.org/",
+      "label": "StringTemplate"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_memory_in_chat_model",
+      "label": ""
+    }
+  ]
+}

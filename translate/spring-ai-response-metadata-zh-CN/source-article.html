@@ -1,0 +1,361 @@
+<article class="doc">
+<div class="breadcrumbs-container">
+  <nav class="breadcrumbs" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="../index.html">Spring AI</a></li>
+      <li>Reference</li>
+      <li><a href="usage-handling.html">Chat Response Metadata</a></li>
+    </ul>
+  </nav>
+</div><h1 id="page-title" class="page">Chat Response Metadata</h1>
+<aside class="toc embedded"><div class="toc-menu"><h3>Chat Response Metadata</h3><ul><li data-level="1"><a href="#ChatResponseMetadata">ChatResponseMetadata</a></li><li data-level="1"><a href="#RateLimit">Rate Limit</a></li><li data-level="1"><a href="#Usage">Usage</a></li><li data-level="2"><a href="#_using_with_chatmodel">Using with ChatModel</a></li><li data-level="2"><a href="#_using_with_chatclient">Using with ChatClient</a></li><li data-level="1"><a href="#_prompt_cache_usage_metrics">Prompt Cache Usage Metrics</a></li><li data-level="1"><a href="#_cumulative_usage_across_multi_step_flows">Cumulative Usage Across Multi-Step Flows</a></li></ul></div></aside><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use of an AI, such as OpenAI’s ChatGPT, consumes resources and generates metrics returned by the AI provider based on the usage and requests made to the AI through the API.
+Consumption is typically in the form of requests made or tokens used in a given timeframe, such as monthly, that AI providers use to measure this consumption and reset limits.
+Your rate limits are directly determined by your plan when you signed up with your AI provider.
+For instance, you can review details on OpenAI’s <a href="https://platform.openai.com/docs/guides/rate-limits?context=tier-free" class="external" target="_blank">rate limits</a> and <a href="https://openai.com/pricing#language-models" class="external" target="_blank">plans</a> by following the links.</p>
+</div>
+<div class="paragraph">
+<p>To help garner insight into your AI (model) consumption and general usage, Spring AI provides an API to introspect the metadata that is returned by AI providers in their APIs.</p>
+</div>
+<div class="paragraph">
+<p>Spring AI defines 3 primary types to examine these metrics: <code>ChatResponseMetadata</code>, <code>RateLimit</code> and <code>Usage</code>.
+All of these types can be accessed programmatically from the <code>ChatResponse</code> returned and initiated by an AI request.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ChatResponseMetadata"><a class="anchor" href="#ChatResponseMetadata"></a><code>ChatResponseMetadata</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An instance of <code>ChatResponseMetadata</code> is automatically created by Spring AI when an AI request is made through the AI provider’s API and an AI response is returned.
+You can get access to the AI provider metadata from the <code>ChatResponse</code> using:</p>
+</div>
+<div class="listingblock">
+<div class="title">Get access to <code>ChatResponseMetadata</code> from <code>ChatResponse</code></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatResponse response = chatModel.call(prompt);
+
+ChatResponseMetadata metadata = response.getMetadata();
+
+String id = metadata.getId();
+String model = metadata.getModel();
+RateLimit rateLimit = metadata.getRateLimit();
+Usage usage = metadata.getUsage();
+PromptMetadata promptMetadata = metadata.getPromptMetadata();</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You might imagine that you can rate limit your own Spring applications using AI, or restrict <code>Prompt</code> sizes, which affect your token usage, in an automated, intelligent and realtime manner.
+Minimally, you can simply gather these metrics to monitor and report on your consumption.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="RateLimit"><a class="anchor" href="#RateLimit"></a>Rate Limit</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>RateLimit</code> interface provides access to actual information returned by an AI provider on your API usage when making AI requests.</p>
+</div>
+<div class="listingblock">
+<div class="title"><code>RateLimit</code> interface</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">RateLimit</span> </span>{
+
+	<span class="hljs-function">Long <span class="hljs-title">getRequestsLimit</span><span class="hljs-params">()</span></span>;
+
+	<span class="hljs-function">Long <span class="hljs-title">getRequestsRemaining</span><span class="hljs-params">()</span></span>;
+
+	<span class="hljs-function">Duration <span class="hljs-title">getRequestsReset</span><span class="hljs-params">()</span></span>;
+
+	<span class="hljs-function">Long <span class="hljs-title">getTokensLimit</span><span class="hljs-params">()</span></span>;
+
+	<span class="hljs-function">Long <span class="hljs-title">getTokensRemaining</span><span class="hljs-params">()</span></span>;
+
+	<span class="hljs-function">Duration <span class="hljs-title">getTokensReset</span><span class="hljs-params">()</span></span>;
+
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>requestsLimit</code> and <code>requestsRemaining</code> let you know how many AI requests, based on the AI provider plan you chose when you signed up, that you can make in total along with your remaining balance within the given timeframe.
+<code>requestsReset</code> returns a <code>Duration</code> of time before the timeframe expires and your limits reset based on your chosen plan.
+The methods for <code>tokensLimit</code>, <code>tokensRemaining</code> and <code>tokensReset</code> are similar, but focus on token limits, balance and resets instead.</p>
+</div>
+<div class="listingblock">
+<div class="title">Get access to <code>RateLimit</code> from <code>ChatResponseMetadata</code></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">RateLimit rateLimit = metadata.getRateLimit();
+
+Long tokensRemaining = rateLimit.getTokensRemaining();
+
+<span class="hljs-comment">// do something interesting with the RateLimit metadata</span></code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>AI providers such as <a href="https://platform.openai.com/docs/guides/rate-limits/rate-limits-in-headers" class="external" target="_blank">OpenAI</a> return rate limit information in the HTTP headers of their REST API responses.
+Where a model implementation maps those headers, they are exposed through <code>RateLimit</code>.</p>
+</div>
+<div class="paragraph">
+<p>Support varies by model implementation.
+When rate limit information is not available, <code>getRateLimit()</code> returns an <code>EmptyRateLimit</code> whose accessors return zero rather than <code>null</code>.
+Use <code>instanceof EmptyRateLimit</code> to distinguish an absent rate limit from a real zero value.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="Usage"><a class="anchor" href="#Usage"></a>Usage</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>Usage</code> data can be obtained from the <code>ChatResponseMetadata</code> object.
+The <code>Usage</code> interface is defined as:</p>
+</div>
+<div class="listingblock">
+<div class="title"><code>Usage</code> interface</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Usage</span> </span>{
+
+	<span class="hljs-function">Integer <span class="hljs-title">getPromptTokens</span><span class="hljs-params">()</span></span>;
+
+	<span class="hljs-function">Integer <span class="hljs-title">getCompletionTokens</span><span class="hljs-params">()</span></span>;
+
+	<span class="hljs-function"><span class="hljs-keyword">default</span> Integer <span class="hljs-title">getTotalTokens</span><span class="hljs-params">()</span> </span>{ ... }
+
+	<span class="hljs-function">Object <span class="hljs-title">getNativeUsage</span><span class="hljs-params">()</span></span>;
+
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The method names are self-explanatory: they tell you the tokens that the AI required to process the <code>Prompt</code> and generate a response.
+<code>totalTokens</code> is the sum of <code>promptTokens</code> and <code>completionTokens</code>.
+Spring AI computes this by default, but the information is also returned in the AI response from providers like OpenAI.</p>
+</div>
+<div class="sect2">
+<h3 id="_using_with_chatmodel"><a class="anchor" href="#_using_with_chatmodel"></a>Using with ChatModel</h3>
+<div class="paragraph">
+<p>Here’s a complete example showing how to track usage with OpenAI’s ChatModel:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-meta">@SpringBootConfiguration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Configuration</span> </span>{
+
+	<span class="hljs-meta">@Bean</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> OpenAiChatModel <span class="hljs-title">openAiChatModel</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">return</span> OpenAiChatModel.builder()
+			.options(OpenAiChatOptions.builder()
+				.apiKey(System.getenv(<span class="hljs-string">"OPENAI_API_KEY"</span>))
+				.build())
+			.build();
+	}
+
+}
+
+<span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChatService</span> </span>{
+
+	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> OpenAiChatModel chatModel;
+
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ChatService</span><span class="hljs-params">(OpenAiChatModel chatModel)</span> </span>{
+		<span class="hljs-keyword">this</span>.chatModel = chatModel;
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">demonstrateUsage</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-comment">// Create a chat prompt</span>
+		Prompt prompt = <span class="hljs-keyword">new</span> Prompt(<span class="hljs-string">"What is the weather like today?"</span>);
+
+		<span class="hljs-comment">// Get the chat response</span>
+		ChatResponse response = <span class="hljs-keyword">this</span>.chatModel.call(prompt);
+
+		<span class="hljs-comment">// Access the usage information</span>
+		Usage usage = response.getMetadata().getUsage();
+
+		<span class="hljs-comment">// Get standard usage metrics</span>
+		System.out.println(<span class="hljs-string">"Prompt Tokens: "</span> + usage.getPromptTokens());
+		System.out.println(<span class="hljs-string">"Completion Tokens: "</span> + usage.getCompletionTokens());
+		System.out.println(<span class="hljs-string">"Total Tokens: "</span> + usage.getTotalTokens());
+
+		<span class="hljs-comment">// Access native OpenAI usage data with detailed token information</span>
+		<span class="hljs-keyword">if</span> (usage.getNativeUsage() <span class="hljs-keyword">instanceof</span> com.openai.models.completions.CompletionUsage nativeUsage) {
+
+			<span class="hljs-comment">// Detailed prompt token information</span>
+			nativeUsage.promptTokensDetails().ifPresent(details -&gt; {
+				System.out.println(<span class="hljs-string">"Prompt Tokens Details:"</span>);
+				details.audioTokens().ifPresent(tokens -&gt; System.out.println(<span class="hljs-string">"- Audio Tokens: "</span> + tokens));
+				details.cachedTokens().ifPresent(tokens -&gt; System.out.println(<span class="hljs-string">"- Cached Tokens: "</span> + tokens));
+			});
+
+			<span class="hljs-comment">// Detailed completion token information</span>
+			nativeUsage.completionTokensDetails().ifPresent(details -&gt; {
+				System.out.println(<span class="hljs-string">"Completion Tokens Details:"</span>);
+				details.reasoningTokens().ifPresent(tokens -&gt; System.out.println(<span class="hljs-string">"- Reasoning Tokens: "</span> + tokens));
+				details.acceptedPredictionTokens().ifPresent(tokens -&gt; System.out.println(<span class="hljs-string">"- Accepted Prediction Tokens: "</span> + tokens));
+				details.audioTokens().ifPresent(tokens -&gt; System.out.println(<span class="hljs-string">"- Audio Tokens: "</span> + tokens));
+				details.rejectedPredictionTokens().ifPresent(tokens -&gt; System.out.println(<span class="hljs-string">"- Rejected Prediction Tokens: "</span> + tokens));
+			});
+		}
+	}
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_with_chatclient"><a class="anchor" href="#_using_with_chatclient"></a>Using with ChatClient</h3>
+<div class="paragraph">
+<p>If you are using the <code>ChatClient</code>, you can access the usage information using the <code>ChatResponse</code> object:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatResponse response = chatClient.prompt(<span class="hljs-string">"What is the weather like today?"</span>)
+		.call()
+		.chatResponse();
+
+Usage usage = response.getMetadata().getUsage();</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prompt_cache_usage_metrics"><a class="anchor" href="#_prompt_cache_usage_metrics"></a>Prompt Cache Usage Metrics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For providers that support prompt caching, the <code>Usage</code> interface provides unified access to cache metrics without requiring provider-specific casting:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Usage usage = response.getMetadata().getUsage();
+
+<span class="hljs-comment">// Unified cache metrics — works across all providers</span>
+Long cacheReadTokens = usage.getCacheReadInputTokens();
+Long cacheWriteTokens = usage.getCacheWriteInputTokens();
+
+<span class="hljs-keyword">if</span> (cacheReadTokens != <span class="hljs-keyword">null</span> &amp;&amp; cacheReadTokens &gt; <span class="hljs-number">0</span>) {
+	System.out.println(<span class="hljs-string">"Cache hit: "</span> + cacheReadTokens + <span class="hljs-string">" tokens read from cache"</span>);
+}
+<span class="hljs-keyword">if</span> (cacheWriteTokens != <span class="hljs-keyword">null</span> &amp;&amp; cacheWriteTokens &gt; <span class="hljs-number">0</span>) {
+	System.out.println(<span class="hljs-string">"Cache write: "</span> + cacheWriteTokens + <span class="hljs-string">" tokens written to cache"</span>);
+}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>These methods return <code>null</code> for providers that do not support prompt caching.</p>
+</div>
+<div class="paragraph">
+<p>The following table shows prompt cache metrics availability by provider:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Provider</th>
+<th class="tableblock halign-left valign-top">Cache Read Tokens</th>
+<th class="tableblock halign-left valign-top">Cache Write Tokens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Anthropic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes (<code>cacheCreationInputTokens</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWS Bedrock</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OpenAI</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes (<code>cachedTokens</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Google Gemini</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes (<code>cachedContentTokenCount</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DeepSeek</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mistral</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ollama</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Qxotic jinfer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For detailed provider-specific cache metrics (such as per-modality cache breakdowns in Gemini), use <code>getNativeUsage()</code> to access the provider’s native usage object.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cumulative_usage_across_multi_step_flows"><a class="anchor" href="#_cumulative_usage_across_multi_step_flows"></a>Cumulative Usage Across Multi-Step Flows</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When a response is produced through a multi-step flow such as a tool-calling loop, <code>getUsage()</code> reports the <strong>cumulative</strong> token usage across every model call in that exchange, not just the last call.
+For example, a <code>ChatClient</code> conversation that triggers one tool call performs at least two model calls, and the returned <code>getUsage()</code> reflects the sum of both.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatResponse response = chatClient.prompt(<span class="hljs-string">"What is the weather in Paris?"</span>)
+		.tools(<span class="hljs-keyword">new</span> WeatherTools())
+		.call()
+		.chatResponse();
+
+<span class="hljs-comment">// Cumulative across all model calls in the tool-calling loop</span>
+Usage usage = response.getMetadata().getUsage();
+<span class="hljs-keyword">int</span> totalTokens = usage.getTotalTokens();</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The cumulative total is computed via <code>org.springframework.ai.support.UsageCalculator</code>, which sums the standard token counts and the unified cache metrics (<code>getCacheReadInputTokens()</code> / <code>getCacheWriteInputTokens()</code>).</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Provider-specific native usage objects cannot be merged across responses.
+As a result, <code>getNativeUsage()</code> returns <code>null</code> once usage has been aggregated across more than one model call (for example after a tool-calling loop); it is preserved only for single-call responses.
+If you need the provider’s native usage object, read it from an individual <code>ChatModel</code> call rather than from a multi-step <code>ChatClient</code> exchange.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="prompt.html">Prompts</a></span>
+  <span class="next"><a href="structured-output.html">Structured Output</a></span>
+</nav>
+</article>

@@ -1,0 +1,8 @@
+{"check": "content-integrity", "result": "PASS", "codeBlocks": 3, "translationMatchesPage": true, "javaExecuted": false}
+{"check":"responsive-browser","result":"PASS","name":"desktop","title":"Spring AI：Embedding 模型","codeBlocks":3,"sections":[{"id":"embeddingmodel-负责什么","text":"EmbeddingModel 负责什么"},{"id":"常用方法","text":"常用方法"},{"id":"请求响应和-document-的边界","text":"请求、响应和 Document 的边界"},{"id":"工程上先记住三点","text":"工程上先记住三点"},{"id":"按需查询","text":"按需查询"}],"images":[],"width":1440,"pageWidth":1440,"nav":true,"navGroups":["模型","Spring AI","开发框架"],"literalEmphasis":[],"links":["#embeddingmodel-负责什么","#常用方法","#请求响应和-document-的边界","#工程上先记住三点","#按需查询"],"errors":[]}
+{"check":"responsive-browser","result":"PASS","name":"mobile","title":"Spring AI：Embedding 模型","codeBlocks":3,"sections":[{"id":"embeddingmodel-负责什么","text":"EmbeddingModel 负责什么"},{"id":"常用方法","text":"常用方法"},{"id":"请求响应和-document-的边界","text":"请求、响应和 Document 的边界"},{"id":"工程上先记住三点","text":"工程上先记住三点"},{"id":"按需查询","text":"按需查询"}],"images":[],"width":390,"pageWidth":390,"nav":true,"navGroups":["模型","Spring AI","开发框架"],"literalEmphasis":[],"links":["#embeddingmodel-负责什么","#常用方法","#请求响应和-document-的边界","#工程上先记住三点","#按需查询"],"errors":[]}
+{"check": "astro-check", "result": "PASS", "errors": 0, "warnings": 0, "hints": 0}
+{"check": "build", "result": "PASS", "pages": 128, "existingWarnings": ["i18n collection empty", "docs/404 missing"]}
+{"check": "external-links", "result": "PASS", "pages": 23}
+{"check": "visual-review", "result": "PASS", "viewports": [1440, 390]}
+{"check": "final-format-and-diff", "result": "PASS", "javaExecuted": false}

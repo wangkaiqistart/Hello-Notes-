@@ -1,0 +1,56 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 71208
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 301357
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 107975
+  },
+  {
+    "url": "https://spring-ai-community.github.io/spring-ai-session/latest/",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 40502
+  },
+  {
+    "url": "https://modelcontextprotocol.io/",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 312247
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 110739
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 73345
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/observability/index.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 120510
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 123081
+  }
+]

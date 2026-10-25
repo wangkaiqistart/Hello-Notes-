@@ -1,0 +1,26 @@
+[
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-model-mistral-ai</artifactId>\n</dependency>"
+  },
+  {
+    "language": "groovy",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-model-mistral-ai'\n}"
+  },
+  {
+    "language": "java",
+    "code": "MistralAiModerationOptions moderationOptions = MistralAiModerationOptions.builder()\n    .model(\"mistral-moderation-latest\")\n    .build();\n\nModerationPrompt moderationPrompt = new ModerationPrompt(\"Text to be moderated\", this.moderationOptions);\nModerationResponse response = mistralAiModerationModel.call(this.moderationPrompt);\n\n// Access the moderation results\nModeration moderation = moderationResponse.getResult().getOutput();\n\n// Print general information\nSystem.out.println(\"Moderation ID: \" + moderation.getId());\nSystem.out.println(\"Model used: \" + moderation.getModel());\n\n// Access the moderation results (there's usually only one, but it's a list)\nfor (ModerationResult result : moderation.getResults()) {\n    System.out.println(\"\\nModeration Result:\");\n    System.out.println(\"Flagged: \" + result.isFlagged());\n\n    // Access categories\n    Categories categories = this.result.getCategories();\n    System.out.println(\"\\nCategories:\");\n    System.out.println(\"Law: \" + categories.isLaw());\n    System.out.println(\"Financial: \" + categories.isFinancial());\n    System.out.println(\"PII: \" + categories.isPii());\n    System.out.println(\"Sexual: \" + categories.isSexual());\n    System.out.println(\"Hate: \" + categories.isHate());\n    System.out.println(\"Harassment: \" + categories.isHarassment());\n    System.out.println(\"Self-Harm: \" + categories.isSelfHarm());\n    System.out.println(\"Sexual/Minors: \" + categories.isSexualMinors());\n    System.out.println(\"Hate/Threatening: \" + categories.isHateThreatening());\n    System.out.println(\"Violence/Graphic: \" + categories.isViolenceGraphic());\n    System.out.println(\"Self-Harm/Intent: \" + categories.isSelfHarmIntent());\n    System.out.println(\"Self-Harm/Instructions: \" + categories.isSelfHarmInstructions());\n    System.out.println(\"Harassment/Threatening: \" + categories.isHarassmentThreatening());\n    System.out.println(\"Violence: \" + categories.isViolence());\n\n    // Access category scores\n    CategoryScores scores = this.result.getCategoryScores();\n    System.out.println(\"\\nCategory Scores:\");\n    System.out.println(\"Law: \" + scores.getLaw());\n    System.out.println(\"Financial: \" + scores.getFinancial());\n    System.out.println(\"PII: \" + scores.getPii());\n    System.out.println(\"Sexual: \" + scores.getSexual());\n    System.out.println(\"Hate: \" + scores.getHate());\n    System.out.println(\"Harassment: \" + scores.getHarassment());\n    System.out.println(\"Self-Harm: \" + scores.getSelfHarm());\n    System.out.println(\"Sexual/Minors: \" + scores.getSexualMinors());\n    System.out.println(\"Hate/Threatening: \" + scores.getHateThreatening());\n    System.out.println(\"Violence/Graphic: \" + scores.getViolenceGraphic());\n    System.out.println(\"Self-Harm/Intent: \" + scores.getSelfHarmIntent());\n    System.out.println(\"Self-Harm/Instructions: \" + scores.getSelfHarmInstructions());\n    System.out.println(\"Harassment/Threatening: \" + scores.getHarassmentThreatening());\n    System.out.println(\"Violence: \" + scores.getViolence());\n}"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-mistral-ai</artifactId>\n</dependency>"
+  },
+  {
+    "language": "groovy",
+    "code": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-mistral-ai'\n}"
+  },
+  {
+    "language": "java",
+    "code": "MistralAiModerationApi mistralAiModerationApi = new MistralAiModerationApi(System.getenv(\"MISTRAL_AI_API_KEY\"));\n\nMistralAiModerationModel mistralAiModerationModel = new MistralAiModerationModel(this.mistralAiModerationApi);\n\nMistralAiModerationOptions moderationOptions = MistralAiModerationOptions.builder()\n    .model(\"mistral-moderation-latest\")\n    .build();\n\nModerationPrompt moderationPrompt = new ModerationPrompt(\"Text to be moderated\", this.moderationOptions);\nModerationResponse response = this.mistralAiModerationModel.call(this.moderationPrompt);"
+  }
+]

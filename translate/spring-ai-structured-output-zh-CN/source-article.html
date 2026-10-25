@@ -1,0 +1,303 @@
+<article class="doc">
+<div class="breadcrumbs-container">
+  <nav class="breadcrumbs" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="../index.html">Spring AI</a></li>
+      <li>Reference</li>
+      <li><a href="structured-output.html">Structured Output</a></li>
+    </ul>
+  </nav>
+</div><h1 id="page-title" class="page">Structured Output</h1>
+<aside class="toc embedded"><div class="toc-menu"><h3>Structured Output</h3><ul><li data-level="1"><a href="#_typed_response">Typed Response</a></li><li data-level="1"><a href="#_generic_types_lists_maps_and_beyond">Generic Types: Lists, Maps, and Beyond</a></li><li data-level="1"><a href="#_reliability_switches_entityparamspec">Reliability Switches: EntityParamSpec</a></li><li data-level="2"><a href="#_dont_fail_on_malformed_output_validateschema">Don’t Fail on Malformed Output: validateSchema()</a></li><li data-level="2"><a href="#_stronger_upstream_guarantees_useproviderstructuredoutput">Stronger Upstream Guarantees: useProviderStructuredOutput()</a></li><li data-level="2"><a href="#_combining_both">Combining Both</a></li><li data-level="1"><a href="#_getting_the_full_response">Getting the Full Response</a></li><li data-level="1"><a href="#_custom_and_non_json_output">Custom and Non-JSON Output</a></li><li data-level="1"><a href="#_cheat_sheet">Cheat Sheet</a></li></ul></div></aside><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Large language models are text-in, text-out systems.
+The moment downstream code needs to route on a field, persist a value, or branch on a result, that text has to become a typed record.
+<strong>Structured output</strong> bridges that gap: the model is steered to produce text conforming to a schema, and the application parses it back into a typed object the rest of the codebase can treat like any other domain type.</p>
+</div>
+<div class="paragraph">
+<p>Spring AI exposes structured output directly on the <a href="chatclient.html" class="xref page"><code>ChatClient</code></a> fluent API through <code>.entity(…​)</code>.
+You define a Java type for the shape you want back, and Spring AI takes care of the rest: a JSON schema is generated from your type, the model is instructed to honor it, and the response is deserialized into your type.</p>
+</div>
+<div class="paragraph">
+<p>This page covers the high-level <code>ChatClient</code> path.
+For reliability switches and lower-level APIs, see:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="structured-output/validation.html" class="xref page">Schema Validation &amp; Self-Correction</a> — detect malformed output and retry automatically with <code>validateSchema()</code>.</p>
+</li>
+<li>
+<p><a href="structured-output/native.html" class="xref page">Provider-Native Structured Output</a> — enforce the schema at the provider API level with <code>useProviderStructuredOutput()</code>.</p>
+</li>
+<li>
+<p><a href="structured-output/converters.html" class="xref page">Output Converters</a> — the lower-level <code>StructuredOutputConverter</code> API, the built-in converters, and custom/non-JSON converters.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_typed_response"><a class="anchor" href="#_typed_response"></a>Typed Response</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Define a Java record for the shape you want back:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-function">record <span class="hljs-title">ActorsFilms</span><span class="hljs-params">(String actor, List&lt;String&gt; movies)</span> </span>{}</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ask <code>ChatClient</code> to populate it.
+Instead of finishing the call with <code>.content()</code> — which returns the raw text reply — finish with <code>.entity(…​)</code> and pass your target type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ActorsFilms films = chatClient.prompt()
+    .user(<span class="hljs-string">"Generate the filmography for a random actor."</span>)
+    .call()
+    .entity(ActorsFilms<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The result is a typed <code>ActorsFilms</code> you can pass to the rest of your code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">films.actor();     <span class="hljs-comment">// "Tom Hanks"</span>
+films.movies();    <span class="hljs-comment">// ["Forrest Gump", "Cast Away", ...]</span></code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Behind the scenes, Spring AI did three things: a schema generator turned your <code>ActorsFilms</code> record into a JSON schema, that schema was appended to the prompt’s system context, and the model’s JSON answer was handed to a type converter that parsed it back into your record.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/structured-output-basic.png" alt="Structured Output Basic Flow" width="800">
+</div>
+</div>
+<div class="paragraph">
+<p>This works on every model Spring AI supports — there is nothing provider-specific about it.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>.entity(…​)</code> is <code>.call()</code>-only.
+Typed parsing requires the complete response, so it is not available on the streaming path (<code>.stream()</code> returns text chunks, not typed objects).
+This applies to every variant on this page — <code>Class</code>, <code>ParameterizedTypeReference</code>, custom converter, with or without the reliability switches.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>The default <code>.entity(…​)</code> call has no guarantees.
+The model is <em>asked</em> to produce JSON matching the schema, not <em>forced</em> to.
+Most of the time it complies; sometimes it returns an extra field, omits a required one, or wraps the JSON in prose, and the parser throws.
+The two switches below address this.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generic_types_lists_maps_and_beyond"><a class="anchor" href="#_generic_types_lists_maps_and_beyond"></a>Generic Types: Lists, Maps, and Beyond</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>.entity(Class)</code> is for concrete classes.
+For generic types — <code>List&lt;ActorsFilms&gt;</code>, <code>Map&lt;String, ActorsFilms&gt;</code> — use <code>ParameterizedTypeReference</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">List&lt;ActorsFilms&gt; films = chatClient.prompt()
+    .user(<span class="hljs-string">"Generate filmographies for three random actors."</span>)
+    .call()
+    .entity(<span class="hljs-keyword">new</span> ParameterizedTypeReference&lt;List&lt;ActorsFilms&gt;&gt;() {});</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reliability_switches_entityparamspec"><a class="anchor" href="#_reliability_switches_entityparamspec"></a>Reliability Switches: <code>EntityParamSpec</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All <code>.entity(…​)</code> (and <code>.responseEntity(…​)</code>) overloads accept an optional <code>Consumer&lt;EntityParamSpec&gt;</code> that enables two independent, composable behaviors.</p>
+</div>
+<div class="sect2">
+<h3 id="_dont_fail_on_malformed_output_validateschema"><a class="anchor" href="#_dont_fail_on_malformed_output_validateschema"></a>Don’t Fail on Malformed Output: <code>validateSchema()</code></h3>
+<div class="paragraph">
+<p><code>validateSchema()</code> turns on a self-correcting retry loop: Spring AI validates the response against the entity’s schema, and if validation fails, the specific error is appended to the prompt and the call is re-issued — up to 3 attempts by default.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ActorsFilms films = chatClient.prompt()
+    .user(<span class="hljs-string">"Generate the filmography for a random actor."</span>)
+    .call()
+    .entity(ActorsFilms<span class="hljs-class">.<span class="hljs-keyword">class</span>, <span class="hljs-title">spec</span> -&gt; <span class="hljs-title">spec</span>.<span class="hljs-title">validateSchema</span>())</span>;</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See <a href="structured-output/validation.html" class="xref page">Schema Validation &amp; Self-Correction</a> for how the retry loop works and how to customize it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_stronger_upstream_guarantees_useproviderstructuredoutput"><a class="anchor" href="#_stronger_upstream_guarantees_useproviderstructuredoutput"></a>Stronger Upstream Guarantees: <code>useProviderStructuredOutput()</code></h3>
+<div class="paragraph">
+<p><code>useProviderStructuredOutput()</code> sends the schema to the provider as an API-level constraint, so the provider’s runtime enforces conformance rather than relying on prompt instructions.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ActorsFilms films = chatClient.prompt()
+    .user(<span class="hljs-string">"Generate the filmography for a random actor."</span>)
+    .call()
+    .entity(ActorsFilms<span class="hljs-class">.<span class="hljs-keyword">class</span>, <span class="hljs-title">spec</span> -&gt; <span class="hljs-title">spec</span>.<span class="hljs-title">useProviderStructuredOutput</span>())</span>;</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This requires the underlying model to support native structured output.
+See <a href="structured-output/native.html" class="xref page">Provider-Native Structured Output</a> for supported providers and limitations.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_combining_both"><a class="anchor" href="#_combining_both"></a>Combining Both</h3>
+<div class="paragraph">
+<p>The two switches solve different problems and compose naturally:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ActorsFilms films = chatClient.prompt()
+    .user(<span class="hljs-string">"Generate the filmography for a random actor."</span>)
+    .call()
+    .entity(ActorsFilms<span class="hljs-class">.<span class="hljs-keyword">class</span>, <span class="hljs-title">spec</span> -&gt; <span class="hljs-title">spec</span>
+        .<span class="hljs-title">useProviderStructuredOutput</span>()
+        .<span class="hljs-title">validateSchema</span>())</span>;</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>useProviderStructuredOutput()</code> minimizes the chance of malformed output by constraining the model at the API level.
+<code>validateSchema()</code> catches the residual cases — provider edge cases, reasoning-model quirks — and corrects them automatically.
+Reach for both when downstream code cannot tolerate shape drift.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_the_full_response"><a class="anchor" href="#_getting_the_full_response"></a>Getting the Full Response</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>.entity(…​)</code> returns only the parsed object.
+If you also need the underlying <code>ChatResponse</code> — for token usage, observability metadata, or anything beyond the entity — use <code>.responseEntity(…​)</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ResponseEntity&lt;ChatResponse, ActorsFilms&gt; result = chatClient.prompt()
+    .user(<span class="hljs-string">"Generate the filmography for a random actor."</span>)
+    .call()
+    .responseEntity(ActorsFilms<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+
+ActorsFilms films = result.entity();
+ChatResponse raw = result.response();
+<span class="hljs-keyword">long</span> totalTokens = raw.getMetadata().getUsage().getTotalTokens();</code><div class="source-toolbox"><button class="copy-button" title="Copy to clipboard"><span class="copy-toast">Copied!</span></button></div></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It has the same overload set as <code>.entity(…​)</code> — <code>Class</code>, <code>ParameterizedTypeReference</code>, custom <code>StructuredOutputConverter</code>, and the <code>EntityParamSpec</code> consumer all apply.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_custom_and_non_json_output"><a class="anchor" href="#_custom_and_non_json_output"></a>Custom and Non-JSON Output</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When the built-in JSON parsing is not enough — the model wraps JSON in markdown fences, or you need a non-JSON format such as YAML or CSV — pass your own <code>StructuredOutputConverter&lt;T&gt;</code> to <code>.entity(…​)</code>.
+See <a href="structured-output/converters.html" class="xref page">Output Converters</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cheat_sheet"><a class="anchor" href="#_cheat_sheet"></a>Cheat Sheet</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">You need</th>
+<th class="tableblock halign-left valign-top">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default — works on every provider</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>.entity(Type.class)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Generic types like <code>List&lt;T&gt;</code>, <code>Map&lt;K,V&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>.entity(new ParameterizedTypeReference&lt;…​&gt;() {})</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Don’t fail on malformed output</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>.entity(Type.class, spec → spec.validateSchema())</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stronger upstream guarantees from the provider</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>.entity(Type.class, spec → spec.useProviderStructuredOutput())</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Both — request constraint + response retry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>.entity(Type.class, spec → spec.useProviderStructuredOutput().validateSchema())</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Token usage / metadata alongside the entity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>.responseEntity(…​)</code> (same overloads)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Model wraps JSON in markdown fences, or non-JSON format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Implement <a href="structured-output/converters.html" class="xref page"><code>StructuredOutputConverter&lt;T&gt;</code></a> and pass it to <code>.entity(…​)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Streaming responses</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not supported — <code>.entity(…​)</code> is <code>.call()</code>-only; <code>.stream()</code> returns text chunks, not typed objects</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Structured output is a best effort to convert the model output into a structured type.
+The model is not guaranteed to return the requested structure.
+Use <code>validateSchema()</code> and/or <code>useProviderStructuredOutput()</code> when correctness matters.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>StructuredOutputConverter</code> is not used for LLM <a href="tools.html" class="xref page">Tool Calling</a>, as this feature inherently provides structured outputs by default.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="usage-handling.html">Chat Response Metadata</a></span>
+  <span class="next"><a href="structured-output/validation.html">Schema Validation &amp; Self-Correction</a></span>
+</nav>
+</article>

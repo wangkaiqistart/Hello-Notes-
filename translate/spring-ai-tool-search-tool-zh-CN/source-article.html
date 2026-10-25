@@ -1,0 +1,712 @@
+<article class="doc">
+<h1 id="page-title" class="page">Tool Search Tool</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>As AI agents connect to more services — Slack, GitHub, Jira, MCP servers — tool libraries grow rapidly. A typical multi-server setup can easily aggregate 50+ tools consuming <strong>55,000+ tokens</strong> before any conversation starts. Tool selection accuracy also degrades when models face 30+ similarly-named tools.</p>
+</div>
+<div class="paragraph">
+<p><code>ToolSearchToolCallingAdvisor</code> solves this by replacing the default <code>ToolCallingAdvisor</code> with an implementation of the <strong>progressive tool disclosure</strong> pattern: tool definitions are exposed to the model incrementally, on demand, rather than sent upfront. Benchmarks across OpenAI, Anthropic, and Gemini show <strong>34–64% token reduction</strong> while maintaining access to large tool catalogs — see the <a href="https://spring.io/blog/2025/12/11/spring-ai-tool-search-tools-tzolov">Smart Tool Selection blog post</a> for measurements and methodology.</p>
+</div>
+<div class="paragraph">
+<p>This page is the reference for the advisor, its <code>ToolIndex</code> strategies, configuration, and Spring Boot auto-configuration. For the conceptual placement of this advisor in the broader tool calling architecture, see <a href="../tools.html#scaling-to-hundreds-of-tools" class="xref page">Scaling to Hundreds of Tools</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="how-it-works"><a class="anchor" href="#how-it-works"></a>How It Works</h2>
+<div class="sectionbody">
+<div class="imageblock text-center">
+<div class="content">
+<img src="../../_images/tools/spring-ai-tool-search-tool-calling-flow.png" alt="Tool Search Tool Calling Flow" width="600">
+</div>
+</div>
+<div class="paragraph">
+<p><code>ToolSearchToolCallingAdvisor</code> extends <code>ToolCallingAdvisor</code> and overrides the loop’s initialization and per-iteration hooks. The runtime flow:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Indexing</strong> — at session start, all registered tools are indexed in the configured <code>ToolIndex</code>. <strong>No tool definitions are sent to the model.</strong></p>
+</li>
+<li>
+<p><strong>Initial request</strong> — the first request to the LLM contains only the built-in <code>toolSearchTool</code> definition.</p>
+</li>
+<li>
+<p><strong>Discovery call</strong> — when the model needs a capability, it calls <code>toolSearchTool</code> with a natural-language query.</p>
+</li>
+<li>
+<p><strong>Search &amp; expand</strong> — the <code>ToolIndex</code> finds matching tools; their definitions are appended to the conversation for the next iteration.</p>
+</li>
+<li>
+<p><strong>Tool invocation</strong> — the model, now equipped with the relevant definition, issues a normal tool call.</p>
+</li>
+<li>
+<p><strong>Tool execution</strong> — <code>ToolCallingManager</code> executes the discovered tool and returns its result.</p>
+</li>
+<li>
+<p><strong>Response</strong> — the model produces the final answer using the tool result.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The indexed tool set is scoped per session (see <a href="#session-scoping">Session Scoping</a>); concurrent conversations have isolated indexes.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="when-to-use"><a class="anchor" href="#when-to-use"></a>When to Use</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Good fit:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>10+ tools registered with the <code>ChatClient</code>.</p>
+</li>
+<li>
+<p>Tool definitions consuming more than 10K tokens per request.</p>
+</li>
+<li>
+<p>Multi-server MCP setups where the aggregated tool catalog is large.</p>
+</li>
+<li>
+<p>Symptoms of tool-selection accuracy issues with large tool sets.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Stick with the default <code>ToolCallingAdvisor</code> when:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Your tool library is small (under 10 tools).</p>
+</li>
+<li>
+<p>All tools are frequently used in every session.</p>
+</li>
+<li>
+<p>Tool definitions are very compact (the search round-trips would outweigh the token savings).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="installation"><a class="anchor" href="#installation"></a>Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use the Spring Boot starter for the simplest setup (includes Lucene and auto-configuration):</p>
+</div>
+<div id="_tabs_1" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_1_maven" class="tab">
+<p>Maven</p>
+</li>
+<li id="_tabs_1_gradle" class="tab">
+<p>Gradle</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_1_maven--panel" class="tabpanel" aria-labelledby="_tabs_1_maven">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-starter-tool-search-advisor&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_gradle--panel" class="tabpanel" aria-labelledby="_tabs_1_gradle">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gradle hljs" data-lang="gradle">dependencies {
+    implementation 'org.springframework.ai:spring-ai-starter-tool-search-advisor'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Or use the library directly for manual configuration:</p>
+</div>
+<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_2_maven" class="tab">
+<p>Maven</p>
+</li>
+<li id="_tabs_2_gradle" class="tab">
+<p>Gradle</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_2_maven--panel" class="tabpanel" aria-labelledby="_tabs_2_maven">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-tool-search-advisor&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_2_gradle--panel" class="tabpanel" aria-labelledby="_tabs_2_gradle">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gradle hljs" data-lang="gradle">dependencies {
+    implementation 'org.springframework.ai:spring-ai-tool-search-advisor'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="quick-start"><a class="anchor" href="#quick-start"></a>Quick Start</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The fastest path is the auto-configuration — see <a href="#spring-boot-auto-configuration">Spring Boot Auto-Configuration</a> below. For manual wiring:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// 1. Configure a ToolIndex (semantic, keyword, or regex)
+@Bean
+ToolIndex toolIndex(VectorStore vectorStore) {
+    return new VectorToolIndex(vectorStore);
+}
+
+// 2. Build the advisor
+var toolSearchAdvisor = ToolSearchToolCallingAdvisor.builder()
+    .toolIndex(toolIndex)
+    .maxResults(5)
+    .build();
+
+// 3. Register with ChatClient — tools are indexed but NOT sent to the LLM up front
+ChatClient chatClient = ChatClient.builder(chatModel)
+    .defaultTools(new MyTools())
+    .defaultAdvisors(toolSearchAdvisor)
+    .build();
+
+// 4. Make a request — supply a session ID via the advisor context
+String answer = chatClient.prompt("Help me plan what to wear today in Amsterdam")
+    .advisors(a -&gt; a.param(ChatMemory.CONVERSATION_ID, "user-42-session"))
+    .call()
+    .content();</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="session-scoping"><a class="anchor" href="#session-scoping"></a>Session Scoping</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ToolSearchToolCallingAdvisor</code> indexes tools <strong>per session</strong>. The session ID determines which tool index a request sees — this enables multi-tenant and multi-conversation isolation.</p>
+</div>
+<div class="paragraph">
+<p>The caller must supply a session ID with every request. By default the advisor reads the session ID from the advisor context under the <code>ChatMemory.CONVERSATION_ID</code> key:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">chatClient.prompt()
+    .advisors(a -&gt; a.param(ChatMemory.CONVERSATION_ID, "user-42-session"))
+    .user("...")
+    .call()
+    .content();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If your application already passes a session identifier under a different key — for example <code>tenantId</code> or <code>userId</code> — change the lookup key via <code>sessionIdKeyName(…​)</code> (or the corresponding property):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">var advisor = ToolSearchToolCallingAdvisor.builder()
+    .toolIndex(toolIndex)
+    .sessionIdKeyName("tenantId")
+    .build();</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If memory advisors are configured with conversation IDs (the standard pattern with <code>MessageChatMemoryAdvisor</code>), the same key is already in the context — you get session scoping "for free" by virtue of the memory setup.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="search-strategies"><a class="anchor" href="#search-strategies"></a>Search Strategies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>ToolIndex</code> interface abstracts the search implementation. Three strategies are provided out of the box:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Strategy</th>
+<th class="tableblock halign-left valign-top">Implementation</th>
+<th class="tableblock halign-left valign-top">Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Semantic</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>VectorToolIndex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Natural-language queries, fuzzy matching, novel phrasings — when callers describe what they need rather than naming the tool</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Keyword</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LuceneToolIndex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exact-term matching, fast retrieval, known vocabulary</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Regex</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>RegexToolIndex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tool name patterns (e.g. <code>get_*_data</code>); lightweight default with no dependencies</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="vector-tool-index"><a class="anchor" href="#vector-tool-index"></a><code>VectorToolIndex</code> (Semantic)</h3>
+<div class="paragraph">
+<p>Uses embedding-based similarity search. Best when callers describe what they need in natural language.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+ToolIndex vectorToolIndex(VectorStore vectorStore) {
+    return new VectorToolIndex(vectorStore);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Requires a <code>VectorStore</code> bean (e.g. via <code>spring-ai-starter-vector-store-pgvector</code>). Tool name and description are embedded on indexing; queries from <code>toolSearchTool</code> are embedded and the top-K matches are returned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="lucene-tool-index"><a class="anchor" href="#lucene-tool-index"></a><code>LuceneToolIndex</code> (Keyword)</h3>
+<div class="paragraph">
+<p>Uses Apache Lucene for keyword-based search. Fast, no embedding model required.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+ToolIndex luceneToolIndex() {
+    return new LuceneToolIndex();          // default minimum score 0.25
+    // return new LuceneToolIndex(0.4f);   // custom minimum score threshold
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Hits below the minimum score threshold are silently dropped. Raise the threshold to be more selective; lower it to be more permissive.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="regex-tool-index"><a class="anchor" href="#regex-tool-index"></a><code>RegexToolIndex</code> (Pattern)</h3>
+<div class="paragraph">
+<p>Uses regex pattern matching against tool names. Useful when tool names follow a strict naming convention (e.g. <code>get_*</code>, <code><strong><em>database</em></strong></code>). Zero additional dependencies.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+ToolIndex regexToolIndex() {
+    return new RegexToolIndex();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The default index when no explicit <code>tool-index-type</code> is configured.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configuration"><a class="anchor" href="#configuration"></a>Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ToolSearchToolCallingAdvisor.Builder</code> extends <code>ToolCallingAdvisor.Builder</code> and adds search-specific options. See <a href="tool-calling-advisor.html#builder-options" class="xref page">ToolCallingAdvisor Builder Options</a> for inherited settings.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 28.5714%;">
+<col style="width: 57.1428%;">
+<col style="width: 14.2858%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>toolIndex(ToolIndex)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The search implementation to use.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Required</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>maxResults(Integer)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum tool references returned per <code>toolSearchTool</code> call. When <code>null</code>, the LLM decides (the built-in tool description hints at 5).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>systemMessageSuffix(String)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Custom prompt suffix appended to the system message to instruct the model on how to use <code>toolSearchTool</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Built-in template (see <code>DEFAULT_SYSTEM_PROMPT_SUFFIX.md</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>referenceToolNameAccumulation(boolean)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When <code>true</code>, tool names discovered across all prior <code>toolSearchTool</code> calls are accumulated and injected. When <code>false</code>, only the results from the most recent turn are used (including all parallel <code>toolSearchTool</code> calls within that turn).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sessionIdKeyName(String)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Advisor context key used to look up the conversation/session ID.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ChatMemory.CONVERSATION_ID</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>evictionStrategy(ToolIndexEvictionStrategy)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Determines when session tool indexes are freed. See <a href="#index-eviction">Index Eviction</a>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LruEvictionStrategy(1000)</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tool-index-api"><a class="anchor" href="#tool-index-api"></a><code>ToolIndex</code> API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>ToolIndex</code> interface and its companion types (<code>ToolSearchRequest</code>, <code>ToolSearchResponse</code>, <code>ToolReference</code>) live in the <code>spring-ai-tool-search-tool</code> module under <code>org.springframework.ai.tool.toolsearch</code>. The built-in implementations (<code>LuceneToolIndex</code>, <code>VectorToolIndex</code>, <code>RegexToolIndex</code>) are also in this module.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-tool-search-tool&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface ToolIndex {
+
+    void indexTool(String sessionId, ToolReference toolReference);
+
+    /** Default implementation loops over indexTool. */
+    void indexTools(String sessionId, List&lt;ToolReference&gt; toolReferences);
+
+    ToolSearchResponse search(ToolSearchRequest request);
+
+    void clearIndex(String sessionId);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Every operation is scoped by <code>sessionId</code>. Implement <code>ToolIndex</code> directly when you need a custom search strategy — for example, a database-backed catalog with role-based filtering, or a cached remote tool registry.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="index-eviction"><a class="anchor" href="#index-eviction"></a>Index Eviction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Per-session tool indexes consume memory. The <code>ToolIndexEvictionStrategy</code> decides when to free them.</p>
+</div>
+<div class="paragraph">
+<p>By default (<code>LruEvictionStrategy(1000)</code>), up to 1,000 active sessions are retained and the least-recently-used session is evicted once the cap is exceeded. Call <code>advisor.evictSession(sessionId)</code> to release a session eagerly (e.g. on logout).</p>
+</div>
+<div class="paragraph">
+<p>Eviction is evaluated lazily on each request — no background thread is required.</p>
+</div>
+<div class="paragraph">
+<p>Five built-in strategies are provided:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Strategy</th>
+<th class="tableblock halign-left valign-top">Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LruEvictionStrategy(maxSessions)</code> (<strong>default</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Evicts the least-recently-used session once the number of active sessions exceeds <code>maxSessions</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NeverEvictStrategy.INSTANCE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Never evicts automatically; indexes persist until <code>evictSession()</code> is called explicitly.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AlwaysEvictStrategy.INSTANCE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Clears a session’s index before every request, forcing a full re-index each turn. Useful for testing or when tool sets change every request.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>TtlEvictionStrategy(duration)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Evicts sessions whose last-access time exceeds the given TTL.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CompositeEvictionStrategy(strategies…​)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delegates to multiple strategies; evicts a session if <strong>any</strong> delegate requests it.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// Default: LRU cap of 1000 sessions — no configuration needed
+var advisor = ToolSearchToolCallingAdvisor.builder()
+    .toolIndex(toolIndex)
+    .build();
+
+// Never evict — manage session lifetime yourself
+var advisor = ToolSearchToolCallingAdvisor.builder()
+    .toolIndex(toolIndex)
+    .evictionStrategy(NeverEvictStrategy.INSTANCE)
+    .build();
+
+// Always evict — re-index every request (useful for testing)
+var advisor = ToolSearchToolCallingAdvisor.builder()
+    .toolIndex(toolIndex)
+    .evictionStrategy(AlwaysEvictStrategy.INSTANCE)
+    .build();
+
+// LRU with custom cap
+var advisor = ToolSearchToolCallingAdvisor.builder()
+    .toolIndex(toolIndex)
+    .evictionStrategy(new LruEvictionStrategy(200))
+    .build();
+
+// Evict sessions idle for more than 30 minutes
+var advisor = ToolSearchToolCallingAdvisor.builder()
+    .toolIndex(toolIndex)
+    .evictionStrategy(new TtlEvictionStrategy(Duration.ofMinutes(30)))
+    .build();
+
+// Combine: TTL + LRU cap
+var advisor = ToolSearchToolCallingAdvisor.builder()
+    .toolIndex(toolIndex)
+    .evictionStrategy(new CompositeEvictionStrategy(
+        new TtlEvictionStrategy(Duration.ofMinutes(30)),
+        new LruEvictionStrategy(200)))
+    .build();</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-auto-configuration"><a class="anchor" href="#spring-boot-auto-configuration"></a>Spring Boot Auto-Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>spring-ai-starter-tool-search-advisor</code> starter provides zero-boilerplate setup. Enable it with a single property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.chat.client.tool-search-advisor.enabled=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When enabled, the auto-configuration:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Registers a <code>ToolSearchToolCallingAdvisor.Builder</code> bean typed as <code>ToolCallingAdvisor.Builder&lt;?&gt;</code>. This transparently replaces the default <code>ToolCallingAdvisor</code> thanks to the <code>@ConditionalOnMissingBean</code> guard on the default builder — no code changes to your <code>ChatClient</code> are needed. See <a href="../tools.html#custom-tool-advisor-autoconfig" class="xref page">Custom ToolAdvisor: Auto-Configuration Integration</a> for the underlying mechanism.</p>
+</li>
+<li>
+<p>Auto-registers a <code>ToolIndex</code> bean unless your application declares one explicitly.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="tool-index-auto-selection"><a class="anchor" href="#tool-index-auto-selection"></a><code>ToolIndex</code> Auto-Selection</h3>
+<div class="paragraph">
+<p>Set <code>spring.ai.chat.client.tool-search-advisor.tool-index-type</code> to select the implementation:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Implementation</th>
+<th class="tableblock halign-left valign-top">Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>regex</code> (<strong>default</strong>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>RegexToolIndex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No additional dependencies</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lucene</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LuceneToolIndex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.apache.lucene:lucene-core</code> on the classpath (bundled in the starter)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>VectorToolIndex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A <code>VectorStore</code> bean in the application context</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>A custom <code>ToolIndex</code> bean declared by the application always takes precedence — <code>@ConditionalOnMissingBean</code> skips the auto-configured one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="properties-reference"><a class="anchor" href="#properties-reference"></a>Configuration Properties Reference</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 28.5714%;">
+<col style="width: 57.1428%;">
+<col style="width: 14.2858%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.client.tool-search-advisor.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable the advisor. Replaces the default <code>ToolCallingAdvisor</code> when <code>true</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.client.tool-search-advisor.tool-index-type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ToolIndex</code> implementation: <code>regex</code>, <code>lucene</code>, or <code>vector</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>regex</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.client.tool-search-advisor.max-results</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum tool references returned per search call. <code>null</code> uses the built-in default.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.client.tool-search-advisor.system-message-suffix</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Custom prompt suffix appended to the system message. <code>null</code> uses the built-in template.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.client.tool-search-advisor.reference-tool-name-accumulation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When <code>true</code>, accumulate tool names across all search turns; when <code>false</code>, keep only the most recent turn (all parallel calls within it included).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.client.tool-search-advisor.session-id-key-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Advisor context key that carries the conversation/session ID.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chat_memory_conversation_id</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.client.tool-search-advisor.advisor-order</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Position of this advisor in the advisor chain.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>HIGHEST_PRECEDENCE + 300</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.client.tool-search-advisor.eviction.lru-max-sessions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum active sessions retained by the LRU eviction strategy.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1000</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.client.tool-search-advisor.eviction.ttl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TTL for idle sessions. When set, a composite LRU+TTL strategy is used. Accepts a <code>java.time.Duration</code> string (e.g. <code>30m</code>, <code>1h</code>).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.ai.chat.client.tool-search-advisor.lucene.min-score-threshold</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minimum Lucene score for a hit to be included. Applies when <code>tool-index-type=lucene</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.25</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="example-configurations"><a class="anchor" href="#example-configurations"></a>Example Configurations</h3>
+<div class="paragraph">
+<p><strong>Lucene with custom threshold and TTL eviction:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.chat.client.tool-search-advisor.enabled=true
+spring.ai.chat.client.tool-search-advisor.tool-index-type=lucene
+spring.ai.chat.client.tool-search-advisor.lucene.min-score-threshold=0.4
+spring.ai.chat.client.tool-search-advisor.eviction.ttl=30m</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Vector search (requires a <code>VectorStore</code> bean):</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.chat.client.tool-search-advisor.enabled=true
+spring.ai.chat.client.tool-search-advisor.tool-index-type=vector</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Custom session-ID key for a multi-tenant deployment:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.ai.chat.client.tool-search-advisor.enabled=true
+spring.ai.chat.client.tool-search-advisor.tool-index-type=vector
+spring.ai.chat.client.tool-search-advisor.session-id-key-name=tenantId</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="see-also"><a class="anchor" href="#see-also"></a>See Also</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="../tools.html#scaling-to-hundreds-of-tools" class="xref page">Tool Calling: Scaling to Hundreds of Tools</a> — conceptual overview</p>
+</li>
+<li>
+<p><a href="tool-calling-advisor.html" class="xref page">ToolCallingAdvisor</a> — the base class and inherited builder options</p>
+</li>
+<li>
+<p><a href="https://spring.io/blog/2025/12/11/spring-ai-tool-search-tools-tzolov">Smart Tool Selection: 34–64% Token Savings</a> (Dec 2025) — benchmarks and methodology</p>
+</li>
+<li>
+<p><a href="../../guides/dynamic-tool-search.html" class="xref page">Dynamic Tool Discovery guide</a> — worked example</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+</article>

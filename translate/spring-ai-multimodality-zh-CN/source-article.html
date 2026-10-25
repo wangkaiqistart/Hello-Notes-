@@ -1,0 +1,146 @@
+<article class="doc">
+<h1 id="page-title" class="page">Multimodality API</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>"All things that are naturally connected ought to be taught in combination" - John Amos Comenius, "Orbis Sensualium Pictus", 1658</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Humans  process knowledge, simultaneously across multiple modes of data inputs.
+The way we learn, our experiences are all multimodal.
+We don’t have just vision, just audio and just text.</p>
+</div>
+<div class="paragraph">
+<p>Contrary to those principles, the Machine Learning was often focused on specialized models tailored to process a single modality.
+For instance, we developed audio models for tasks like text-to-speech or speech-to-text, and computer vision models for tasks such as object detection and classification.</p>
+</div>
+<div class="paragraph">
+<p>However, a new wave of multimodal large language models starts to emerge.
+Examples include OpenAI’s GPT, Google’s Gemini, Anthropic’s Claude, and open source offerings Llama, LLaVA and BakLLaVA are able to accept multiple inputs, including text images, audio and video and generate text responses by integrating these inputs.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The multimodal large language model (LLM) features enable the models to process and generate text in conjunction with other modalities such as images, audio, or video.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spring_ai_multimodality"><a class="anchor" href="#_spring_ai_multimodality"></a>Spring AI Multimodality</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Multimodality refers to a model’s ability to simultaneously understand and process information from various sources, including text, images, audio, and other data formats.</p>
+</div>
+<div class="paragraph">
+<p>The Spring AI Message API provides all necessary abstractions to support multimodal LLMs.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../_images/spring-ai-message-api.jpg" alt="Spring AI Message API" width="800">
+</div>
+</div>
+<div class="paragraph">
+<p>The UserMessage’s <code>content</code> field is used primarily for text inputs, while the optional <code>media</code> field allows adding one or more additional content of different modalities such as images, audio and video.
+The <code>MimeType</code> specifies the modality type.
+Depending on the used LLMs, the <code>Media</code> data field can be either the raw media content as a <code>Resource</code> object or a <code>URI</code> to the content.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The media field is currently applicable only for user input messages (e.g., <code>UserMessage</code>). It does not hold significance for system messages. The <code>AssistantMessage</code>, which includes the LLM response, provides text content only. To generate non-text media outputs, you should utilize one of the dedicated, single-modality models.*
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>For example, we can take the following picture (<code>multimodal.test.png</code>) as an input and ask the LLM to explain what it sees.</p>
+</div>
+<div class="imageblock text-left">
+<div class="content">
+<img src="../_images/multimodal.test.png" alt="Multimodal Test Image" width="200" height="200">
+</div>
+</div>
+<div class="paragraph">
+<p>For most of the multimodal LLMs, the Spring AI code would look something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">var imageResource = new ClassPathResource("/multimodal.test.png");
+
+var userMessage = UserMessage.builder()
+    .text("Explain what do you see in this picture?") // content
+    .media(new Media(MimeTypeUtils.IMAGE_PNG, this.imageResource)) // media
+    .build();
+
+ChatResponse response = chatModel.call(new Prompt(this.userMessage));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or with the fluent <a href="chatclient.html" class="xref page">ChatClient</a> API:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">String response = ChatClient.create(chatModel).prompt()
+		.user(u -&gt; u.text("Explain what do you see on this picture?")
+				    .media(MimeTypeUtils.IMAGE_PNG, new ClassPathResource("/multimodal.test.png")))
+		.call()
+		.content();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and produce a response like:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>This is an image of a fruit bowl with a simple design. The bowl is made of metal with curved wire edges that create an open structure, allowing the fruit to be visible from all angles. Inside the bowl, there are two yellow bananas resting on top of what appears to be a red apple. The bananas are slightly overripe, as indicated by the brown spots on their peels. The bowl has a metal ring at the top, likely to serve as a handle for carrying. The bowl is placed on a flat surface with a neutral-colored background that provides a clear view of the fruit inside.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Spring AI provides multimodal support for the following chat models:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="chat/anthropic-chat.html#_multi_modal_support" class="xref page">Anthropic Claude</a></p>
+</li>
+<li>
+<p><a href="chat/bedrock-converse.html#_multimodal" class="xref page">AWS Bedrock Converse</a></p>
+</li>
+<li>
+<p><a href="chat/mistralai-chat.html#_multimodal" class="xref page">Mistral AI (e.g. Mistral Pixtral models)</a></p>
+</li>
+<li>
+<p><a href="chat/ollama-chat.html#_multimodal" class="xref page">Ollama (e.g. LLaVA, BakLLaVA, Llama models)</a></p>
+</li>
+<li>
+<p><a href="chat/openai-chat.html#_multimodal" class="xref page">OpenAI (e.g. GPT models)</a></p>
+</li>
+<li>
+<p><a href="chat/google-genai-chat.html#_multimodal" class="xref page">Google Gemini</a></p>
+</li>
+<li>
+<p><a href="chat/jinfer-chat.html#_multimodal" class="xref page">Qxotic jinfer (e.g. Gemma 4, LFM2.5-VL, Qwen 3.5 models)</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+</article>

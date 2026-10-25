@@ -1,0 +1,106 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+  "version": "2.0.2",
+  "images": [
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/embeddings-api.jpg",
+      "alt": "embeddings api"
+    }
+  ],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Embeddings Model API"
+    },
+    {
+      "id": "_api_overview",
+      "text": "API Overview"
+    },
+    {
+      "id": "_embeddingmodel",
+      "text": "EmbeddingModel"
+    },
+    {
+      "id": "_embeddingrequest",
+      "text": "EmbeddingRequest"
+    },
+    {
+      "id": "_embeddingresponse",
+      "text": "EmbeddingResponse"
+    },
+    {
+      "id": "_embedding",
+      "text": "Embedding"
+    },
+    {
+      "id": "available-implementations",
+      "text": "Available Implementations"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#_api_overview",
+      "label": ""
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/tree/main/spring-ai-model/src/main/java/org/springframework/ai/model",
+      "label": "Spring AI Model API"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#_embeddingmodel",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#_embeddingrequest",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#_embeddingresponse",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#_embedding",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/openai-embeddings.html",
+      "label": "Spring AI OpenAI Embeddings"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/ollama-embeddings.html",
+      "label": "Spring AI Ollama Embeddings"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/onnx.html",
+      "label": "Spring AI Transformers (ONNX) Embeddings"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html",
+      "label": "Qxotic jinfer Embeddings"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/postgresml-embeddings.html",
+      "label": "Spring AI PostgresML Embeddings"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/bedrock-cohere-embedding.html",
+      "label": "Spring AI Bedrock Cohere Embeddings"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/bedrock-titan-embedding.html",
+      "label": "Spring AI Bedrock Titan Embeddings"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/vertexai-embeddings-text.html",
+      "label": "Spring AI VertexAI Embeddings"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/mistralai-embeddings.html",
+      "label": "Spring AI Mistral AI Embeddings"
+    }
+  ]
+}

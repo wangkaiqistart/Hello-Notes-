@@ -1,0 +1,26 @@
+[
+  {
+    "language": "java",
+    "code": "@FunctionalInterface\npublic interface ImageModel extends Model<ImagePrompt, ImageResponse> {\n\n\tImageResponse call(ImagePrompt request);\n\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class ImagePrompt implements ModelRequest<List<ImageMessage>> {\n\n    private final List<ImageMessage> messages;\n\n\tprivate ImageOptions imageModelOptions;\n\n    @Override\n\tpublic List<ImageMessage> getInstructions() {...}\n\n\t@Override\n\tpublic ImageOptions getOptions() {...}\n\n    // constructors and utility methods omitted\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class ImageMessage {\n\n\tprivate String text;\n\n\tprivate Float weight;\n\n    public String getText() {...}\n\n\tpublic Float getWeight() {...}\n\n   // constructors and utility methods omitted\n}"
+  },
+  {
+    "language": "java",
+    "code": "public interface ImageOptions extends ModelOptions {\n\n\tInteger getN();\n\n\tString getModel();\n\n\tInteger getWidth();\n\n\tInteger getHeight();\n\n\tString getResponseFormat(); // openai - url or base64 : stability ai byte[] or base64\n\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class ImageResponse implements ModelResponse<ImageGeneration> {\n\n\tprivate final ImageResponseMetadata imageResponseMetadata;\n\n\tprivate final List<ImageGeneration> imageGenerations;\n\n\t@Override\n\tpublic ImageGeneration getResult() {\n\t\t// get the first result\n\t}\n\n\t@Override\n\tpublic List<ImageGeneration> getResults() {...}\n\n\t@Override\n\tpublic ImageResponseMetadata getMetadata() {...}\n\n    // other methods omitted\n\n}"
+  },
+  {
+    "language": "java",
+    "code": "public class ImageGeneration implements ModelResult<Image> {\n\n\tprivate ImageGenerationMetadata imageGenerationMetadata;\n\n\tprivate Image image;\n\n    @Override\n\tpublic Image getOutput() {...}\n\n\t@Override\n\tpublic ImageGenerationMetadata getMetadata() {...}\n\n    // other methods omitted\n\n}"
+  }
+]

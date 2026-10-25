@@ -1,0 +1,72 @@
+{
+  "sourceVersion": "2.0.2",
+  "sourceCodeBlocks": 8,
+  "targetCodeBlocks": 8,
+  "method": "静态比较：去除注释与空白，保留代码字符串和 API；变更块逐项审校。未编译运行。",
+  "checks": [
+    {
+      "block": 1,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 2,
+      "result": "PASS",
+      "apiChanged": true,
+      "reason": "OllamaChatModel.Builder.options 接收 OllamaChatOptions。",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 3,
+      "result": "PASS",
+      "apiChanged": true,
+      "reason": "使用 OllamaChatOptions 并补充 OllamaApi 构建。",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 4,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 5,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 6,
+      "result": "PASS",
+      "apiChanged": true,
+      "reason": "流式循环处理空聚合和 returnDirect，直接返回工具生成结果。",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 7,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    },
+    {
+      "block": 8,
+      "result": "PASS",
+      "apiChanged": false,
+      "reason": "除注释及空白外与来源一致",
+      "sourceLanguage": "java",
+      "targetLanguage": "java"
+    }
+  ]
+}

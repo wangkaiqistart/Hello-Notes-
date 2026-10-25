@@ -1,0 +1,140 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/chat/messages/AssistantMessage.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 30254
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/embedding/EmbeddingModel.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 26079
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 67674
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 55812
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/anthropic-chat.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 174411
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/bedrock-converse.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 114464
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 71208
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/deepseek-chat.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 85574
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/google-genai-chat.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 124780
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 97051
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 96486
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 116384
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 145338
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 65268
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 60718
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/google-genai-embeddings-text.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 72758
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/mistralai-embeddings.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 72875
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/ollama-embeddings.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 87045
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/openai-embeddings.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 77219
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/imageclient.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 57777
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/index.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 53833
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/moderation.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 49658
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/multimodality.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 55632
+  }
+]

@@ -1,0 +1,103 @@
+--- source-4
++++ translation-4
+@@ -1,11 +1,11 @@
+-    StructuredOutputConverter outputConverter = ...
++    StructuredOutputConverter<?> outputConverter = ...;
+     String userInputTemplate = """
+         ... user text input ....
+         {format}
+-        """; // user input with a "format" placeholder.
++        """; // 用户输入包含 format 占位符。
+     Prompt prompt = new Prompt(
+             PromptTemplate.builder()
+-                    .template(this.userInputTemplate)
+-                    .variables(Map.of(..., "format", this.outputConverter.getFormat())) // replace the "format" placeholder with the converter's format.
++                    .template(userInputTemplate)
++                    .variables(Map.of("format", outputConverter.getFormat())) // 用转换器的格式指令替换占位符。
+                     .build().createMessage()
+     );--- source-7
++++ translation-7
+@@ -1,7 +1,7 @@
+ BeanOutputConverter<ActorsFilms> beanOutputConverter =
+     new BeanOutputConverter<>(ActorsFilms.class);
+ 
+-String format = this.beanOutputConverter.getFormat();
++String format = beanOutputConverter.getFormat();
+ 
+ String actor = "Tom Hanks";
+ 
+@@ -11,6 +11,6 @@
+         """;
+ 
+ Generation generation = chatModel.call(
+-    PromptTemplate.builder().template(this.template).variables(Map.of("actor", this.actor, "format", this.format)).build().create()).getResult();
++    PromptTemplate.builder().template(template).variables(Map.of("actor", actor, "format", format)).build().create()).getResult();
+ 
+-ActorsFilms actorsFilms = this.beanOutputConverter.convert(this.generation.getOutput().getText());+ActorsFilms actorsFilms = beanOutputConverter.convert(generation.getOutput().getText());--- source-10
++++ translation-10
+@@ -1,14 +1,14 @@
+ BeanOutputConverter<List<ActorsFilms>> outputConverter = new BeanOutputConverter<>(
+         new ParameterizedTypeReference<List<ActorsFilms>>() { });
+ 
+-String format = this.outputConverter.getFormat();
++String format = outputConverter.getFormat();
+ String template = """
+         Generate the filmography of 5 movies for Tom Hanks and Bill Murray.
+         {format}
+         """;
+ 
+-Prompt prompt = PromptTemplate.builder().template(this.template).variables(Map.of("format", this.format)).build().create();
++Prompt prompt = PromptTemplate.builder().template(template).variables(Map.of("format", format)).build().create();
+ 
+-Generation generation = chatModel.call(this.prompt).getResult();
++Generation generation = chatModel.call(prompt).getResult();
+ 
+-List<ActorsFilms> actorsFilms = this.outputConverter.convert(this.generation.getOutput().getText());+List<ActorsFilms> actorsFilms = outputConverter.convert(generation.getOutput().getText());--- source-12
++++ translation-12
+@@ -1,14 +1,14 @@
+ MapOutputConverter mapOutputConverter = new MapOutputConverter();
+ 
+-String format = this.mapOutputConverter.getFormat();
++String format = mapOutputConverter.getFormat();
+ String template = """
+         Provide me a List of {subject}
+         {format}
+         """;
+ 
+-Prompt prompt = PromptTemplate.builder().template(this.template)
+-.variables(Map.of("subject", "an array of numbers from 1 to 9 under they key name 'numbers'", "format", this.format)).build().create();
++Prompt prompt = PromptTemplate.builder().template(template)
++.variables(Map.of("subject", "an array of numbers from 1 to 9 under they key name 'numbers'", "format", format)).build().create();
+ 
+-Generation generation = chatModel.call(this.prompt).getResult();
++Generation generation = chatModel.call(prompt).getResult();
+ 
+-Map<String, Object> result = this.mapOutputConverter.convert(this.generation.getOutput().getText());+Map<String, Object> result = mapOutputConverter.convert(generation.getOutput().getText());--- source-14
++++ translation-14
+@@ -1,13 +1,13 @@
+ ListOutputConverter listOutputConverter = new ListOutputConverter(new DefaultConversionService());
+ 
+-String format = this.listOutputConverter.getFormat();
++String format = listOutputConverter.getFormat();
+ String template = """
+         List five {subject}
+         {format}
+         """;
+ 
+-Prompt prompt = PromptTemplate.builder().template(this.template).variables(Map.of("subject", "ice cream flavors", "format", this.format)).build().create();
++Prompt prompt = PromptTemplate.builder().template(template).variables(Map.of("subject", "ice cream flavors", "format", format)).build().create();
+ 
+-Generation generation = this.chatModel.call(this.prompt).getResult();
++Generation generation = chatModel.call(prompt).getResult();
+ 
+-List<String> list = this.listOutputConverter.convert(this.generation.getOutput().getText());+List<String> list = listOutputConverter.convert(generation.getOutput().getText());--- source-16
++++ translation-16
+@@ -5,7 +5,7 @@
+     private final BeanOutputConverter<T> delegate;
+ 
+     public LenientJsonOutputConverter(Class<T> targetType) {
+-        this.delegate = new BeanOutputConverter<>(targetType);
++        delegate = new BeanOutputConverter<>(targetType);
+     }
+ 
+     @Override public String getFormat()     { return delegate.getFormat(); }

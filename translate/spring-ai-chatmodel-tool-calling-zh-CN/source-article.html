@@ -1,0 +1,332 @@
+<article class="doc">
+<h1 id="page-title" class="page">ChatModel Tool Calling</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ChatModel</code> is the low-level request/response interface to a chat provider. It accepts tool definitions, sends them to the model, and returns the model’s response. Tool calls in that response are <strong>not</strong> executed automatically — that’s the caller’s responsibility.</p>
+</div>
+<div class="paragraph">
+<p>For most applications, <a href="../tools.html" class="xref page"><code>ChatClient</code></a> is the recommended entry point: it handles the tool-calling loop via <a href="tool-calling-advisor.html" class="xref page"><code>ToolCallingAdvisor</code></a>, composes with memory and observability advisors, and supports auto-configuration extension points. This page is for users who deliberately want the lower-level path.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="when-to-use"><a class="anchor" href="#when-to-use"></a>When to Use <code>ChatModel</code> Directly</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ChatModel</code> is the right choice when:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>You don’t want the advisor chain (no memory advisor, no observability advisor, no <code>ToolCallingAdvisor</code>).</p>
+</li>
+<li>
+<p>You’re integrating tool calling into a custom orchestrator (a domain-specific workflow engine, a non-Spring agent framework) that owns its own loop.</p>
+</li>
+<li>
+<p>You’re building infrastructure on top of Spring AI — for example, a custom <code>ChatClient</code> implementation, or a library that exposes its own higher-level API.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For everything else — chat applications, RAG, agentic workflows, tool-heavy assistants — use <code>ChatClient</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="no-internal-tool-execution"><a class="anchor" href="#no-internal-tool-execution"></a>No Internal Tool Execution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ChatModel</code> does not execute tool calls. <code>ChatModel.call(prompt)</code> and <code>ChatModel.stream(prompt)</code> return the model’s raw response, including any tool call requests, without executing them. Executing the requested tools and re-calling the model is the caller’s responsibility — see <a href="#driving-the-loop-manually">Driving the Loop Manually</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are coming from Spring AI 1.x, where each <code>ChatModel</code> ran its own internal tool-execution loop, see <a href="../../upgrade-notes.html#tool-calling-1x-to-2x" class="xref page">Upgrading Tool Calling from 1.x to 2.0</a> for what changed and how to migrate.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="passing-tools"><a class="anchor" href="#passing-tools"></a>Passing Tools to <code>ChatModel</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Tools are passed via <code>ToolCallingChatOptions.toolCallbacks(…​)</code>. The options accept a <code>List&lt;ToolCallback&gt;</code> or a <code>ToolCallback[]</code>. Use <code>ToolCallbacks.from(…​)</code> to convert <code>@Tool</code>-annotated objects into callbacks.</p>
+</div>
+<div class="sect2">
+<h3 id="per-request-tools"><a class="anchor" href="#per-request-tools"></a>Per-Request Tools</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatModel chatModel = ...
+ToolCallback[] tools = ToolCallbacks.from(new DateTimeTools());
+
+ChatOptions chatOptions = ToolCallingChatOptions.builder()
+    .toolCallbacks(tools)
+    .build();
+
+Prompt prompt = new Prompt("What day is tomorrow?", chatOptions);
+ChatResponse response = chatModel.call(prompt);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This sends the tool definitions to the model. If the model decides to call a tool, the response contains the call request; you execute it yourself (see <a href="#driving-the-loop-manually">Driving the Loop Manually</a>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="default-tools"><a class="anchor" href="#default-tools"></a>Default Tools (Configured on the Model)</h3>
+<div class="paragraph">
+<p>Some <code>ChatModel</code> builders accept default options. Tools set in the default options apply to every request unless overridden:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ToolCallback[] dateTimeTools = ToolCallbacks.from(new DateTimeTools());
+
+ChatModel chatModel = OllamaChatModel.builder()
+    .ollamaApi(OllamaApi.builder().build())
+    .options(ToolCallingChatOptions.builder()
+        .toolCallbacks(dateTimeTools)
+        .build())
+    .build();</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Default tools are sent to the model on every request issued through this <code>ChatModel</code> instance. This is convenient for tools that should always be available, but it can also be dangerous — risk-tier and destructive tools should typically be added per request, not as defaults.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="override-semantics"><a class="anchor" href="#override-semantics"></a>Override Semantics</h3>
+<div class="paragraph">
+<p>When tools are set both in the `ChatModel’s default options and in the per-request options, <strong>the per-request tool list replaces the defaults entirely</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatModel chatModel = OllamaChatModel.builder()
+    .options(ToolCallingChatOptions.builder()
+        .toolCallbacks(defaultTools)  // 5 default tools
+        .build())
+    .build();
+
+ChatOptions runtimeOptions = ToolCallingChatOptions.builder()
+    .toolCallbacks(otherTool)          // 1 tool
+    .build();
+
+ChatResponse response = chatModel.call(new Prompt("...", runtimeOptions));
+// The model sees ONLY otherTool — defaultTools were replaced, not appended.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To use defaults plus an extra tool on a single request, include the defaults explicitly in the runtime options:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">List&lt;ToolCallback&gt; combined = new ArrayList&lt;&gt;(Arrays.asList(defaultTools));
+combined.add(otherTool);
+
+ChatOptions runtimeOptions = ToolCallingChatOptions.builder()
+    .toolCallbacks(combined)
+    .build();</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This override behavior is specific to the <code>ChatModel</code> API. When using <code>ChatClient</code>, per-call <code>.tools(…​)</code> <strong>appends</strong> to <code>.defaultTools(…​)</code> — the two layers compose naturally. See <a href="../tools.html#passing-tools" class="xref page">Passing Tools to ChatClient</a>.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="driving-the-loop-manually"><a class="anchor" href="#driving-the-loop-manually"></a>Driving the Loop Manually</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When the model returns a response with tool calls, you execute the tools and call the model again with the results. This is the loop that <code>ToolCallingAdvisor</code> runs automatically for <code>ChatClient</code>. With <code>ChatModel</code>, you write it yourself.</p>
+</div>
+<div class="sect2">
+<h3 id="blocking-loop"><a class="anchor" href="#blocking-loop"></a>Blocking</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatModel chatModel = ...
+ToolCallingManager toolCallingManager = ToolCallingManager.builder().build();
+
+ToolCallback[] tools = ToolCallbacks.from(new WeatherTools());
+ChatOptions chatOptions = ToolCallingChatOptions.builder()
+    .toolCallbacks(tools)
+    .build();
+
+Prompt prompt = new Prompt("What is the weather in Amsterdam and Paris?", chatOptions);
+ChatResponse response = chatModel.call(prompt);
+
+while (response.hasToolCalls()) {
+    ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response);
+
+    if (result.returnDirect()) {
+        // Tool's returnDirect=true — break out without sending back to the model
+        return result.conversationHistory();
+    }
+
+    prompt = new Prompt(result.conversationHistory(), chatOptions);
+    response = chatModel.call(prompt);
+}
+
+String finalAnswer = response.getResult().getOutput().getText();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Key components:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ToolCallingManager</code> — executes tool calls. The default <code>DefaultToolCallingManager</code> is auto-configured by Spring Boot. Build one manually with <code>ToolCallingManager.builder().build()</code> when you’re not using auto-configuration.</p>
+</li>
+<li>
+<p><code>response.hasToolCalls()</code> — <code>true</code> if the model requested at least one tool.</p>
+</li>
+<li>
+<p><code>toolCallingManager.executeToolCalls(prompt, response)</code> — looks up each requested tool, executes it, and returns a <code>ToolExecutionResult</code> containing the updated conversation history.</p>
+</li>
+<li>
+<p><code>result.returnDirect()</code> — <code>true</code> if <strong>all</strong> the called tools have <code>returnDirect = true</code>. See <a href="#return-direct">Return Direct</a>.</p>
+</li>
+<li>
+<p><code>result.conversationHistory()</code> — the original messages plus the assistant’s tool-call request and the tool responses. Use this as the next prompt’s messages.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="streaming-loop"><a class="anchor" href="#streaming-loop"></a>Streaming</h3>
+<div class="paragraph">
+<p>The streaming variant aggregates each iteration’s chunks via <code>ChatClientMessageAggregator</code> before checking for tool calls. You can forward the raw chunk stream to a downstream subscriber (e.g. an SSE endpoint) while aggregating:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatModel chatModel = ...
+ToolCallingManager toolCallingManager = ToolCallingManager.builder().build();
+
+ToolCallback[] tools = ToolCallbacks.from(new WeatherTools());
+ChatOptions chatOptions = ToolCallingChatOptions.builder()
+    .toolCallbacks(tools)
+    .build();
+
+Prompt prompt = new Prompt("What is the weather in Amsterdam and Paris?", chatOptions);
+
+while (true) {
+    AtomicReference&lt;ChatResponse&gt; aggregated = new AtomicReference&lt;&gt;();
+
+    new MessageAggregator().aggregate(
+        chatModel.stream(prompt).doOnNext(chunk -&gt; forwardToSse(chunk)),
+        aggregated::set
+    ).blockLast();
+
+    ChatResponse response = aggregated.get();
+    if (!response.hasToolCalls()) {
+        break;
+    }
+
+    ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response);
+    if (result.returnDirect()) {
+        break;
+    }
+    prompt = new Prompt(result.conversationHistory(), chatOptions);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For <code>ChatClient</code>-driven streaming with full advisor composition, see <a href="tool-calling-advisor.html#user-controlled-streaming" class="xref page">ToolCallingAdvisor: User-Controlled Streaming</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tool-context"><a class="anchor" href="#tool-context"></a>Tool Context</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Tool context — non-model data passed to tool methods — works the same way with <code>ChatModel</code> as with <code>ChatClient</code>. Set it via <code>ToolCallingChatOptions</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatOptions chatOptions = ToolCallingChatOptions.builder()
+    .toolCallbacks(ToolCallbacks.from(new CustomerTools()))
+    .toolContext(Map.of("tenantId", "acme"))
+    .build();
+
+Prompt prompt = new Prompt("Tell me about customer 42", chatOptions);
+chatModel.call(prompt);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When both default and runtime <code>toolContext</code> are set, the resulting context is the <strong>merge</strong> of the two (unlike <code>toolCallbacks</code>, which is replaced) — runtime entries take precedence over defaults for matching keys.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="../tools.html#tool-context" class="xref page">Tool Context</a> for the tool-side API.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="return-direct"><a class="anchor" href="#return-direct"></a>Return Direct</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>returnDirect</code> flags are honored by <code>ToolCallingManager.executeToolCalls(…​)</code>. After execution, check <code>ToolExecutionResult.returnDirect()</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response);
+
+if (result.returnDirect()) {
+    // Skip the next model call — return the tool result to the caller
+    return result.conversationHistory();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the model requested multiple tool calls in a single iteration, <code>returnDirect()</code> is <code>true</code> only if <strong>all</strong> the called tools have <code>returnDirect = true</code>. See <a href="../tools.html#return-direct" class="xref page">Return Direct</a> for declaring the flag on a tool.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="see-also"><a class="anchor" href="#see-also"></a>See Also</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="../tools.html" class="xref page">Tool Calling</a> — the recommended <code>ChatClient</code>-based path</p>
+</li>
+<li>
+<p><a href="tool-calling-advisor.html" class="xref page"><code>ToolCallingAdvisor</code></a> — the advisor that runs the loop for <code>ChatClient</code></p>
+</li>
+<li>
+<p><a href="tool-calling-advisor.html#user-controlled-streaming" class="xref page">User-Controlled Streaming with ChatClient</a> — analogous pattern with the advisor chain still in place</p>
+</li>
+<li>
+<p><a href="../../upgrade-notes.html#tool-calling-1x-to-2x" class="xref page">Upgrading Tool Calling from 1.x to 2.0</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+</article>

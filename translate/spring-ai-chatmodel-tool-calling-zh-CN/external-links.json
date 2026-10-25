@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 301357
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html",
+    "result": "PASS",
+    "brokenAnchors": [],
+    "bytes": 64838
+  }
+]

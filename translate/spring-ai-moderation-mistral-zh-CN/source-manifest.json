@@ -1,0 +1,121 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html",
+  "version": "2.0.2",
+  "images": [],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Moderation"
+    },
+    {
+      "id": "_introduction",
+      "text": "Introduction"
+    },
+    {
+      "id": "_prerequisites",
+      "text": "Prerequisites"
+    },
+    {
+      "id": "_auto_configuration",
+      "text": "Auto-configuration"
+    },
+    {
+      "id": "_moderation_properties",
+      "text": "Moderation Properties"
+    },
+    {
+      "id": "_connection_properties",
+      "text": "Connection Properties"
+    },
+    {
+      "id": "_configuration_properties",
+      "text": "Configuration Properties"
+    },
+    {
+      "id": "_runtime_options",
+      "text": "Runtime Options"
+    },
+    {
+      "id": "_manual_configuration",
+      "text": "Manual Configuration"
+    },
+    {
+      "id": "_example_code",
+      "text": "Example Code"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html#_introduction",
+      "label": ""
+    },
+    {
+      "href": "https://docs.mistral.ai/capabilities/guardrailing/",
+      "label": "link"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html#_prerequisites",
+      "label": ""
+    },
+    {
+      "href": "https://auth.mistral.ai/ui/registration",
+      "label": "Mistral AI registration page"
+    },
+    {
+      "href": "https://console.mistral.ai/api-keys/",
+      "label": "API Keys page"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management",
+      "label": "Dependency Management"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html#_auto_configuration",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+      "label": "upgrade notes"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management",
+      "label": "Dependency Management"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html#_moderation_properties",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html#_connection_properties",
+      "label": ""
+    },
+    {
+      "href": "https://api.mistral.ai/",
+      "label": "api.mistral.ai"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html#_configuration_properties",
+      "label": ""
+    },
+    {
+      "href": "https://api.mistral.ai/",
+      "label": "api.mistral.ai"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html#_runtime_options",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html#_manual_configuration",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management",
+      "label": "Dependency Management"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html#_example_code",
+      "label": ""
+    }
+  ]
+}

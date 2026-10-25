@@ -1,0 +1,32 @@
+[
+  {
+    "class": "ModerationModel",
+    "member": "call(org.springframework.ai.moderation.ModerationPrompt)",
+    "result": "PASS"
+  },
+  {
+    "class": "ModerationPrompt",
+    "member": "<init>(java.lang.String)",
+    "result": "PASS"
+  },
+  {
+    "class": "Moderation",
+    "member": "getResults()",
+    "result": "PASS"
+  },
+  {
+    "class": "ModerationResult",
+    "member": "isFlagged()",
+    "result": "PASS"
+  },
+  {
+    "class": "ModerationResult",
+    "member": "getCategories()",
+    "result": "PASS"
+  },
+  {
+    "class": "ModerationResult",
+    "member": "getCategoryScores()",
+    "result": "PASS"
+  }
+]

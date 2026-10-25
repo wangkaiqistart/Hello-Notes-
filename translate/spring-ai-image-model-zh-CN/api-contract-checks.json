@@ -1,0 +1,27 @@
+[
+  {
+    "class": "ImagePrompt",
+    "member": "<init>(java.lang.String)",
+    "result": "PASS"
+  },
+  {
+    "class": "ImagePrompt",
+    "member": "<init>(java.lang.String,org.springframework.ai.image.ImageOptions)",
+    "result": "PASS"
+  },
+  {
+    "class": "Image",
+    "member": "getUrl()",
+    "result": "PASS"
+  },
+  {
+    "class": "Image",
+    "member": "getB64Json()",
+    "result": "PASS"
+  },
+  {
+    "class": "ImageOptions",
+    "member": "getStyle()",
+    "result": "PASS"
+  }
+]

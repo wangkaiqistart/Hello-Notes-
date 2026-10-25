@@ -1,0 +1,249 @@
+<article class="doc">
+<h1 id="page-title" class="page">Embeddings Model API</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Embeddings are numerical representations of text, images, or videos that capture relationships between inputs.</p>
+</div>
+<div class="paragraph">
+<p>Embeddings work by converting text, image, and video into arrays of floating point numbers, called vectors.
+These vectors are designed to capture the meaning of the text, images, and videos.
+The length of the embedding array is called the vector’s dimensionality.</p>
+</div>
+<div class="paragraph">
+<p>By calculating the numerical distance between the vector representations of two pieces of text, an application can determine the similarity between the objects used to generate the embedding vectors.</p>
+</div>
+<div class="paragraph">
+<p>The <code>EmbeddingModel</code> interface is designed for straightforward integration with embedding models in AI and machine learning.
+Its primary function is to convert text into numerical vectors, commonly referred to as embeddings.
+These embeddings are crucial for various tasks such as semantic analysis and text classification.</p>
+</div>
+<div class="paragraph">
+<p>The design of the EmbeddingModel interface centers around two primary goals:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Portability</strong>: This interface ensures easy adaptability across various embedding models.
+It allows developers to switch between different embedding techniques or models with minimal code changes.
+This design aligns with Spring’s philosophy of modularity and interchangeability.</p>
+</li>
+<li>
+<p><strong>Simplicity</strong>: EmbeddingModel simplifies the process of converting text to embeddings.
+By providing straightforward methods like <code>embed(String text)</code> and <code>embed(Document document)</code>, it takes the complexity out of dealing with raw text data and embedding algorithms. This design choice makes it easier for developers, especially those new to AI, to utilize embeddings in their applications without delving deep into the underlying mechanics.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_overview"><a class="anchor" href="#_api_overview"></a>API Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Embedding Model API is built on top of the generic <a href="https://github.com/spring-projects/spring-ai/tree/main/spring-ai-model/src/main/java/org/springframework/ai/model">Spring AI Model API</a>, which is a part of the Spring AI library.
+As such, the EmbeddingModel interface extends the <code>Model</code> interface, which provides a standard set of methods for interacting with AI models. The <code>EmbeddingRequest</code> and <code>EmbeddingResponse</code> classes extend from the <code>ModelRequest</code> and <code>ModelResponse</code> are used to encapsulate the input and output of the embedding models, respectively.</p>
+</div>
+<div class="paragraph">
+<p>The Embedding API in turn is used by higher-level components to implement Embedding Models for specific embedding models, such as OpenAI, Titan, Ollie, and others.</p>
+</div>
+<div class="paragraph">
+<p>Following diagram illustrates the Embedding API and its relationship with the Spring AI Model API and the Embedding Models:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/embeddings-api.jpg" alt="embeddings api" width="900" title="Embeddings API"></span></p>
+</div>
+<div class="sect2">
+<h3 id="_embeddingmodel"><a class="anchor" href="#_embeddingmodel"></a>EmbeddingModel</h3>
+<div class="paragraph">
+<p>This section provides a guide to the <code>EmbeddingModel</code> interface and associated classes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface EmbeddingModel extends Model&lt;EmbeddingRequest, EmbeddingResponse&gt; {
+
+	@Override
+	EmbeddingResponse call(EmbeddingRequest request);
+
+
+	/**
+	 * Embeds the given document's content into a vector.
+	 * @param document the document to embed.
+	 * @return the embedded vector.
+	 */
+	float[] embed(Document document);
+
+	/**
+	 * Extracts the text content from a Document to be used for embedding.
+	 * By default, returns Document.getText(). Implementations that support
+	 * MetadataMode should override this to return
+	 * Document.getFormattedContent(MetadataMode) so that metadata is
+	 * included in the text sent to the embedding API.
+	 */
+	default String getEmbeddingContent(Document document) {
+		return document.getText();
+	}
+
+	/**
+	 * Embeds the given text into a vector.
+	 * @param text the text to embed.
+	 * @return the embedded vector.
+	 */
+	default float[] embed(String text) {
+		Assert.notNull(text, "Text must not be null");
+		return this.embed(List.of(text)).iterator().next();
+	}
+
+	/**
+	 * Embeds a batch of texts into vectors.
+	 * @param texts list of texts to embed.
+	 * @return list of list of embedded vectors.
+	 */
+	default List&lt;float[]&gt; embed(List&lt;String&gt; texts) {
+		Assert.notNull(texts, "Texts must not be null");
+		return this.call(new EmbeddingRequest(texts, EmbeddingOptions.EMPTY))
+			.getResults()
+			.stream()
+			.map(Embedding::getOutput)
+			.toList();
+	}
+
+	/**
+	 * Embeds a batch of texts into vectors and returns the {@link EmbeddingResponse}.
+	 * @param texts list of texts to embed.
+	 * @return the embedding response.
+	 */
+	default EmbeddingResponse embedForResponse(List&lt;String&gt; texts) {
+		Assert.notNull(texts, "Texts must not be null");
+		return this.call(new EmbeddingRequest(texts, EmbeddingOptions.EMPTY));
+	}
+
+	/**
+	 * @return the number of dimensions of the embedded vectors. It is generative
+	 * specific.
+	 */
+	default int dimensions() {
+		return embed("Test String").size();
+	}
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The embed methods offer various options for converting text into embeddings, accommodating single strings, structured <code>Document</code> objects, or batches of text.</p>
+</div>
+<div class="paragraph">
+<p>Multiple shortcut methods are provided for embedding text, including the <code>embed(String text)</code> method, which takes a single string and returns the corresponding embedding vector.
+All shortcuts are implemented around the <code>call</code> method, which is the primary method for invoking the embedding model.</p>
+</div>
+<div class="paragraph">
+<p>The <code>getEmbeddingContent(Document)</code> method controls how text is extracted from a <code>Document</code> before embedding.
+By default it returns <code>Document.getText()</code>, but embedding model implementations that support <code>MetadataMode</code> (such as OpenAI or Mistral AI) override this method to return <code>Document.getFormattedContent(MetadataMode)</code>, ensuring that document metadata is included in the text sent to the embedding API when configured.
+This method is used by the batched embedding path that vector stores rely on.</p>
+</div>
+<div class="paragraph">
+<p>Typically the embedding returns a lists of floats, representing the embeddings in a numerical vector format.</p>
+</div>
+<div class="paragraph">
+<p>The <code>embedForResponse</code> method provides a more comprehensive output, potentially including additional information about the embeddings.</p>
+</div>
+<div class="paragraph">
+<p>The dimensions method is a handy tool for developers to quickly ascertain the size of the embedding vectors, which is important for understanding the embedding space and for subsequent processing steps.</p>
+</div>
+<div class="sect3">
+<h4 id="_embeddingrequest"><a class="anchor" href="#_embeddingrequest"></a>EmbeddingRequest</h4>
+<div class="paragraph">
+<p>The <code>EmbeddingRequest</code> is a <code>ModelRequest</code> that takes a list of text objects and optional embedding request options.
+The following listing shows a truncated version of the EmbeddingRequest class, excluding constructors and other utility methods:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class EmbeddingRequest implements ModelRequest&lt;List&lt;String&gt;&gt; {
+	private final List&lt;String&gt; inputs;
+	private final EmbeddingOptions options;
+	// other methods omitted
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_embeddingresponse"><a class="anchor" href="#_embeddingresponse"></a>EmbeddingResponse</h4>
+<div class="paragraph">
+<p>The structure of the <code>EmbeddingResponse</code> class is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class EmbeddingResponse implements ModelResponse&lt;Embedding&gt; {
+
+	private List&lt;Embedding&gt; embeddings;
+	private EmbeddingResponseMetadata metadata = new EmbeddingResponseMetadata();
+	// other methods omitted
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>EmbeddingResponse</code> class holds the AI Model’s output, with each <code>Embedding</code> instance containing the result vector data from a single text input.</p>
+</div>
+<div class="paragraph">
+<p>The <code>EmbeddingResponse</code> class also carries a <code>EmbeddingResponseMetadata</code> metadata about the AI Model’s response.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_embedding"><a class="anchor" href="#_embedding"></a>Embedding</h4>
+<div class="paragraph">
+<p>The <code>Embedding</code> represents a single embedding vector.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class Embedding implements ModelResult&lt;float[]&gt; {
+	private float[] embedding;
+	private Integer index;
+	private EmbeddingResultMetadata metadata;
+	// other methods omitted
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="available-implementations"><a class="anchor" href="#available-implementations"></a>Available Implementations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Internally the various <code>EmbeddingModel</code> implementations use different low-level libraries and APIs to perform the embedding tasks. The following are some of the available implementations of the <code>EmbeddingModel</code> implementations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="embeddings/openai-embeddings.html" class="xref page">Spring AI OpenAI Embeddings</a></p>
+</li>
+<li>
+<p><a href="embeddings/ollama-embeddings.html" class="xref page">Spring AI Ollama Embeddings</a></p>
+</li>
+<li>
+<p><a href="embeddings/onnx.html" class="xref page">Spring AI Transformers (ONNX) Embeddings</a></p>
+</li>
+<li>
+<p><a href="embeddings/jinfer-embeddings.html" class="xref page">Qxotic jinfer Embeddings</a> (in-JVM local inference)</p>
+</li>
+<li>
+<p><a href="embeddings/postgresml-embeddings.html" class="xref page">Spring AI PostgresML Embeddings</a></p>
+</li>
+<li>
+<p><a href="embeddings/bedrock-cohere-embedding.html" class="xref page">Spring AI Bedrock Cohere Embeddings</a></p>
+</li>
+<li>
+<p><a href="embeddings/bedrock-titan-embedding.html" class="xref page">Spring AI Bedrock Titan Embeddings</a></p>
+</li>
+<li>
+<p><a href="embeddings/vertexai-embeddings-text.html" class="xref page">Spring AI VertexAI Embeddings</a></p>
+</li>
+<li>
+<p><a href="embeddings/mistralai-embeddings.html" class="xref page">Spring AI Mistral AI Embeddings</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+</article>

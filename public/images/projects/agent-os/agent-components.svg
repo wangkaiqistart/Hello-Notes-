@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 820" role="img" aria-labelledby="title desc">
+  <title id="title">Agent 的五个核心组件</title>
+  <desc id="desc">LLM、Memory、Loop、Tools 和 Environment 五个组件共同构成 Agent。</desc>
+  <style>
+    .bg { fill: #171717; }
+    .panel { fill: #232323; }
+    .line { fill: #ff8a3d; }
+    .accent { fill: #ff8a3d; }
+    .title { fill: #f3f4f6; font: 700 44px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .subtitle { fill: #9ca3af; font: 400 22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .key { fill: #111827; font: 700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+    .label { fill: #ff9b52; font: 700 22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .body { fill: #e5e7eb; font: 400 18px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .rule { fill: #3a3a3a; }
+  </style>
+
+  <rect class="bg" width="1440" height="820" rx="8" />
+  <text class="title" x="56" y="70">Agent 在技术上到底是什么：五组件</text>
+  <rect class="rule" x="56" y="102" width="1328" height="2" />
+  <text class="subtitle" x="56" y="145">任何 Agent，拆开都是这五件事的组合</text>
+
+  <g transform="translate(56 190)">
+    <rect class="panel" width="248" height="560" rx="3" />
+    <rect class="line" width="248" height="7" />
+    <circle class="accent" cx="124" cy="68" r="44" />
+    <text class="key" x="124" y="75">LLM</text>
+    <text class="label" x="124" y="132">大脑</text>
+    <rect class="rule" x="20" y="164" width="208" height="4" />
+    <text class="body" x="20" y="215">
+      <tspan x="20" dy="0">接受文本输入，给出</tspan>
+      <tspan x="20" dy="28">文本输出。推理、规</tspan>
+      <tspan x="20" dy="28">划、生成、决策，全靠</tspan>
+      <tspan x="20" dy="28">LLM。通过 Provider</tspan>
+      <tspan x="20" dy="28">抽象支持多种模型，</tspan>
+      <tspan x="20" dy="28">运行时可切换。</tspan>
+    </text>
+  </g>
+
+  <g transform="translate(328 190)">
+    <rect class="panel" width="248" height="560" rx="3" />
+    <rect class="line" width="248" height="7" />
+    <circle class="accent" cx="124" cy="68" r="44" />
+    <text class="key" x="124" y="75">Memory</text>
+    <text class="label" x="124" y="132">记忆</text>
+    <rect class="rule" x="20" y="164" width="208" height="4" />
+    <text class="body" x="20" y="215">
+      <tspan x="20" dy="0">跨对话保留状态。</tspan>
+      <tspan x="20" dy="28">区分会话记忆、长期</tspan>
+      <tspan x="20" dy="28">记忆和任务记忆。</tspan>
+      <tspan x="20" dy="28">没有 Memory，Agent</tspan>
+      <tspan x="20" dy="28">每次都从零开始，难</tspan>
+      <tspan x="20" dy="28">以形成连续理解。</tspan>
+    </text>
+  </g>
+
+  <g transform="translate(600 190)">
+    <rect class="panel" width="248" height="560" rx="3" />
+    <rect class="line" width="248" height="7" />
+    <circle class="accent" cx="124" cy="68" r="44" />
+    <text class="key" x="124" y="75">Loop</text>
+    <text class="label" x="124" y="132">驱动引擎</text>
+    <rect class="rule" x="20" y="164" width="208" height="4" />
+    <text class="body" x="20" y="215">
+      <tspan x="20" dy="0">ReAct 循环：</tspan>
+      <tspan x="20" dy="28">Reason → Act →</tspan>
+      <tspan x="20" dy="28">Observe。结果回填</tspan>
+      <tspan x="20" dy="28">后继续，让 Agent 能</tspan>
+      <tspan x="20" dy="28">完成多步骤任务，而</tspan>
+      <tspan x="20" dy="28">不是只问一次答一次。</tspan>
+    </text>
+  </g>
+
+  <g transform="translate(872 190)">
+    <rect class="panel" width="248" height="560" rx="3" />
+    <rect class="line" width="248" height="7" />
+    <circle class="accent" cx="124" cy="68" r="44" />
+    <text class="key" x="124" y="75">Tools</text>
+    <text class="label" x="124" y="132">执行能力</text>
+    <rect class="rule" x="20" y="164" width="208" height="4" />
+    <text class="body" x="20" y="215">
+      <tspan x="20" dy="0">Agent 通过模型生成</tspan>
+      <tspan x="20" dy="28">Function Calling，</tspan>
+      <tspan x="20" dy="28">决定调用哪个工具。</tspan>
+      <tspan x="20" dy="28">工具负责连接文件、</tspan>
+      <tspan x="20" dy="28">网络和业务系统，决</tspan>
+      <tspan x="20" dy="28">定 Agent 能做什么。</tspan>
+    </text>
+  </g>
+
+  <g transform="translate(1144 190)">
+    <rect class="panel" width="248" height="560" rx="3" />
+    <rect class="line" width="248" height="7" />
+    <circle class="accent" cx="124" cy="68" r="44" />
+    <text class="key" x="124" y="60">Environ</text>
+    <text class="key" x="124" y="82">ment</text>
+    <text class="label" x="124" y="132">运行环境</text>
+    <rect class="rule" x="20" y="164" width="208" height="4" />
+    <text class="body" x="20" y="215">
+      <tspan x="20" dy="0">Sandbox 隔离保证</tspan>
+      <tspan x="20" dy="28">安全边界，工作区</tspan>
+      <tspan x="20" dy="28">管理配置和数据。</tspan>
+      <tspan x="20" dy="28">Environment 决定</tspan>
+      <tspan x="20" dy="28">Agent 如何被触发，</tspan>
+      <tspan x="20" dy="28">以及能在哪里行动。</tspan>
+    </text>
+  </g>
+</svg>

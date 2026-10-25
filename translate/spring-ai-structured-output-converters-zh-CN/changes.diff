@@ -1,0 +1,153 @@
+--- 03-draft.md
++++ translation.md
+@@ -42,7 +42,7 @@
+ 
+ [![结构化输出 API 数据流：FormatProvider 提供格式指令，PromptTemplate 构造请求，ChatModel 返回响应后由 Converter 转为目标类型](/images/frameworks/spring-ai/structured-output-api-zh.svg)](/images/frameworks/spring-ai/structured-output-api-zh.svg)
+ 
+-类名和方法名保留 API 原名，说明文字中文化；点击可查看大图。
++类名和方法名保留 API 原名，说明文字中文化；图中 `ChatModel.call(Prompt)` 返回 `ChatResponse`，提取其中的文本后才交给转换器；点击可查看大图。
+ 
+ 格式指令可以要求只返回符合 RFC 8259 的 JSON，例如：
+ 
+@@ -52,18 +52,18 @@
+   Do not include any explanations, only provide a RFC8259 compliant JSON response following this format without deviation.
+ ```
+ 
+-直接使用底层 API 时，通常通过[提示词模板](/frameworks/spring-ai/core/prompts/#提示词模板)把 `getFormat()` 的结果填入用户输入：
+-
+-```java
+-    StructuredOutputConverter outputConverter = ...
++直接使用底层 API 时，通常通过[提示词模板](/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词)把 `getFormat()` 的结果填入用户输入：
++
++```java
++    StructuredOutputConverter<?> outputConverter = ...;
+     String userInputTemplate = """
+         ... user text input ....
+         {format}
+-        """; // user input with a "format" placeholder.
++        """; // 用户输入包含 format 占位符。
+     Prompt prompt = new Prompt(
+             PromptTemplate.builder()
+-                    .template(this.userInputTemplate)
+-                    .variables(Map.of(..., "format", this.outputConverter.getFormat())) // replace the "format" placeholder with the converter's format.
++                    .template(userInputTemplate)
++                    .variables(Map.of("format", outputConverter.getFormat())) // 用转换器的格式指令替换占位符。
+                     .build().createMessage()
+     );
+ ```
+@@ -117,7 +117,7 @@
+ BeanOutputConverter<ActorsFilms> beanOutputConverter =
+     new BeanOutputConverter<>(ActorsFilms.class);
+ 
+-String format = this.beanOutputConverter.getFormat();
++String format = beanOutputConverter.getFormat();
+ 
+ String actor = "Tom Hanks";
+ 
+@@ -127,9 +127,9 @@
+         """;
+ 
+ Generation generation = chatModel.call(
+-    PromptTemplate.builder().template(this.template).variables(Map.of("actor", this.actor, "format", this.format)).build().create()).getResult();
+-
+-ActorsFilms actorsFilms = this.beanOutputConverter.convert(this.generation.getOutput().getText());
++    PromptTemplate.builder().template(template).variables(Map.of("actor", actor, "format", format)).build().create()).getResult();
++
++ActorsFilms actorsFilms = beanOutputConverter.convert(generation.getOutput().getText());
+ ```
+ 
+ **属性顺序。** `@JsonPropertyOrder` 可控制生成 Schema 中的属性顺序，适用于 record 与普通 Java 类；它描述 Schema 顺序，不保证模型输出或业务序列化的所有行为：
+@@ -154,17 +154,17 @@
+ BeanOutputConverter<List<ActorsFilms>> outputConverter = new BeanOutputConverter<>(
+         new ParameterizedTypeReference<List<ActorsFilms>>() { });
+ 
+-String format = this.outputConverter.getFormat();
++String format = outputConverter.getFormat();
+ String template = """
+         Generate the filmography of 5 movies for Tom Hanks and Bill Murray.
+         {format}
+         """;
+ 
+-Prompt prompt = PromptTemplate.builder().template(this.template).variables(Map.of("format", this.format)).build().create();
+-
+-Generation generation = chatModel.call(this.prompt).getResult();
+-
+-List<ActorsFilms> actorsFilms = this.outputConverter.convert(this.generation.getOutput().getText());
++Prompt prompt = PromptTemplate.builder().template(template).variables(Map.of("format", format)).build().create();
++
++Generation generation = chatModel.call(prompt).getResult();
++
++List<ActorsFilms> actorsFilms = outputConverter.convert(generation.getOutput().getText());
+ ```
+ 
+ ### MapOutputConverter：键值结果
+@@ -184,18 +184,18 @@
+ ```java
+ MapOutputConverter mapOutputConverter = new MapOutputConverter();
+ 
+-String format = this.mapOutputConverter.getFormat();
++String format = mapOutputConverter.getFormat();
+ String template = """
+         Provide me a List of {subject}
+         {format}
+         """;
+ 
+-Prompt prompt = PromptTemplate.builder().template(this.template)
+-.variables(Map.of("subject", "an array of numbers from 1 to 9 under they key name 'numbers'", "format", this.format)).build().create();
+-
+-Generation generation = chatModel.call(this.prompt).getResult();
+-
+-Map<String, Object> result = this.mapOutputConverter.convert(this.generation.getOutput().getText());
++Prompt prompt = PromptTemplate.builder().template(template)
++.variables(Map.of("subject", "an array of numbers from 1 to 9 under they key name 'numbers'", "format", format)).build().create();
++
++Generation generation = chatModel.call(prompt).getResult();
++
++Map<String, Object> result = mapOutputConverter.convert(generation.getOutput().getText());
+ ```
+ 
+ ### ListOutputConverter：逗号分隔列表
+@@ -215,17 +215,17 @@
+ ```java
+ ListOutputConverter listOutputConverter = new ListOutputConverter(new DefaultConversionService());
+ 
+-String format = this.listOutputConverter.getFormat();
++String format = listOutputConverter.getFormat();
+ String template = """
+         List five {subject}
+         {format}
+         """;
+ 
+-Prompt prompt = PromptTemplate.builder().template(this.template).variables(Map.of("subject", "ice cream flavors", "format", this.format)).build().create();
+-
+-Generation generation = this.chatModel.call(this.prompt).getResult();
+-
+-List<String> list = this.listOutputConverter.convert(this.generation.getOutput().getText());
++Prompt prompt = PromptTemplate.builder().template(template).variables(Map.of("subject", "ice cream flavors", "format", format)).build().create();
++
++Generation generation = chatModel.call(prompt).getResult();
++
++List<String> list = listOutputConverter.convert(generation.getOutput().getText());
+ ```
+ 
+ ### 自定义转换器：提取 JSON
+@@ -239,7 +239,9 @@
+ ```
+ ````
+ 
+-这样的完整响应并非纯 JSON，不能直接假定解析成功。来源给出一个宽容转换器：先提取代码围栏内的内容，再交给默认解析器。
++`BeanOutputConverter` 在 2.0.2 已内置空白、思考标签和 Markdown 代码围栏清理，常见包装无需额外处理。若模型输出仍超出默认清理规则，或业务需要特定提取策略，可以自定义转换器。
++
++下面的宽容转换器先尝试提取代码围栏中的内容，再交给默认解析器。它用于说明委托扩展方式，并非处理普通围栏的必需步骤。
+ 
+ ````java
+ public class LenientJsonOutputConverter<T> implements StructuredOutputConverter<T> {
+@@ -249,7 +251,7 @@
+     private final BeanOutputConverter<T> delegate;
+ 
+     public LenientJsonOutputConverter(Class<T> targetType) {
+-        this.delegate = new BeanOutputConverter<>(targetType);
++        delegate = new BeanOutputConverter<>(targetType);
+     }
+ 
+     @Override public String getFormat()     { return delegate.getFormat(); }

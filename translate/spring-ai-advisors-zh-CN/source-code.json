@@ -1,0 +1,57 @@
+[
+  {
+    "index": 0,
+    "lang": "java",
+    "text": "ChatMemory chatMemory = ... // Initialize your chat memory store\nVectorStore vectorStore = ... // Initialize your vector store\n\nvar chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(\n        MessageChatMemoryAdvisor.builder(chatMemory).build(), // chat-memory advisor\n        QuestionAnswerAdvisor.builder(vectorStore).build()    // RAG advisor\n    )\n    .build();\n\nvar conversationId = \"678\";\n\nString response = this.chatClient.prompt()\n    // Set advisor parameters at runtime\n    .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, conversationId))\n    .user(userText)\n    .call()\n\t.content();"
+  },
+  {
+    "index": 1,
+    "lang": "java",
+    "text": "public interface Ordered {\n\n    /**\n     * Constant for the highest precedence value.\n     * @see java.lang.Integer#MIN_VALUE\n     */\n    int HIGHEST_PRECEDENCE = Integer.MIN_VALUE;\n\n    /**\n     * Constant for the lowest precedence value.\n     * @see java.lang.Integer#MAX_VALUE\n     */\n    int LOWEST_PRECEDENCE = Integer.MAX_VALUE;\n\n    /**\n     * Get the order value of this object.\n     * <p>Higher values are interpreted as lower priority. As a consequence,\n     * the object with the lowest value has the highest priority (somewhat\n     * analogous to Servlet {@code load-on-startup} values).\n     * <p>Same order values will result in arbitrary sort positions for the\n     * affected objects.\n     * @return the order value\n     * @see #HIGHEST_PRECEDENCE\n     * @see #LOWEST_PRECEDENCE\n     */\n    int getOrder();\n}"
+  },
+  {
+    "index": 2,
+    "lang": "java",
+    "text": "public interface Advisor extends Ordered {\n\n\tString getName();\n\n}"
+  },
+  {
+    "index": 3,
+    "lang": "java",
+    "text": "public interface CallAdvisor extends Advisor {\n\n\tChatClientResponse adviseCall(\n\t\tChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain);\n\n}"
+  },
+  {
+    "index": 4,
+    "lang": "java",
+    "text": "public interface StreamAdvisor extends Advisor {\n\n\tFlux<ChatClientResponse> adviseStream(\n\t\tChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain);\n\n}"
+  },
+  {
+    "index": 5,
+    "lang": "java",
+    "text": "public interface CallAdvisorChain extends AdvisorChain {\n\n\t/**\n\t * Invokes the next {@link CallAdvisor} in the {@link CallAdvisorChain} with the given\n\t * request.\n\t */\n\tChatClientResponse nextCall(ChatClientRequest chatClientRequest);\n\n\t/**\n\t * Returns the list of all the {@link CallAdvisor} instances included in this chain at\n\t * the time of its creation.\n\t */\n\tList<CallAdvisor> getCallAdvisors();\n\n}"
+  },
+  {
+    "index": 6,
+    "lang": "java",
+    "text": "public interface StreamAdvisorChain extends AdvisorChain {\n\n\t/**\n\t * Invokes the next {@link StreamAdvisor} in the {@link StreamAdvisorChain} with the\n\t * given request.\n\t */\n\tFlux<ChatClientResponse> nextStream(ChatClientRequest chatClientRequest);\n\n\t/**\n\t * Returns the list of all the {@link StreamAdvisor} instances included in this chain\n\t * at the time of its creation.\n\t */\n\tList<StreamAdvisor> getStreamAdvisors();\n\n}"
+  },
+  {
+    "index": 7,
+    "lang": "java",
+    "text": "public class SimpleLoggerAdvisor implements CallAdvisor, StreamAdvisor {\n\n\tprivate static final Logger logger = LoggerFactory.getLogger(SimpleLoggerAdvisor.class);\n\n\t@Override\n\tpublic String getName() { (1)\n\t\treturn this.getClass().getSimpleName();\n\t}\n\n\t@Override\n\tpublic int getOrder() { (2)\n\t\treturn 0;\n\t}\n\n\n\t@Override\n\tpublic ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {\n\t\tlogRequest(chatClientRequest);\n\n\t\tChatClientResponse chatClientResponse = callAdvisorChain.nextCall(chatClientRequest);\n\n\t\tlogResponse(chatClientResponse);\n\n\t\treturn chatClientResponse;\n\t}\n\n\t@Override\n\tpublic Flux<ChatClientResponse> adviseStream(ChatClientRequest chatClientRequest,\n\t\t\tStreamAdvisorChain streamAdvisorChain) {\n\t\tlogRequest(chatClientRequest);\n\n\t\tFlux<ChatClientResponse> chatClientResponses = streamAdvisorChain.nextStream(chatClientRequest);\n\n\t\treturn new ChatClientMessageAggregator().aggregateChatClientResponse(chatClientResponses, this::logResponse); (3)\n\t}\n\n\tprivate void logRequest(ChatClientRequest request) {\n\t\tlogger.debug(\"request: {}\", request);\n\t}\n\n\tprivate void logResponse(ChatClientResponse chatClientResponse) {\n\t\tlogger.debug(\"response: {}\", chatClientResponse);\n\t}\n\n}"
+  },
+  {
+    "index": 8,
+    "lang": "",
+    "text": "{Input_Query}\nRead the question again: {Input_Query}"
+  },
+  {
+    "index": 9,
+    "lang": "java",
+    "text": "public class ReReadingAdvisor implements BaseAdvisor {\n\n\tprivate static final String DEFAULT_RE2_ADVISE_TEMPLATE = \"\"\"\n\t\t\t{re2_input_query}\n\t\t\tRead the question again: {re2_input_query}\n\t\t\t\"\"\";\n\n\tprivate final String re2AdviseTemplate;\n\n\tprivate int order = 0;\n\n\tpublic ReReadingAdvisor() {\n\t\tthis(DEFAULT_RE2_ADVISE_TEMPLATE);\n\t}\n\n\tpublic ReReadingAdvisor(String re2AdviseTemplate) {\n\t\tthis.re2AdviseTemplate = re2AdviseTemplate;\n\t}\n\n\t@Override\n\tpublic ChatClientRequest before(ChatClientRequest chatClientRequest, AdvisorChain advisorChain) { (1)\n\t\tString augmentedUserText = PromptTemplate.builder()\n\t\t\t.template(this.re2AdviseTemplate)\n\t\t\t.variables(Map.of(\"re2_input_query\", chatClientRequest.prompt().getUserMessage().getText()))\n\t\t\t.build()\n\t\t\t.render();\n\n\t\treturn chatClientRequest.mutate()\n\t\t\t.prompt(chatClientRequest.prompt().augmentUserMessage(augmentedUserText))\n\t\t\t.build();\n\t}\n\n\t@Override\n\tpublic ChatClientResponse after(ChatClientResponse chatClientResponse, AdvisorChain advisorChain) {\n\t\treturn chatClientResponse;\n\t}\n\n\t@Override\n\tpublic int getOrder() { (2)\n\t\treturn this.order;\n\t}\n\n\tpublic ReReadingAdvisor withOrder(int order) {\n\t\tthis.order = order;\n\t\treturn this;\n\t}\n\n}"
+  },
+  {
+    "index": 10,
+    "lang": "java",
+    "text": "@Override\npublic Flux<ChatClientResponse> adviseStream(ChatClientRequest chatClientRequest, StreamAdvisorChain chain) {\n\n    return  Mono.just(chatClientRequest)\n            .publishOn(Schedulers.boundedElastic())\n            .map(request -> {\n                // This can be executed by blocking and non-blocking Threads.\n                // Advisor before next section\n            })\n            .flatMapMany(request -> chain.nextStream(request))\n            .map(response -> {\n                // Advisor after next section\n            });\n}"
+  }
+]

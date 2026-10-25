@@ -1,0 +1,15 @@
+[
+  "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+  "https://docs.spring.io/spring-ai/reference/upgrade-notes.html#tool-calling-1x-to-2x",
+  "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_in_memory_repository",
+  "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_redischatmemoryrepository",
+  "https://docs.spring.io/spring-ai/reference/api/chat-memory.html#_neo4j_chatmemoryrepository",
+  "https://spring-ai-community.github.io/spring-ai-session/latest/",
+  "https://modelcontextprotocol.io/",
+  "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html",
+  "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html",
+  "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html#mcp-tool-name-prefix-generation",
+  "https://docs.spring.io/spring-ai/reference/observability/index.html#_tool_calling",
+  "https://docs.spring.io/spring-ai/reference/observability/index.html#_tool_call_arguments_and_result_data",
+  "https://docs.spring.io/spring-ai/reference/api/tools.html"
+]

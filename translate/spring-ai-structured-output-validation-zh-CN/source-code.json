@@ -1,0 +1,6 @@
+[
+  "ActorsFilms films = chatClient.prompt()\n    .user(\"Generate the filmography for a random actor.\")\n    .call()\n    .entity(ActorsFilms.class, spec -> spec.validateSchema());",
+  "var validationAdvisor = StructuredOutputValidationAdvisor.builder()\n    .outputType(ActorsFilms.class)\n    .maxRepeatAttempts(5)\n    .build();\n\nChatClient chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(validationAdvisor)\n    .build();",
+  "var validationAdvisor = StructuredOutputValidationAdvisor.builder()\n    .outputJsonSchema(myConverter.getJsonSchema())\n    .build();",
+  "ActorsFilms films = chatClient.prompt()\n    .user(\"Generate the filmography for a random actor.\")\n    .call()\n    .entity(ActorsFilms.class, spec -> spec\n        .useProviderStructuredOutput()\n        .validateSchema());"
+]

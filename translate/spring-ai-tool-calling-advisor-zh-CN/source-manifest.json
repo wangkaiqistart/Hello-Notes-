@@ -1,0 +1,201 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html",
+  "version": "2.0.2",
+  "images": [],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "ToolCallingAdvisor"
+    },
+    {
+      "id": "overview",
+      "text": "Overview"
+    },
+    {
+      "id": "builder",
+      "text": "Builder"
+    },
+    {
+      "id": "builder-options",
+      "text": "Builder Options"
+    },
+    {
+      "id": "checker",
+      "text": "ToolExecutionEligibilityChecker"
+    },
+    {
+      "id": "conversation-history",
+      "text": "Conversation History Behavior"
+    },
+    {
+      "id": "hooks",
+      "text": "Hook Methods"
+    },
+    {
+      "id": "call-hooks",
+      "text": "Call-Path Hooks"
+    },
+    {
+      "id": "stream-hooks",
+      "text": "Stream-Path Hooks"
+    },
+    {
+      "id": "subclass-example",
+      "text": "Subclass Example"
+    },
+    {
+      "id": "single-tooladvisor-invariant",
+      "text": "Single-ToolAdvisor Invariant"
+    },
+    {
+      "id": "user-controlled-streaming",
+      "text": "User-Controlled Streaming"
+    },
+    {
+      "id": "observing-the-tool-calling-loop",
+      "text": "Observing the Tool-Calling Loop"
+    },
+    {
+      "id": "return-direct",
+      "text": "Return Direct"
+    },
+    {
+      "id": "opting-out",
+      "text": "Opting Out of Auto-Registration"
+    },
+    {
+      "id": "see-also",
+      "text": "See Also"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#the-tool-calling-loop",
+      "label": "The Tool Calling Loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/advisors-recursive.html",
+      "label": "Recursive Advisors"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#overview",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#single-tooladvisor-invariant",
+      "label": "Single-ToolAdvisor Invariant"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#memory-and-the-tool-loop",
+      "label": "Memory and the Tool Loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#builder",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#builder-options",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#checker",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#conversation-history",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#inside-the-loop",
+      "label": "Memory: Inside the Loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#hooks",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#call-hooks",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-call-limits",
+      "label": "tool call limits"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#stream-hooks",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#subclass-example",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#single-tooladvisor-invariant",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#custom-tool-advisor-autoconfig",
+      "label": "Custom ToolAdvisor: Auto-Configuration Integration"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#user-controlled-streaming",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#user-controlled-tool-execution",
+      "label": "User-controlled tool execution"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#observing-the-tool-calling-loop",
+      "label": "placing a custom advisor inside the loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#observing-the-tool-calling-loop",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#return-direct",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#return-direct",
+      "label": "Return Direct"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#opting-out",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#user-controlled-tool-execution",
+      "label": "user-controlled mode"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html#see-also",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#the-tool-calling-loop",
+      "label": "Tool Calling: The Tool Calling Loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#memory-and-the-tool-loop",
+      "label": "Tool Calling: Memory and the Tool Loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#extending-the-loop",
+      "label": "Tool Calling: Extending the Loop"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html",
+      "label": "Tool Search Tool"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/advisors-recursive.html",
+      "label": "Recursive Advisors"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/advisors.html",
+      "label": "Advisors"
+    }
+  ]
+}

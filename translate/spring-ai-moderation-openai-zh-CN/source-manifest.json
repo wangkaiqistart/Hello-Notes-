@@ -1,0 +1,133 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html",
+  "version": "2.0.2",
+  "images": [],
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Moderation"
+    },
+    {
+      "id": "_introduction",
+      "text": "Introduction"
+    },
+    {
+      "id": "_prerequisites",
+      "text": "Prerequisites"
+    },
+    {
+      "id": "_auto_configuration",
+      "text": "Auto-configuration"
+    },
+    {
+      "id": "_moderation_properties",
+      "text": "Moderation Properties"
+    },
+    {
+      "id": "_connection_properties",
+      "text": "Connection Properties"
+    },
+    {
+      "id": "_configuration_properties",
+      "text": "Configuration Properties"
+    },
+    {
+      "id": "_runtime_options",
+      "text": "Runtime Options"
+    },
+    {
+      "id": "_manual_configuration",
+      "text": "Manual Configuration"
+    },
+    {
+      "id": "_customizing_the_http_client",
+      "text": "Customizing the HTTP Client"
+    },
+    {
+      "id": "_example_code",
+      "text": "Example Code"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html#_introduction",
+      "label": ""
+    },
+    {
+      "href": "https://platform.openai.com/docs/guides/moderation",
+      "label": "guide"
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai/issues",
+      "label": "Spring AI GitHub Issues"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html#_prerequisites",
+      "label": ""
+    },
+    {
+      "href": "https://platform.openai.com/signup",
+      "label": "OpenAI signup page"
+    },
+    {
+      "href": "https://platform.openai.com/account/api-keys",
+      "label": "API Keys page"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management",
+      "label": "Dependency Management"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html#_auto_configuration",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+      "label": "upgrade notes"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management",
+      "label": "Dependency Management"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html#_moderation_properties",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html#_connection_properties",
+      "label": ""
+    },
+    {
+      "href": "https://api.openai.com/",
+      "label": "api.openai.com"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html#_configuration_properties",
+      "label": ""
+    },
+    {
+      "href": "https://api.openai.com/",
+      "label": "api.openai.com"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html#_runtime_options",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html#_manual_configuration",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management",
+      "label": "Dependency Management"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html#_customizing_the_http_client",
+      "label": ""
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html#_example_code",
+      "label": ""
+    }
+  ]
+}
