@@ -19,6 +19,7 @@ export default defineConfig({
 			components: {
 				SiteTitle: './src/components/SiteBrand.astro',
 				ThemeSelect: './src/components/ThemeSelect.astro',
+				Sidebar: './src/components/Sidebar.astro',
 			},
 			logo: {
 				src: './src/assets/logo.png',
@@ -29,19 +30,22 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: '基础入门',
+					collapsed: true,
 					items: [
-						{ label: '大模型理论', items: [{ autogenerate: { directory: 'basics/llm-theory' } }] },
-						{ label: '提示词工程', items: [{ autogenerate: { directory: 'basics/prompt-engineering' } }] },
-						{ label: '模型接入', items: [{ autogenerate: { directory: 'basics/model-access' } }] },
-						{ label: 'Embedding', items: [{ autogenerate: { directory: 'basics/embedding' } }] },
-						{ label: 'Python 工程基础', items: [{ autogenerate: { directory: 'basics/python-foundation' } }] },
+						{ label: '大模型理论', collapsed: true, items: [{ autogenerate: { directory: 'basics/llm-theory', collapsed: true } }] },
+						{ label: '提示词工程', collapsed: true, items: [{ autogenerate: { directory: 'basics/prompt-engineering', collapsed: true } }] },
+						{ label: '模型接入', collapsed: true, items: [{ autogenerate: { directory: 'basics/model-access', collapsed: true } }] },
+						{ label: 'Embedding', collapsed: true, items: [{ autogenerate: { directory: 'basics/embedding', collapsed: true } }] },
+						{ label: 'Python 工程基础', collapsed: true, items: [{ autogenerate: { directory: 'basics/python-foundation', collapsed: true } }] },
 					],
 				},
 				{
 					label: '开发框架',
+					collapsed: true,
 					items: [
 						{
 							label: 'Spring AI',
+							collapsed: true,
 							items: [
 								'frameworks/spring-ai',
 								'frameworks/spring-ai/concepts',
@@ -54,6 +58,7 @@ export default defineConfig({
 								'frameworks/spring-ai/core/multimodality',
 								{
 									label: '模型',
+									collapsed: true,
 									items: [
 										'frameworks/spring-ai/models',
 										'frameworks/spring-ai/models/chat-model',
@@ -66,6 +71,7 @@ export default defineConfig({
 								'frameworks/spring-ai/core/chat-memory',
 								{
 									label: '工具调用',
+									collapsed: true,
 									items: [
 										'frameworks/spring-ai/tools/tool-calling',
 										'frameworks/spring-ai/tools/tool-calling-advisor',
@@ -75,6 +81,7 @@ export default defineConfig({
 								},
 								{
 									label: 'MCP',
+									collapsed: true,
 									items: [
 										'frameworks/spring-ai/mcp/overview',
 										'frameworks/spring-ai/mcp/client',
@@ -83,16 +90,15 @@ export default defineConfig({
 								},
 							],
 						},
-						{ label: 'LangChain', items: [{ autogenerate: { directory: 'frameworks/langchain' } }] },
-						{ label: 'LangGraph', items: [{ autogenerate: { directory: 'frameworks/langgraph' } }] },
-						{ label: 'LlamaIndex', items: [{ autogenerate: { directory: 'frameworks/llamaindex' } }] },
-						{ label: 'MCP', items: [{ autogenerate: { directory: 'frameworks/mcp' } }] },
+						{ label: 'LangChain', collapsed: true, items: [{ autogenerate: { directory: 'frameworks/langchain', collapsed: true } }] },
 						{
 							label: 'Deep Agents',
+							collapsed: true,
 							items: [
 								'frameworks/deepagents',
 								{
 									label: '入门',
+									collapsed: true,
 									items: [
 										'frameworks/deepagents/getting-started/quickstart',
 										'frameworks/deepagents/getting-started/customization',
@@ -101,83 +107,8 @@ export default defineConfig({
 								},
 								{
 									label: '部署',
-									items: [
-										'frameworks/deepagents/deployment/managed-deep-agents',
-										{
-											label: '生产化',
-											items: [
-												'frameworks/deepagents/deployment/going-to-production/fault-tolerance',
-											],
-										},
-									],
-								},
-								{
-									label: '执行环境',
-									items: [
-										'frameworks/deepagents/execution-environment/tools',
-										'frameworks/deepagents/execution-environment/backends',
-										'frameworks/deepagents/execution-environment/permissions',
-										'frameworks/deepagents/execution-environment/multimodality',
-										'frameworks/deepagents/execution-environment/sandboxes',
-										{ slug: 'frameworks/deepagents/execution-environment/interpreters', badge: 'Beta' },
-										{ slug: 'frameworks/deepagents/execution-environment/event-streaming', badge: 'Beta' },
-										'frameworks/deepagents/execution-environment/streaming',
-									],
-								},
-								{
-									label: '上下文管理',
-									items: [
-										'frameworks/deepagents/context-management/skills',
-										'frameworks/deepagents/context-management/memory',
-										'frameworks/deepagents/context-management/retrieval',
-										'frameworks/deepagents/context-management/context-engineering',
-										{ slug: 'frameworks/deepagents/context-management/profiles', badge: 'Beta' },
-										'frameworks/deepagents/context-management/openwiki',
-									],
-								},
-								{
-									label: '委派',
-									items: [
-										'frameworks/deepagents/delegation/subagents',
-										{ slug: 'frameworks/deepagents/delegation/dynamic-subagents', badge: 'Beta' },
-										'frameworks/deepagents/delegation/async-subagents',
-									],
-								},
-								{
-									label: 'Steering',
-									items: [
-										'frameworks/deepagents/steering/human-in-the-loop',
-										{ slug: 'frameworks/deepagents/steering/grading-rubrics', badge: 'Beta' },
-									],
-								},
-								{
-									label: 'Middleware',
-									items: [
-										'frameworks/deepagents/middleware/prebuilt',
-										'frameworks/deepagents/middleware/custom',
-									],
-								},
-								{
-									label: 'Frontend',
-									items: [
-										{
-											label: 'Patterns',
-											items: [
-												'frameworks/deepagents/frontend/patterns/subagent-streaming',
-												'frameworks/deepagents/frontend/patterns/todo-list',
-												'frameworks/deepagents/frontend/patterns/sandbox',
-											],
-										},
-									],
-								},
-								{
-									label: 'Protocols',
-									items: [
-										'frameworks/deepagents/protocols/acp',
-										'frameworks/deepagents/protocols/mcp-with-langchain',
-										'frameworks/deepagents/protocols/a2a-with-langsmith',
-										'frameworks/deepagents/protocols/ag-ui',
-									],
+									collapsed: true,
+									items: ['frameworks/deepagents/deployment/going-to-production'],
 								},
 							],
 						},
@@ -185,34 +116,35 @@ export default defineConfig({
 				},
 				{
 					label: 'RAG 知识库',
+					collapsed: true,
 					items: [
-						{ label: '基础架构', items: [{ autogenerate: { directory: 'rag/fundamentals' } }] },
-						{ label: '文档解析', items: [{ autogenerate: { directory: 'rag/document-parsing' } }] },
-						{ label: '向量数据库', items: [{ autogenerate: { directory: 'rag/vector-db' } }] },
-						{ label: '进阶优化', items: [{ autogenerate: { directory: 'rag/advanced' } }] },
+						{ label: '基础架构', collapsed: true, items: [{ autogenerate: { directory: 'rag/fundamentals', collapsed: true } }] },
+						{ label: '文档解析', collapsed: true, items: [{ autogenerate: { directory: 'rag/document-parsing', collapsed: true } }] },
+						{ label: '向量数据库', collapsed: true, items: [{ autogenerate: { directory: 'rag/vector-db', collapsed: true } }] },
 					],
 				},
 				{
 					label: '智能体开发',
+					collapsed: true,
 					items: [
-						{ label: 'Agent 基础', items: [{ autogenerate: { directory: 'agent/fundamentals' } }] },
-						{ label: 'OpenWiki', items: [{ autogenerate: { directory: 'agent/openwiki' } }] },
-						{ label: 'Agent 实战进阶', items: [{ autogenerate: { directory: 'agent/agent-practice' } }] },
-						{ label: '开发范式', items: [{ autogenerate: { directory: 'agent/development-patterns' } }] },
-						{ label: 'Loop Engineering', items: [{ autogenerate: { directory: 'agent/loop-engineering' } }] },
-						{ label: 'Hermes', items: [{ autogenerate: { directory: 'agent/hermes' } }] },
-						{ label: 'Skills 架构', items: [{ autogenerate: { directory: 'agent/skills' } }] },
-						{ label: '记忆系统', items: [{ autogenerate: { directory: 'agent/memory' } }] },
-						{ label: '上下文工程', items: [{ autogenerate: { directory: 'agent/context-engineering' } }] },
-						{ label: 'Harness', items: [{ autogenerate: { directory: 'agent/harness' } }] },
+						{ label: 'Agent 基础', collapsed: true, items: [{ autogenerate: { directory: 'agent/fundamentals', collapsed: true } }] },
+						{ label: 'Agent 实战进阶', collapsed: true, items: [{ autogenerate: { directory: 'agent/agent-practice', collapsed: true } }] },
+						{ label: '开发范式', collapsed: true, items: [{ autogenerate: { directory: 'agent/development-patterns', collapsed: true } }] },
+						{ label: 'Loop Engineering', collapsed: true, items: [{ autogenerate: { directory: 'agent/loop-engineering', collapsed: true } }] },
+						{ label: 'Hermes', collapsed: true, items: [{ autogenerate: { directory: 'agent/hermes', collapsed: true } }] },
+						{ label: 'Skills 架构', collapsed: true, items: [{ autogenerate: { directory: 'agent/skills', collapsed: true } }] },
+						{ label: '记忆系统', collapsed: true, items: [{ autogenerate: { directory: 'agent/memory', collapsed: true } }] },
+						{ label: 'Harness', collapsed: true, items: [{ autogenerate: { directory: 'agent/harness', collapsed: true } }] },
 					],
 				},
 				{
 					label: 'AI 编程',
+					collapsed: true,
 					items: [
 						'ai-programming',
 						{
 							label: '认知篇',
+							collapsed: true,
 							items: [
 								'ai-programming/cognition/essence-and-value',
 								'ai-programming/cognition/tool-landscape',
@@ -222,6 +154,7 @@ export default defineConfig({
 						},
 						{
 							label: '方法论',
+							collapsed: true,
 							items: [
 								'ai-programming/methodology/sdd-and-harness',
 								'ai-programming/methodology/spec-kit-and-openspec',
@@ -230,17 +163,11 @@ export default defineConfig({
 						},
 					],
 				},
-				{
-					label: '部署与微调',
-					items: [
-						{ label: '接口设计', items: [{ autogenerate: { directory: 'deployment/api-design' } }] },
-						{ label: '容器化', items: [{ autogenerate: { directory: 'deployment/containerization' } }] },
-						{ label: '微调与私有化', items: [{ autogenerate: { directory: 'deployment/fine-tuning' } }] },
-					],
-				},
+
 				{
 					label: '实战项目',
-					items: [{ autogenerate: { directory: 'projects' } }],
+					collapsed: true,
+					items: [{ autogenerate: { directory: 'projects', collapsed: true } }],
 				},
 			],
 		}),

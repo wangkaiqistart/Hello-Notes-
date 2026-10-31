@@ -1,0 +1,41 @@
+---
+import MobileMenuFooter from '@astrojs/starlight/components/MobileMenuFooter.astro';
+import SidebarTree from './SidebarTree.astro';
+---
+
+<site-sidebar>
+  <SidebarTree items={Astro.locals.starlightRoute.sidebar} />
+</site-sidebar>
+<div class="md:sl-hidden"><MobileMenuFooter /></div>
+
+<script>
+  class SiteSidebar extends HTMLElement {
+    connectedCallback() {
+      this.querySelectorAll('details').forEach((group) => {
+        group.addEventListener('toggle', () => {
+          if (group.open) {
+            // Match native named-details behavior in browsers without support for it.
+            const list = group.parentElement?.parentElement;
+            if (!list) return;
+            for (const item of list.children) {
+              const sibling = item.querySelector(':scope > details');
+              if (sibling instanceof HTMLDetailsElement && sibling !== group) sibling.open = false;
+            }
+          } else {
+            // Reopening a branch starts with its children folded too.
+            group.querySelectorAll('details[open]').forEach((child) => {
+              if (child instanceof HTMLDetailsElement) child.open = false;
+            });
+          }
+        });
+      });
+    }
+  }
+  if (!customElements.get('site-sidebar')) customElements.define('site-sidebar', SiteSidebar);
+</script>
+
+<style>
+  site-sidebar {
+    display: contents;
+  }
+</style>

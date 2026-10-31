@@ -1,0 +1,139 @@
+---
+import type { StarlightRouteData } from '@astrojs/starlight/route-data';
+import { Icon, Badge } from '@astrojs/starlight/components';
+
+interface Props {
+  items: StarlightRouteData['sidebar'];
+  path?: string;
+  nested?: boolean;
+}
+const { items, path = 'root', nested = false } = Astro.props;
+
+function containsCurrent(entry: Props['items'][number]): boolean {
+  return entry.type === 'link' ? entry.isCurrent : entry.entries.some(containsCurrent);
+}
+---
+
+<ul class:list={{ 'top-level': !nested }}>
+  {
+    items.map((entry, index) => (
+      <li>
+        {entry.type === 'link' ? (
+          <a
+            href={entry.href}
+            {...entry.attrs}
+            aria-current={entry.isCurrent ? 'page' : undefined}
+            class:list={[{ large: !nested }, entry.attrs.class]}
+          >
+            <span>{entry.label}</span>
+            {entry.badge && <Badge {...entry.badge} />}
+          </a>
+        ) : (
+          <details name={`sidebar-${path}`} open={containsCurrent(entry)}>
+            <summary>
+              <span class="group-label">
+                <span class="large">{entry.label}</span>
+                {entry.badge && <Badge {...entry.badge} />}
+              </span>
+              <Icon name="right-caret" class="caret" size="1.25rem" />
+            </summary>
+            <Astro.self items={entry.entries} path={`${path}-${index}`} nested />
+          </details>
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  ul {
+    --sl-sidebar-item-padding-inline: 0.5rem;
+    list-style: none;
+    padding: 0;
+  }
+  ul ul li {
+    margin-inline-start: var(--sl-sidebar-item-padding-inline);
+    border-inline-start: 1px solid var(--site-line);
+    padding-inline-start: var(--sl-sidebar-item-padding-inline);
+  }
+  li {
+    overflow-wrap: anywhere;
+  }
+  .large {
+    font-size: var(--sl-text-lg);
+    font-weight: 600;
+    color: var(--site-text);
+  }
+  .top-level > li + li {
+    margin-top: 0.75rem;
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.2em var(--sl-sidebar-item-padding-inline);
+    line-height: 1.4;
+    cursor: pointer;
+    user-select: none;
+  }
+  summary::marker,
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary:focus-visible {
+    outline: 2px solid var(--site-accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  .caret {
+    transition: transform 0.2s ease-in-out;
+    flex-shrink: 0;
+  }
+  [open] > summary .caret {
+    transform: rotate(90deg);
+  }
+  :global([dir='rtl']) .caret {
+    transform: rotate(180deg);
+  }
+  :global([dir='rtl']) [open] > summary .caret {
+    transform: rotate(90deg);
+  }
+  a {
+    display: block;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--sl-color-gray-2);
+    padding: 0.3em var(--sl-sidebar-item-padding-inline);
+    line-height: 1.4;
+  }
+  a:hover,
+  a:focus {
+    color: var(--site-accent);
+  }
+  [aria-current='page'] {
+    font-weight: 600;
+    color: var(--site-accent);
+    background: var(--site-selected);
+  }
+  a > *:not(:last-child),
+  .group-label > *:not(:last-child) {
+    margin-inline-end: 0.25em;
+  }
+  @media (min-width: 50rem) {
+    .top-level > li + li {
+      margin-top: 0.5rem;
+    }
+    .large {
+      font-size: var(--sl-text-base);
+    }
+    a {
+      font-size: var(--sl-text-sm);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .caret {
+      transition: none;
+    }
+  }
+</style>

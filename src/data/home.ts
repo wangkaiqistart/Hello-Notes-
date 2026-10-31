@@ -25,7 +25,7 @@ export const learningPaths: Record<string, LearningPath> = {
       ['理解大模型', '能力与使用边界', '/basics/llm-theory/what-is-llm/'],
       ['入门 LangChain', '模型与应用编排', '/frameworks/langchain/langchain-basics/'],
       ['理解 RAG', '让回答有据可依', '/rag/fundamentals/what-is-rag/'],
-      ['探索 LangGraph', '有状态的工作流', '/frameworks/langgraph/'],
+      ['构建 Deep Agent', '规划与工具执行', '/frameworks/deepagents/getting-started/quickstart/'],
     ],
   },
   agent: {
@@ -34,7 +34,7 @@ export const learningPaths: Record<string, LearningPath> = {
     description: '从工程结构理解智能体，连接上下文、规划与外部工具。',
     steps: [
       ['理解 Harness', '模型之外的工程', '/agent/harness/'],
-      ['组织上下文', '为决策准备信息', '/agent/context-engineering/'],
+      ['设计记忆', '管理上下文与长期记忆', '/agent/memory/short-long-term-memory/'],
       ['构建 Deep Agent', '规划与协作执行', '/frameworks/deepagents/'],
       ['连接 MCP', '开放的工具生态', '/frameworks/spring-ai/mcp/overview/'],
     ],

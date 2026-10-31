@@ -72,7 +72,7 @@ const preferredPaths = [
   '/frameworks/spring-ai/core/chat-client/',
   '/frameworks/deepagents/',
   '/rag/fundamentals/what-is-rag/',
-  '/agent/context-engineering/',
+  '/agent/memory/short-long-term-memory/',
   '/agent/harness/',
 ];
 let documentsPromise: Promise<SearchDocument[]> | undefined;
