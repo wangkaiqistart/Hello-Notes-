@@ -5,8 +5,9 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from deploy_oss import MANIFEST_KEY, deploy, safe_error
+from deploy_oss import MANIFEST_KEY, checked_oss, deploy, run_oss, safe_error
 
 
 class PublishTests(unittest.TestCase):
@@ -90,6 +91,24 @@ class PublishTests(unittest.TestCase):
         message = safe_error("Error: oss://private-bucket/key AccessKeyId=LTAIexamplevalue AccessKeySecret=secret-value Signature=signed-value")
         for value in ["private-bucket", "LTAIexamplevalue", "secret-value", "signed-value"]:
             self.assertNotIn(value, message)
+
+    def test_copy_reads_legacy_error_reports(self):
+        def legacy_copy(args, **kwargs):
+            Path(args[-1], "ossutil_report_fixture.report").write_text("StatusCode=404, ErrorCode=NoSuchKey")
+            return subprocess.CompletedProcess(args, 1, "FinishWithError: Error num: 1", "")
+        with patch("deploy_oss.subprocess.run", side_effect=legacy_copy):
+            self.assertFalse(checked_oss(run_oss, ["cp", "oss://example/missing", "local.json"], allow_missing=True))
+
+    def test_head_404_without_xml_is_missing_object(self):
+        runner = lambda args: subprocess.CompletedProcess(args, 1, "StatusCode=404, ErrorCode=, ErrorMessage=", "")
+        self.assertFalse(checked_oss(runner, ["cp"], allow_missing=True))
+
+    def test_missing_bucket_and_forbidden_head_are_not_skipped(self):
+        for detail in ["StatusCode=404, ErrorCode=NoSuchBucket", "StatusCode=403, ErrorCode=", "network timeout"]:
+            with self.subTest(detail=detail):
+                runner = lambda args: subprocess.CompletedProcess(args, 1, detail, "")
+                with self.assertRaises(RuntimeError):
+                    checked_oss(runner, ["cp"], allow_missing=True)
 
 
 if __name__ == "__main__":

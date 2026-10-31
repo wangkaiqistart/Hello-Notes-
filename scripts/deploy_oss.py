@@ -34,7 +34,15 @@ def validate_pages(value):
 
 
 def run_oss(args):
-    return subprocess.run(["ossutil", *args], capture_output=True, text=True)
+    if args[0] != "cp":
+        return subprocess.run(["ossutil", *args], capture_output=True, text=True)
+    # ossutil 1.x may put the actual per-object error only in a report file.
+    with tempfile.TemporaryDirectory(prefix="oss-report-") as report_dir:
+        result = subprocess.run(["ossutil", *args, "--output-dir", report_dir], capture_output=True, text=True)
+        if result.returncode:
+            for report in Path(report_dir).rglob("*.report"):
+                result.stderr += "\n" + report.read_text(errors="replace")
+        return result
 
 
 def safe_error(output):
@@ -50,10 +58,15 @@ def checked_oss(runner, args, *, allow_missing=False):
     result = runner(args)
     if result.returncode:
         # Only a missing object is acceptable; authentication/network errors stop deployment.
-        if allow_missing and "NoSuchKey" in result.stdout + result.stderr:
+        detail = result.stdout + result.stderr
+        code = re.search(r"ErrorCode\s*[:=]\s*([A-Za-z0-9]+)", detail)
+        # A failed HEAD request may have HTTP 404 without an XML error code.
+        missing = (code is not None and code[1] == "NoSuchKey") or (
+            code is None and re.search(r"(?:StatusCode|status code)\s*[:=]?\s*404\b", detail, re.I)
+        )
+        if allow_missing and missing:
             return False
-        code = re.search(r"ErrorCode\s*[:=]\s*([A-Za-z0-9]+)", result.stdout + result.stderr)
-        reason = f"，错误码 {code[1]}" if code else f"，{safe_error(result.stdout + result.stderr)}"
+        reason = f"，错误码 {code[1]}" if code else f"，{safe_error(detail)}"
         raise RuntimeError(f"OSS {args[0]} 操作失败（退出码 {result.returncode}{reason}），发布已停止")
     return True
 
