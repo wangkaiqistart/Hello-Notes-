@@ -6,7 +6,7 @@ import subprocess
 import tempfile
 import unittest
 
-from deploy_oss import MANIFEST_KEY, deploy
+from deploy_oss import MANIFEST_KEY, deploy, safe_error
 
 
 class PublishTests(unittest.TestCase):
@@ -85,6 +85,11 @@ class PublishTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     self.publish()
                 self.assertEqual(len(self.calls), 1)
+
+    def test_error_diagnostics_hide_addresses_and_credential_fields(self):
+        message = safe_error("Error: oss://private-bucket/key AccessKeyId=LTAIexamplevalue AccessKeySecret=secret-value Signature=signed-value")
+        for value in ["private-bucket", "LTAIexamplevalue", "secret-value", "signed-value"]:
+            self.assertNotIn(value, message)
 
 
 if __name__ == "__main__":

@@ -37,6 +37,15 @@ def run_oss(args):
     return subprocess.run(["ossutil", *args], capture_output=True, text=True)
 
 
+def safe_error(output):
+    lines = [line.strip() for line in output.splitlines() if line.strip()]
+    message = next((line for line in lines if re.search(r"error|错误", line, re.I)), lines[-1] if lines else "无错误详情")
+    message = re.sub(r"(?:oss|https?)://\S+", "[对象地址]", message)
+    message = re.sub(r"LTAI[A-Za-z0-9]+", "[已隐藏]", message)
+    message = re.sub(r"(?i)((?:access[-_]?key(?:[-_]?(?:id|secret))?|security[-_]?token|signature)\s*[:=]\s*)[^\s,;]+", r"\1[已隐藏]", message)
+    return message[:300]
+
+
 def checked_oss(runner, args, *, allow_missing=False):
     result = runner(args)
     if result.returncode:
@@ -44,7 +53,7 @@ def checked_oss(runner, args, *, allow_missing=False):
         if allow_missing and "NoSuchKey" in result.stdout + result.stderr:
             return False
         code = re.search(r"ErrorCode\s*[:=]\s*([A-Za-z0-9]+)", result.stdout + result.stderr)
-        reason = f"，错误码 {code[1]}" if code else ""
+        reason = f"，错误码 {code[1]}" if code else f"，{safe_error(result.stdout + result.stderr)}"
         raise RuntimeError(f"OSS {args[0]} 操作失败（退出码 {result.returncode}{reason}），发布已停止")
     return True
 
