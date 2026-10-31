@@ -28,5 +28,7 @@
       "result": "PASS"
     }
   ],
-  "method": "静态对照，除已标注改动外保留API与字符串；不表示编译或实际调用通过。"
+  "method": "静态对照，除已标注改动外保留API与字符串；不表示编译或实际调用通过。",
+  "blockNumbering": "sourceBlock 保持来源序号；targetBlock 指向重排后的站点代码段。保留既有来源重复段去重及 API 校正说明。",
+  "structureRecord": "../spring-ai-mcp-overview-zh-CN/2026-11-01-structure.md"
 }

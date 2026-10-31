@@ -13,14 +13,6 @@
     },
     {
       "sourceBlock": 2,
-      "targetBlock": 2,
-      "language": "java",
-      "apiChanged": true,
-      "reason": "Authorization为空时返回EMPTY，避免Map.of接收null。",
-      "result": "PASS"
-    },
-    {
-      "sourceBlock": 3,
       "targetBlock": 3,
       "language": "java",
       "apiChanged": true,
@@ -28,8 +20,16 @@
       "result": "PASS"
     },
     {
-      "sourceBlock": 4,
+      "sourceBlock": 3,
       "targetBlock": 4,
+      "language": "java",
+      "apiChanged": true,
+      "reason": "Authorization为空时返回EMPTY，避免Map.of接收null。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 4,
+      "targetBlock": 5,
       "language": "java",
       "apiChanged": true,
       "reason": "仅报告请求头是否存在，不伪装成鉴权成功。",
@@ -37,7 +37,7 @@
     },
     {
       "sourceBlock": 5,
-      "targetBlock": 5,
+      "targetBlock": 2,
       "language": "java",
       "apiChanged": false,
       "reason": "除注释和空白外与来源一致。",
@@ -52,5 +52,7 @@
       "result": "PASS"
     }
   ],
-  "method": "静态对照，除已标注改动外保留API与字符串；不表示编译或实际调用通过。"
+  "method": "静态对照，除已标注改动外保留API与字符串；不表示编译或实际调用通过。",
+  "blockNumbering": "sourceBlock 保持来源序号；targetBlock 指向重排后的站点代码段。保留既有来源重复段去重及 API 校正说明。",
+  "structureRecord": "../spring-ai-mcp-overview-zh-CN/2026-11-01-structure.md"
 }

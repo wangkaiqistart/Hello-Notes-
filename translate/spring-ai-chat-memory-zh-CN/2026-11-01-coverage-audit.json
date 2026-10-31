@@ -1,0 +1,798 @@
+{
+  "date": "2026-11-01",
+  "fetchedAtUtc": "2026-10-31T18:57:26.832306+00:00",
+  "officialUrl": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html",
+  "scope": "官网单页正文，排除网站导航、页脚、面包屑和前后篇；不将外链页面内容计入本页范围。",
+  "officialHtmlSha256": "a85bd2359050491bfa5e64ec1ee37e70a573a4ca8bcb76cf850a1097b8933441",
+  "officialBodyTextSha256": "652b7e73008c46a544bdaecf41804602e89cb2a2f39881a5b796df1425de8bcf",
+  "cachedArticleBodyMatchesLive": true,
+  "beforePageSha256": "f1c9680798dc3fc221324c778b95db5bc8ced3cb7c6d23a38409a3a060407b5e",
+  "afterPageSha256": "8d5e6b4c6bfa863417a708e94f183722c7e9d724d69d09c8d1900cdf95f95762",
+  "sourceSections": [
+    {
+      "sourceId": "_quick_start",
+      "sourceTitle": "Quick Start",
+      "targetAnchor": "default-configuration",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_working_with_conversation_ids",
+      "sourceTitle": "Working with Conversation IDs",
+      "targetAnchor": "conversation-id",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_memory_types",
+      "sourceTitle": "Memory Types",
+      "targetAnchor": "memory-vs-history",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_message_window_chat_memory",
+      "sourceTitle": "Message Window Chat Memory",
+      "targetAnchor": "message-window",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_turn_boundary_eviction",
+      "sourceTitle": "Turn-boundary eviction",
+      "targetAnchor": "turn-eviction",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_memory_storage",
+      "sourceTitle": "Memory Storage",
+      "targetAnchor": "repositories",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_in_memory_repository",
+      "sourceTitle": "In-Memory Repository",
+      "targetAnchor": "in-memory",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_jdbcchatmemoryrepository",
+      "sourceTitle": "JdbcChatMemoryRepository",
+      "targetAnchor": "jdbc",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_reading_message_timestamps",
+      "sourceTitle": "Reading Message Timestamps",
+      "targetAnchor": "jdbc-timestamps",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_supported_databases_and_dialect_abstraction",
+      "sourceTitle": "Supported Databases and Dialect Abstraction",
+      "targetAnchor": "jdbc-dialects",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_configuration_properties",
+      "sourceTitle": "Configuration Properties",
+      "targetAnchor": "jdbc-dialects",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_schema_initialization",
+      "sourceTitle": "Schema Initialization",
+      "targetAnchor": "jdbc-dialects",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_extending_dialects",
+      "sourceTitle": "Extending Dialects",
+      "targetAnchor": "jdbc-dialects",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_cassandrachatmemoryrepository",
+      "sourceTitle": "CassandraChatMemoryRepository",
+      "targetAnchor": "cassandra",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_configuration_properties_2",
+      "sourceTitle": "Configuration Properties",
+      "targetAnchor": "cassandra-config",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_schema_initialization_2",
+      "sourceTitle": "Schema Initialization",
+      "targetAnchor": "cassandra-config",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_neo4j_chatmemoryrepository",
+      "sourceTitle": "Neo4j ChatMemoryRepository",
+      "targetAnchor": "neo4j",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_configuration_properties_3",
+      "sourceTitle": "Configuration Properties",
+      "targetAnchor": "neo4j-indexes",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_index_initialization",
+      "sourceTitle": "Index Initialization",
+      "targetAnchor": "neo4j-indexes",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_cosmosdbchatmemoryrepository",
+      "sourceTitle": "CosmosDBChatMemoryRepository",
+      "targetAnchor": "cosmos-db",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_mongochatmemoryrepository",
+      "sourceTitle": "MongoChatMemoryRepository",
+      "targetAnchor": "mongodb",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_configuration_properties_4",
+      "sourceTitle": "Configuration Properties",
+      "targetAnchor": "mongodb-config",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_collection_initialization",
+      "sourceTitle": "Collection Initialization",
+      "targetAnchor": "mongodb-config",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_redischatmemoryrepository",
+      "sourceTitle": "RedisChatMemoryRepository",
+      "targetAnchor": "redis",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_configuration_properties_5",
+      "sourceTitle": "Configuration Properties",
+      "targetAnchor": "redis-config",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_advanced_querying",
+      "sourceTitle": "Advanced Querying",
+      "targetAnchor": "redis-query",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_metadata_field_indexing",
+      "sourceTitle": "Metadata Field Indexing",
+      "targetAnchor": "redis-metadata",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_schema_initialization_3",
+      "sourceTitle": "Schema Initialization",
+      "targetAnchor": "redis-config",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_requirements",
+      "sourceTitle": "Requirements",
+      "targetAnchor": "redis",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_memory_in_chat_client",
+      "sourceTitle": "Memory in Chat Client",
+      "targetAnchor": "chatclient-memory",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_vectorstorechatmemoryadvisor",
+      "sourceTitle": "VectorStoreChatMemoryAdvisor",
+      "targetAnchor": "vector-memory-template",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_custom_template",
+      "sourceTitle": "Custom Template",
+      "targetAnchor": "vector-memory-template",
+      "coverage": "COVERED"
+    },
+    {
+      "sourceId": "_memory_in_chat_model",
+      "sourceTitle": "Memory in Chat Model",
+      "targetAnchor": "chatmodel-memory",
+      "coverage": "COVERED"
+    }
+  ],
+  "properties": [
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.jdbc.initialize-schema",
+      "targetKey": "spring.ai.chat.memory.repository.jdbc.initialize-schema",
+      "sourceDefault": "embedded",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.jdbc.schema",
+      "targetKey": "spring.ai.chat.memory.repository.jdbc.schema",
+      "sourceDefault": "classpath:org/springframework/ai/chat/memory/repository/jdbc/schema-@@platform@@.sql",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.jdbc.platform",
+      "targetKey": "spring.ai.chat.memory.repository.jdbc.platform",
+      "sourceDefault": "auto-detected",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.cassandra.contactPoints",
+      "targetKey": "spring.cassandra.contact-points",
+      "sourceDefault": "127.0.0.1",
+      "coverage": "COVERED",
+      "correction": "连接值按示例保留。"
+    },
+    {
+      "sourceKey": "spring.cassandra.port",
+      "targetKey": "spring.cassandra.port",
+      "sourceDefault": "9042",
+      "coverage": "COVERED",
+      "correction": "连接值按示例保留。"
+    },
+    {
+      "sourceKey": "spring.cassandra.localDatacenter",
+      "targetKey": "spring.cassandra.local-datacenter",
+      "sourceDefault": "datacenter1",
+      "coverage": "COVERED",
+      "correction": "连接值按示例保留。"
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.cassandra.time-to-live",
+      "targetKey": "spring.ai.chat.memory.repository.cassandra.time-to-live",
+      "sourceDefault": "",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.cassandra.keyspace",
+      "targetKey": "spring.ai.chat.memory.repository.cassandra.keyspace",
+      "sourceDefault": "springframework",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.cassandra.messages-column",
+      "targetKey": "spring.ai.chat.memory.repository.cassandra.messages-column",
+      "sourceDefault": "springframework",
+      "coverage": "COVERED",
+      "correction": "默认消息列为 messages，按既有 2.0.2 源码证据校正。"
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.cassandra.table",
+      "targetKey": "spring.ai.chat.memory.repository.cassandra.table",
+      "sourceDefault": "ai_chat_memory",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.cassandra.initialize-schema",
+      "targetKey": "spring.ai.chat.memory.repository.cassandra.initialize-schema",
+      "sourceDefault": "true",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.neo4j.session-label",
+      "targetKey": "spring.ai.chat.memory.repository.neo4j.session-label",
+      "sourceDefault": "Session",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.neo4j.message-label",
+      "targetKey": "spring.ai.chat.memory.repository.neo4j.message-label",
+      "sourceDefault": "Message",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.neo4j.tool-call-label",
+      "targetKey": "spring.ai.chat.memory.repository.neo4j.tool-call-label",
+      "sourceDefault": "ToolCall",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.neo4j.metadata-label",
+      "targetKey": "spring.ai.chat.memory.repository.neo4j.metadata-label",
+      "sourceDefault": "Metadata",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.neo4j.tool-response-label",
+      "targetKey": "spring.ai.chat.memory.repository.neo4j.tool-response-label",
+      "sourceDefault": "ToolResponse",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.neo4j.media-label",
+      "targetKey": "spring.ai.chat.memory.repository.neo4j.media-label",
+      "sourceDefault": "Media",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.mongo.create-indices",
+      "targetKey": "spring.ai.chat.memory.repository.mongo.create-indices",
+      "sourceDefault": "false",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.mongo.ttl",
+      "targetKey": "spring.ai.chat.memory.repository.mongo.ttl",
+      "sourceDefault": "0",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.redis.host",
+      "targetKey": "spring.ai.chat.memory.repository.redis.host",
+      "sourceDefault": "localhost",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.redis.port",
+      "targetKey": "spring.ai.chat.memory.repository.redis.port",
+      "sourceDefault": "6379",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.redis.username",
+      "targetKey": "spring.ai.chat.memory.repository.redis.username",
+      "sourceDefault": "none",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.redis.password",
+      "targetKey": "spring.ai.chat.memory.repository.redis.password",
+      "sourceDefault": "none",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.redis.index-name",
+      "targetKey": "spring.ai.chat.memory.repository.redis.index-name",
+      "sourceDefault": "chat-memory-idx",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.redis.key-prefix",
+      "targetKey": "spring.ai.chat.memory.repository.redis.key-prefix",
+      "sourceDefault": "chat-memory:",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.redis.time-to-live",
+      "targetKey": "spring.ai.chat.memory.repository.redis.time-to-live",
+      "sourceDefault": "no expiration",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.redis.initialize-schema",
+      "targetKey": "spring.ai.chat.memory.repository.redis.initialize-schema",
+      "sourceDefault": "true",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.redis.max-conversation-ids",
+      "targetKey": "spring.ai.chat.memory.repository.redis.max-conversation-ids",
+      "sourceDefault": "1000",
+      "coverage": "COVERED",
+      "correction": ""
+    },
+    {
+      "sourceKey": "spring.ai.chat.memory.repository.redis.max-messages-per-conversation",
+      "targetKey": "spring.ai.chat.memory.repository.redis.max-messages-per-conversation",
+      "sourceDefault": "1000",
+      "coverage": "COVERED",
+      "correction": ""
+    }
+  ],
+  "codeBlocks": [
+    {
+      "sourceBlock": 1,
+      "targetBlock": 1,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 2,
+      "targetBlock": 4,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 3,
+      "targetBlock": 5,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 4,
+      "targetBlock": 2,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 5,
+      "targetBlock": 3,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 6,
+      "targetBlock": 8,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 7,
+      "targetBlock": 9,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 8,
+      "targetBlock": 10,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 9,
+      "targetBlock": 11,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 10,
+      "targetBlock": 12,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 11,
+      "targetBlock": 13,
+      "result": "DOCUMENTED_CORRECTION",
+      "note": "合法 properties 三选一，注释独占一行"
+    },
+    {
+      "sourceBlock": 12,
+      "targetBlock": 14,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 13,
+      "targetBlock": 15,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 14,
+      "targetBlock": 16,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 15,
+      "targetBlock": 17,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 16,
+      "targetBlock": 18,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 17,
+      "targetBlock": 19,
+      "result": "DOCUMENTED_CORRECTION",
+      "note": "补 Cassandra 配置构建器的 build()"
+    },
+    {
+      "sourceBlock": 18,
+      "targetBlock": 20,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 19,
+      "targetBlock": 21,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 20,
+      "targetBlock": 22,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 21,
+      "targetBlock": 23,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 22,
+      "targetBlock": 24,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 23,
+      "targetBlock": 25,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 24,
+      "targetBlock": 26,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 25,
+      "targetBlock": 27,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 26,
+      "targetBlock": 28,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 27,
+      "targetBlock": 29,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 28,
+      "targetBlock": 30,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 29,
+      "targetBlock": 31,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 30,
+      "targetBlock": 32,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 31,
+      "targetBlock": 33,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 32,
+      "targetBlock": 6,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 33,
+      "targetBlock": 7,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    },
+    {
+      "sourceBlock": 34,
+      "targetBlock": 34,
+      "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+      "note": "API 代码与来源一致"
+    }
+  ],
+  "sourceImages": 0,
+  "correctionsThisAudit": [
+    {
+      "topic": "自定义存储",
+      "finding": "此前未显式写明可以自行实现 Repository，属于一处扩展点说明遗漏。",
+      "action": "在存储实现段补充 ChatMemoryRepository 扩展入口。"
+    },
+    {
+      "topic": "JDBC 初始化",
+      "finding": "此前保留默认仅嵌入式初始化的规则，但省略 H2、HSQL、Derby 示例。",
+      "action": "补齐例子，并区分初始化示例和内置方言列表。"
+    }
+  ],
+  "intentionalDifferences": [
+    "Cassandra 属性前缀、消息列默认值及手动创建的 build() 按既有 2.0.2 API 证据校正。",
+    "JDBC initialize-schema 三选一，properties 注释独占一行，保留所有选项。",
+    "VectorStoreChatMemoryAdvisor 使用已核验的 systemPromptTemplate()；官网 promptTemplate() 不直接照抄。",
+    "默认模板引擎和两个占位符已保留；官网 StPromptTemplate 类名未机械翻译，源码使用 new PromptTemplate(...)。",
+    "工具中间消息限制细分为 Advisor 链位置与 Repository 类型支持，保留用户控制执行入口。",
+    "重复链接使用前述 Spring AI Session 交叉引用，官网 ChatClient 链接替换为站内翻译页；主题未删减。"
+  ],
+  "result": "PASS_AFTER_TWO_SMALL_ADDITIONS",
+  "limitations": "章节语义和表格描述经人工逐项对照，数量及代码另作脚本验证；Java 示例未编译执行，数据库与模型未调用。",
+  "validation": {
+    "check": "0 errors, 0 warnings, 0 hints",
+    "build": "139 pages; PASS",
+    "siteAndTranslationIdentical": true,
+    "browser": {
+      "result": "PASS",
+      "localTargets": 48,
+      "pages": [
+        {
+          "date": "2026-11-01",
+          "check": "responsive-browser",
+          "device": "desktop",
+          "result": "PASS",
+          "title": "Spring AI：对话记忆",
+          "codeBlocks": 34,
+          "images": 0,
+          "pageWidth": 1440,
+          "viewport": 1440,
+          "navGroups": ["Spring AI", "开发框架"],
+          "groups": [
+            "一、核心概念与接入（重点掌握）",
+            "二、存储选择与配置（按需查阅）",
+            "三、进阶与底层控制（按需查阅）"
+          ],
+          "originalRenderedIds": 30,
+          "missingIds": [],
+          "links": [
+            "#core-memory",
+            "#storage-reference",
+            "#advanced-memory",
+            "#一核心概念与接入重点掌握",
+            "#记忆与完整聊天历史",
+            "#默认配置与快速接入",
+            "#内存inmemorychatmemoryrepository",
+            "#会话-id上下文属于谁",
+            "#消息窗口保留最近的上下文",
+            "#按完整轮次淘汰",
+            "#在-chatclient-中使用记忆",
+            "/frameworks/spring-ai/core/chat-client/",
+            "#工具调用消息的边界",
+            "/frameworks/spring-ai/core/advisors/",
+            "/frameworks/spring-ai/tools/tool-calling/#memory-and-the-tool-loop",
+            "#二存储选择与配置按需查阅",
+            "#in-memory",
+            "#jdbc",
+            "#cassandra",
+            "#neo4j",
+            "#cosmos-db",
+            "#mongodb",
+            "#redis",
+            "#存储实现",
+            "#jdbc关系数据库",
+            "#依赖与创建",
+            "#读取消息时间",
+            "#数据库与方言",
+            "#cassandra按时间保存窗口快照",
+            "#依赖与创建-1",
+            "#配置与初始化",
+            "#neo4j图数据库",
+            "#依赖与创建-2",
+            "#标签与索引",
+            "#cosmos-db外部模块",
+            "#mongodb文档数据库",
+            "#依赖与创建-3",
+            "#配置与集合初始化",
+            "#redisjson-存储与检索",
+            "#依赖与创建-4",
+            "#配置与索引初始化",
+            "#高级查询",
+            "#元数据字段索引",
+            "#三进阶与底层控制按需查阅",
+            "#vectorstorechatmemoryadvisor-自定义模板",
+            "/frameworks/spring-ai/core/chat-client/#%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%A8%A1%E6%9D%BF",
+            "#直接使用-chatmodel-管理记忆",
+            "/frameworks/spring-ai/models/chat-model/"
+          ],
+          "literalMarkdown": [],
+          "errors": []
+        },
+        {
+          "date": "2026-11-01",
+          "check": "responsive-browser",
+          "device": "mobile",
+          "result": "PASS",
+          "title": "Spring AI：对话记忆",
+          "codeBlocks": 34,
+          "images": 0,
+          "pageWidth": 390,
+          "viewport": 390,
+          "navGroups": ["Spring AI", "开发框架"],
+          "groups": [
+            "一、核心概念与接入（重点掌握）",
+            "二、存储选择与配置（按需查阅）",
+            "三、进阶与底层控制（按需查阅）"
+          ],
+          "originalRenderedIds": 30,
+          "missingIds": [],
+          "links": [
+            "#core-memory",
+            "#storage-reference",
+            "#advanced-memory",
+            "#一核心概念与接入重点掌握",
+            "#记忆与完整聊天历史",
+            "#默认配置与快速接入",
+            "#内存inmemorychatmemoryrepository",
+            "#会话-id上下文属于谁",
+            "#消息窗口保留最近的上下文",
+            "#按完整轮次淘汰",
+            "#在-chatclient-中使用记忆",
+            "/frameworks/spring-ai/core/chat-client/",
+            "#工具调用消息的边界",
+            "/frameworks/spring-ai/core/advisors/",
+            "/frameworks/spring-ai/tools/tool-calling/#memory-and-the-tool-loop",
+            "#二存储选择与配置按需查阅",
+            "#in-memory",
+            "#jdbc",
+            "#cassandra",
+            "#neo4j",
+            "#cosmos-db",
+            "#mongodb",
+            "#redis",
+            "#存储实现",
+            "#jdbc关系数据库",
+            "#依赖与创建",
+            "#读取消息时间",
+            "#数据库与方言",
+            "#cassandra按时间保存窗口快照",
+            "#依赖与创建-1",
+            "#配置与初始化",
+            "#neo4j图数据库",
+            "#依赖与创建-2",
+            "#标签与索引",
+            "#cosmos-db外部模块",
+            "#mongodb文档数据库",
+            "#依赖与创建-3",
+            "#配置与集合初始化",
+            "#redisjson-存储与检索",
+            "#依赖与创建-4",
+            "#配置与索引初始化",
+            "#高级查询",
+            "#元数据字段索引",
+            "#三进阶与底层控制按需查阅",
+            "#vectorstorechatmemoryadvisor-自定义模板",
+            "/frameworks/spring-ai/core/chat-client/#%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%A8%A1%E6%9D%BF",
+            "#直接使用-chatmodel-管理记忆",
+            "/frameworks/spring-ai/models/chat-model/"
+          ],
+          "literalMarkdown": [],
+          "errors": []
+        }
+      ]
+    }
+  }
+}

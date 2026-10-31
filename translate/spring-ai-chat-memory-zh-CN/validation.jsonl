@@ -7,3 +7,5 @@
 {"check": "external-links", "result": "PASS", "pages": 8}
 {"check": "npm run check", "result": "PASS", "errors": 0, "warnings": 0, "hints": 0}
 {"check": "npm run build", "result": "PASS", "pages": 132}
+{"date": "2026-11-01", "check": "reading-structure-and-preservation", "result": "PASS", "record": "2026-11-01-structure.json", "originalTextPreserved": true, "codeContentUnchanged": true, "originalSections": 30, "codeBlocks": 34, "originalRenderedIds": 30, "localTargets": 48, "astroCheck": "0 errors, 0 warnings, 0 hints", "buildPages": 139, "responsiveWidths": [1440, 390]}
+{"date": "2026-11-01", "check": "official-content-coverage-audit", "result": "PASS", "sourceSections": 33, "sourceCodeBlocks": 34, "tableProperties": 29, "minorDetailsAdded": 2, "record": "2026-11-01-coverage-audit.json", "astroCheck": "0 errors, 0 warnings, 0 hints", "buildPages": 139, "localTargets": 48, "originalRenderedIdsPreserved": 30, "responsiveWidths": [1440, 390]}

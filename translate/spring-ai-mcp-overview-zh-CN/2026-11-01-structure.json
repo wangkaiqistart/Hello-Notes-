@@ -1,0 +1,1171 @@
+{
+  "date": "2026-11-01",
+  "baselineCommit": "3a054120a8c7b393cef344f42cfd3150f59a480a",
+  "pages": [
+    {
+      "slug": "overview",
+      "beforeSha256": "ad6ad003e871d4a47cae6772311f30f09d38bbd1707e7ca53a13f1579cd66e0d",
+      "originalSections": 19,
+      "codeBlocks": 3,
+      "images": 3,
+      "groups": [
+        {
+          "id": "integration-guide",
+          "title": "一、协议能力与接入选型（重点掌握）"
+        },
+        {
+          "id": "sdk-reference",
+          "title": "二、SDK 架构（按需理解）"
+        },
+        {
+          "id": "migration-reference",
+          "title": "三、升级与延伸参考（按需查阅）"
+        }
+      ],
+      "sectionOrder": [
+        {
+          "originalSection": 7,
+          "title": "Spring AI MCP 集成",
+          "targetLevel": 3,
+          "group": "integration-guide"
+        },
+        {
+          "originalSection": 8,
+          "title": "客户端 Starter",
+          "targetLevel": 3,
+          "group": "integration-guide"
+        },
+        {
+          "originalSection": 9,
+          "title": "服务端 Starter",
+          "targetLevel": 3,
+          "group": "integration-guide"
+        },
+        {
+          "originalSection": 10,
+          "title": "STDIO",
+          "targetLevel": 4,
+          "group": "integration-guide"
+        },
+        {
+          "originalSection": 11,
+          "title": "WebMVC",
+          "targetLevel": 4,
+          "group": "integration-guide"
+        },
+        {
+          "originalSection": 12,
+          "title": "WebFlux",
+          "targetLevel": 4,
+          "group": "integration-guide"
+        },
+        {
+          "originalSection": 13,
+          "title": "MCP 注解",
+          "targetLevel": 3,
+          "group": "integration-guide"
+        },
+        {
+          "originalSection": 1,
+          "title": "MCP Java SDK 架构",
+          "targetLevel": 3,
+          "group": "sdk-reference"
+        },
+        {
+          "originalSection": 2,
+          "title": "客户端与服务端层",
+          "targetLevel": 4,
+          "group": "sdk-reference"
+        },
+        {
+          "originalSection": 3,
+          "title": "会话层",
+          "targetLevel": 4,
+          "group": "sdk-reference"
+        },
+        {
+          "originalSection": 4,
+          "title": "传输层",
+          "targetLevel": 4,
+          "group": "sdk-reference"
+        },
+        {
+          "originalSection": 5,
+          "title": "MCP 客户端",
+          "targetLevel": 3,
+          "group": "sdk-reference"
+        },
+        {
+          "originalSection": 6,
+          "title": "MCP 服务端",
+          "targetLevel": 3,
+          "group": "sdk-reference"
+        },
+        {
+          "originalSection": 14,
+          "title": "升级到 Spring AI 2.0",
+          "targetLevel": 3,
+          "group": "migration-reference"
+        },
+        {
+          "originalSection": 15,
+          "title": "Maven 依赖坐标变化",
+          "targetLevel": 4,
+          "group": "migration-reference"
+        },
+        {
+          "originalSection": 16,
+          "title": "Java 包名迁移",
+          "targetLevel": 4,
+          "group": "migration-reference"
+        },
+        {
+          "originalSection": 17,
+          "title": "MCP SDK 版本",
+          "targetLevel": 4,
+          "group": "migration-reference"
+        },
+        {
+          "originalSection": 18,
+          "title": "使用 Boot 自动配置的项目",
+          "targetLevel": 4,
+          "group": "migration-reference"
+        },
+        {
+          "originalSection": 19,
+          "title": "延伸阅读",
+          "targetLevel": 3,
+          "group": "migration-reference"
+        }
+      ],
+      "afterSha256": "8743ffc24646c5efae88c0d4f3a55cda8a4363c3ff9cb5e39dc2e5f6ae9485d8",
+      "directionalEdits": [
+        {
+          "before": "阅读后面的 [Spring AI 集成]",
+          "after": "阅读前面的 [Spring AI 集成]",
+          "reason": "随章节移动更新前后指向，不改变内容含义。"
+        },
+        {
+          "before": "优先使用下面的 Starter。",
+          "after": "优先使用前面的 Starter。",
+          "reason": "随章节移动更新前后指向，不改变内容含义。"
+        }
+      ],
+      "allOriginalContentPreserved": true,
+      "allOriginalNonemptyLinesPreservedAfterDirectionalEdits": true,
+      "codeContentMultisetUnchanged": true,
+      "imagesUnchanged": true,
+      "originalExplicitAnchors": 17,
+      "allOriginalExplicitAnchorsPreserved": true,
+      "liveSourceBodyMatchesStored": true,
+      "codeBlockOrder": [
+        {
+          "previousTargetBlock": 1,
+          "targetBlock": 1,
+          "sha256": "e48b5540648ed77b235390dbc75a919478a0fc5b359d98ebfa6b330a23a97605"
+        },
+        {
+          "previousTargetBlock": 2,
+          "targetBlock": 2,
+          "sha256": "75b88c9fc3537f73d29d4d509f71fa659930cfff905c975ba10ef190e8f564f6"
+        },
+        {
+          "previousTargetBlock": 3,
+          "targetBlock": 3,
+          "sha256": "2f44d9d56a4daaefe08882aa4fcaef2dd0315ebfdee0981a82950910a2660ebe"
+        }
+      ],
+      "originalRenderedIdsPreserved": 36
+    },
+    {
+      "slug": "client",
+      "beforeSha256": "f15707050cbf7afdcdd5d660d27fea021ecc09b2fa73b5a366d600d56aab1382",
+      "originalSections": 35,
+      "codeBlocks": 25,
+      "images": 0,
+      "groups": [
+        {
+          "id": "client-integration",
+          "title": "一、连接与工具接入（重点掌握）"
+        },
+        {
+          "id": "connection-reference",
+          "title": "二、完整配置与连接排查（按需查阅）"
+        },
+        {
+          "id": "customization-reference",
+          "title": "三、定制与通知参考（按需查阅）"
+        }
+      ],
+      "sectionOrder": [
+        {
+          "originalSection": 1,
+          "title": "Starter 选择",
+          "targetLevel": 3,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 2,
+          "title": "标准 MCP 客户端",
+          "targetLevel": 4,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 3,
+          "title": "WebFlux 客户端",
+          "targetLevel": 4,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 25,
+          "title": "传输支持",
+          "targetLevel": 3,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 19,
+          "title": "客户端能力",
+          "targetLevel": 3,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 20,
+          "title": "同步与异步客户端",
+          "targetLevel": 4,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 21,
+          "title": "客户端作用域与会话边界",
+          "targetLevel": 4,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 33,
+          "title": "使用示例",
+          "targetLevel": 3,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 26,
+          "title": "工具过滤",
+          "targetLevel": 3,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 27,
+          "title": "工具名称前缀",
+          "targetLevel": 3,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 28,
+          "title": "内置前缀生成器",
+          "targetLevel": 4,
+          "group": "client-integration"
+        },
+        {
+          "originalSection": 4,
+          "title": "配置属性",
+          "targetLevel": 3,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 5,
+          "title": "通用属性",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 6,
+          "title": "MCP 注解属性",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 15,
+          "title": "Streamable-HTTP 传输属性",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 7,
+          "title": "STDIO 传输属性",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 8,
+          "title": "Windows STDIO 配置",
+          "targetLevel": 3,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 9,
+          "title": "为什么需要特殊处理",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 10,
+          "title": "使用 cmd.exe 包装命令",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 11,
+          "title": "跨平台编程式配置",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 12,
+          "title": "路径选择",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 13,
+          "title": "常见的 Windows 批处理入口",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 14,
+          "title": "参考实现",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 16,
+          "title": "SSE 传输属性",
+          "targetLevel": 3,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 17,
+          "title": "拆分 URL",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 18,
+          "title": "排查 SSE 连接问题",
+          "targetLevel": 4,
+          "group": "connection-reference"
+        },
+        {
+          "originalSection": 22,
+          "title": "客户端定制",
+          "targetLevel": 3,
+          "group": "customization-reference"
+        },
+        {
+          "originalSection": 23,
+          "title": "可定制内容",
+          "targetLevel": 4,
+          "group": "customization-reference"
+        },
+        {
+          "originalSection": 24,
+          "title": "客户端定制示例",
+          "targetLevel": 4,
+          "group": "customization-reference"
+        },
+        {
+          "originalSection": 29,
+          "title": "将 ToolContext 转为 MCP 元数据",
+          "targetLevel": 3,
+          "group": "customization-reference"
+        },
+        {
+          "originalSection": 30,
+          "title": "内置转换器",
+          "targetLevel": 4,
+          "group": "customization-reference"
+        },
+        {
+          "originalSection": 31,
+          "title": "关闭 MCP ToolCallback 自动配置",
+          "targetLevel": 3,
+          "group": "customization-reference"
+        },
+        {
+          "originalSection": 32,
+          "title": "MCP 客户端注解",
+          "targetLevel": 3,
+          "group": "customization-reference"
+        },
+        {
+          "originalSection": 34,
+          "title": "示例应用",
+          "targetLevel": 3,
+          "group": "customization-reference"
+        },
+        {
+          "originalSection": 35,
+          "title": "更多资料",
+          "targetLevel": 3,
+          "group": "customization-reference"
+        }
+      ],
+      "afterSha256": "b13d089d43923a9e617baa87fb501fac2d4012437c2feeeb5d1c223ad08e3539",
+      "directionalEdits": [],
+      "allOriginalContentPreserved": true,
+      "allOriginalNonemptyLinesPreservedAfterDirectionalEdits": true,
+      "codeContentMultisetUnchanged": true,
+      "imagesUnchanged": true,
+      "originalExplicitAnchors": 36,
+      "allOriginalExplicitAnchorsPreserved": true,
+      "liveSourceBodyMatchesStored": true,
+      "codeBlockOrder": [
+        {
+          "previousTargetBlock": 1,
+          "targetBlock": 1,
+          "sha256": "bca472bdc2ade12e5607f4bc0fce79808e1d2daadb94d860a7b9e05023a853c7"
+        },
+        {
+          "previousTargetBlock": 2,
+          "targetBlock": 2,
+          "sha256": "067786217bffc99916fa91b574901378cc9dd95aab4a538159b0e11a84838bff"
+        },
+        {
+          "previousTargetBlock": 3,
+          "targetBlock": 10,
+          "sha256": "24e891413d3ec0e7869324689abb213f2ab40d8a35050d15014cdd1f798d268b"
+        },
+        {
+          "previousTargetBlock": 4,
+          "targetBlock": 11,
+          "sha256": "a6ffc127f2617bbd990dccd36050136b1990a2654af6ba2ba7b4febb04a0d484"
+        },
+        {
+          "previousTargetBlock": 5,
+          "targetBlock": 12,
+          "sha256": "528f32f25a92f0ea3ebdf857b2702418b44d121f70d4e8bc9fc903b4db0167bd"
+        },
+        {
+          "previousTargetBlock": 6,
+          "targetBlock": 13,
+          "sha256": "8b4dfcba41f137c17c5ba1df9e6828aadb9d385dbe9b6d6d35163fa6fa4b8ade"
+        },
+        {
+          "previousTargetBlock": 7,
+          "targetBlock": 14,
+          "sha256": "234d675f13900a87721350cb5f9b91dc03caf30586091a87f85b68545c4ed0bf"
+        },
+        {
+          "previousTargetBlock": 8,
+          "targetBlock": 15,
+          "sha256": "765ce28227133c22924030576ad00454eb5cc1dfbbc980fede92b9fcb9d0e87a"
+        },
+        {
+          "previousTargetBlock": 9,
+          "targetBlock": 16,
+          "sha256": "750bd1f6b4ddb03ccb604cb7a851812d1eb2757fe3b592fe0151a789b8bf7924"
+        },
+        {
+          "previousTargetBlock": 10,
+          "targetBlock": 17,
+          "sha256": "7dae3df233357f01161bb9c6ae1eeb1e5f5c9723cf54c75c43b3eeb046f976ac"
+        },
+        {
+          "previousTargetBlock": 11,
+          "targetBlock": 9,
+          "sha256": "3de78333e1611d9c27a00b7bf952a7271f0743191749e4e9da942d2a50f87234"
+        },
+        {
+          "previousTargetBlock": 12,
+          "targetBlock": 18,
+          "sha256": "bf9780a035780cbfd70cc7114ef0104be72dc191697906a4cc593ed005cdac81"
+        },
+        {
+          "previousTargetBlock": 13,
+          "targetBlock": 19,
+          "sha256": "dbd4fd7558e8b9b906530bd25e7346070a65e1e1124512e84b16adae1c36dae4"
+        },
+        {
+          "previousTargetBlock": 14,
+          "targetBlock": 20,
+          "sha256": "d2c2952f4977806ae43911b012c03e2c33f05c0e869fe9c78124db9e89748552"
+        },
+        {
+          "previousTargetBlock": 15,
+          "targetBlock": 6,
+          "sha256": "e4480bb0c43e2684acc8c387e518d962f541d1b13353bcd49d59cb61f94a07fd"
+        },
+        {
+          "previousTargetBlock": 16,
+          "targetBlock": 7,
+          "sha256": "98df42c64ca3d58c968e689071d6c915c6c59a3335275b0139c92c17ba1c8f20"
+        },
+        {
+          "previousTargetBlock": 17,
+          "targetBlock": 8,
+          "sha256": "0c5497ada625c4c124f342efd538eca9b90f1dc036da81ff94d5e0b884e601e2"
+        },
+        {
+          "previousTargetBlock": 18,
+          "targetBlock": 21,
+          "sha256": "a73dd2d0eb9ca3a4bf238b144d2ce948393444119cc9440a158187f6410dc3ad"
+        },
+        {
+          "previousTargetBlock": 19,
+          "targetBlock": 22,
+          "sha256": "64f191913634cab9300db28b64ecba3c98ccb157683bc6788324ccb92f61b60d"
+        },
+        {
+          "previousTargetBlock": 20,
+          "targetBlock": 23,
+          "sha256": "3b1960e5623607261ec74c1b1654cd7f0cf1c4d8b4f5a54b887636018354057c"
+        },
+        {
+          "previousTargetBlock": 21,
+          "targetBlock": 24,
+          "sha256": "c3a038be58684c4e0f63ae416d94fcecc8eea9d708e9fae589fe37789d6d199f"
+        },
+        {
+          "previousTargetBlock": 22,
+          "targetBlock": 25,
+          "sha256": "96ee132be9ade90b9367d109fc0fdc9aa0451b1cf028deba3b2445259c98fb4a"
+        },
+        {
+          "previousTargetBlock": 23,
+          "targetBlock": 3,
+          "sha256": "2fea96986c29fc6e581376df845d4582013c76458f13777723e81c012466ef8c"
+        },
+        {
+          "previousTargetBlock": 24,
+          "targetBlock": 4,
+          "sha256": "0f8095440f3dc7a2da08ce3f3e70e471cdb4afa7f6d82968f20df5d827f5cf8a"
+        },
+        {
+          "previousTargetBlock": 25,
+          "targetBlock": 5,
+          "sha256": "ef61eebc097138696ed937bd12bdbb8766ed60cefc0bd21b08939cb24ff1df1f"
+        }
+      ],
+      "originalRenderedIdsPreserved": 71
+    },
+    {
+      "slug": "server",
+      "beforeSha256": "1c5f0a2c2428c982d70e4040b3bf7730ed6644faa739f10ed7b0ebd345b81264",
+      "originalSections": 18,
+      "codeBlocks": 6,
+      "images": 0,
+      "groups": [
+        {
+          "id": "server-integration",
+          "title": "一、发布与自动注册（重点掌握）"
+        },
+        {
+          "id": "capabilities-and-boundaries",
+          "title": "二、能力、注解与安全边界（重点理解）"
+        },
+        {
+          "id": "transport-reference",
+          "title": "三、传输定制与扩展参考（按需查阅）"
+        }
+      ],
+      "sectionOrder": [
+        {
+          "originalSection": 6,
+          "title": "服务端协议与传输",
+          "targetLevel": 3,
+          "group": "server-integration"
+        },
+        {
+          "originalSection": 1,
+          "title": "MCP Server Boot Starter",
+          "targetLevel": 3,
+          "group": "server-integration"
+        },
+        {
+          "originalSection": 2,
+          "title": "STDIO",
+          "targetLevel": 4,
+          "group": "server-integration"
+        },
+        {
+          "originalSection": 3,
+          "title": "WebMVC",
+          "targetLevel": 4,
+          "group": "server-integration"
+        },
+        {
+          "originalSection": 4,
+          "title": "WebFlux（响应式）",
+          "targetLevel": 4,
+          "group": "server-integration"
+        },
+        {
+          "originalSection": 8,
+          "title": "同步与异步服务端 API",
+          "targetLevel": 3,
+          "group": "server-integration"
+        },
+        {
+          "originalSection": 9,
+          "title": "MCP 服务端注解",
+          "targetLevel": 3,
+          "group": "server-integration"
+        },
+        {
+          "originalSection": 12,
+          "title": "简单示例",
+          "targetLevel": 4,
+          "group": "server-integration"
+        },
+        {
+          "originalSection": 14,
+          "title": "自动配置",
+          "targetLevel": 4,
+          "group": "server-integration"
+        },
+        {
+          "originalSection": 5,
+          "title": "服务端能力",
+          "targetLevel": 3,
+          "group": "capabilities-and-boundaries"
+        },
+        {
+          "originalSection": 10,
+          "title": "主要注解",
+          "targetLevel": 3,
+          "group": "capabilities-and-boundaries"
+        },
+        {
+          "originalSection": 11,
+          "title": "特殊参数",
+          "targetLevel": 3,
+          "group": "capabilities-and-boundaries"
+        },
+        {
+          "originalSection": 7,
+          "title": "保护 MCP 服务端",
+          "targetLevel": 3,
+          "group": "capabilities-and-boundaries"
+        },
+        {
+          "originalSection": 13,
+          "title": "向 McpTransportContext 添加数据",
+          "targetLevel": 3,
+          "group": "transport-reference"
+        },
+        {
+          "originalSection": 15,
+          "title": "配置属性",
+          "targetLevel": 3,
+          "group": "transport-reference"
+        },
+        {
+          "originalSection": 16,
+          "title": "延伸阅读",
+          "targetLevel": 3,
+          "group": "transport-reference"
+        },
+        {
+          "originalSection": 17,
+          "title": "示例应用",
+          "targetLevel": 3,
+          "group": "transport-reference"
+        },
+        {
+          "originalSection": 18,
+          "title": "更多资料",
+          "targetLevel": 3,
+          "group": "transport-reference"
+        }
+      ],
+      "afterSha256": "0ba668f72d25a1cf90458099d8384db52d78235042798b780dff1c0994d3c875",
+      "directionalEdits": [],
+      "allOriginalContentPreserved": true,
+      "allOriginalNonemptyLinesPreservedAfterDirectionalEdits": true,
+      "codeContentMultisetUnchanged": true,
+      "imagesUnchanged": true,
+      "originalExplicitAnchors": 18,
+      "allOriginalExplicitAnchorsPreserved": true,
+      "liveSourceBodyMatchesStored": true,
+      "codeBlockOrder": [
+        {
+          "previousTargetBlock": 1,
+          "targetBlock": 1,
+          "sha256": "54f6dcea054c2b935ffb03d4c7de042d0c1c8925ee558dc199fdcdd7821dee4d"
+        },
+        {
+          "previousTargetBlock": 2,
+          "targetBlock": 3,
+          "sha256": "27270df54937c081fbac3126c2d5c2459df9e40c3d06b9cad45cdf5337006196"
+        },
+        {
+          "previousTargetBlock": 3,
+          "targetBlock": 4,
+          "sha256": "bbc1f08f70cb9c3840f9933070a56ad09e6bf91e9e99e4e424e29e82aa0c3b1a"
+        },
+        {
+          "previousTargetBlock": 4,
+          "targetBlock": 5,
+          "sha256": "2f9da3df9c3e28dfb70c4df7031355d40ad6ec43b8a64b7e2719d4f52679060a"
+        },
+        {
+          "previousTargetBlock": 5,
+          "targetBlock": 2,
+          "sha256": "576f27e0e6d6f498f5f3975d2d108540e312b2db558b44c66b7b769a867f9d90"
+        },
+        {
+          "previousTargetBlock": 6,
+          "targetBlock": 6,
+          "sha256": "8f23bfb98f80948899c69741ca4914a444360658ce7a1faae5db1f00e87a9dac"
+        }
+      ],
+      "originalRenderedIdsPreserved": 36
+    }
+  ],
+  "scope": "MCP 概览、客户端与服务端的阅读结构优化；完整保留原有内容、代码、配置、图片及旧锚点，新增阅读提示和显式 Provider 注册说明。",
+  "preservationMethod": "忽略标题级别和空白后逐行计数，原有非空行完整保留；概览两处前后指向先作显式替换。完整代码块与图片引用多重集合相同。",
+  "staticAssertionsPassed": 29,
+  "javaValidation": "未编译执行 Java，未启动 MCP 客户端或服务端，未调用真实模型或工具。",
+  "browser": {
+    "result": "PASS",
+    "localTargets": 109,
+    "pages": [
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "overview",
+        "device": "desktop",
+        "result": "PASS",
+        "title": "Spring AI：MCP 概览",
+        "codeBlocks": 3,
+        "images": [
+          {
+            "src": "/images/frameworks/spring-ai/mcp/mcp-stack.svg",
+            "alt": "MCP Java SDK 三层架构：客户端和服务端层、会话层与传输层的对应关系",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.7612107623318385,
+            "naturalRatio": 1.764102564102564
+          },
+          {
+            "src": "/images/frameworks/spring-ai/mcp/java-mcp-client-architecture.jpg",
+            "alt": "Java MCP 客户端架构：Java AI 应用通过 MCP 客户端连接远程服务、本地文件和 SQLite 工具",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.0237730231731432,
+            "naturalRatio": 1.023779408044523
+          },
+          {
+            "src": "/images/frameworks/spring-ai/mcp/java-mcp-server-architecture.jpg",
+            "alt": "Java MCP 服务端部署对比：SSE 服务接受多个客户端连接，STDIO 通过标准流连接本地服务端",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.3571007834128528,
+            "naturalRatio": 1.3571220506845325
+          }
+        ],
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "navGroups": ["MCP", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/tools/tool-calling/",
+          "/frameworks/spring-ai/mcp/client/",
+          "/frameworks/spring-ai/mcp/server/",
+          "#integration-guide",
+          "/frameworks/spring-ai/mcp/client/#client-integration",
+          "/frameworks/spring-ai/mcp/server/#server-integration",
+          "#integration-guide",
+          "#sdk-reference",
+          "#migration-reference",
+          "#一协议能力与接入选型重点掌握",
+          "#spring-ai-mcp-集成",
+          "#客户端-starter",
+          "/frameworks/spring-ai/mcp/client/",
+          "#服务端-starter",
+          "/frameworks/spring-ai/mcp/server/",
+          "#stdio",
+          "#webmvc",
+          "#webflux",
+          "#mcp-注解",
+          "#二sdk-架构按需理解",
+          "#mcp-java-sdk-架构",
+          "#_spring_ai_mcp_integration",
+          "#客户端与服务端层",
+          "#会话层",
+          "#传输层",
+          "/images/frameworks/spring-ai/mcp/mcp-stack.svg",
+          "#mcp-客户端",
+          "/images/frameworks/spring-ai/mcp/java-mcp-client-architecture.jpg",
+          "#mcp-服务端",
+          "/images/frameworks/spring-ai/mcp/java-mcp-server-architecture.jpg",
+          "#三升级与延伸参考按需查阅",
+          "#升级到-spring-ai-20",
+          "#maven-依赖坐标变化",
+          "#java-包名迁移",
+          "#mcp-sdk-版本",
+          "#使用-boot-自动配置的项目",
+          "#延伸阅读",
+          "/frameworks/spring-ai/mcp/client/",
+          "/frameworks/spring-ai/mcp/server/"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 36,
+        "missingIds": [],
+        "groups": [
+          "一、协议能力与接入选型（重点掌握）",
+          "二、SDK 架构（按需理解）",
+          "三、升级与延伸参考（按需查阅）"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "overview",
+        "device": "mobile",
+        "result": "PASS",
+        "title": "Spring AI：MCP 概览",
+        "codeBlocks": 3,
+        "images": [
+          {
+            "src": "/images/frameworks/spring-ai/mcp/mcp-stack.svg",
+            "alt": "MCP Java SDK 三层架构：客户端和服务端层、会话层与传输层的对应关系",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.7612107623318385,
+            "naturalRatio": 1.764102564102564
+          },
+          {
+            "src": "/images/frameworks/spring-ai/mcp/java-mcp-client-architecture.jpg",
+            "alt": "Java MCP 客户端架构：Java AI 应用通过 MCP 客户端连接远程服务、本地文件和 SQLite 工具",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.0237722865186112,
+            "naturalRatio": 1.023779408044523
+          },
+          {
+            "src": "/images/frameworks/spring-ai/mcp/java-mcp-server-architecture.jpg",
+            "alt": "Java MCP 服务端部署对比：SSE 服务接受多个客户端连接，STDIO 通过标准流连接本地服务端",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.3570666982585002,
+            "naturalRatio": 1.3571220506845325
+          }
+        ],
+        "viewport": 390,
+        "pageWidth": 390,
+        "navGroups": ["MCP", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/tools/tool-calling/",
+          "/frameworks/spring-ai/mcp/client/",
+          "/frameworks/spring-ai/mcp/server/",
+          "#integration-guide",
+          "/frameworks/spring-ai/mcp/client/#client-integration",
+          "/frameworks/spring-ai/mcp/server/#server-integration",
+          "#integration-guide",
+          "#sdk-reference",
+          "#migration-reference",
+          "#一协议能力与接入选型重点掌握",
+          "#spring-ai-mcp-集成",
+          "#客户端-starter",
+          "/frameworks/spring-ai/mcp/client/",
+          "#服务端-starter",
+          "/frameworks/spring-ai/mcp/server/",
+          "#stdio",
+          "#webmvc",
+          "#webflux",
+          "#mcp-注解",
+          "#二sdk-架构按需理解",
+          "#mcp-java-sdk-架构",
+          "#_spring_ai_mcp_integration",
+          "#客户端与服务端层",
+          "#会话层",
+          "#传输层",
+          "/images/frameworks/spring-ai/mcp/mcp-stack.svg",
+          "#mcp-客户端",
+          "/images/frameworks/spring-ai/mcp/java-mcp-client-architecture.jpg",
+          "#mcp-服务端",
+          "/images/frameworks/spring-ai/mcp/java-mcp-server-architecture.jpg",
+          "#三升级与延伸参考按需查阅",
+          "#升级到-spring-ai-20",
+          "#maven-依赖坐标变化",
+          "#java-包名迁移",
+          "#mcp-sdk-版本",
+          "#使用-boot-自动配置的项目",
+          "#延伸阅读",
+          "/frameworks/spring-ai/mcp/client/",
+          "/frameworks/spring-ai/mcp/server/"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 36,
+        "missingIds": [],
+        "groups": [
+          "一、协议能力与接入选型（重点掌握）",
+          "二、SDK 架构（按需理解）",
+          "三、升级与延伸参考（按需查阅）"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "client",
+        "device": "desktop",
+        "result": "PASS",
+        "title": "Spring AI：MCP 客户端",
+        "codeBlocks": 25,
+        "images": [],
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "navGroups": ["MCP", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/mcp/overview/",
+          "#_starters",
+          "#_streamable_http_transport_properties",
+          "#_stdio_transport_properties",
+          "#_usage_example",
+          "#client-integration",
+          "#connection-reference",
+          "#customization-reference",
+          "#一连接与工具接入重点掌握",
+          "#starter-选择",
+          "#标准-mcp-客户端",
+          "#webflux-客户端",
+          "#传输支持",
+          "#客户端能力",
+          "#同步与异步客户端",
+          "#客户端作用域与会话边界",
+          "#使用示例",
+          "#工具过滤",
+          "#工具名称前缀",
+          "#内置前缀生成器",
+          "/frameworks/spring-ai/tools/tool-calling/#combining-local-and-mcp-tools",
+          "#二完整配置与连接排查按需查阅",
+          "#配置属性",
+          "#通用属性",
+          "#mcp-注解属性",
+          "#streamable-http-传输属性",
+          "#stdio-传输属性",
+          "#windows-stdio-配置",
+          "#为什么需要特殊处理",
+          "#使用-cmdexe-包装命令",
+          "#跨平台编程式配置",
+          "#路径选择",
+          "#常见的-windows-批处理入口",
+          "#参考实现",
+          "#sse-传输属性",
+          "#拆分-url",
+          "#排查-sse-连接问题",
+          "#三定制与通知参考按需查阅",
+          "#客户端定制",
+          "#可定制内容",
+          "#客户端定制示例",
+          "#将-toolcontext-转为-mcp-元数据",
+          "/frameworks/spring-ai/tools/tool-calling/#tool-context",
+          "#内置转换器",
+          "#关闭-mcp-toolcallback-自动配置",
+          "#mcp-客户端注解",
+          "#示例应用",
+          "#更多资料"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 71,
+        "missingIds": [],
+        "groups": [
+          "一、连接与工具接入（重点掌握）",
+          "二、完整配置与连接排查（按需查阅）",
+          "三、定制与通知参考（按需查阅）"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "client",
+        "device": "mobile",
+        "result": "PASS",
+        "title": "Spring AI：MCP 客户端",
+        "codeBlocks": 25,
+        "images": [],
+        "viewport": 390,
+        "pageWidth": 390,
+        "navGroups": ["MCP", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/mcp/overview/",
+          "#_starters",
+          "#_streamable_http_transport_properties",
+          "#_stdio_transport_properties",
+          "#_usage_example",
+          "#client-integration",
+          "#connection-reference",
+          "#customization-reference",
+          "#一连接与工具接入重点掌握",
+          "#starter-选择",
+          "#标准-mcp-客户端",
+          "#webflux-客户端",
+          "#传输支持",
+          "#客户端能力",
+          "#同步与异步客户端",
+          "#客户端作用域与会话边界",
+          "#使用示例",
+          "#工具过滤",
+          "#工具名称前缀",
+          "#内置前缀生成器",
+          "/frameworks/spring-ai/tools/tool-calling/#combining-local-and-mcp-tools",
+          "#二完整配置与连接排查按需查阅",
+          "#配置属性",
+          "#通用属性",
+          "#mcp-注解属性",
+          "#streamable-http-传输属性",
+          "#stdio-传输属性",
+          "#windows-stdio-配置",
+          "#为什么需要特殊处理",
+          "#使用-cmdexe-包装命令",
+          "#跨平台编程式配置",
+          "#路径选择",
+          "#常见的-windows-批处理入口",
+          "#参考实现",
+          "#sse-传输属性",
+          "#拆分-url",
+          "#排查-sse-连接问题",
+          "#三定制与通知参考按需查阅",
+          "#客户端定制",
+          "#可定制内容",
+          "#客户端定制示例",
+          "#将-toolcontext-转为-mcp-元数据",
+          "/frameworks/spring-ai/tools/tool-calling/#tool-context",
+          "#内置转换器",
+          "#关闭-mcp-toolcallback-自动配置",
+          "#mcp-客户端注解",
+          "#示例应用",
+          "#更多资料"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 71,
+        "missingIds": [],
+        "groups": [
+          "一、连接与工具接入（重点掌握）",
+          "二、完整配置与连接排查（按需查阅）",
+          "三、定制与通知参考（按需查阅）"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "server",
+        "device": "desktop",
+        "result": "PASS",
+        "title": "Spring AI：MCP 服务端",
+        "codeBlocks": 6,
+        "images": [],
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "navGroups": ["MCP", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/mcp/overview/",
+          "/frameworks/spring-ai/mcp/server/#securing-the-mcp-server",
+          "#_server_protocols",
+          "#_mcp_server_boot_starters",
+          "#_simple_example",
+          "#_auto_configuration",
+          "#server-integration",
+          "#capabilities-and-boundaries",
+          "#transport-reference",
+          "#一发布与自动注册重点掌握",
+          "#服务端协议与传输",
+          "#mcp-server-boot-starter",
+          "#stdio",
+          "#webmvc",
+          "#webflux响应式",
+          "#同步与异步服务端-api",
+          "#mcp-服务端注解",
+          "#简单示例",
+          "#自动配置",
+          "#二能力注解与安全边界重点理解",
+          "#服务端能力",
+          "#主要注解",
+          "#特殊参数",
+          "#保护-mcp-服务端",
+          "#三传输定制与扩展参考按需查阅",
+          "#向-mcptransportcontext-添加数据",
+          "#配置属性",
+          "#延伸阅读",
+          "#示例应用",
+          "#更多资料"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 36,
+        "missingIds": [],
+        "groups": [
+          "一、发布与自动注册（重点掌握）",
+          "二、能力、注解与安全边界（重点理解）",
+          "三、传输定制与扩展参考（按需查阅）"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "server",
+        "device": "mobile",
+        "result": "PASS",
+        "title": "Spring AI：MCP 服务端",
+        "codeBlocks": 6,
+        "images": [],
+        "viewport": 390,
+        "pageWidth": 390,
+        "navGroups": ["MCP", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/mcp/overview/",
+          "/frameworks/spring-ai/mcp/server/#securing-the-mcp-server",
+          "#_server_protocols",
+          "#_mcp_server_boot_starters",
+          "#_simple_example",
+          "#_auto_configuration",
+          "#server-integration",
+          "#capabilities-and-boundaries",
+          "#transport-reference",
+          "#一发布与自动注册重点掌握",
+          "#服务端协议与传输",
+          "#mcp-server-boot-starter",
+          "#stdio",
+          "#webmvc",
+          "#webflux响应式",
+          "#同步与异步服务端-api",
+          "#mcp-服务端注解",
+          "#简单示例",
+          "#自动配置",
+          "#二能力注解与安全边界重点理解",
+          "#服务端能力",
+          "#主要注解",
+          "#特殊参数",
+          "#保护-mcp-服务端",
+          "#三传输定制与扩展参考按需查阅",
+          "#向-mcptransportcontext-添加数据",
+          "#配置属性",
+          "#延伸阅读",
+          "#示例应用",
+          "#更多资料"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 36,
+        "missingIds": [],
+        "groups": [
+          "一、发布与自动注册（重点掌握）",
+          "二、能力、注解与安全边界（重点理解）",
+          "三、传输定制与扩展参考（按需查阅）"
+        ],
+        "errors": []
+      }
+    ]
+  },
+  "checks": {
+    "astroCheck": "0 errors, 0 warnings, 0 hints",
+    "build": "139 pages; PASS",
+    "originalSectionsPreserved": 72,
+    "codeBlocksPreserved": 34,
+    "imagesPreserved": 3,
+    "explicitSourceAnchorsPreserved": 71,
+    "originalRenderedIdsPreserved": 143
+  }
+}

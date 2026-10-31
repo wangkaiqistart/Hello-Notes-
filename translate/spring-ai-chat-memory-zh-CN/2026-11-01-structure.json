@@ -1,0 +1,394 @@
+{
+  "date": "2026-11-01",
+  "scope": "保留全部原文内容、示例、配置表和旧锚点，重排阅读层次，新增导航与存储选择提示。",
+  "officialSource": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html",
+  "sourceReview": "重新核对主题组织；保留既有 2.0.2 API 核验结果，不升级版本或重新完整翻译。",
+  "preservationMethod": "忽略标题级别及空白后，原有非空行多重集合包含于当前稿；完整代码块多重集合相等；浏览器验证原有渲染锚点。",
+  "page": {
+    "baselineCommit": "3a054120a8c7b393cef344f42cfd3150f59a480a",
+    "beforeSha256": "f2d07c56985e1e52013296fde1440f1bf4b322a3cd2b73ccdf2d39d8d42ed93e",
+    "originalSections": 30,
+    "codeBlocks": 34,
+    "groups": [
+      {
+        "id": "core-memory",
+        "title": "一、核心概念与接入（重点掌握）",
+        "sections": [
+          "memory-vs-history",
+          "default-configuration",
+          "in-memory",
+          "conversation-id",
+          "message-window",
+          "turn-eviction",
+          "chatclient-memory",
+          "tool-messages"
+        ]
+      },
+      {
+        "id": "storage-reference",
+        "title": "二、存储选择与配置（按需查阅）",
+        "sections": [
+          "repositories",
+          "jdbc",
+          "jdbc-setup",
+          "jdbc-timestamps",
+          "jdbc-dialects",
+          "cassandra",
+          "cassandra-setup",
+          "cassandra-config",
+          "neo4j",
+          "neo4j-setup",
+          "neo4j-indexes",
+          "cosmos-db",
+          "mongodb",
+          "mongodb-setup",
+          "mongodb-config",
+          "redis",
+          "redis-setup",
+          "redis-config",
+          "redis-query",
+          "redis-metadata"
+        ]
+      },
+      {
+        "id": "advanced-memory",
+        "title": "三、进阶与底层控制（按需查阅）",
+        "sections": ["vector-memory-template", "chatmodel-memory"]
+      }
+    ],
+    "afterSha256": "f1c9680798dc3fc221324c778b95db5bc8ced3cb7c6d23a38409a3a060407b5e",
+    "images": 0,
+    "allOriginalTextPreserved": true,
+    "codeContentMultisetUnchanged": true,
+    "allOriginalExplicitAnchorsPreserved": true,
+    "originalRenderedIdsPreserved": 30,
+    "codeBlockNumbering": "block 保留原来源序号，targetBlock 指向当前站点代码段；保留已有校正说明。",
+    "codeBlockOrder": [
+      {
+        "sourceBlock": 1,
+        "targetBlock": 1,
+        "sha256": "488ac46441ddf8f902d942e2cad250849d9c9348102ef733dd405d0ef44a8b7c"
+      },
+      {
+        "sourceBlock": 2,
+        "targetBlock": 4,
+        "sha256": "8721350b930faf2bbf34ad17b95c92abd23297a45956888c1bdee70945953286"
+      },
+      {
+        "sourceBlock": 3,
+        "targetBlock": 5,
+        "sha256": "95ef1cf7e1c054be3ba18f699ca1b527ec2d0512002f36166aef4fbde885207e"
+      },
+      {
+        "sourceBlock": 4,
+        "targetBlock": 2,
+        "sha256": "fbc6c6aa4e1708e8b94d190d3132869bbb3daf3ebdf53c4ea8ac3953789e5b7f"
+      },
+      {
+        "sourceBlock": 5,
+        "targetBlock": 3,
+        "sha256": "0a138e6711d8524d3eb9fbcc5b15ba049443b0c106399196d8b0aa217656ff2e"
+      },
+      {
+        "sourceBlock": 6,
+        "targetBlock": 8,
+        "sha256": "09250d2071d201ac24a4324614a8b1bdd85c90071503686cf92f72124d644e25"
+      },
+      {
+        "sourceBlock": 7,
+        "targetBlock": 9,
+        "sha256": "be66938e2f9a305b29678eec013dade7e52b2faa13d7cc9fac71a0203747ddfc"
+      },
+      {
+        "sourceBlock": 8,
+        "targetBlock": 10,
+        "sha256": "e2701942a2f013c547beb5eec9b189b6adc35fb79a26b3ad70824c6a33ac7df8"
+      },
+      {
+        "sourceBlock": 9,
+        "targetBlock": 11,
+        "sha256": "df271fdc2bd8e95626276147b978e2be7b4125d69b0b339f6491f201495907f5"
+      },
+      {
+        "sourceBlock": 10,
+        "targetBlock": 12,
+        "sha256": "963dc0b72a1fcdd2e3fe87a771c8254489ce1c2f1ab1f17d7a1b6de3825ec208"
+      },
+      {
+        "sourceBlock": 11,
+        "targetBlock": 13,
+        "sha256": "5c17adb4e58c5502c43ae84b708119e73cc09edac18bf6f66a36bee06aed3721"
+      },
+      {
+        "sourceBlock": 12,
+        "targetBlock": 14,
+        "sha256": "35e19e2a7b9f891440754a451f2712519e3d8489ae9079851a06299630d02f26"
+      },
+      {
+        "sourceBlock": 13,
+        "targetBlock": 15,
+        "sha256": "70b9c3fe9fc9329a78a7177073f3991843676aed8bea9003da64dfbf7022dcb5"
+      },
+      {
+        "sourceBlock": 14,
+        "targetBlock": 16,
+        "sha256": "217a67d81bdd248e994b38e60dce2ee2cdb4f54df7a2c291f923a4e7fb292240"
+      },
+      {
+        "sourceBlock": 15,
+        "targetBlock": 17,
+        "sha256": "35a261b37e9e7f790c405291a32882836515dc74ad71cd6850699d38a90c58be"
+      },
+      {
+        "sourceBlock": 16,
+        "targetBlock": 18,
+        "sha256": "4014f43bcc4b7c521d06beacbdd06f8a58ea6fddee0a23f7cd60412938d5aaf9"
+      },
+      {
+        "sourceBlock": 17,
+        "targetBlock": 19,
+        "sha256": "f7dc302d2ee901d3d9a6108995301a4780ab05d1ea39c1b264079ec3f0f5133c"
+      },
+      {
+        "sourceBlock": 18,
+        "targetBlock": 20,
+        "sha256": "6f5ad4c00238e41658753716f694e87088af90b271eef046efd256242b4889a2"
+      },
+      {
+        "sourceBlock": 19,
+        "targetBlock": 21,
+        "sha256": "a93d193393c4e9371f1a238e53e0d480fca6ff659febb7ce8cd7da763ce8ab15"
+      },
+      {
+        "sourceBlock": 20,
+        "targetBlock": 22,
+        "sha256": "d1fd1b0192fe6307d7793d102c5377e285b7203eec96f90080236a8aaa06774f"
+      },
+      {
+        "sourceBlock": 21,
+        "targetBlock": 23,
+        "sha256": "960bf208f853c2d7314c9e5ff5c1eeb18c83155566c2ffd34726a8256e9c8c04"
+      },
+      {
+        "sourceBlock": 22,
+        "targetBlock": 24,
+        "sha256": "4c452af31a4c1b5b877a202426b752ada900f8ff0302ea9222c08344b8517b41"
+      },
+      {
+        "sourceBlock": 23,
+        "targetBlock": 25,
+        "sha256": "949fc538437a2b4019fbe098c1dac6d4a846a9ed60e1669910e455587d0e1bb2"
+      },
+      {
+        "sourceBlock": 24,
+        "targetBlock": 26,
+        "sha256": "90942797a763c4a255b0d732851e82ec3b661154e7a2a614fd3fc167604400ec"
+      },
+      {
+        "sourceBlock": 25,
+        "targetBlock": 27,
+        "sha256": "83121462ea70cc5d8b54038de03899bcd809f0907ee1869789165127599a0258"
+      },
+      {
+        "sourceBlock": 26,
+        "targetBlock": 28,
+        "sha256": "f657377f609bb71f98e1a846061756f407065eb47115f7a4f3159c8b7c522aac"
+      },
+      {
+        "sourceBlock": 27,
+        "targetBlock": 29,
+        "sha256": "122617135c14cbaf1aac2ed86c41b84a564d9f5568866debda4cbb6bb0b31086"
+      },
+      {
+        "sourceBlock": 28,
+        "targetBlock": 30,
+        "sha256": "59e77731ba7ed7bb464becfb1fd56cb04d7f98a75a9ce6e1393d323c33da6625"
+      },
+      {
+        "sourceBlock": 29,
+        "targetBlock": 31,
+        "sha256": "3d9c1a5dbd2ffbee77eab79411439235e5640cce6b198d4e3c9d46dd9d453e52"
+      },
+      {
+        "sourceBlock": 30,
+        "targetBlock": 32,
+        "sha256": "5a49513a2617d3691709bf59b1bc006c343b6088afae394b048fccf84235aebc"
+      },
+      {
+        "sourceBlock": 31,
+        "targetBlock": 33,
+        "sha256": "fa7869030c200a499a3ca4306eefb0a64c536ca476149ab3c42f1a4c243ffc58"
+      },
+      {
+        "sourceBlock": 32,
+        "targetBlock": 6,
+        "sha256": "97f96a75056e0b727837a0a3e9fdb5b1931caf84e43eb2c96e05cff99460862f"
+      },
+      {
+        "sourceBlock": 33,
+        "targetBlock": 7,
+        "sha256": "9990329e95c72bd885b1517ba6d065b47990a889d059aeeb858958c498d183bb"
+      },
+      {
+        "sourceBlock": 34,
+        "targetBlock": 34,
+        "sha256": "bab731c12bb6940b675a653ec979719bec116345b6de8084587557d134086764"
+      }
+    ]
+  },
+  "browser": {
+    "result": "PASS",
+    "localTargets": 48,
+    "pages": [
+      {
+        "date": "2026-11-01",
+        "check": "responsive-browser",
+        "device": "desktop",
+        "result": "PASS",
+        "title": "Spring AI：对话记忆",
+        "codeBlocks": 34,
+        "images": 0,
+        "pageWidth": 1440,
+        "viewport": 1440,
+        "navGroups": ["Spring AI", "开发框架"],
+        "groups": [
+          "一、核心概念与接入（重点掌握）",
+          "二、存储选择与配置（按需查阅）",
+          "三、进阶与底层控制（按需查阅）"
+        ],
+        "originalRenderedIds": 30,
+        "missingIds": [],
+        "links": [
+          "#core-memory",
+          "#storage-reference",
+          "#advanced-memory",
+          "#一核心概念与接入重点掌握",
+          "#记忆与完整聊天历史",
+          "#默认配置与快速接入",
+          "#内存inmemorychatmemoryrepository",
+          "#会话-id上下文属于谁",
+          "#消息窗口保留最近的上下文",
+          "#按完整轮次淘汰",
+          "#在-chatclient-中使用记忆",
+          "/frameworks/spring-ai/core/chat-client/",
+          "#工具调用消息的边界",
+          "/frameworks/spring-ai/core/advisors/",
+          "/frameworks/spring-ai/tools/tool-calling/#memory-and-the-tool-loop",
+          "#二存储选择与配置按需查阅",
+          "#in-memory",
+          "#jdbc",
+          "#cassandra",
+          "#neo4j",
+          "#cosmos-db",
+          "#mongodb",
+          "#redis",
+          "#存储实现",
+          "#jdbc关系数据库",
+          "#依赖与创建",
+          "#读取消息时间",
+          "#数据库与方言",
+          "#cassandra按时间保存窗口快照",
+          "#依赖与创建-1",
+          "#配置与初始化",
+          "#neo4j图数据库",
+          "#依赖与创建-2",
+          "#标签与索引",
+          "#cosmos-db外部模块",
+          "#mongodb文档数据库",
+          "#依赖与创建-3",
+          "#配置与集合初始化",
+          "#redisjson-存储与检索",
+          "#依赖与创建-4",
+          "#配置与索引初始化",
+          "#高级查询",
+          "#元数据字段索引",
+          "#三进阶与底层控制按需查阅",
+          "#vectorstorechatmemoryadvisor-自定义模板",
+          "/frameworks/spring-ai/core/chat-client/#%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%A8%A1%E6%9D%BF",
+          "#直接使用-chatmodel-管理记忆",
+          "/frameworks/spring-ai/models/chat-model/"
+        ],
+        "literalMarkdown": [],
+        "errors": []
+      },
+      {
+        "date": "2026-11-01",
+        "check": "responsive-browser",
+        "device": "mobile",
+        "result": "PASS",
+        "title": "Spring AI：对话记忆",
+        "codeBlocks": 34,
+        "images": 0,
+        "pageWidth": 390,
+        "viewport": 390,
+        "navGroups": ["Spring AI", "开发框架"],
+        "groups": [
+          "一、核心概念与接入（重点掌握）",
+          "二、存储选择与配置（按需查阅）",
+          "三、进阶与底层控制（按需查阅）"
+        ],
+        "originalRenderedIds": 30,
+        "missingIds": [],
+        "links": [
+          "#core-memory",
+          "#storage-reference",
+          "#advanced-memory",
+          "#一核心概念与接入重点掌握",
+          "#记忆与完整聊天历史",
+          "#默认配置与快速接入",
+          "#内存inmemorychatmemoryrepository",
+          "#会话-id上下文属于谁",
+          "#消息窗口保留最近的上下文",
+          "#按完整轮次淘汰",
+          "#在-chatclient-中使用记忆",
+          "/frameworks/spring-ai/core/chat-client/",
+          "#工具调用消息的边界",
+          "/frameworks/spring-ai/core/advisors/",
+          "/frameworks/spring-ai/tools/tool-calling/#memory-and-the-tool-loop",
+          "#二存储选择与配置按需查阅",
+          "#in-memory",
+          "#jdbc",
+          "#cassandra",
+          "#neo4j",
+          "#cosmos-db",
+          "#mongodb",
+          "#redis",
+          "#存储实现",
+          "#jdbc关系数据库",
+          "#依赖与创建",
+          "#读取消息时间",
+          "#数据库与方言",
+          "#cassandra按时间保存窗口快照",
+          "#依赖与创建-1",
+          "#配置与初始化",
+          "#neo4j图数据库",
+          "#依赖与创建-2",
+          "#标签与索引",
+          "#cosmos-db外部模块",
+          "#mongodb文档数据库",
+          "#依赖与创建-3",
+          "#配置与集合初始化",
+          "#redisjson-存储与检索",
+          "#依赖与创建-4",
+          "#配置与索引初始化",
+          "#高级查询",
+          "#元数据字段索引",
+          "#三进阶与底层控制按需查阅",
+          "#vectorstorechatmemoryadvisor-自定义模板",
+          "/frameworks/spring-ai/core/chat-client/#%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%A8%A1%E6%9D%BF",
+          "#直接使用-chatmodel-管理记忆",
+          "/frameworks/spring-ai/models/chat-model/"
+        ],
+        "literalMarkdown": [],
+        "errors": []
+      }
+    ]
+  },
+  "checks": {
+    "astroCheck": "0 errors, 0 warnings, 0 hints",
+    "build": "139 pages; PASS",
+    "codeBlocksPreserved": 34,
+    "originalSectionsPreserved": 30
+  },
+  "javaValidation": "本次未修改代码内容；未编译运行 Java，未连接数据库或调用模型。"
+}

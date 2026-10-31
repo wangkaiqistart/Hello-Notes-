@@ -23,13 +23,23 @@ Spring AI 的 MCP（模型上下文协议）Client Boot Starter 为 Spring Boot 
 - 管理客户端生命周期，在应用上下文关闭时自动清理资源。
 - 通过定制器调整客户端创建过程。
 
+最短接入路径：[选择 Starter](#_starters) → [配置 Streamable-HTTP](#_streamable_http_transport_properties)或 [STDIO](#_stdio_transport_properties) → [注入客户端与工具 Provider](#_usage_example)。使用自动配置的 `ChatClient.Builder`，并通过 `.defaultTools(toolCallbackProvider)` 或请求级 `.tools(toolCallbackProvider)` 显式注册 Provider；创建 MCP 客户端并不等于工具已自动加入 ChatClient。
+
+阅读层次：[连接与工具接入](#client-integration) → [完整配置与连接排查](#connection-reference) → [定制与通知参考](#customization-reference)。
+
+<a id="client-integration"></a>
+
+## 一、连接与工具接入（重点掌握）
+
+先选 Starter 与传输，再用配置创建客户端，最后显式把 MCP 工具 Provider 交给 ChatClient。重点区分连接成功、发现工具与模型实际使用工具这三个环节。
+
 <a id="_starters"></a>
 
-## Starter 选择
+### Starter 选择
 
 <a id="_standard_mcp_client"></a>
 
-### 标准 MCP 客户端
+#### 标准 MCP 客户端
 
 ```xml
 <dependency>
@@ -44,7 +54,7 @@ Spring AI 的 MCP（模型上下文协议）Client Boot Starter 为 Spring Boot 
 
 <a id="_webflux_client"></a>
 
-### WebFlux 客户端
+#### WebFlux 客户端
 
 WebFlux Starter 的功能与标准 Starter 类似，HTTP 部分使用 WebFlux 实现，支持 Streamable-HTTP、Stateless Streamable-HTTP 和 SSE。
 
@@ -55,13 +65,262 @@ WebFlux Starter 的功能与标准 Starter 类似，HTTP 部分使用 WebFlux �
 </dependency>
 ```
 
+<a id="_transport_support"></a>
+
+### 传输支持
+
+自动配置支持以下传输：
+
+- **标准输入输出（STDIO）**：`spring-ai-starter-mcp-client` 和 `spring-ai-starter-mcp-client-webflux` 均支持。
+- **JDK HttpClient 实现的 HTTP/SSE 与 Streamable-HTTP**：由 `spring-ai-starter-mcp-client` 提供。
+- **WebFlux 实现的 HTTP/SSE 与 Streamable-HTTP**：由 `spring-ai-starter-mcp-client-webflux` 提供。
+
+<a id="_features"></a>
+
+### 客户端能力
+
+先确认客户端类型与共享会话范围，再查看后面的使用示例。
+
+<a id="_syncasync_client_types"></a>
+
+#### 同步与异步客户端
+
+Starter 支持两种客户端类型：
+
+- **同步客户端**：默认类型，配置为 `spring.ai.mcp.client.type=SYNC`，适合传统阻塞式请求响应。仅注册同步 MCP 注解方法，忽略异步方法。
+- **异步客户端**：配置为 `spring.ai.mcp.client.type=ASYNC`，适合响应式、非阻塞调用。仅注册异步 MCP 注解方法，忽略同步方法。
+
+<a id="client-scope-and-session-boundaries"></a>
+
+#### 客户端作用域与会话边界
+
+自动配置的 `McpSyncClient` 和 `McpAsyncClient` 是应用级单例。每条已配置的服务端连接对应一个客户端 Bean，应用的所有请求共享该实例。
+
+每个客户端代表一个 MCP 协议会话，会话随客户端存活；服务端终止会话并返回 HTTP 404，或客户端关闭时，原会话才结束或重建。
+
+:::caution
+**MCP 协议会话不等于用户隔离边界。**
+
+通过 `transportContextProvider(…)`、`McpSyncHttpClientRequestCustomizer` 或 WebClient 的 `ExchangeFilterFunction` 传递的凭据会按请求发送，服务端能收到当前调用者的身份；但底层协议会话仍由使用该客户端 Bean 的所有调用者共享。
+
+多用户应用需要考虑：
+
+- `initialize` 与 `tools/list` 发生在连接初始化时，使用当时可用的身份，而非后来调用工具的用户身份。
+- 服务端如果只按 MCP 会话保存状态，该状态会由客户端 Bean 的所有用户共享。
+- 服务端发起的采样和信息征询通过共享通道到达客户端，不自动携带用户归属。
+
+客户端和服务端都不能直接把 MCP 会话当作用户或租户边界。
+:::
+
+是否需要独立会话，取决于连接的 MCP 服务端。无状态服务端通常可以共享客户端；有状态服务端如果逐请求按 Token 鉴权，且不在会话中保存用户相关状态，也可以共享。
+
+以下情况应考虑按用户或租户分别建立会话：
+
+- 服务端按身份过滤 `tools/list`、资源或提示词。由于发现过程只执行一次，共享用户可能都看到初次发现时的结果。
+- 服务端在会话中保存工作目录、订阅、分页游标、缓存上下文等用户相关状态。
+- 使用采样或信息征询，且需要把服务端请求对应到具体用户。
+- 服务端按会话审计或限流，或部署要求租户不能共享协议会话。
+- 无法确认第三方服务端如何处理会话。
+
+需要独立协议会话的应用，应自行管理生命周期：为每个用户或租户创建独立的传输和客户端，在其工作结束时关闭。自动配置的共享 Bean 不适合这一用途，Spring AI 也未提供按用户管理的客户端池。编程式创建方式见[绕过 Spring AI 自动配置](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-security.html#_working_around_spring_ai_autoconfiguration)。
+
+<a id="_usage_example"></a>
+
+### 使用示例
+
+添加合适的 Starter 依赖后，在 `application.properties` 或 `application.yml` 配置客户端：
+
+```yaml
+spring:
+  ai:
+    mcp:
+      client:
+        enabled: true
+        name: my-mcp-client
+        version: 1.0.0
+        request-timeout: 30s
+        type: SYNC # 响应式应用也可选 ASYNC
+        sse:
+          connections:
+            server1:
+              url: http://localhost:8080
+            server2:
+              url: http://otherserver:8081
+        streamable-http:
+          connections:
+            server3:
+              url: http://localhost:8083
+              endpoint: /mcp
+        root-change-notification: false
+        stdio:
+          connections:
+            server1:
+              command: /path/to/server
+              args:
+                - --port=8080
+                - --mode=production
+              env:
+                API_KEY: your-api-key
+                DEBUG: 'true'
+```
+
+自动配置创建的客户端可以直接注入：
+
+```java
+@Autowired
+private List<McpSyncClient> mcpSyncClients;  // 同步客户端
+
+// 或
+
+@Autowired
+private List<McpAsyncClient> mcpAsyncClients;  // 异步客户端
+```
+
+工具回调默认开启。此时，所有客户端发现的 MCP 工具会通过 `ToolCallbackProvider` 提供：
+
+```java
+@Autowired
+private SyncMcpToolCallbackProvider toolCallbackProvider;
+ToolCallback[] toolCallbacks = toolCallbackProvider.getToolCallbacks();
+```
+
+<a id="_tool_filtering"></a>
+
+### 工具过滤
+
+`McpToolFilter` 用于过滤发现的工具。可以根据 MCP 连接信息或工具属性，决定是否包含某个工具。
+
+定义一个实现 `McpToolFilter` 的 Bean：
+
+```java
+@Component
+public class CustomMcpToolFilter implements McpToolFilter {
+
+    @Override
+    public boolean test(McpConnectionInfo connectionInfo, McpSchema.Tool tool) {
+        // 根据连接信息和工具属性过滤
+        // true 表示包含，false 表示排除
+
+        // 排除来自指定客户端的工具
+        if (connectionInfo.clientInfo().name().equals("restricted-client")) {
+            return false;
+        }
+
+        // 包含指定名称前缀的工具
+        if (tool.name().startsWith("allowed_")) {
+            return true;
+        }
+
+        // 排除描述中包含 experimental 的工具
+        if (tool.description() != null &&
+            tool.description().contains("experimental")) {
+            return false;
+        }
+
+        return true; // 默认包含其他工具
+    }
+}
+```
+
+该过滤器不是严格的 `allowed_` 白名单：其他工具最后仍可能返回 `true`。其中 `clientInfo().name()` 也不是连接配置键；实际筛选条件应按应用生成的客户端名称或服务端信息编写。
+
+`McpConnectionInfo` record 提供：
+
+- `clientCapabilities`：客户端能力。
+- `clientInfo`：客户端名称和版本。
+- `initializeResult`：服务端返回的初始化结果。
+
+自动配置会发现该过滤器，并应用到同步和异步 MCP 工具回调 Provider。没有自定义过滤器时，默认包含所有发现的工具。
+
+应用上下文中只应定义一个 `McpToolFilter` Bean。需要多条过滤规则时，将它们组合到一个过滤器中。
+
+<a id="mcp-tool-name-prefix-generation"></a>
+
+### 工具名称前缀
+
+`McpToolNamePrefixGenerator` 用于定制工具名称前缀，避免多个 MCP 服务端提供同名工具时发生冲突。
+
+没有自定义 Bean 时，使用 `DefaultMcpToolNamePrefixGenerator`：
+
+- 跟踪 MCP 连接与已使用的工具名称。
+- 规范化工具名，例如将连字符改成下划线；部分其他字符会被删除。
+- 不同连接首次出现重名工具时，添加 `alt_` 加计数前缀。
+
+自定义生成器仍需负责模型要求的合法字符、长度限制和唯一性。不要假设默认实现一定会把工具名裁到 64 字符，或在工具列表变化后始终保持原先分配的名称。
+
+例如：
+
+- 第一次出现 `search` → `search`。
+- 另一条连接再次出现 `search` → `alt_1_search`。
+- `my-special-tool` → `my_special_tool`。
+
+可以提供自定义实现：
+
+```java
+@Component
+public class CustomToolNamePrefixGenerator implements McpToolNamePrefixGenerator {
+
+    @Override
+    public String prefixedToolName(McpConnectionInfo connectionInfo, Tool tool) {
+        // 定制工具名称前缀
+
+        // 使用服务端名称和版本作为前缀
+        String serverName = connectionInfo.initializeResult().serverInfo().name();
+        String serverVersion = connectionInfo.initializeResult().serverInfo().version();
+        return serverName + "_v" + serverVersion.replace(".", "_") + "_" + tool.name();
+    }
+}
+```
+
+`McpConnectionInfo` 中可访问：
+
+- `clientCapabilities`：客户端能力。
+- `clientInfo`：客户端名称、标题和版本。
+- `initializeResult`：服务端初始化结果，包含服务端信息。
+
+<a id="_built_in_prefix_generators"></a>
+
+#### 内置前缀生成器
+
+- `DefaultMcpToolNamePrefixGenerator`：默认实现，跟踪重名，必要时添加计数前缀。
+- `McpToolNamePrefixGenerator.noPrefix()`：原样使用工具名称；多个服务端提供同名工具时可能冲突。
+
+要关闭前缀处理，可以注册以下 Bean。连接多个 MCP 服务端时，不建议这样做：
+
+```java
+@Configuration
+public class McpConfiguration {
+
+    @Bean
+    public McpToolNamePrefixGenerator mcpToolNamePrefixGenerator() {
+        return McpToolNamePrefixGenerator.noPrefix();
+    }
+}
+```
+
+只保留一个自定义前缀生成器 Bean。同步和异步工具回调 Provider通过 Spring 的 `ObjectProvider` 自动获取前缀生成器；未定义自定义 Bean 时，使用 `DefaultMcpToolNamePrefixGenerator`。
+
+:::caution
+使用 `McpToolNamePrefixGenerator.noPrefix()` 连接多个 MCP 服务端时，工具重名会导致 `IllegalStateException`。默认生成器用于处理首次发现时的 MCP 工具重名；实际工具集合及动态更新路径仍应验证。
+:::
+
+:::note
+该生成器只处理 MCP 连接之间的重名，无法感知本地 `@Tool` 方法。关于本地工具与远程工具的名称冲突，以及哪些调用路径会检测冲突，见[混用本地工具与 MCP 工具](/frameworks/spring-ai/tools/tool-calling/#combining-local-and-mcp-tools)。
+:::
+
+<a id="connection-reference"></a>
+
+## 二、完整配置与连接排查（按需查阅）
+
+新建 HTTP 连接先查 Streamable-HTTP；连接本地服务时查 STDIO；Windows 批处理与旧 SSE 的配置和排查说明完整保留。
+
 <a id="_configuration_properties"></a>
 
-## 配置属性
+### 配置属性
 
 <a id="_common_properties"></a>
 
-### 通用属性
+#### 通用属性
 
 以下属性统一使用 `spring.ai.mcp.client` 前缀：
 
@@ -78,7 +337,7 @@ WebFlux Starter 的功能与标准 Starter 类似，HTTP 部分使用 WebFlux �
 
 <a id="_mcp_annotations_properties"></a>
 
-### MCP 注解属性
+#### MCP 注解属性
 
 MCP 客户端注解用于声明式编写客户端处理器。以下属性使用 `spring.ai.mcp.client.annotation-scanner` 前缀：
 
@@ -86,9 +345,39 @@ MCP 客户端注解用于声明式编写客户端处理器。以下属性使用 
 | --------- | --------------------------- | ------ |
 | `enabled` | 是否自动扫描 MCP 客户端注解 | `true` |
 
+<a id="_streamable_http_transport_properties"></a>
+
+<a id="_streamable_http_transport_properties_2"></a>
+
+#### Streamable-HTTP 传输属性
+
+用于连接 Streamable-HTTP 和 Stateless Streamable-HTTP 服务端。配置前缀为 `spring.ai.mcp.client.streamable-http`：
+
+| 属性                          | 说明                                | 默认值 |
+| ----------------------------- | ----------------------------------- | ------ |
+| `connections`                 | 具名 Streamable-HTTP 连接配置的映射 | —      |
+| `connections.[name].url`      | MCP 服务端的基础 URL                | —      |
+| `connections.[name].endpoint` | 追加到基础 URL 的端点路径           | `/mcp` |
+
+配置示例：
+
+```yaml
+spring:
+  ai:
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            server1:
+              url: http://localhost:8080
+            server2:
+              url: http://otherserver:8081
+              endpoint: /custom-sse
+```
+
 <a id="_stdio_transport_properties"></a>
 
-### STDIO 传输属性
+#### STDIO 传输属性
 
 STDIO 通过标准输入输出通信，配置前缀为 `spring.ai.mcp.client.stdio`：
 
@@ -293,36 +582,6 @@ private static boolean isWindows() {
 
 [Spring AI Filesystem 示例](https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/filesystem)展示了自动识别操作系统并创建 MCP 客户端的完整实现。
 
-<a id="_streamable_http_transport_properties"></a>
-
-<a id="_streamable_http_transport_properties_2"></a>
-
-### Streamable-HTTP 传输属性
-
-用于连接 Streamable-HTTP 和 Stateless Streamable-HTTP 服务端。配置前缀为 `spring.ai.mcp.client.streamable-http`：
-
-| 属性                          | 说明                                | 默认值 |
-| ----------------------------- | ----------------------------------- | ------ |
-| `connections`                 | 具名 Streamable-HTTP 连接配置的映射 | —      |
-| `connections.[name].url`      | MCP 服务端的基础 URL                | —      |
-| `connections.[name].endpoint` | 追加到基础 URL 的端点路径           | `/mcp` |
-
-配置示例：
-
-```yaml
-spring:
-  ai:
-    mcp:
-      client:
-        streamable-http:
-          connections:
-            server1:
-              url: http://localhost:8080
-            server2:
-              url: http://otherserver:8081
-              endpoint: /custom-sse
-```
-
 <a id="_sse_transport_properties"></a>
 
 ### SSE 传输属性
@@ -383,52 +642,11 @@ spring:
 - 确认 `sse-endpoint` 以 `/` 开头，并保留完整路径与查询参数。
 - 用浏览器或 `curl` 请求完整 URL，确认端点可访问。
 
-<a id="_features"></a>
+<a id="customization-reference"></a>
 
-## 客户端能力
+## 三、定制与通知参考（按需查阅）
 
-<a id="_syncasync_client_types"></a>
-
-### 同步与异步客户端
-
-Starter 支持两种客户端类型：
-
-- **同步客户端**：默认类型，配置为 `spring.ai.mcp.client.type=SYNC`，适合传统阻塞式请求响应。仅注册同步 MCP 注解方法，忽略异步方法。
-- **异步客户端**：配置为 `spring.ai.mcp.client.type=ASYNC`，适合响应式、非阻塞调用。仅注册异步 MCP 注解方法，忽略同步方法。
-
-<a id="client-scope-and-session-boundaries"></a>
-
-### 客户端作用域与会话边界
-
-自动配置的 `McpSyncClient` 和 `McpAsyncClient` 是应用级单例。每条已配置的服务端连接对应一个客户端 Bean，应用的所有请求共享该实例。
-
-每个客户端代表一个 MCP 协议会话，会话随客户端存活；服务端终止会话并返回 HTTP 404，或客户端关闭时，原会话才结束或重建。
-
-:::caution
-**MCP 协议会话不等于用户隔离边界。**
-
-通过 `transportContextProvider(…)`、`McpSyncHttpClientRequestCustomizer` 或 WebClient 的 `ExchangeFilterFunction` 传递的凭据会按请求发送，服务端能收到当前调用者的身份；但底层协议会话仍由使用该客户端 Bean 的所有调用者共享。
-
-多用户应用需要考虑：
-
-- `initialize` 与 `tools/list` 发生在连接初始化时，使用当时可用的身份，而非后来调用工具的用户身份。
-- 服务端如果只按 MCP 会话保存状态，该状态会由客户端 Bean 的所有用户共享。
-- 服务端发起的采样和信息征询通过共享通道到达客户端，不自动携带用户归属。
-
-客户端和服务端都不能直接把 MCP 会话当作用户或租户边界。
-:::
-
-是否需要独立会话，取决于连接的 MCP 服务端。无状态服务端通常可以共享客户端；有状态服务端如果逐请求按 Token 鉴权，且不在会话中保存用户相关状态，也可以共享。
-
-以下情况应考虑按用户或租户分别建立会话：
-
-- 服务端按身份过滤 `tools/list`、资源或提示词。由于发现过程只执行一次，共享用户可能都看到初次发现时的结果。
-- 服务端在会话中保存工作目录、订阅、分页游标、缓存上下文等用户相关状态。
-- 使用采样或信息征询，且需要把服务端请求对应到具体用户。
-- 服务端按会话审计或限流，或部署要求租户不能共享协议会话。
-- 无法确认第三方服务端如何处理会话。
-
-需要独立协议会话的应用，应自行管理生命周期：为每个用户或租户创建独立的传输和客户端，在其工作结束时关闭。自动配置的共享 Bean 不适合这一用途，Spring AI 也未提供按用户管理的客户端池。编程式创建方式见[绕过 Spring AI 自动配置](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-security.html#_working_around_spring_ai_autoconfiguration)。
+需要采样、Roots、信息征询、进度或列表变更通知时，再查看定制器和客户端注解。ToolContext 元数据转换与关闭工具回调的设置也集中在这里。
 
 <a id="_client_customization"></a>
 
@@ -528,140 +746,6 @@ public class CustomMcpAsyncClientCustomizer implements McpClientCustomizer<McpCl
 
 客户端自动配置会发现应用上下文中的定制器，并自动应用。
 
-<a id="_transport_support"></a>
-
-### 传输支持
-
-自动配置支持以下传输：
-
-- **标准输入输出（STDIO）**：`spring-ai-starter-mcp-client` 和 `spring-ai-starter-mcp-client-webflux` 均支持。
-- **JDK HttpClient 实现的 HTTP/SSE 与 Streamable-HTTP**：由 `spring-ai-starter-mcp-client` 提供。
-- **WebFlux 实现的 HTTP/SSE 与 Streamable-HTTP**：由 `spring-ai-starter-mcp-client-webflux` 提供。
-
-<a id="_tool_filtering"></a>
-
-### 工具过滤
-
-`McpToolFilter` 用于过滤发现的工具。可以根据 MCP 连接信息或工具属性，决定是否包含某个工具。
-
-定义一个实现 `McpToolFilter` 的 Bean：
-
-```java
-@Component
-public class CustomMcpToolFilter implements McpToolFilter {
-
-    @Override
-    public boolean test(McpConnectionInfo connectionInfo, McpSchema.Tool tool) {
-        // 根据连接信息和工具属性过滤
-        // true 表示包含，false 表示排除
-
-        // 排除来自指定客户端的工具
-        if (connectionInfo.clientInfo().name().equals("restricted-client")) {
-            return false;
-        }
-
-        // 包含指定名称前缀的工具
-        if (tool.name().startsWith("allowed_")) {
-            return true;
-        }
-
-        // 排除描述中包含 experimental 的工具
-        if (tool.description() != null &&
-            tool.description().contains("experimental")) {
-            return false;
-        }
-
-        return true; // 默认包含其他工具
-    }
-}
-```
-
-该过滤器不是严格的 `allowed_` 白名单：其他工具最后仍可能返回 `true`。其中 `clientInfo().name()` 也不是连接配置键；实际筛选条件应按应用生成的客户端名称或服务端信息编写。
-
-`McpConnectionInfo` record 提供：
-
-- `clientCapabilities`：客户端能力。
-- `clientInfo`：客户端名称和版本。
-- `initializeResult`：服务端返回的初始化结果。
-
-自动配置会发现该过滤器，并应用到同步和异步 MCP 工具回调 Provider。没有自定义过滤器时，默认包含所有发现的工具。
-
-应用上下文中只应定义一个 `McpToolFilter` Bean。需要多条过滤规则时，将它们组合到一个过滤器中。
-
-<a id="mcp-tool-name-prefix-generation"></a>
-
-### 工具名称前缀
-
-`McpToolNamePrefixGenerator` 用于定制工具名称前缀，避免多个 MCP 服务端提供同名工具时发生冲突。
-
-没有自定义 Bean 时，使用 `DefaultMcpToolNamePrefixGenerator`：
-
-- 跟踪 MCP 连接与已使用的工具名称。
-- 规范化工具名，例如将连字符改成下划线；部分其他字符会被删除。
-- 不同连接首次出现重名工具时，添加 `alt_` 加计数前缀。
-
-自定义生成器仍需负责模型要求的合法字符、长度限制和唯一性。不要假设默认实现一定会把工具名裁到 64 字符，或在工具列表变化后始终保持原先分配的名称。
-
-例如：
-
-- 第一次出现 `search` → `search`。
-- 另一条连接再次出现 `search` → `alt_1_search`。
-- `my-special-tool` → `my_special_tool`。
-
-可以提供自定义实现：
-
-```java
-@Component
-public class CustomToolNamePrefixGenerator implements McpToolNamePrefixGenerator {
-
-    @Override
-    public String prefixedToolName(McpConnectionInfo connectionInfo, Tool tool) {
-        // 定制工具名称前缀
-
-        // 使用服务端名称和版本作为前缀
-        String serverName = connectionInfo.initializeResult().serverInfo().name();
-        String serverVersion = connectionInfo.initializeResult().serverInfo().version();
-        return serverName + "_v" + serverVersion.replace(".", "_") + "_" + tool.name();
-    }
-}
-```
-
-`McpConnectionInfo` 中可访问：
-
-- `clientCapabilities`：客户端能力。
-- `clientInfo`：客户端名称、标题和版本。
-- `initializeResult`：服务端初始化结果，包含服务端信息。
-
-<a id="_built_in_prefix_generators"></a>
-
-#### 内置前缀生成器
-
-- `DefaultMcpToolNamePrefixGenerator`：默认实现，跟踪重名，必要时添加计数前缀。
-- `McpToolNamePrefixGenerator.noPrefix()`：原样使用工具名称；多个服务端提供同名工具时可能冲突。
-
-要关闭前缀处理，可以注册以下 Bean。连接多个 MCP 服务端时，不建议这样做：
-
-```java
-@Configuration
-public class McpConfiguration {
-
-    @Bean
-    public McpToolNamePrefixGenerator mcpToolNamePrefixGenerator() {
-        return McpToolNamePrefixGenerator.noPrefix();
-    }
-}
-```
-
-只保留一个自定义前缀生成器 Bean。同步和异步工具回调 Provider通过 Spring 的 `ObjectProvider` 自动获取前缀生成器；未定义自定义 Bean 时，使用 `DefaultMcpToolNamePrefixGenerator`。
-
-:::caution
-使用 `McpToolNamePrefixGenerator.noPrefix()` 连接多个 MCP 服务端时，工具重名会导致 `IllegalStateException`。默认生成器用于处理首次发现时的 MCP 工具重名；实际工具集合及动态更新路径仍应验证。
-:::
-
-:::note
-该生成器只处理 MCP 连接之间的重名，无法感知本地 `@Tool` 方法。关于本地工具与远程工具的名称冲突，以及哪些调用路径会检测冲突，见[混用本地工具与 MCP 工具](/frameworks/spring-ai/tools/tool-calling/#combining-local-and-mcp-tools)。
-:::
-
 <a id="_tool_context_to_mcp_meta_converter"></a>
 
 ### 将 ToolContext 转为 MCP 元数据
@@ -752,7 +836,7 @@ MCP ToolCallback 自动配置默认开启，可通过 `spring.ai.mcp.client.tool
 
 <a id="_mcp_client_annotations"></a>
 
-## MCP 客户端注解
+### MCP 客户端注解
 
 Client Starter 自动发现并注册以下注解方法：
 
@@ -826,69 +910,9 @@ public Mono<CreateMessageResult> handleAsyncSampling(CreateMessageRequest reques
 
 各注解的完整用法见 [MCP 客户端注解](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-client.html)。
 
-<a id="_usage_example"></a>
-
-## 使用示例
-
-添加合适的 Starter 依赖后，在 `application.properties` 或 `application.yml` 配置客户端：
-
-```yaml
-spring:
-  ai:
-    mcp:
-      client:
-        enabled: true
-        name: my-mcp-client
-        version: 1.0.0
-        request-timeout: 30s
-        type: SYNC # 响应式应用也可选 ASYNC
-        sse:
-          connections:
-            server1:
-              url: http://localhost:8080
-            server2:
-              url: http://otherserver:8081
-        streamable-http:
-          connections:
-            server3:
-              url: http://localhost:8083
-              endpoint: /mcp
-        root-change-notification: false
-        stdio:
-          connections:
-            server1:
-              command: /path/to/server
-              args:
-                - --port=8080
-                - --mode=production
-              env:
-                API_KEY: your-api-key
-                DEBUG: 'true'
-```
-
-自动配置创建的客户端可以直接注入：
-
-```java
-@Autowired
-private List<McpSyncClient> mcpSyncClients;  // 同步客户端
-
-// 或
-
-@Autowired
-private List<McpAsyncClient> mcpAsyncClients;  // 异步客户端
-```
-
-工具回调默认开启。此时，所有客户端发现的 MCP 工具会通过 `ToolCallbackProvider` 提供：
-
-```java
-@Autowired
-private SyncMcpToolCallbackProvider toolCallbackProvider;
-ToolCallback[] toolCallbacks = toolCallbackProvider.getToolCallbacks();
-```
-
 <a id="_example_applications"></a>
 
-## 示例应用
+### 示例应用
 
 - [Brave 搜索聊天机器人](https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/web-search/brave-chatbot)：通过 MCP 调用网络搜索服务。
 - [默认 MCP Client Starter](https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/client-starter/starter-default-client)：演示 `spring-ai-starter-mcp-client`。
@@ -896,7 +920,7 @@ ToolCallback[] toolCallbacks = toolCallbackProvider.getToolCallbacks();
 
 <a id="_additional_resources"></a>
 
-## 更多资料
+### 更多资料
 
 - [Spring AI 文档](https://docs.spring.io/spring-ai/reference/)
 - [MCP 规范](https://modelcontextprotocol.io/specification/)

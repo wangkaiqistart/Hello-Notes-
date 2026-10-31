@@ -27,15 +27,34 @@ HTTP 传输（SSE、Streamable-HTTP 和 Stateless）默认暴露未经身份验�
 
 :::
 
+最短发布路径：[选择传输](#_server_protocols) → [添加 Starter](#_mcp_server_boot_starters) → [声明工具 Bean](#_simple_example) → [自动注册](#_auto_configuration)。客户端发现并调用工具后，再继续扩展资源、提示词和通知。
+
+阅读层次：[发布与自动注册](#server-integration) → [能力、注解与安全边界](#capabilities-and-boundaries) → [传输定制与扩展参考](#transport-reference)。
+
+<a id="server-integration"></a>
+
+## 一、发布与自动注册（重点掌握）
+
+先选择传输与 Starter，再确认 SYNC / ASYNC 类型，用 Spring Bean 中的 @McpTool 方法发布工具。简单示例与自动注册流程放在一起阅读。
+
+<a id="_server_protocols"></a>
+
+### 服务端协议与传输
+
+- [**STDIO**](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html)：通过标准输入与标准输出通信，通常由客户端启动本地服务端子进程。设置 `spring.ai.mcp.server.stdio=true` 启用。
+- [**SSE**](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html#_sse_webmvc_server)：基于服务器发送事件的旧式传输。服务端作为独立进程运行，可处理多个客户端连接。
+- [**Streamable-HTTP**](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html)：[Streamable HTTP 传输](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http)使用 HTTP POST 和 GET 请求，可选用 SSE 流返回多条服务端消息，替代旧式 SSE 传输。服务端可独立运行并处理多个客户端连接；设置 `spring.ai.mcp.server.protocol=STREAMABLE` 启用。
+- [**Stateless（无状态）**](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html)：请求之间不保留协议会话状态，简化微服务和云部署。设置 `spring.ai.mcp.server.protocol=STATELESS` 启用。
+
 <a id="_mcp_server_boot_starters"></a>
 
-## MCP Server Boot Starter
+### MCP Server Boot Starter
 
 根据传输方式选择 Starter，并设置对应的 `spring.ai.mcp.server.protocol`；STDIO 使用独立的 `stdio` 开关。新建 HTTP 服务建议显式设置 `spring.ai.mcp.server.protocol=STREAMABLE`，不依赖缺省传输选择。
 
 <a id="_stdio"></a>
 
-### STDIO
+#### STDIO
 
 | 服务端类型                                                                                                              | 依赖                           | 配置                              |
 | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------ | --------------------------------- |
@@ -43,7 +62,7 @@ HTTP 传输（SSE、Streamable-HTTP 和 Stateless）默认暴露未经身份验�
 
 <a id="_webmvc"></a>
 
-### WebMVC
+#### WebMVC
 
 | 服务端类型                                                                                                                                                          | 依赖                                  | 配置                                       |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------ |
@@ -53,7 +72,7 @@ HTTP 传输（SSE、Streamable-HTTP 和 Stateless）默认暴露未经身份验�
 
 <a id="_webflux_reactive"></a>
 
-### WebFlux（响应式）
+#### WebFlux（响应式）
 
 | 服务端类型                                                                                                                                                            | 依赖                                   | 配置                                       |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ------------------------------------------ |
@@ -61,9 +80,76 @@ HTTP 传输（SSE、Streamable-HTTP 和 Stateless）默认暴露未经身份验�
 | [Streamable-HTTP WebFlux](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html#_streamable_http_webflux_server)       | `spring-ai-starter-mcp-server-webflux` | `spring.ai.mcp.server.protocol=STREAMABLE` |
 | [无状态 WebFlux](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html#_stateless_webflux_server)                            | `spring-ai-starter-mcp-server-webflux` | `spring.ai.mcp.server.protocol=STATELESS`  |
 
+<a id="_syncasync_server_api_options"></a>
+
+### 同步与异步服务端 API
+
+MCP Server API 支持命令式同步模型和响应式异步模型。此选择与 WebMVC / WebFlux 传输实现是两个维度，使用 WebFlux 不会自动把 API 类型改成 ASYNC：
+
+- **同步服务端**：默认类型，使用 `McpSyncServer`，适合直接的请求—响应处理。配置 `spring.ai.mcp.server.type=SYNC` 后，自动配置同步工具规格。**只注册同步 MCP 注解方法，异步方法会被忽略。**
+- **异步服务端**：使用 `McpAsyncServer`，面向非阻塞处理。配置 `spring.ai.mcp.server.type=ASYNC` 后，自动配置异步工具规格，并集成 Project Reactor。**只注册异步 MCP 注解方法，同步方法会被忽略。**
+
+<a id="_mcp_server_annotations"></a>
+
+### MCP 服务端注解
+
+Server Starter 支持用 Java 注解声明 MCP 能力，减少手动创建和注册规格的代码。
+
+<a id="_simple_example"></a>
+
+#### 简单示例
+
+下面的 Bean 定义一个加法工具和一个配置资源。`configData` 代表应用提供的配置数据，示例省略它的声明与注入：
+
+```java
+@Component
+public class CalculatorTools {
+
+    @McpTool(name = "add", description = "Add two numbers together")
+    public int add(
+            @McpToolParam(description = "First number", required = true) int a,
+            @McpToolParam(description = "Second number", required = true) int b) {
+        return a + b;
+    }
+
+    @McpResource(uri = "config://{key}", name = "Configuration")
+    public String getConfig(String key) {
+        return configData.get(key);
+    }
+}
+```
+
+<a id="_auto_configuration"></a>
+
+#### 自动配置
+
+Spring Boot 会自动发现并注册包含 MCP 注解方法的 Bean：
+
+```java
+@SpringBootApplication
+public class McpServerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(McpServerApplication.class, args);
+    }
+}
+```
+
+自动配置依次完成：
+
+1. 扫描带 MCP 注解的 Bean。
+2. 创建对应的规格对象。
+3. 将其注册到 MCP 服务端。
+4. 根据配置选择同步或异步实现。
+
+<a id="capabilities-and-boundaries"></a>
+
+## 二、能力、注解与安全边界（重点理解）
+
+根据需求区分工具、资源、提示词和补全，了解特殊参数；向本机以外开放 HTTP 端点前，先配置认证与授权。
+
 <a id="_server_capabilities"></a>
 
-## 服务端能力
+### 服务端能力
 
 具体能力取决于服务端与传输类型：
 
@@ -76,42 +162,6 @@ HTTP 传输（SSE、Streamable-HTTP 和 Stateless）默认暴露未经身份验�
 - **Ping**：用于检查服务端状态的可选机制。
 
 `spring.ai.mcp.server.capabilities` 下的 `tool`、`resource`、`prompt`、`completion` 四个开关默认开启。关闭某项后不再注册对应能力；实际可用功能仍取决于传输、注册内容与能力协商，不能据此认为所有通知功能都由同类开关控制。
-
-<a id="_server_protocols"></a>
-
-## 服务端协议与传输
-
-- [**STDIO**](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html)：通过标准输入与标准输出通信，通常由客户端启动本地服务端子进程。设置 `spring.ai.mcp.server.stdio=true` 启用。
-- [**SSE**](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html#_sse_webmvc_server)：基于服务器发送事件的旧式传输。服务端作为独立进程运行，可处理多个客户端连接。
-- [**Streamable-HTTP**](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html)：[Streamable HTTP 传输](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http)使用 HTTP POST 和 GET 请求，可选用 SSE 流返回多条服务端消息，替代旧式 SSE 传输。服务端可独立运行并处理多个客户端连接；设置 `spring.ai.mcp.server.protocol=STREAMABLE` 启用。
-- [**Stateless（无状态）**](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html)：请求之间不保留协议会话状态，简化微服务和云部署。设置 `spring.ai.mcp.server.protocol=STATELESS` 启用。
-
-<a id="securing-the-mcp-server"></a>
-
-## 保护 MCP 服务端
-
-MCP 传输实现不绑定具体认证方案。自动配置负责建立端点，不负责执行认证与授权。与其他 Spring Web 端点一样，HTTP MCP 服务的安全边界应由额外的安全层提供，例如 Spring Security 或 [MCP Security](https://github.com/spring-ai-community/mcp-security)。
-
-:::caution
-
-默认情况下，MCP 端点（Streamable-HTTP 默认使用 `POST /mcp`）接受请求，不要求客户端提供凭据。能够访问网络端点的客户端可以列出并调用已注册的工具、资源和提示词。注册能力即意味着暴露能力；对外部署前，应先保护该端点。
-
-:::
-
-<a id="_syncasync_server_api_options"></a>
-
-## 同步与异步服务端 API
-
-MCP Server API 支持命令式同步模型和响应式异步模型。此选择与 WebMVC / WebFlux 传输实现是两个维度，使用 WebFlux 不会自动把 API 类型改成 ASYNC：
-
-- **同步服务端**：默认类型，使用 `McpSyncServer`，适合直接的请求—响应处理。配置 `spring.ai.mcp.server.type=SYNC` 后，自动配置同步工具规格。**只注册同步 MCP 注解方法，异步方法会被忽略。**
-- **异步服务端**：使用 `McpAsyncServer`，面向非阻塞处理。配置 `spring.ai.mcp.server.type=ASYNC` 后，自动配置异步工具规格，并集成 Project Reactor。**只注册异步 MCP 注解方法，同步方法会被忽略。**
-
-<a id="_mcp_server_annotations"></a>
-
-## MCP 服务端注解
-
-Server Starter 支持用 Java 注解声明 MCP 能力，减少手动创建和注册规格的代码。
 
 <a id="_key_annotations"></a>
 
@@ -134,29 +184,23 @@ Server Starter 支持用 Java 注解声明 MCP 能力，减少手动创建和注
 - **`McpTransportContext`**：轻量的传输上下文，可用于无状态操作。
 - **`CallToolRequest`**：访问工具调用请求，支持动态 Schema 等场景。
 
-<a id="_simple_example"></a>
+<a id="securing-the-mcp-server"></a>
 
-### 简单示例
+### 保护 MCP 服务端
 
-下面的 Bean 定义一个加法工具和一个配置资源。`configData` 代表应用提供的配置数据，示例省略它的声明与注入：
+MCP 传输实现不绑定具体认证方案。自动配置负责建立端点，不负责执行认证与授权。与其他 Spring Web 端点一样，HTTP MCP 服务的安全边界应由额外的安全层提供，例如 Spring Security 或 [MCP Security](https://github.com/spring-ai-community/mcp-security)。
 
-```java
-@Component
-public class CalculatorTools {
+:::caution
 
-    @McpTool(name = "add", description = "Add two numbers together")
-    public int add(
-            @McpToolParam(description = "First number", required = true) int a,
-            @McpToolParam(description = "Second number", required = true) int b) {
-        return a + b;
-    }
+默认情况下，MCP 端点（Streamable-HTTP 默认使用 `POST /mcp`）接受请求，不要求客户端提供凭据。能够访问网络端点的客户端可以列出并调用已注册的工具、资源和提示词。注册能力即意味着暴露能力；对外部署前，应先保护该端点。
 
-    @McpResource(uri = "config://{key}", name = "Configuration")
-    public String getConfig(String key) {
-        return configData.get(key);
-    }
-}
-```
+:::
+
+<a id="transport-reference"></a>
+
+## 三、传输定制与扩展参考（按需查阅）
+
+需要读取 HTTP 请求信息或替换传输 Provider 时，再查上下文提取与配置；完整注解和各传输的深入用法继续通过原有来源链接查询。
 
 <a id="_adding_data_to_mcptransportcontext"></a>
 
@@ -214,28 +258,6 @@ public String accessProtectedResource(McpSyncRequestContext requestContext) {
 
 此处只演示读取上下文，不验证令牌，也不执行授权；实际访问控制仍由安全层处理。
 
-<a id="_auto_configuration"></a>
-
-### 自动配置
-
-Spring Boot 会自动发现并注册包含 MCP 注解方法的 Bean：
-
-```java
-@SpringBootApplication
-public class McpServerApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(McpServerApplication.class, args);
-    }
-}
-```
-
-自动配置依次完成：
-
-1. 扫描带 MCP 注解的 Bean。
-2. 创建对应的规格对象。
-3. 将其注册到 MCP 服务端。
-4. 根据配置选择同步或异步实现。
-
 <a id="_configuration_properties"></a>
 
 ### 配置属性
@@ -262,7 +284,7 @@ spring:
 
 <a id="_example_applications"></a>
 
-## 示例应用
+### 示例应用
 
 - [天气服务端：SSE WebFlux](https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/starter-webflux-server)：使用 WebFlux 传输与 Server Starter。
 - [天气服务端：STDIO](https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/starter-stdio-server)：使用 STDIO 传输与 Server Starter。
@@ -272,7 +294,7 @@ spring:
 
 <a id="_additional_resources_2"></a>
 
-## 更多资料
+### 更多资料
 
 - [MCP 服务端注解](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html)：用注解声明服务端能力。
 - [特殊参数](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-special-params.html)：参数注入与上下文访问。

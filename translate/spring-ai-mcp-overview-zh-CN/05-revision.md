@@ -24,79 +24,19 @@ sidebar:
 
 [MCP Java SDK](https://java.sdk.modelcontextprotocol.io/latest/) 提供协议的 Java 实现，支持同步与异步通信。Spring AI 在其基础上提供 Boot Starter 和 Java 注解，既能连接已有 MCP 服务，也能把 Spring 业务能力发布为 MCP 服务。可以从 [Spring Initializr](https://start.spring.io) 创建带 MCP 支持的项目。
 
-<a id="_mcp_java_sdk_architecture"></a>
+三篇的分工：[本篇](#integration-guide)用于协议与选型，[客户端](/frameworks/spring-ai/mcp/client/#client-integration)用于连接已有服务，[服务端](/frameworks/spring-ai/mcp/server/#server-integration)用于发布自己的能力。先完成客户端接入，再按需要开发服务端。
 
-## MCP Java SDK 架构
+阅读层次：[协议能力与接入选型](#integration-guide) → [SDK 架构](#sdk-reference) → [升级与延伸参考](#migration-reference)。
 
-本节介绍 SDK 的底层架构；使用 Spring Boot 时，可以重点阅读后面的 [Spring AI 集成](#_spring_ai_mcp_integration)。SDK 分为三层，各自负责协议操作、会话和消息传输。
+<a id="integration-guide"></a>
 
-<a id="_clientserver_layer_top"></a>
+## 一、协议能力与接入选型（重点掌握）
 
-### 客户端与服务端层
-
-最上层处理应用逻辑和协议操作：
-
-- `McpClient`：管理客户端操作和服务端连接。
-- `McpServer`：处理服务端协议操作和客户端请求。
-- 两者都通过下层的会话组件管理通信。
-
-<a id="_session_layer_middle"></a>
-
-### 会话层
-
-中间层维护通信模式和连接状态：
-
-- `McpSession`：会话管理核心接口。
-- `McpClientSession`：客户端会话实现。
-- `McpServerSession`：服务端会话实现。
-
-<a id="_transport_layer_bottom"></a>
-
-### 传输层
-
-底层负责实际消息传输：
-
-- `McpTransport`：处理 JSON-RPC 消息的序列化与反序列化。
-- 支持 STDIO、HTTP/SSE、Streamable-HTTP 等传输实现。
-- 为上层会话和协议操作提供通信基础。
-
-下图将三层放在一起，重点看客户端、服务端如何通过会话层复用不同的传输实现。
-
-[![MCP Java SDK 三层架构：客户端和服务端层、会话层与传输层的对应关系](/images/frameworks/spring-ai/mcp/mcp-stack.svg)](/images/frameworks/spring-ai/mcp/mcp-stack.svg)
-
-### MCP 客户端
-
-[MCP Client](https://java.sdk.modelcontextprotocol.io/latest/client/) 负责建立和管理与服务端的连接，包括：
-
-- 协议版本协商与能力协商。
-- JSON-RPC 通信和消息传输。
-- 工具发现与调用、资源访问和管理、提示词交互。
-- 可选的根目录（Roots）管理与采样（Sampling）支持。
-- 同步与异步操作。
-- STDIO 进程通信、基于 Java HttpClient 的 SSE，以及基于 WebFlux 的响应式 SSE 等传输实现。
-
-下图展示 Java AI 应用如何通过多条 MCP 连接，访问远程服务和本地工具。
-
-[![Java MCP 客户端架构：Java AI 应用通过 MCP 客户端连接远程服务、本地文件和 SQLite 工具](/images/frameworks/spring-ai/mcp/java-mcp-client-architecture.jpg)](/images/frameworks/spring-ai/mcp/java-mcp-client-architecture.jpg)
-
-### MCP 服务端
-
-[MCP Server](https://java.sdk.modelcontextprotocol.io/latest/server/) 向客户端提供特定领域的能力，包括：
-
-- 工具发布与发现、通过 URI 访问资源、提示词模板。
-- 与客户端协商能力、发送结构化日志和通知。
-- 并发客户端连接管理，以及同步与异步 API。
-- STDIO、Streamable-HTTP、无状态 Streamable-HTTP 和 SSE 传输。
-
-下图对比早期 SSE 与 STDIO 的部署关系。右侧的“Single Process”是图中的部署示意；Java STDIO 客户端通常仍会启动独立的服务端子进程，不表示客户端与服务端运行在同一 JVM。
-
-[![Java MCP 服务端部署对比：SSE 服务接受多个客户端连接，STDIO 通过标准流连接本地服务端](/images/frameworks/spring-ai/mcp/java-mcp-server-architecture.jpg)](/images/frameworks/spring-ai/mcp/java-mcp-server-architecture.jpg)
-
-直接使用底层 API 时，查阅 [MCP Java SDK 文档](https://java.sdk.modelcontextprotocol.io/latest/)；使用 Spring Boot 时，优先使用下面的 Starter。
+先分清客户端与服务端的职责，再按本地进程或 HTTP 部署选择 Starter。新建 HTTP 服务优先使用 Streamable-HTTP，并显式配置协议。
 
 <a id="_spring_ai_mcp_integration"></a>
 
-## Spring AI MCP 集成
+### Spring AI MCP 集成
 
 Spring AI 提供客户端与服务端两组 Boot Starter。
 
@@ -149,7 +89,7 @@ Spring AI 提供客户端与服务端两组 Boot Starter。
 
 <a id="_spring_ai_mcp_annotations"></a>
 
-## MCP 注解
+### MCP 注解
 
 除编程式配置外，Spring AI 的 [MCP 注解模块](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-overview.html)还可以用 Java 方法声明服务端操作、处理客户端请求与通知。
 
@@ -163,15 +103,101 @@ Spring AI 提供客户端与服务端两组 Boot Starter。
 
 注解模块支持自动发现、扫描范围配置，并与 MCP Boot Starter 集成。
 
+<a id="sdk-reference"></a>
+
+## 二、SDK 架构（按需理解）
+
+使用 Boot Starter 时可先掌握前面的选型；直接使用 Java SDK、排查会话与传输问题时，再阅读三层架构。
+
+<a id="_mcp_java_sdk_architecture"></a>
+
+### MCP Java SDK 架构
+
+本节介绍 SDK 的底层架构；使用 Spring Boot 时，可以重点阅读前面的 [Spring AI 集成](#_spring_ai_mcp_integration)。SDK 分为三层，各自负责协议操作、会话和消息传输。
+
+<a id="_clientserver_layer_top"></a>
+
+#### 客户端与服务端层
+
+最上层处理应用逻辑和协议操作：
+
+- `McpClient`：管理客户端操作和服务端连接。
+- `McpServer`：处理服务端协议操作和客户端请求。
+- 两者都通过下层的会话组件管理通信。
+
+<a id="_session_layer_middle"></a>
+
+#### 会话层
+
+中间层维护通信模式和连接状态：
+
+- `McpSession`：会话管理核心接口。
+- `McpClientSession`：客户端会话实现。
+- `McpServerSession`：服务端会话实现。
+
+<a id="_transport_layer_bottom"></a>
+
+#### 传输层
+
+底层负责实际消息传输：
+
+- `McpTransport`：处理 JSON-RPC 消息的序列化与反序列化。
+- 支持 STDIO、HTTP/SSE、Streamable-HTTP 等传输实现。
+- 为上层会话和协议操作提供通信基础。
+
+下图将三层放在一起，重点看客户端、服务端如何通过会话层复用不同的传输实现。
+
+[![MCP Java SDK 三层架构：客户端和服务端层、会话层与传输层的对应关系](/images/frameworks/spring-ai/mcp/mcp-stack.svg)](/images/frameworks/spring-ai/mcp/mcp-stack.svg)
+
+<a id="sdk-client"></a>
+
+### MCP 客户端
+
+[MCP Client](https://java.sdk.modelcontextprotocol.io/latest/client/) 负责建立和管理与服务端的连接，包括：
+
+- 协议版本协商与能力协商。
+- JSON-RPC 通信和消息传输。
+- 工具发现与调用、资源访问和管理、提示词交互。
+- 可选的根目录（Roots）管理与采样（Sampling）支持。
+- 同步与异步操作。
+- STDIO 进程通信、基于 Java HttpClient 的 SSE，以及基于 WebFlux 的响应式 SSE 等传输实现。
+
+下图展示 Java AI 应用如何通过多条 MCP 连接，访问远程服务和本地工具。
+
+[![Java MCP 客户端架构：Java AI 应用通过 MCP 客户端连接远程服务、本地文件和 SQLite 工具](/images/frameworks/spring-ai/mcp/java-mcp-client-architecture.jpg)](/images/frameworks/spring-ai/mcp/java-mcp-client-architecture.jpg)
+
+<a id="sdk-server"></a>
+
+### MCP 服务端
+
+[MCP Server](https://java.sdk.modelcontextprotocol.io/latest/server/) 向客户端提供特定领域的能力，包括：
+
+- 工具发布与发现、通过 URI 访问资源、提示词模板。
+- 与客户端协商能力、发送结构化日志和通知。
+- 并发客户端连接管理，以及同步与异步 API。
+- STDIO、Streamable-HTTP、无状态 Streamable-HTTP 和 SSE 传输。
+
+下图对比早期 SSE 与 STDIO 的部署关系。右侧的“Single Process”是图中的部署示意；Java STDIO 客户端通常仍会启动独立的服务端子进程，不表示客户端与服务端运行在同一 JVM。
+
+[![Java MCP 服务端部署对比：SSE 服务接受多个客户端连接，STDIO 通过标准流连接本地服务端](/images/frameworks/spring-ai/mcp/java-mcp-server-architecture.jpg)](/images/frameworks/spring-ai/mcp/java-mcp-server-architecture.jpg)
+
+直接使用底层 API 时，查阅 [MCP Java SDK 文档](https://java.sdk.modelcontextprotocol.io/latest/)；使用 Spring Boot 时，优先使用前面的 Starter。
+
+<a id="migration-reference"></a>
+
+## 三、升级与延伸参考（按需查阅）
+
+从旧版本迁移时核对依赖坐标、包名和 SDK 版本。新项目遵循 Spring AI BOM，无需把历史迁移基线当成手动锁定版本。
+
 <a id="_upgrading_to_spring_ai_2_0"></a>
 
-## 升级到 Spring AI 2.0
+### 升级到 Spring AI 2.0
 
 Spring AI 2.0 将 Spring 专用 MCP 传输实现 `mcp-spring-webflux` 和 `mcp-spring-webmvc` 从 MCP Java SDK 移入 Spring AI 项目。直接引用这些依赖或类的应用，需要更新依赖坐标和 Java import。
 
 <a id="_maven_dependency_group_id_change"></a>
 
-### Maven 依赖坐标变化
+#### Maven 依赖坐标变化
 
 两个传输模块的 groupId 从 `io.modelcontextprotocol.sdk` 改为 `org.springframework.ai`。
 
@@ -205,7 +231,7 @@ Spring AI 2.0 将 Spring 专用 MCP 传输实现 `mcp-spring-webflux` 和 `mcp-s
 
 <a id="_java_package_relocation"></a>
 
-### Java 包名迁移
+#### Java 包名迁移
 
 服务端传输类迁入以下包：
 
@@ -243,19 +269,19 @@ import org.springframework.ai.mcp.client.webflux.transport.WebClientStreamableHt
 
 <a id="_mcp_sdk_version_requirement"></a>
 
-### MCP SDK 版本
+#### MCP SDK 版本
 
 升级到 Spring AI 2.0 时，MCP Java SDK 也离开了旧的 `0.18.x` 版本线。来源的迁移说明使用 `1.0.0 RC1` 及以后版本作为当时的升级基线；这不是当前应用应手动固定的 SDK 版本。Spring AI 2.0.2 的父 POM 已使用 MCP SDK `2.1.0`，实际项目应遵循对应 Spring AI BOM 的版本管理，见 [2.0.2 发布依赖](https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-mcp/2.0.2/spring-ai-mcp-2.0.2.pom)。
 
 <a id="_spring_boot_auto_configuration_users"></a>
 
-### 使用 Boot 自动配置的项目
+#### 使用 Boot 自动配置的项目
 
 如果项目完全依赖 Starter 自动配置，通常无需修改 Java 代码：自动配置已经适配新包名。直接声明过旧传输模块的项目，仍需按上面的规则更新 `pom.xml` 或 `build.gradle`。
 
 <a id="_additional_resources"></a>
 
-## 延伸阅读
+### 延伸阅读
 
 - [MCP 注解](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-overview.html)
 - [MCP Client Boot Starter](/frameworks/spring-ai/mcp/client/)

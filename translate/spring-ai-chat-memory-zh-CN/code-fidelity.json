@@ -4,237 +4,271 @@
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 1
   },
   {
     "block": 2,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 4
   },
   {
     "block": 3,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 5
   },
   {
     "block": 4,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 2
   },
   {
     "block": 5,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 3
   },
   {
     "block": 6,
     "language": "xml",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 8
   },
   {
     "block": 7,
     "language": "groovy",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 9
   },
   {
     "block": 8,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 10
   },
   {
     "block": 9,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 11
   },
   {
     "block": 10,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 12
   },
   {
     "block": 11,
     "language": "properties",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "合法 properties 三选一，注释独占一行"
+    "change": "合法 properties 三选一，注释独占一行",
+    "targetBlock": 13
   },
   {
     "block": 12,
     "language": "properties",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 14
   },
   {
     "block": 13,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 15
   },
   {
     "block": 14,
     "language": "xml",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 16
   },
   {
     "block": 15,
     "language": "groovy",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 17
   },
   {
     "block": 16,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 18
   },
   {
     "block": 17,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "补 Cassandra 配置构建器的 build()"
+    "change": "补 Cassandra 配置构建器的 build()",
+    "targetBlock": 19
   },
   {
     "block": 18,
     "language": "xml",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 20
   },
   {
     "block": 19,
     "language": "groovy",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 21
   },
   {
     "block": 20,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 22
   },
   {
     "block": 21,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 23
   },
   {
     "block": 22,
     "language": "xml",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 24
   },
   {
     "block": 23,
     "language": "groovy",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 25
   },
   {
     "block": 24,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 26
   },
   {
     "block": 25,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 27
   },
   {
     "block": 26,
     "language": "xml",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 28
   },
   {
     "block": 27,
     "language": "groovy",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 29
   },
   {
     "block": 28,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 30
   },
   {
     "block": 29,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 31
   },
   {
     "block": 30,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 32
   },
   {
     "block": 31,
     "language": "properties",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 33
   },
   {
     "block": 32,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 6
   },
   {
     "block": 33,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 7
   },
   {
     "block": 34,
     "language": "java",
     "result": "PASS",
     "comparison": "comments-and-whitespace-normalized",
-    "change": "API 代码与来源一致"
+    "change": "API 代码与来源一致",
+    "targetBlock": 34
   }
 ]

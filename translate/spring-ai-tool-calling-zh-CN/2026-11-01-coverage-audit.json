@@ -1,0 +1,2549 @@
+{
+  "date": "2026-11-01",
+  "fetchedAtUtc": "2026-10-31T19:05:11.002237+00:00",
+  "result": "PASS_NO_OMISSIONS_FOUND",
+  "scope": "四个官网单页正文、提示、代码、图片及表格；排除网站导航、面包屑、页脚和前后篇链接，不包含所有外链页面全文。",
+  "method": "人工逐节核对语义、限制与表格含义；脚本辅助验证标题锚点、完整代码映射、表格技术标识、来源正文及图片字节。锚点或数量相同不能单独证明语义完整。",
+  "counts": {
+    "pages": 4,
+    "sourceSubsections": 85,
+    "codeBlocks": 75,
+    "codeMatchesExceptCommentsAndWhitespace": 63,
+    "documentedCodeAdaptations": 12,
+    "images": 7,
+    "tables": 12,
+    "tableRows": 51,
+    "propertyRows": 17,
+    "builderOptionRows": 11,
+    "staticAssertions": 34
+  },
+  "pages": [
+    {
+      "slug": "tool-calling",
+      "label": "工具调用基础",
+      "officialUrl": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+      "officialHtmlSha256": "28dc8c42c551264a22cfe2654d45abe209492027c8ae67e1662d2bd8f940c65a",
+      "officialBodyTextSha256": "5190367b68bded2fd71e62132da08c3e18f65637a30b4f2efb852894659fa37b",
+      "cachedArticleBodyMatchesLive": true,
+      "pageSha256": "dd418b27461af2a7e2d1b14fc4b37e6e579f79046109f0f27321b6b0ac4aa436",
+      "pageUnchanged": true,
+      "translationCopiesMatchPage": true,
+      "sections": [
+        {
+          "sourceId": "_architecture_overview",
+          "sourceTitle": "Architecture Overview",
+          "targetTitle": "架构概览",
+          "targetAnchor": "_architecture_overview",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "quick-start",
+          "sourceTitle": "Quick Start",
+          "targetTitle": "快速入门",
+          "targetAnchor": "quick-start",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "defining-tools",
+          "sourceTitle": "Defining Tools",
+          "targetTitle": "定义工具",
+          "targetAnchor": "defining-tools",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "declarative-tool",
+          "sourceTitle": "Declarative: @Tool",
+          "targetTitle": "声明式：@Tool",
+          "targetAnchor": "declarative-tool",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "method-tool-callback",
+          "sourceTitle": "Programmatic: MethodToolCallback",
+          "targetTitle": "编程式：MethodToolCallback",
+          "targetAnchor": "method-tool-callback",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "function-tool-callback",
+          "sourceTitle": "Programmatic: FunctionToolCallback",
+          "targetTitle": "编程式：FunctionToolCallback",
+          "targetAnchor": "function-tool-callback",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-callback-beans",
+          "sourceTitle": "ToolCallback Beans",
+          "targetTitle": "ToolCallback Bean",
+          "targetAnchor": "tool-callback-beans",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "passing-tools",
+          "sourceTitle": "Passing Tools to ChatClient",
+          "targetTitle": "向 ChatClient 提供工具",
+          "targetAnchor": "passing-tools",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "the-tool-calling-loop",
+          "sourceTitle": "The Tool Calling Loop",
+          "targetTitle": "工具调用循环",
+          "targetAnchor": "the-tool-calling-loop",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "memory-and-the-tool-loop",
+          "sourceTitle": "Memory and the Tool Loop",
+          "targetTitle": "记忆与工具循环",
+          "targetAnchor": "memory-and-the-tool-loop",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "outside-the-loop",
+          "sourceTitle": "Outside the Loop (default)",
+          "targetTitle": "循环外：默认行为",
+          "targetAnchor": "outside-the-loop",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "inside-the-loop",
+          "sourceTitle": "Inside the Loop",
+          "targetTitle": "循环内：保留工具消息",
+          "targetAnchor": "inside-the-loop",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "backend-compatibility",
+          "sourceTitle": "Backend Compatibility",
+          "targetTitle": "存储兼容性",
+          "targetAnchor": "backend-compatibility",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "scaling-to-hundreds-of-tools",
+          "sourceTitle": "Scaling to Hundreds of Tools",
+          "targetTitle": "扩展到大量工具",
+          "targetAnchor": "scaling-to-hundreds-of-tools",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "mcp-tools",
+          "sourceTitle": "MCP Tools",
+          "targetTitle": "MCP 工具",
+          "targetAnchor": "mcp-tools",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "consuming-mcp-server-tools",
+          "sourceTitle": "Consuming MCP Server Tools",
+          "targetTitle": "使用 MCP 服务器工具",
+          "targetAnchor": "consuming-mcp-server-tools",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "exposing-mcp-server-tools",
+          "sourceTitle": "Exposing Spring Tools as an MCP Server",
+          "targetTitle": "将 Spring 工具暴露为 MCP 服务器",
+          "targetAnchor": "exposing-mcp-server-tools",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "combining-local-and-mcp-tools",
+          "sourceTitle": "Combining Local and MCP Tools",
+          "targetTitle": "混用本地工具与 MCP 工具",
+          "targetAnchor": "combining-local-and-mcp-tools",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-argument-augmentation",
+          "sourceTitle": "Tool Argument Augmentation",
+          "targetTitle": "工具参数增强",
+          "targetAnchor": "tool-argument-augmentation",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "augmentation-quick-start",
+          "sourceTitle": "Quick Start",
+          "targetTitle": "快速使用",
+          "targetAnchor": "augmentation-quick-start",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "augmentation-components",
+          "sourceTitle": "Core Components",
+          "targetTitle": "核心组件",
+          "targetAnchor": "augmentation-components",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "user-controlled-tool-execution",
+          "sourceTitle": "User-Controlled Tool Execution",
+          "targetTitle": "自行控制工具执行",
+          "targetAnchor": "user-controlled-tool-execution",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "extending-the-loop",
+          "sourceTitle": "Extending the Loop: Custom ToolAdvisor",
+          "targetTitle": "扩展循环：自定义 ToolAdvisor",
+          "targetAnchor": "extending-the-loop",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "hook-methods",
+          "sourceTitle": "Hook Methods",
+          "targetTitle": "钩子方法",
+          "targetAnchor": "hook-methods",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "custom-tool-advisor-autoconfig",
+          "sourceTitle": "Auto-Configuration Integration",
+          "targetTitle": "接入自动配置",
+          "targetAnchor": "custom-tool-advisor-autoconfig",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-specification-reference",
+          "sourceTitle": "Tool Specification Reference",
+          "targetTitle": "工具规格参考",
+          "targetAnchor": "tool-specification-reference",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-callback",
+          "sourceTitle": "ToolCallback",
+          "targetTitle": "ToolCallback",
+          "targetAnchor": "tool-callback",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-definition",
+          "sourceTitle": "ToolDefinition",
+          "targetTitle": "ToolDefinition",
+          "targetAnchor": "tool-definition",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "json-schema",
+          "sourceTitle": "JSON Schema",
+          "targetTitle": "JSON Schema",
+          "targetAnchor": "json-schema",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-context",
+          "sourceTitle": "Tool Context",
+          "targetTitle": "工具上下文",
+          "targetAnchor": "tool-context",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "return-direct",
+          "sourceTitle": "Return Direct",
+          "targetTitle": "直接返回结果",
+          "targetAnchor": "return-direct",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "result-conversion",
+          "sourceTitle": "Result Conversion",
+          "targetTitle": "结果转换",
+          "targetAnchor": "result-conversion",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "method-tool-limitations",
+          "sourceTitle": "Method Tool Limitations",
+          "targetTitle": "方法工具的类型限制",
+          "targetAnchor": "method-tool-limitations",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "exception-handling",
+          "sourceTitle": "Exception Handling",
+          "targetTitle": "异常处理",
+          "targetAnchor": "exception-handling",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-call-limits",
+          "sourceTitle": "Tool Call Limits",
+          "targetTitle": "工具调用次数限制",
+          "targetAnchor": "tool-call-limits",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "_counting",
+          "sourceTitle": "Counting",
+          "targetTitle": "如何计数",
+          "targetAnchor": "_counting",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "_behavior_when_a_limit_is_exceeded",
+          "sourceTitle": "Behavior When a Limit Is Exceeded",
+          "targetTitle": "达到上限后如何处理",
+          "targetAnchor": "_behavior_when_a_limit_is_exceeded",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-resolution",
+          "sourceTitle": "Tool Resolution",
+          "targetTitle": "工具解析",
+          "targetAnchor": "tool-resolution",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "observability",
+          "sourceTitle": "Observability",
+          "targetTitle": "可观测性",
+          "targetAnchor": "observability",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "logging",
+          "sourceTitle": "Logging",
+          "targetTitle": "日志",
+          "targetAnchor": "logging",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "chatmodel-tool-calling",
+          "sourceTitle": "ChatModel Tool Calling",
+          "targetTitle": "直接使用 ChatModel 调用工具",
+          "targetAnchor": "chatmodel-tool-calling",
+          "coverage": "COVERED"
+        }
+      ],
+      "codeBlocks": [
+        {
+          "sourceBlock": 1,
+          "targetBlock": 1,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "用 ZonedDateTime.now(userZone) 取得用户时区的当前时间，避免错误地重新标记本地时间。；2026-11-01 复审：补全 java.time 三个 import；保留此前时区修正。",
+          "targetSha256": "2dc19b963367b65fa6f52b823bf3bd123ffdc7d3dd60fa6889d2e899e7e76f98"
+        },
+        {
+          "sourceBlock": 2,
+          "targetBlock": 2,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "4b6f4673c2f55f0a612f30544ca26c7037bd4bd47cf8a1bfc052d6c3b3371fe2"
+        },
+        {
+          "sourceBlock": 3,
+          "targetBlock": 3,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "cea2cf51f02b8c8364f0b03cfe5b3745535c5bd3ddbe3433603dac3e7f64b800"
+        },
+        {
+          "sourceBlock": 4,
+          "targetBlock": 4,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "12346502d9401c2ad8a4ede0497632c33ed1e9683d2d3da644a7e0e60d2d63d9"
+        },
+        {
+          "sourceBlock": 5,
+          "targetBlock": 27,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "0771d41d124b2195fa73eba4cf460319fb0ff33f96777128663f20503d20886c"
+        },
+        {
+          "sourceBlock": 6,
+          "targetBlock": 28,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "553fef7352fea9af06dd36fc9211d61bdbf103ab7e9a1e977f2e2dbfc91a2111"
+        },
+        {
+          "sourceBlock": 7,
+          "targetBlock": 13,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "a92368f31567f0c4a46e09b6d14c6a06408bf37299f990ddbe4b0be7ea29ccc4"
+        },
+        {
+          "sourceBlock": 8,
+          "targetBlock": 14,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "929c4affdc70dfc57aadea70e2d0ed04bdb7e1b96861a2a47040cd26dbb97e22"
+        },
+        {
+          "sourceBlock": 9,
+          "targetBlock": 5,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "80648d107fb49261ecc1f729eefb1dd008cd67e2f9d7653e3baff4ea01363ecc"
+        },
+        {
+          "sourceBlock": 10,
+          "targetBlock": 15,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "5df101ee0003faea9b6cf40d2936843dff227ec073d9a23aa3946dd3bb7e1501"
+        },
+        {
+          "sourceBlock": 11,
+          "targetBlock": 16,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "7bac0a57bb65bf2ca2bc967f3b7299d43dab7adac824b22ff00db42a02bf9599"
+        },
+        {
+          "sourceBlock": 12,
+          "targetBlock": 30,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "d879a15976d35b46621a7ccac34cfdcae25b5176665830492cec1bb84bec2305"
+        },
+        {
+          "sourceBlock": 13,
+          "targetBlock": 17,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "bca472bdc2ade12e5607f4bc0fce79808e1d2daadb94d860a7b9e05023a853c7"
+        },
+        {
+          "sourceBlock": 14,
+          "targetBlock": 18,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "587529e0c9b2c164cf56364116e83e6729c34174c10ce56af34e16bc2ae60627"
+        },
+        {
+          "sourceBlock": 15,
+          "targetBlock": 19,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "caf2992db0d7ef5311ce241baabd415fab33065590507c7ccff0b0d66f003a69"
+        },
+        {
+          "sourceBlock": 16,
+          "targetBlock": 20,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "4938e4888ffa2351cd873798e56cb2834f29ebf46c6c9c4e788a0f221ef1e30b"
+        },
+        {
+          "sourceBlock": 17,
+          "targetBlock": 21,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "c7a6a464466686957597d54a483423988272165e920c3829f1c37060c192303c"
+        },
+        {
+          "sourceBlock": 18,
+          "targetBlock": 22,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "fac913b32f4788361d3675e40be8b2cee3000ed7c92947be315f7439e9403d37"
+        },
+        {
+          "sourceBlock": 19,
+          "targetBlock": 31,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "2988bd30d08d0b95fc88b404eaddc286733de612a44b8e9d94880d3d6264f518"
+        },
+        {
+          "sourceBlock": 20,
+          "targetBlock": 32,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "e59950ae234143676d13bcdc4473e84bd9c3f75ef11a08145348998b418e619d"
+        },
+        {
+          "sourceBlock": 21,
+          "targetBlock": 33,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "ChatClient.options 传入 chatOptions.mutate()；手动循环处理 returnDirect 并返回工具结果。；2026-11-01 复审：补明关闭自动注册的前提；仅改注释。",
+          "targetSha256": "59e2e7a79241c65e6efb7e6e2e873cc63d14771aeae7be674bd06916d5204dc6"
+        },
+        {
+          "sourceBlock": 22,
+          "targetBlock": 34,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "f32b8ec0b956e41263578c2a12c22190d45986683c47c3186a332354ddb0f305"
+        },
+        {
+          "sourceBlock": 23,
+          "targetBlock": 35,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "670c05d6bbe341ede9e18635602364fcdb624c8dbf6c5b3b2bd8fb64c119c8f8"
+        },
+        {
+          "sourceBlock": 24,
+          "targetBlock": 24,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "ee95676176f10b957dee9dc73121a01f2e4b1058ec26b43205df0cd8ca22df0d"
+        },
+        {
+          "sourceBlock": 25,
+          "targetBlock": 25,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "42931a8dbd62d3fc6ab10c0018aa6ac6d1fde93aa58e2fcdcfa5188f023170d6"
+        },
+        {
+          "sourceBlock": 26,
+          "targetBlock": 26,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "9e1a056ed68d603a4b1f2943e255a65d1a7f30445c39ecff2abf692bc78b64bf"
+        },
+        {
+          "sourceBlock": 27,
+          "targetBlock": 6,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "632d3ee9ff9c1fd15ed9a231594393dba3e61055a2699ffddec47c4145ee6c3d"
+        },
+        {
+          "sourceBlock": 28,
+          "targetBlock": 7,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "4ed2e53cbed13e783ee06ae67366c2f2314b7474f5d36f2ffdc60c1ddefaa708"
+        },
+        {
+          "sourceBlock": 29,
+          "targetBlock": 8,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "83e77d96cef26b9ee55949f60279a7861c1694e1beb35289ac6869f1ffa6ce56"
+        },
+        {
+          "sourceBlock": 30,
+          "targetBlock": 9,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "67b7438588a5294abed166d5a7177b90ceb8b8478bc2963d138a9739512902ef"
+        },
+        {
+          "sourceBlock": 31,
+          "targetBlock": 29,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "327c08e3ddacc15221f97da4ac0150537c399b6b3c214a05840981eecda80050"
+        },
+        {
+          "sourceBlock": 32,
+          "targetBlock": 10,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "0b1e2ffedae6cf246b6912400984c8121f80ee27ea4eac68baea786c186285ef"
+        },
+        {
+          "sourceBlock": 33,
+          "targetBlock": 11,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "d034262a669c2cd47bfe61cd0d8cc44d0e45805acf7930750ae97324ba192645"
+        },
+        {
+          "sourceBlock": 34,
+          "targetBlock": 12,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "5f1ae5c89ae7834e736592a3357ef5f08378723614d9694cfb1ef48c4ec88191"
+        },
+        {
+          "sourceBlock": 35,
+          "targetBlock": 36,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "9890ac7e57d46ff9bdb2f64d385352e1f2e02a494562787aba7098f2aeff7793"
+        },
+        {
+          "sourceBlock": 36,
+          "targetBlock": 37,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "628ae14e96538998f5a423c377ca2c25fba1eda7e8111446b942198e6a214cf2"
+        },
+        {
+          "sourceBlock": 37,
+          "targetBlock": 38,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "2e0583747cb9f188cf906db8470ff7a1557a5dab23fd77cd45feac9b5715c7b6"
+        },
+        {
+          "sourceBlock": 38,
+          "targetBlock": 23,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "284e8b682109ad18cf9e124316c6623103caec47c47e5eccef7cfd90e9741d67"
+        }
+      ],
+      "tables": [
+        {
+          "sourceTable": 1,
+          "targetAnchor": "defining-tools",
+          "header": ["Style", "Use when", "Section"],
+          "rows": [
+            {
+              "sourceCells": [
+                "Declarative @Tool",
+                "You own the method and want minimal ceremony",
+                "Declarative"
+              ],
+              "technicalIdentifiers": ["@Tool"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "MethodToolCallback",
+                "You need programmatic control over a method-backed tool",
+                "Programmatic: Method"
+              ],
+              "technicalIdentifiers": ["MethodToolCallback"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "FunctionToolCallback",
+                "You want to expose a Function / Supplier / Consumer lambda or method reference",
+                "Programmatic: Function"
+              ],
+              "technicalIdentifiers": ["FunctionToolCallback"],
+              "coverage": "COVERED"
+            }
+          ]
+        },
+        {
+          "sourceTable": 2,
+          "targetAnchor": "hook-methods",
+          "header": ["Hook", "When it fires"],
+          "rows": [
+            {
+              "sourceCells": [
+                "doInitializeLoop / doInitializeLoopStream",
+                "Once, before the first iteration"
+              ],
+              "technicalIdentifiers": ["doInitializeLoop", "doInitializeLoopStream"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": ["doBeforeCall / doBeforeStream", "Before each iteration"],
+              "technicalIdentifiers": ["doBeforeCall", "doBeforeStream"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": ["doAfterCall / doAfterStream", "After each iteration"],
+              "technicalIdentifiers": ["doAfterCall", "doAfterStream"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": ["doFinalizeLoop / doFinalizeLoopStream", "Once, after the loop ends"],
+              "technicalIdentifiers": ["doFinalizeLoop", "doFinalizeLoopStream"],
+              "coverage": "COVERED"
+            }
+          ]
+        },
+        {
+          "sourceTable": 3,
+          "targetAnchor": "exception-handling",
+          "header": ["Property", "Description", "Default"],
+          "rows": [
+            {
+              "sourceCells": [
+                "spring.ai.tools.throw-exception-on-error",
+                "If true , all tool errors are thrown for the caller to handle. If false , errors are sent back to the model as messages.",
+                "false"
+              ],
+              "technicalIdentifiers": ["spring.ai.tools.throw-exception-on-error"],
+              "coverage": "COVERED"
+            }
+          ]
+        },
+        {
+          "sourceTable": 4,
+          "targetAnchor": "_behavior_when_a_limit_is_exceeded",
+          "header": ["Property", "Description", "Default"],
+          "rows": [
+            {
+              "sourceCells": [
+                "spring.ai.tools.limits.max-calls-per-tool-default",
+                "Max calls to one tool per turn. -1 disables.",
+                "40"
+              ],
+              "technicalIdentifiers": ["spring.ai.tools.limits.max-calls-per-tool-default"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.tools.limits.max-calls-per-tool.<name>",
+                "Per-tool override; -1 exempts that tool.",
+                "—"
+              ],
+              "technicalIdentifiers": ["spring.ai.tools.limits.max-calls-per-tool.<name>"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.tools.limits.excluded-tools",
+                "Tool names exempt from the per-tool limit.",
+                "—"
+              ],
+              "technicalIdentifiers": ["spring.ai.tools.limits.excluded-tools"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.tools.limits.max-total-tool-calls",
+                "Max tool calls across all tools per turn. -1 disables.",
+                "150"
+              ],
+              "technicalIdentifiers": ["spring.ai.tools.limits.max-total-tool-calls"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.tools.limits.on-limit-exceeded",
+                "THROW or RETURN_ERROR_RESPONSE .",
+                "THROW"
+              ],
+              "technicalIdentifiers": ["spring.ai.tools.limits.on-limit-exceeded"],
+              "coverage": "COVERED"
+            }
+          ]
+        },
+        {
+          "sourceTable": 5,
+          "targetAnchor": "tool-resolution",
+          "header": ["Property", "Description", "Default"],
+          "rows": [
+            {
+              "sourceCells": [
+                "spring.ai.tools.resolution.fallback.enabled",
+                "If true , a requested tool that is absent from the request’s tool callbacks may be resolved by name through the ToolCallbackResolver and executed. If false , only the tools attached to the request can be executed.",
+                "false"
+              ],
+              "technicalIdentifiers": ["spring.ai.tools.resolution.fallback.enabled"],
+              "coverage": "COVERED"
+            }
+          ]
+        }
+      ],
+      "images": [
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-agent-loop.png",
+          "path": "public/images/frameworks/spring-ai/tools/spring-ai-agent-loop.png",
+          "sha256": "9b217f3deb243a74b546200d9a1502f94b075aa5dced7d65f7c2cfa0b0229491",
+          "width": 738,
+          "height": 499,
+          "liveSha256": "9b217f3deb243a74b546200d9a1502f94b075aa5dced7d65f7c2cfa0b0229491",
+          "localSha256": "9b217f3deb243a74b546200d9a1502f94b075aa5dced7d65f7c2cfa0b0229491",
+          "matchesLive": true,
+          "matchesManifest": true
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-calling-advisor-flow.png",
+          "path": "public/images/frameworks/spring-ai/tools/spring-ai-tool-calling-advisor-flow.png",
+          "sha256": "e710f1280fd0a407339de3c2cd21a168b25a87054c7895be5b9e2ba3ab45b477",
+          "width": 3370,
+          "height": 1409,
+          "liveSha256": "e710f1280fd0a407339de3c2cd21a168b25a87054c7895be5b9e2ba3ab45b477",
+          "localSha256": "e710f1280fd0a407339de3c2cd21a168b25a87054c7895be5b9e2ba3ab45b477",
+          "matchesLive": true,
+          "matchesManifest": true
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-calling-with-inside-memory.png",
+          "path": "public/images/frameworks/spring-ai/tools/spring-ai-tool-calling-with-inside-memory.png",
+          "sha256": "6d7b4c8df4e127e1942f725bbd7d981fdb53220aa9da82aaf10c246c5dc01adb",
+          "width": 5042,
+          "height": 2225,
+          "liveSha256": "6d7b4c8df4e127e1942f725bbd7d981fdb53220aa9da82aaf10c246c5dc01adb",
+          "localSha256": "6d7b4c8df4e127e1942f725bbd7d981fdb53220aa9da82aaf10c246c5dc01adb",
+          "matchesLive": true,
+          "matchesManifest": true
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-arg-augmenter.png",
+          "path": "public/images/frameworks/spring-ai/tools/spring-ai-tool-arg-augmenter.png",
+          "sha256": "e38ae90b0015f6a2310167aedc17f62572230d0745b9779ad91b8ecc97b0df49",
+          "width": 3248,
+          "height": 1690,
+          "liveSha256": "e38ae90b0015f6a2310167aedc17f62572230d0745b9779ad91b8ecc97b0df49",
+          "localSha256": "e38ae90b0015f6a2310167aedc17f62572230d0745b9779ad91b8ecc97b0df49",
+          "matchesLive": true,
+          "matchesManifest": true
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/_images/tools/tool-context.jpg",
+          "path": "public/images/frameworks/spring-ai/tools/tool-context.jpg",
+          "sha256": "333b1c9053230e47a2b6ee68db841376b7668379511d7c0a583de63dd7358115",
+          "width": 5314,
+          "height": 3010,
+          "liveSha256": "333b1c9053230e47a2b6ee68db841376b7668379511d7c0a583de63dd7358115",
+          "localSha256": "333b1c9053230e47a2b6ee68db841376b7668379511d7c0a583de63dd7358115",
+          "matchesLive": true,
+          "matchesManifest": true
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/_images/tools/return-direct.jpg",
+          "path": "public/images/frameworks/spring-ai/tools/return-direct.jpg",
+          "sha256": "698b421c51227ccaf17db08c5b333b08c3ddc7a31bc4b3d56feb3279ed9ed066",
+          "width": 5317,
+          "height": 3008,
+          "liveSha256": "698b421c51227ccaf17db08c5b333b08c3ddc7a31bc4b3d56feb3279ed9ed066",
+          "localSha256": "698b421c51227ccaf17db08c5b333b08c3ddc7a31bc4b3d56feb3279ed9ed066",
+          "matchesLive": true,
+          "matchesManifest": true
+        }
+      ]
+    },
+    {
+      "slug": "tool-calling-advisor",
+      "label": "工具调用 Advisor",
+      "officialUrl": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html",
+      "officialHtmlSha256": "2588b7a34bab0bb835095e88cc81cc469221a07e6d62559a40bb22a7180f7f82",
+      "officialBodyTextSha256": "0c5e7764aeea64d3c0dd9ad0cf00e3a692512e78f5d0c2ae339f5e564f488077",
+      "cachedArticleBodyMatchesLive": true,
+      "pageSha256": "e60da39510d11c808df44b44fe38ea00104122a18b28246a79a6361b4cc30148",
+      "pageUnchanged": true,
+      "translationCopiesMatchPage": true,
+      "sections": [
+        {
+          "sourceId": "overview",
+          "sourceTitle": "Overview",
+          "targetTitle": "概览",
+          "targetAnchor": "overview",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "builder",
+          "sourceTitle": "Builder",
+          "targetTitle": "构建器",
+          "targetAnchor": "builder",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "builder-options",
+          "sourceTitle": "Builder Options",
+          "targetTitle": "构建器选项",
+          "targetAnchor": "builder-options",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "checker",
+          "sourceTitle": "ToolExecutionEligibilityChecker",
+          "targetTitle": "ToolExecutionEligibilityChecker",
+          "targetAnchor": "checker",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "conversation-history",
+          "sourceTitle": "Conversation History Behavior",
+          "targetTitle": "内部历史的行为",
+          "targetAnchor": "conversation-history",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "hooks",
+          "sourceTitle": "Hook Methods",
+          "targetTitle": "钩子方法",
+          "targetAnchor": "hooks",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "call-hooks",
+          "sourceTitle": "Call-Path Hooks",
+          "targetTitle": "阻塞调用钩子",
+          "targetAnchor": "call-hooks",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "stream-hooks",
+          "sourceTitle": "Stream-Path Hooks",
+          "targetTitle": "流式调用钩子",
+          "targetAnchor": "stream-hooks",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "subclass-example",
+          "sourceTitle": "Subclass Example",
+          "targetTitle": "子类示例",
+          "targetAnchor": "subclass-example",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "single-tooladvisor-invariant",
+          "sourceTitle": "Single- ToolAdvisor Invariant",
+          "targetTitle": "单个 ToolAdvisor 约束",
+          "targetAnchor": "single-tooladvisor-invariant",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "user-controlled-streaming",
+          "sourceTitle": "User-Controlled Streaming",
+          "targetTitle": "手动控制流式工具执行",
+          "targetAnchor": "user-controlled-streaming",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "observing-the-tool-calling-loop",
+          "sourceTitle": "Observing the Tool-Calling Loop",
+          "targetTitle": "观察工具调用循环",
+          "targetAnchor": "observing-the-tool-calling-loop",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "return-direct",
+          "sourceTitle": "Return Direct",
+          "targetTitle": "直接返回工具结果",
+          "targetAnchor": "return-direct",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "opting-out",
+          "sourceTitle": "Opting Out of Auto-Registration",
+          "targetTitle": "关闭自动注册",
+          "targetAnchor": "opting-out",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "see-also",
+          "sourceTitle": "See Also",
+          "targetTitle": "相关阅读",
+          "targetAnchor": "see-also",
+          "coverage": "COVERED"
+        }
+      ],
+      "codeBlocks": [
+        {
+          "sourceBlock": 1,
+          "targetBlock": 4,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "4efb243599a614b64dda1978a7eee2b4162d016b4cc13d0f8c51420791ec5c77"
+        },
+        {
+          "sourceBlock": 2,
+          "targetBlock": 7,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "c20e9d6d0d28e0525fceab2469305dc77b24091232182067a5bdb3d54e3d602c"
+        },
+        {
+          "sourceBlock": 3,
+          "targetBlock": 8,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "finishReason 从首个 Generation metadata 读取，并保护空结果。",
+          "targetSha256": "b9f2e11a28127854c45135b1421fda271f86a7c24c29a50f9fea4ec1abe2b52d"
+        },
+        {
+          "sourceBlock": 4,
+          "targetBlock": 1,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "a3ae3147fd8e3c7cd40c378db5ac2a2ef2dcd0ff262e940f790285ac1eb9c778"
+        },
+        {
+          "sourceBlock": 5,
+          "targetBlock": 9,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "9c7e440f2fcd801547c8b251e837179c188de28719329e9d0ff36383ab2f5262"
+        },
+        {
+          "sourceBlock": 6,
+          "targetBlock": 10,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "cd4cfbd2b75d0f42cd5c9ca64d72e989e7285e3c915af267b239ec0aac6abc08"
+        },
+        {
+          "sourceBlock": 7,
+          "targetBlock": 11,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "补构造器、父类调用、审计字段及 Builder newCopy/copy，保留子类状态。",
+          "targetSha256": "57f9076ed1423d9a45639d204af50dab0f33743f4e0b8dc8871fb93eadd08821"
+        },
+        {
+          "sourceBlock": 8,
+          "targetBlock": 12,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "ChatClient.options 传 Builder；流式手动循环处理 returnDirect，保留生成结果。",
+          "targetSha256": "47fc410f2cc1319c19e01a7f8da8d3ef616dcfe4198f6462b9f58a2e623615a7"
+        },
+        {
+          "sourceBlock": 9,
+          "targetBlock": 5,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "补构造器、logger 和 Advisor.getName()。；2026-11-01 复审：观察示例只记录消息数量，不输出完整消息内容。",
+          "targetSha256": "d849bbb7ebc12e4cb20e6157e25f7dfda70f778a296ccb492ae2a76024fb3089"
+        },
+        {
+          "sourceBlock": 10,
+          "targetBlock": 6,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "1710742f953ee16e4361d5352ff66e551e66ce5ac0e8e293e759f52e0622bdde"
+        },
+        {
+          "sourceBlock": 11,
+          "targetBlock": 2,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "f32b8ec0b956e41263578c2a12c22190d45986683c47c3186a332354ddb0f305"
+        },
+        {
+          "sourceBlock": 12,
+          "targetBlock": 3,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "604185a0534b1058d01ce360f9aa38cb4e0adf414d7edde6c29431390815e166"
+        }
+      ],
+      "tables": [
+        {
+          "sourceTable": 1,
+          "targetAnchor": "builder-options",
+          "header": ["Option", "Description", "Default"],
+          "rows": [
+            {
+              "sourceCells": [
+                "toolCallingManager(ToolCallingManager)",
+                "The ToolCallingManager instance used to execute tool calls.",
+                "Auto-built instance"
+              ],
+              "technicalIdentifiers": ["toolCallingManager(ToolCallingManager)"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "toolExecutionEligibilityChecker(ToolExecutionEligibilityChecker)",
+                "Predicate that decides whether a model response should trigger another tool-call iteration. The default checks chatResponse.hasToolCalls() . Override to apply provider-specific stop-reason logic (e.g. checking a finish-reason field in addition to tool-call presence).",
+                "chatResponse → chatResponse != null && chatResponse.hasToolCalls()"
+              ],
+              "technicalIdentifiers": [
+                "toolExecutionEligibilityChecker(ToolExecutionEligibilityChecker)"
+              ],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "advisorOrder(int)",
+                "Order in which the advisor is applied in the chain. Must be between BaseAdvisor.HIGHEST_PRECEDENCE and BaseAdvisor.LOWEST_PRECEDENCE . Determines which other advisors run inside vs. outside the loop.",
+                "HIGHEST_PRECEDENCE + 300"
+              ],
+              "technicalIdentifiers": ["advisorOrder(int)"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "conversationHistoryEnabled(boolean)",
+                "Whether the advisor maintains conversation history internally across iterations. When true (the default), each LLM call inside the loop receives the full history of previous tool calls and responses, managed by the advisor itself. When false , the advisor only forwards the latest message — useful when a MemoryAdvisor inside the loop is taking over history management.",
+                "true"
+              ],
+              "technicalIdentifiers": ["conversationHistoryEnabled(boolean)"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "disableInternalConversationHistory()",
+                "Shortcut for conversationHistoryEnabled(false) .",
+                "—"
+              ],
+              "technicalIdentifiers": ["disableInternalConversationHistory()"],
+              "coverage": "COVERED"
+            }
+          ]
+        },
+        {
+          "sourceTable": 2,
+          "targetAnchor": "call-hooks",
+          "header": ["Hook", "When and what for"],
+          "rows": [
+            {
+              "sourceCells": [
+                "doInitializeLoop",
+                "Once, before the first iteration. Use to set up session-scoped state (indexes, caches, augmented prompts)."
+              ],
+              "technicalIdentifiers": ["doInitializeLoop"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "doBeforeCall",
+                "Before each iteration. Use to inject or remove tools, mutate options, or add per-iteration context. The returned request is what gets sent to the model."
+              ],
+              "technicalIdentifiers": ["doBeforeCall"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "doAfterCall",
+                "After each iteration’s model response. Use to record per-iteration observations or transform the response before the loop decides whether to continue."
+              ],
+              "technicalIdentifiers": ["doAfterCall"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "doFinalizeLoop",
+                "Once, after the loop ends. Use to emit aggregate metrics, clean up session state, or attach a final transformation."
+              ],
+              "technicalIdentifiers": ["doFinalizeLoop"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "doGetNextInstructionsForToolCall",
+                "Decides what messages the next iteration sends to the model. The default behavior depends on conversationHistoryEnabled : when true , returns the full conversation history; when false , returns only the system message and the latest tool response. This only affects what’s forwarded to the rest of the chain — tool call limits are always evaluated against the complete history for the current turn, independent of this setting."
+              ],
+              "technicalIdentifiers": ["doGetNextInstructionsForToolCall"],
+              "coverage": "COVERED"
+            }
+          ]
+        }
+      ],
+      "images": []
+    },
+    {
+      "slug": "tool-search-tool",
+      "label": "工具搜索",
+      "officialUrl": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html",
+      "officialHtmlSha256": "ff8d1e31e94ed5b6a3cf6aee5dee4e750be1289f5e00a00c5b0dec3209d38cb5",
+      "officialBodyTextSha256": "e1f8e2d9301fad3aa53ef360892b273bd24c26d56beef7d3d9cb85e95a7f219e",
+      "cachedArticleBodyMatchesLive": true,
+      "pageSha256": "0c1adbc39d3b3e1a93fa28e9f4ce09095bf0ca1f6683400028cc5b8ed10871a8",
+      "pageUnchanged": true,
+      "translationCopiesMatchPage": true,
+      "sections": [
+        {
+          "sourceId": "how-it-works",
+          "sourceTitle": "How It Works",
+          "targetTitle": "工作流程",
+          "targetAnchor": "how-it-works",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "when-to-use",
+          "sourceTitle": "When to Use",
+          "targetTitle": "何时使用",
+          "targetAnchor": "when-to-use",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "installation",
+          "sourceTitle": "Installation",
+          "targetTitle": "安装",
+          "targetAnchor": "installation",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "quick-start",
+          "sourceTitle": "Quick Start",
+          "targetTitle": "快速开始",
+          "targetAnchor": "quick-start",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "session-scoping",
+          "sourceTitle": "Session Scoping",
+          "targetTitle": "会话隔离",
+          "targetAnchor": "session-scoping",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "search-strategies",
+          "sourceTitle": "Search Strategies",
+          "targetTitle": "检索策略",
+          "targetAnchor": "search-strategies",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "vector-tool-index",
+          "sourceTitle": "VectorToolIndex (Semantic)",
+          "targetTitle": "VectorToolIndex：语义检索",
+          "targetAnchor": "vector-tool-index",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "lucene-tool-index",
+          "sourceTitle": "LuceneToolIndex (Keyword)",
+          "targetTitle": "LuceneToolIndex：关键词检索",
+          "targetAnchor": "lucene-tool-index",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "regex-tool-index",
+          "sourceTitle": "RegexToolIndex (Pattern)",
+          "targetTitle": "RegexToolIndex：模式匹配",
+          "targetAnchor": "regex-tool-index",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "configuration",
+          "sourceTitle": "Configuration",
+          "targetTitle": "配置",
+          "targetAnchor": "configuration",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-index-api",
+          "sourceTitle": "ToolIndex API",
+          "targetTitle": "ToolIndex API",
+          "targetAnchor": "tool-index-api",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "index-eviction",
+          "sourceTitle": "Index Eviction",
+          "targetTitle": "索引淘汰",
+          "targetAnchor": "index-eviction",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "spring-boot-auto-configuration",
+          "sourceTitle": "Spring Boot Auto-Configuration",
+          "targetTitle": "Spring Boot 自动配置",
+          "targetAnchor": "spring-boot-auto-configuration",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-index-auto-selection",
+          "sourceTitle": "ToolIndex Auto-Selection",
+          "targetTitle": "自动选择 ToolIndex",
+          "targetAnchor": "tool-index-auto-selection",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "properties-reference",
+          "sourceTitle": "Configuration Properties Reference",
+          "targetTitle": "配置属性参考",
+          "targetAnchor": "properties-reference",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "example-configurations",
+          "sourceTitle": "Example Configurations",
+          "targetTitle": "配置示例",
+          "targetAnchor": "example-configurations",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "see-also",
+          "sourceTitle": "See Also",
+          "targetTitle": "相关阅读",
+          "targetAnchor": "see-also",
+          "coverage": "COVERED"
+        }
+      ],
+      "codeBlocks": [
+        {
+          "sourceBlock": 1,
+          "targetBlock": 1,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "a6a5bb6497bf78d67b04b594f821619bc0a5a9452305ba0a28e19dddebbe475f"
+        },
+        {
+          "sourceBlock": 2,
+          "targetBlock": 2,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "7b9e179905f3fa3c852e7c706ca97ab9a41df56e644ddc533993c131bf7370ba"
+        },
+        {
+          "sourceBlock": 3,
+          "targetBlock": 3,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "41401f8642817d0ce40d1074283a104eded677bb812e3965d78a60e6c17d180b"
+        },
+        {
+          "sourceBlock": 4,
+          "targetBlock": 4,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "65d084f92ed877739cbc4be268b1efeba8d27e5e84993b3b213373fd4241ff10"
+        },
+        {
+          "sourceBlock": 5,
+          "targetBlock": 5,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "除注释及空白外与来源一致；2026-11-01 复审：入门例改用 RegexToolIndex；向量索引完整示例仍在策略节保留。",
+          "targetSha256": "79c963dec89dc98cf473aca3ce7c3fe4fcde38c04ea509abe3d4177ced697445"
+        },
+        {
+          "sourceBlock": 6,
+          "targetBlock": 6,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "fb5bd43e53f6ffc71273db593b3f2661a32838a2671b093626134615111f37b3"
+        },
+        {
+          "sourceBlock": 7,
+          "targetBlock": 7,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "3b3cb575dafb1694e8bad1907f9bc8a3d07bc4b89052cf75bbad3a47ee6a99b6"
+        },
+        {
+          "sourceBlock": 8,
+          "targetBlock": 14,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "06668e0cda08527f7476ed06a91bcc79079cfec832a657082454b67a96f5dba7"
+        },
+        {
+          "sourceBlock": 9,
+          "targetBlock": 13,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "d76cacccb0d698342c3a2c0c88c4058b3911fdf33120d8ec6fb1cea0a40270a0"
+        },
+        {
+          "sourceBlock": 10,
+          "targetBlock": 12,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "8f07750535f39e8059194019d3fc4a1fbe12c77b9085cdfcb9c9497404e6bcc9"
+        },
+        {
+          "sourceBlock": 11,
+          "targetBlock": 15,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "b9407cd476faf7990c23a02bb1a0f611239c85554e8276728cafbdf79fb458e4"
+        },
+        {
+          "sourceBlock": 12,
+          "targetBlock": 16,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "f4af2abdf0910940afe2f7205e5be242071dd557587fbb095f2406e6dee39497"
+        },
+        {
+          "sourceBlock": 13,
+          "targetBlock": 17,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "ffd5b511766da5457cf3dd315249f354dfe006ee4f1c9aa410073089f6fdf06e"
+        },
+        {
+          "sourceBlock": 14,
+          "targetBlock": 8,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "d879a15976d35b46621a7ccac34cfdcae25b5176665830492cec1bb84bec2305"
+        },
+        {
+          "sourceBlock": 15,
+          "targetBlock": 9,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "59185ded17ee78cd3cd98bc332e3dcb0d0056533c28a436323b5471e68127ced"
+        },
+        {
+          "sourceBlock": 16,
+          "targetBlock": 10,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "fbd16a8c422f32afbcb623cdfbaecab8157c84846de7f81e9888f4ccd9acec7e"
+        },
+        {
+          "sourceBlock": 17,
+          "targetBlock": 11,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "964882cf595960b4e62997cdb8efb65ee7a1d3b3e9e19246779bbe0c60c8b3fd"
+        }
+      ],
+      "tables": [
+        {
+          "sourceTable": 1,
+          "targetAnchor": "search-strategies",
+          "header": ["Strategy", "Implementation", "Best for"],
+          "rows": [
+            {
+              "sourceCells": [
+                "Semantic",
+                "VectorToolIndex",
+                "Natural-language queries, fuzzy matching, novel phrasings — when callers describe what they need rather than naming the tool"
+              ],
+              "technicalIdentifiers": ["VectorToolIndex"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "Keyword",
+                "LuceneToolIndex",
+                "Exact-term matching, fast retrieval, known vocabulary"
+              ],
+              "technicalIdentifiers": ["LuceneToolIndex"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "Regex",
+                "RegexToolIndex",
+                "Tool name patterns (e.g. get_*_data ); lightweight default with no dependencies"
+              ],
+              "technicalIdentifiers": ["RegexToolIndex"],
+              "coverage": "COVERED"
+            }
+          ]
+        },
+        {
+          "sourceTable": 2,
+          "targetAnchor": "configuration",
+          "header": ["Option", "Description", "Default"],
+          "rows": [
+            {
+              "sourceCells": [
+                "toolIndex(ToolIndex)",
+                "The search implementation to use.",
+                "Required"
+              ],
+              "technicalIdentifiers": ["toolIndex(ToolIndex)"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "maxResults(Integer)",
+                "Maximum tool references returned per toolSearchTool call. When null , the LLM decides (the built-in tool description hints at 5).",
+                "null"
+              ],
+              "technicalIdentifiers": ["maxResults(Integer)"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "systemMessageSuffix(String)",
+                "Custom prompt suffix appended to the system message to instruct the model on how to use toolSearchTool .",
+                "Built-in template (see DEFAULT_SYSTEM_PROMPT_SUFFIX.md )"
+              ],
+              "technicalIdentifiers": ["systemMessageSuffix(String)"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "referenceToolNameAccumulation(boolean)",
+                "When true , tool names discovered across all prior toolSearchTool calls are accumulated and injected. When false , only the results from the most recent turn are used (including all parallel toolSearchTool calls within that turn).",
+                "true"
+              ],
+              "technicalIdentifiers": ["referenceToolNameAccumulation(boolean)"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "sessionIdKeyName(String)",
+                "Advisor context key used to look up the conversation/session ID.",
+                "ChatMemory.CONVERSATION_ID"
+              ],
+              "technicalIdentifiers": ["sessionIdKeyName(String)"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "evictionStrategy(ToolIndexEvictionStrategy)",
+                "Determines when session tool indexes are freed. See Index Eviction .",
+                "LruEvictionStrategy(1000)"
+              ],
+              "technicalIdentifiers": ["evictionStrategy(ToolIndexEvictionStrategy)"],
+              "coverage": "COVERED"
+            }
+          ]
+        },
+        {
+          "sourceTable": 3,
+          "targetAnchor": "index-eviction",
+          "header": ["Strategy", "Behavior"],
+          "rows": [
+            {
+              "sourceCells": [
+                "LruEvictionStrategy(maxSessions) ( default )",
+                "Evicts the least-recently-used session once the number of active sessions exceeds maxSessions ."
+              ],
+              "technicalIdentifiers": ["LruEvictionStrategy(maxSessions)"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "NeverEvictStrategy.INSTANCE",
+                "Never evicts automatically; indexes persist until evictSession() is called explicitly."
+              ],
+              "technicalIdentifiers": ["NeverEvictStrategy.INSTANCE"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "AlwaysEvictStrategy.INSTANCE",
+                "Clears a session’s index before every request, forcing a full re-index each turn. Useful for testing or when tool sets change every request."
+              ],
+              "technicalIdentifiers": ["AlwaysEvictStrategy.INSTANCE"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "TtlEvictionStrategy(duration)",
+                "Evicts sessions whose last-access time exceeds the given TTL."
+              ],
+              "technicalIdentifiers": ["TtlEvictionStrategy(duration)"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "CompositeEvictionStrategy(strategies…​)",
+                "Delegates to multiple strategies; evicts a session if any delegate requests it."
+              ],
+              "technicalIdentifiers": ["CompositeEvictionStrategy(strategies…​)"],
+              "coverage": "COVERED"
+            }
+          ]
+        },
+        {
+          "sourceTable": 4,
+          "targetAnchor": "tool-index-auto-selection",
+          "header": ["Value", "Implementation", "Requirements"],
+          "rows": [
+            {
+              "sourceCells": ["regex ( default )", "RegexToolIndex", "No additional dependencies"],
+              "technicalIdentifiers": ["regex"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "lucene",
+                "LuceneToolIndex",
+                "org.apache.lucene:lucene-core on the classpath (bundled in the starter)"
+              ],
+              "technicalIdentifiers": ["lucene"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "vector",
+                "VectorToolIndex",
+                "A VectorStore bean in the application context"
+              ],
+              "technicalIdentifiers": ["vector"],
+              "coverage": "COVERED"
+            }
+          ]
+        },
+        {
+          "sourceTable": 5,
+          "targetAnchor": "properties-reference",
+          "header": ["Property", "Description", "Default"],
+          "rows": [
+            {
+              "sourceCells": [
+                "spring.ai.chat.client.tool-search-advisor.enabled",
+                "Enable the advisor. Replaces the default ToolCallingAdvisor when true .",
+                "false"
+              ],
+              "technicalIdentifiers": ["spring.ai.chat.client.tool-search-advisor.enabled"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.chat.client.tool-search-advisor.tool-index-type",
+                "ToolIndex implementation: regex , lucene , or vector .",
+                "regex"
+              ],
+              "technicalIdentifiers": ["spring.ai.chat.client.tool-search-advisor.tool-index-type"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.chat.client.tool-search-advisor.max-results",
+                "Maximum tool references returned per search call. null uses the built-in default.",
+                "null"
+              ],
+              "technicalIdentifiers": ["spring.ai.chat.client.tool-search-advisor.max-results"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.chat.client.tool-search-advisor.system-message-suffix",
+                "Custom prompt suffix appended to the system message. null uses the built-in template.",
+                "null"
+              ],
+              "technicalIdentifiers": [
+                "spring.ai.chat.client.tool-search-advisor.system-message-suffix"
+              ],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.chat.client.tool-search-advisor.reference-tool-name-accumulation",
+                "When true , accumulate tool names across all search turns; when false , keep only the most recent turn (all parallel calls within it included).",
+                "true"
+              ],
+              "technicalIdentifiers": [
+                "spring.ai.chat.client.tool-search-advisor.reference-tool-name-accumulation"
+              ],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.chat.client.tool-search-advisor.session-id-key-name",
+                "Advisor context key that carries the conversation/session ID.",
+                "chat_memory_conversation_id"
+              ],
+              "technicalIdentifiers": [
+                "spring.ai.chat.client.tool-search-advisor.session-id-key-name"
+              ],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.chat.client.tool-search-advisor.advisor-order",
+                "Position of this advisor in the advisor chain.",
+                "HIGHEST_PRECEDENCE + 300"
+              ],
+              "technicalIdentifiers": ["spring.ai.chat.client.tool-search-advisor.advisor-order"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.chat.client.tool-search-advisor.eviction.lru-max-sessions",
+                "Maximum active sessions retained by the LRU eviction strategy.",
+                "1000"
+              ],
+              "technicalIdentifiers": [
+                "spring.ai.chat.client.tool-search-advisor.eviction.lru-max-sessions"
+              ],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.chat.client.tool-search-advisor.eviction.ttl",
+                "TTL for idle sessions. When set, a composite LRU+TTL strategy is used. Accepts a java.time.Duration string (e.g. 30m , 1h ).",
+                "null"
+              ],
+              "technicalIdentifiers": ["spring.ai.chat.client.tool-search-advisor.eviction.ttl"],
+              "coverage": "COVERED"
+            },
+            {
+              "sourceCells": [
+                "spring.ai.chat.client.tool-search-advisor.lucene.min-score-threshold",
+                "Minimum Lucene score for a hit to be included. Applies when tool-index-type=lucene .",
+                "0.25"
+              ],
+              "technicalIdentifiers": [
+                "spring.ai.chat.client.tool-search-advisor.lucene.min-score-threshold"
+              ],
+              "coverage": "COVERED"
+            }
+          ]
+        }
+      ],
+      "images": [
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/_images/tools/spring-ai-tool-search-tool-calling-flow.png",
+          "path": "public/images/frameworks/spring-ai/tools/spring-ai-tool-search-tool-calling-flow.png",
+          "sha256": "ab2b7d04d76c103b85d0b9e7915943e07f94d37195121b50b3c94146e931d4d6",
+          "width": 1819,
+          "height": 1300,
+          "liveSha256": "ab2b7d04d76c103b85d0b9e7915943e07f94d37195121b50b3c94146e931d4d6",
+          "localSha256": "ab2b7d04d76c103b85d0b9e7915943e07f94d37195121b50b3c94146e931d4d6",
+          "matchesLive": true,
+          "matchesManifest": true
+        }
+      ]
+    },
+    {
+      "slug": "chatmodel-tool-calling",
+      "label": "ChatModel 工具调用",
+      "officialUrl": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html",
+      "officialHtmlSha256": "6a32c294dfb5574f8457829761dc9e1176e24e0d46c1bc76aa8fc750a839e5b3",
+      "officialBodyTextSha256": "8c0fe721b2a09b29b12cfcf27a7ee340393f21f4302fc61b45fa2e8d71076aaa",
+      "cachedArticleBodyMatchesLive": true,
+      "pageSha256": "e2e8fd24f8bdde38d482276ff03aa558bb8557a4865d37ec6eddfb37ad067f19",
+      "pageUnchanged": true,
+      "translationCopiesMatchPage": true,
+      "sections": [
+        {
+          "sourceId": "when-to-use",
+          "sourceTitle": "When to Use ChatModel Directly",
+          "targetTitle": "什么时候直接使用 ChatModel",
+          "targetAnchor": "when-to-use",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "no-internal-tool-execution",
+          "sourceTitle": "No Internal Tool Execution",
+          "targetTitle": "ChatModel 不执行工具",
+          "targetAnchor": "no-internal-tool-execution",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "passing-tools",
+          "sourceTitle": "Passing Tools to ChatModel",
+          "targetTitle": "向 ChatModel 提供工具",
+          "targetAnchor": "passing-tools",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "per-request-tools",
+          "sourceTitle": "Per-Request Tools",
+          "targetTitle": "请求级工具",
+          "targetAnchor": "per-request-tools",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "default-tools",
+          "sourceTitle": "Default Tools (Configured on the Model)",
+          "targetTitle": "模型默认工具",
+          "targetAnchor": "default-tools",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "override-semantics",
+          "sourceTitle": "Override Semantics",
+          "targetTitle": "覆盖规则",
+          "targetAnchor": "override-semantics",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "driving-the-loop-manually",
+          "sourceTitle": "Driving the Loop Manually",
+          "targetTitle": "手动驱动工具循环",
+          "targetAnchor": "driving-the-loop-manually",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "blocking-loop",
+          "sourceTitle": "Blocking",
+          "targetTitle": "阻塞调用",
+          "targetAnchor": "blocking-loop",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "streaming-loop",
+          "sourceTitle": "Streaming",
+          "targetTitle": "流式调用",
+          "targetAnchor": "streaming-loop",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "tool-context",
+          "sourceTitle": "Tool Context",
+          "targetTitle": "工具上下文",
+          "targetAnchor": "tool-context",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "return-direct",
+          "sourceTitle": "Return Direct",
+          "targetTitle": "直接返回工具结果",
+          "targetAnchor": "return-direct",
+          "coverage": "COVERED"
+        },
+        {
+          "sourceId": "see-also",
+          "sourceTitle": "See Also",
+          "targetTitle": "相关文档",
+          "targetAnchor": "see-also",
+          "coverage": "COVERED"
+        }
+      ],
+      "codeBlocks": [
+        {
+          "sourceBlock": 1,
+          "targetBlock": 1,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "7bd498d20884210fd86df8d09ca4822fa586b13aefb65700759d49f86b4859e8"
+        },
+        {
+          "sourceBlock": 2,
+          "targetBlock": 2,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "OllamaChatModel.Builder.options 接收 OllamaChatOptions。",
+          "targetSha256": "50f5c47dc635b3421b0a76ffe366df3aed0231fb2f86734e0bfb9ed19f200a8d"
+        },
+        {
+          "sourceBlock": 3,
+          "targetBlock": 3,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "使用 OllamaChatOptions 并补充 OllamaApi 构建。",
+          "targetSha256": "56248ae633f4b50e21f10e377ced6744810e982db310205581614f5b50f20fc2"
+        },
+        {
+          "sourceBlock": 4,
+          "targetBlock": 4,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "ebfbb17a664d1623307bbc289e0512d929e5bd30dfe28b966a0447eada61aea0"
+        },
+        {
+          "sourceBlock": 5,
+          "targetBlock": 5,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "除注释及空白外与来源一致；2026-11-01 复审：直接返回分支构建 ChatResponse 并退出，统一普通输出与工具输出。",
+          "targetSha256": "693264c5322d0438615e5ad11e9fdd41951b8ef3981055cbcd17e7df247a2d41"
+        },
+        {
+          "sourceBlock": 6,
+          "targetBlock": 6,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "流式循环处理空聚合和 returnDirect，直接返回工具生成结果。",
+          "targetSha256": "a7cd34e48efee857b9bc65e3648594bcc97cdcdd2525f1cf3579255104cffc40"
+        },
+        {
+          "sourceBlock": 7,
+          "targetBlock": 7,
+          "result": "MATCH_EXCEPT_COMMENTS_AND_WHITESPACE",
+          "note": "除注释及空白外与来源一致",
+          "targetSha256": "0151fe4c43037aab0940a93d1207ccc10db4c3d527add86e16d72595c88aea30"
+        },
+        {
+          "sourceBlock": 8,
+          "targetBlock": 8,
+          "result": "DOCUMENTED_ADAPTATION",
+          "note": "除注释及空白外与来源一致；2026-11-01 复审：直接返回示例使用 ChatResponse，不把全部历史作为答案。",
+          "targetSha256": "fb4a75b2f983b6e170391f19d54a5330fd03f0f192ed443ee6bfdffd9ac07b82"
+        }
+      ],
+      "tables": [],
+      "images": []
+    }
+  ],
+  "sourceApiEvidence": "既有 Maven Central 2.0.2 源码及注解补充证据，本轮重验 34 项仓内断言；未重新下载所有 API 制品。",
+  "intentionalDifferences": [
+    "工具 Advisor 约束解释为至多一个；关闭自动注册不删除已有显式实例。",
+    "JSON Schema 中 Jackson 注解元素、适用位置、Swagger 可选参数及结果转换器入口沿用已核验的 API 校正。",
+    "异常分类与重抛名单按既有源码说明，避免将 false 理解为捕获一切异常。",
+    "流式终结钩子只接收正常完成分支尾部发射，不能转换整条 Flux；与官网笼统说法的差异已说明。",
+    "搜索入门使用 RegexToolIndex，完整 VectorToolIndex 示例仍在语义检索章节；正则匹配名称及描述、maxResults 回退与索引默认数量按既有源码解释。",
+    "示例保留时区修正、OllamaChatOptions、options Builder、空聚合与 returnDirect 分支、构造器及 Builder 复制方法等已有改写。",
+    "观察示例记录消息数量而非完整消息，区分调用意图与真实执行成功；RAG 只有输出完整答案时才适合直接返回。",
+    "Recursive Advisors 已合入站内 Advisors，MCP Client/Server 链接指向对应译文；保留官方升级说明及扩展参考。"
+  ],
+  "contentChangesThisAudit": [],
+  "staticAssertionsPassed": 34,
+  "browser": {
+    "result": "PASS",
+    "localTargets": 153,
+    "pages": [
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "tool-calling",
+        "device": "desktop",
+        "result": "PASS",
+        "title": "Spring AI：工具调用",
+        "codeBlocks": 38,
+        "images": [
+          {
+            "src": "/images/frameworks/spring-ai/tools/spring-ai-agent-loop.png",
+            "alt": "智能体循环：模型根据任务请求工具，应用执行后将结果返回模型，循环直到得到答案",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.4789292935776872,
+            "naturalRatio": 1.4789579158316633
+          },
+          {
+            "src": "/images/frameworks/spring-ai/tools/spring-ai-tool-calling-advisor-flow.png",
+            "alt": "工具调用流程：ToolCallingAdvisor 请求模型、执行工具并回传结果，直到获得最终响应",
+            "loaded": true,
+            "fits": true,
+            "ratio": 2.3917263573134018,
+            "naturalRatio": 2.3917672107877928
+          },
+          {
+            "src": "/images/frameworks/spring-ai/tools/tool-context.jpg",
+            "alt": "工具上下文传递流程：模型只接收工具定义，ToolContext 经独立路径直接传给工具方法",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.7654112869238727,
+            "naturalRatio": 1.7654485049833888
+          },
+          {
+            "src": "/images/frameworks/spring-ai/tools/return-direct.jpg",
+            "alt": "工具结果直接返回流程：returnDirect 为 true 时跳过工具结果到模型的后续请求",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.7676077949976983,
+            "naturalRatio": 1.7676196808510638
+          },
+          {
+            "src": "/images/frameworks/spring-ai/tools/spring-ai-tool-calling-with-inside-memory.png",
+            "alt": "循环内记忆：每次工具迭代都会经过 ChatMemoryAdvisor，保存并恢复工具消息",
+            "loaded": true,
+            "fits": true,
+            "ratio": 2.2660568505950627,
+            "naturalRatio": 2.266067415730337
+          },
+          {
+            "src": "/images/frameworks/spring-ai/tools/spring-ai-tool-arg-augmenter.png",
+            "alt": "工具参数增强：模型填写扩展字段，消费者读取额外参数，原始工具接收其原有输入",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.9218802135468802,
+            "naturalRatio": 1.9218934911242604
+          }
+        ],
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "navGroups": ["工具调用", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "/frameworks/spring-ai/tools/tool-search-tool/",
+          "/frameworks/spring-ai/tools/chatmodel-tool-calling/",
+          "#quick-start",
+          "#defining-tools",
+          "#passing-tools",
+          "#the-tool-calling-loop",
+          "#json-schema",
+          "#tool-context",
+          "#return-direct",
+          "#exception-handling",
+          "#tool-call-limits",
+          "#core-usage",
+          "#common-integrations",
+          "#advanced-reference",
+          "/images/frameworks/spring-ai/tools/spring-ai-agent-loop.png",
+          "#一核心用法重点掌握",
+          "#架构概览",
+          "/frameworks/spring-ai/tools/tool-calling/#defining-tools",
+          "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "/frameworks/spring-ai/tools/tool-calling/#memory-and-the-tool-loop",
+          "/frameworks/spring-ai/tools/chatmodel-tool-calling/",
+          "#快速入门",
+          "#定义工具",
+          "/frameworks/spring-ai/tools/tool-calling/#declarative-tool",
+          "/frameworks/spring-ai/tools/tool-calling/#method-tool-callback",
+          "/frameworks/spring-ai/tools/tool-calling/#function-tool-callback",
+          "#声明式tool",
+          "/frameworks/spring-ai/tools/tool-calling/#return-direct",
+          "/frameworks/spring-ai/tools/tool-calling/#result-conversion",
+          "/frameworks/spring-ai/tools/tool-calling/#json-schema",
+          "#向-chatclient-提供工具",
+          "/frameworks/spring-ai/tools/chatmodel-tool-calling/",
+          "#工具调用循环",
+          "/images/frameworks/spring-ai/tools/spring-ai-tool-calling-advisor-flow.png",
+          "/frameworks/spring-ai/core/advisors/",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "#json-schema",
+          "#工具上下文",
+          "/images/frameworks/spring-ai/tools/tool-context.jpg",
+          "#直接返回结果",
+          "/images/frameworks/spring-ai/tools/return-direct.jpg",
+          "#异常处理",
+          "#工具调用次数限制",
+          "#如何计数",
+          "/frameworks/spring-ai/tools/tool-calling/#inside-the-loop",
+          "#达到上限后如何处理",
+          "#二常用集成与排查按场景阅读",
+          "#toolcallback-bean",
+          "#记忆与工具循环",
+          "#循环外默认行为",
+          "#循环内保留工具消息",
+          "/frameworks/spring-ai/tools/tool-calling/#tool-call-limits",
+          "/images/frameworks/spring-ai/tools/spring-ai-tool-calling-with-inside-memory.png",
+          "#存储兼容性",
+          "#mcp-工具",
+          "#使用-mcp-服务器工具",
+          "/frameworks/spring-ai/mcp/client/",
+          "#将-spring-工具暴露为-mcp-服务器",
+          "/frameworks/spring-ai/mcp/server/",
+          "#混用本地工具与-mcp-工具",
+          "#可观测性",
+          "#日志",
+          "#三进阶与-api-参考按需查阅",
+          "#工具规格参考",
+          "#toolcallback",
+          "#tooldefinition",
+          "#编程式methodtoolcallback",
+          "/frameworks/spring-ai/tools/tool-calling/#tool-specification-reference",
+          "#编程式functiontoolcallback",
+          "#方法工具的类型限制",
+          "#结果转换",
+          "#扩展到大量工具",
+          "/frameworks/spring-ai/tools/tool-search-tool/#installation",
+          "/frameworks/spring-ai/tools/tool-search-tool/",
+          "#工具参数增强",
+          "/images/frameworks/spring-ai/tools/spring-ai-tool-arg-augmenter.png",
+          "#快速使用",
+          "#核心组件",
+          "#自行控制工具执行",
+          "#tool-call-limits",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#user-controlled-streaming",
+          "/frameworks/spring-ai/tools/tool-calling/#extending-the-loop",
+          "#扩展循环自定义-tooladvisor",
+          "#钩子方法",
+          "#接入自动配置",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "#工具解析",
+          "/frameworks/spring-ai/tools/tool-calling/#consuming-mcp-server-tools",
+          "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "#直接使用-chatmodel-调用工具",
+          "/frameworks/spring-ai/tools/chatmodel-tool-calling/"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 82,
+        "missingIds": [],
+        "groups": [
+          "一、核心用法（重点掌握）",
+          "二、常用集成与排查（按场景阅读）",
+          "三、进阶与 API 参考（按需查阅）"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "tool-calling",
+        "device": "mobile",
+        "result": "PASS",
+        "title": "Spring AI：工具调用",
+        "codeBlocks": 38,
+        "images": [
+          {
+            "src": "/images/frameworks/spring-ai/tools/spring-ai-agent-loop.png",
+            "alt": "智能体循环：模型根据任务请求工具，应用执行后将结果返回模型，循环直到得到答案",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.4789232457556,
+            "naturalRatio": 1.4789579158316633
+          },
+          {
+            "src": "/images/frameworks/spring-ai/tools/spring-ai-tool-calling-advisor-flow.png",
+            "alt": "工具调用流程：ToolCallingAdvisor 请求模型、执行工具并回传结果，直到获得最终响应",
+            "loaded": true,
+            "fits": true,
+            "ratio": 2.391690155548596,
+            "naturalRatio": 2.3917672107877928
+          },
+          {
+            "src": "/images/frameworks/spring-ai/tools/tool-context.jpg",
+            "alt": "工具上下文传递流程：模型只接收工具定义，ToolContext 经独立路径直接传给工具方法",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.7653721682847896,
+            "naturalRatio": 1.7654485049833888
+          },
+          {
+            "src": "/images/frameworks/spring-ai/tools/return-direct.jpg",
+            "alt": "工具结果直接返回流程：returnDirect 为 true 时跳过工具结果到模型的后续请求",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.7675513038111403,
+            "naturalRatio": 1.7676196808510638
+          },
+          {
+            "src": "/images/frameworks/spring-ai/tools/spring-ai-tool-calling-with-inside-memory.png",
+            "alt": "循环内记忆：每次工具迭代都会经过 ChatMemoryAdvisor，保存并恢复工具消息",
+            "loaded": true,
+            "fits": true,
+            "ratio": 2.2659742828882297,
+            "naturalRatio": 2.266067415730337
+          },
+          {
+            "src": "/images/frameworks/spring-ai/tools/spring-ai-tool-arg-augmenter.png",
+            "alt": "工具参数增强：模型填写扩展字段，消费者读取额外参数，原始工具接收其原有输入",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.9218186393758914,
+            "naturalRatio": 1.9218934911242604
+          }
+        ],
+        "viewport": 390,
+        "pageWidth": 390,
+        "navGroups": ["工具调用", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "/frameworks/spring-ai/tools/tool-search-tool/",
+          "/frameworks/spring-ai/tools/chatmodel-tool-calling/",
+          "#quick-start",
+          "#defining-tools",
+          "#passing-tools",
+          "#the-tool-calling-loop",
+          "#json-schema",
+          "#tool-context",
+          "#return-direct",
+          "#exception-handling",
+          "#tool-call-limits",
+          "#core-usage",
+          "#common-integrations",
+          "#advanced-reference",
+          "/images/frameworks/spring-ai/tools/spring-ai-agent-loop.png",
+          "#一核心用法重点掌握",
+          "#架构概览",
+          "/frameworks/spring-ai/tools/tool-calling/#defining-tools",
+          "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "/frameworks/spring-ai/tools/tool-calling/#memory-and-the-tool-loop",
+          "/frameworks/spring-ai/tools/chatmodel-tool-calling/",
+          "#快速入门",
+          "#定义工具",
+          "/frameworks/spring-ai/tools/tool-calling/#declarative-tool",
+          "/frameworks/spring-ai/tools/tool-calling/#method-tool-callback",
+          "/frameworks/spring-ai/tools/tool-calling/#function-tool-callback",
+          "#声明式tool",
+          "/frameworks/spring-ai/tools/tool-calling/#return-direct",
+          "/frameworks/spring-ai/tools/tool-calling/#result-conversion",
+          "/frameworks/spring-ai/tools/tool-calling/#json-schema",
+          "#向-chatclient-提供工具",
+          "/frameworks/spring-ai/tools/chatmodel-tool-calling/",
+          "#工具调用循环",
+          "/images/frameworks/spring-ai/tools/spring-ai-tool-calling-advisor-flow.png",
+          "/frameworks/spring-ai/core/advisors/",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "#json-schema",
+          "#工具上下文",
+          "/images/frameworks/spring-ai/tools/tool-context.jpg",
+          "#直接返回结果",
+          "/images/frameworks/spring-ai/tools/return-direct.jpg",
+          "#异常处理",
+          "#工具调用次数限制",
+          "#如何计数",
+          "/frameworks/spring-ai/tools/tool-calling/#inside-the-loop",
+          "#达到上限后如何处理",
+          "#二常用集成与排查按场景阅读",
+          "#toolcallback-bean",
+          "#记忆与工具循环",
+          "#循环外默认行为",
+          "#循环内保留工具消息",
+          "/frameworks/spring-ai/tools/tool-calling/#tool-call-limits",
+          "/images/frameworks/spring-ai/tools/spring-ai-tool-calling-with-inside-memory.png",
+          "#存储兼容性",
+          "#mcp-工具",
+          "#使用-mcp-服务器工具",
+          "/frameworks/spring-ai/mcp/client/",
+          "#将-spring-工具暴露为-mcp-服务器",
+          "/frameworks/spring-ai/mcp/server/",
+          "#混用本地工具与-mcp-工具",
+          "#可观测性",
+          "#日志",
+          "#三进阶与-api-参考按需查阅",
+          "#工具规格参考",
+          "#toolcallback",
+          "#tooldefinition",
+          "#编程式methodtoolcallback",
+          "/frameworks/spring-ai/tools/tool-calling/#tool-specification-reference",
+          "#编程式functiontoolcallback",
+          "#方法工具的类型限制",
+          "#结果转换",
+          "#扩展到大量工具",
+          "/frameworks/spring-ai/tools/tool-search-tool/#installation",
+          "/frameworks/spring-ai/tools/tool-search-tool/",
+          "#工具参数增强",
+          "/images/frameworks/spring-ai/tools/spring-ai-tool-arg-augmenter.png",
+          "#快速使用",
+          "#核心组件",
+          "#自行控制工具执行",
+          "#tool-call-limits",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#user-controlled-streaming",
+          "/frameworks/spring-ai/tools/tool-calling/#extending-the-loop",
+          "#扩展循环自定义-tooladvisor",
+          "#钩子方法",
+          "#接入自动配置",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "#工具解析",
+          "/frameworks/spring-ai/tools/tool-calling/#consuming-mcp-server-tools",
+          "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "#直接使用-chatmodel-调用工具",
+          "/frameworks/spring-ai/tools/chatmodel-tool-calling/"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 82,
+        "missingIds": [],
+        "groups": [
+          "一、核心用法（重点掌握）",
+          "二、常用集成与排查（按场景阅读）",
+          "三、进阶与 API 参考（按需查阅）"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "tool-calling-advisor",
+        "device": "desktop",
+        "result": "PASS",
+        "title": "Spring AI：工具调用 Advisor",
+        "codeBlocks": 12,
+        "images": [],
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "navGroups": ["工具调用", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "/frameworks/spring-ai/core/advisors/",
+          "#conversation-history",
+          "#single-tooladvisor-invariant",
+          "#observing-the-tool-calling-loop",
+          "#essential-behavior",
+          "#configuration-and-events",
+          "#loop-extension-reference",
+          "#一常用机制重点理解",
+          "#概览",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#single-tooladvisor-invariant",
+          "/frameworks/spring-ai/tools/tool-calling/#memory-and-the-tool-loop",
+          "#内部历史的行为",
+          "/frameworks/spring-ai/tools/tool-calling/#inside-the-loop",
+          "/frameworks/spring-ai/core/chat-memory/",
+          "#单个-tooladvisor-约束",
+          "/frameworks/spring-ai/tools/tool-calling/#custom-tool-advisor-autoconfig",
+          "#直接返回工具结果",
+          "/frameworks/spring-ai/tools/tool-calling/#return-direct",
+          "#关闭自动注册",
+          "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "#二配置与观察按场景使用",
+          "#构建器",
+          "#构建器选项",
+          "#观察工具调用循环",
+          "#三循环扩展参考按需查阅",
+          "#toolexecutioneligibilitychecker",
+          "#钩子方法",
+          "#阻塞调用钩子",
+          "/frameworks/spring-ai/tools/tool-calling/#tool-call-limits",
+          "#流式调用钩子",
+          "#observing-the-tool-calling-loop",
+          "#子类示例",
+          "#手动控制流式工具执行",
+          "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#observing-the-tool-calling-loop",
+          "#相关阅读",
+          "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "/frameworks/spring-ai/tools/tool-calling/#memory-and-the-tool-loop",
+          "/frameworks/spring-ai/tools/tool-calling/#extending-the-loop",
+          "/frameworks/spring-ai/tools/tool-search-tool/",
+          "/frameworks/spring-ai/core/advisors/"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 30,
+        "missingIds": [],
+        "groups": [
+          "一、常用机制（重点理解）",
+          "二、配置与观察（按场景使用）",
+          "三、循环扩展参考（按需查阅）",
+          "相关阅读"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "tool-calling-advisor",
+        "device": "mobile",
+        "result": "PASS",
+        "title": "Spring AI：工具调用 Advisor",
+        "codeBlocks": 12,
+        "images": [],
+        "viewport": 390,
+        "pageWidth": 390,
+        "navGroups": ["工具调用", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "/frameworks/spring-ai/core/advisors/",
+          "#conversation-history",
+          "#single-tooladvisor-invariant",
+          "#observing-the-tool-calling-loop",
+          "#essential-behavior",
+          "#configuration-and-events",
+          "#loop-extension-reference",
+          "#一常用机制重点理解",
+          "#概览",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#single-tooladvisor-invariant",
+          "/frameworks/spring-ai/tools/tool-calling/#memory-and-the-tool-loop",
+          "#内部历史的行为",
+          "/frameworks/spring-ai/tools/tool-calling/#inside-the-loop",
+          "/frameworks/spring-ai/core/chat-memory/",
+          "#单个-tooladvisor-约束",
+          "/frameworks/spring-ai/tools/tool-calling/#custom-tool-advisor-autoconfig",
+          "#直接返回工具结果",
+          "/frameworks/spring-ai/tools/tool-calling/#return-direct",
+          "#关闭自动注册",
+          "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "#二配置与观察按场景使用",
+          "#构建器",
+          "#构建器选项",
+          "#观察工具调用循环",
+          "#三循环扩展参考按需查阅",
+          "#toolexecutioneligibilitychecker",
+          "#钩子方法",
+          "#阻塞调用钩子",
+          "/frameworks/spring-ai/tools/tool-calling/#tool-call-limits",
+          "#流式调用钩子",
+          "#observing-the-tool-calling-loop",
+          "#子类示例",
+          "#手动控制流式工具执行",
+          "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#observing-the-tool-calling-loop",
+          "#相关阅读",
+          "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "/frameworks/spring-ai/tools/tool-calling/#memory-and-the-tool-loop",
+          "/frameworks/spring-ai/tools/tool-calling/#extending-the-loop",
+          "/frameworks/spring-ai/tools/tool-search-tool/",
+          "/frameworks/spring-ai/core/advisors/"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 30,
+        "missingIds": [],
+        "groups": [
+          "一、常用机制（重点理解）",
+          "二、配置与观察（按场景使用）",
+          "三、循环扩展参考（按需查阅）",
+          "相关阅读"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "tool-search-tool",
+        "device": "desktop",
+        "result": "PASS",
+        "title": "Spring AI：工具搜索",
+        "codeBlocks": 17,
+        "images": [
+          {
+            "src": "/images/frameworks/spring-ai/tools/spring-ai-tool-search-tool-calling-flow.png",
+            "alt": "工具搜索调用流程：先调用 toolSearchTool 找到相关工具，再向模型提供定义并执行业务工具",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.3992165674723673,
+            "naturalRatio": 1.3992307692307693
+          }
+        ],
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "navGroups": ["工具调用", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/tools/tool-calling/#scaling-to-hundreds-of-tools",
+          "#integration-guide",
+          "#index-selection",
+          "#configuration-reference",
+          "#一接入与使用需要时先读",
+          "#何时使用",
+          "#工作流程",
+          "/images/frameworks/spring-ai/tools/spring-ai-tool-search-tool-calling-flow.png",
+          "/frameworks/spring-ai/tools/tool-search-tool/#session-scoping",
+          "#安装",
+          "#快速开始",
+          "/frameworks/spring-ai/tools/tool-search-tool/#spring-boot-auto-configuration",
+          "#会话隔离",
+          "/frameworks/spring-ai/tools/tool-calling/#inside-the-loop",
+          "#spring-boot-自动配置",
+          "/frameworks/spring-ai/tools/tool-calling/#custom-tool-advisor-autoconfig",
+          "#自动选择-toolindex",
+          "#配置示例",
+          "#二索引选型按场景阅读",
+          "#检索策略",
+          "#regextoolindex模式匹配",
+          "#lucenetoolindex关键词检索",
+          "#vectortoolindex语义检索",
+          "#三配置与生命周期参考按需查阅",
+          "#配置",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#builder-options",
+          "/frameworks/spring-ai/tools/tool-search-tool/#index-eviction",
+          "#配置属性参考",
+          "#toolindex-api",
+          "#索引淘汰",
+          "#相关阅读",
+          "/frameworks/spring-ai/tools/tool-calling/#scaling-to-hundreds-of-tools",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 34,
+        "missingIds": [],
+        "groups": [
+          "一、接入与使用（需要时先读）",
+          "二、索引选型（按场景阅读）",
+          "三、配置与生命周期参考（按需查阅）",
+          "相关阅读"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "tool-search-tool",
+        "device": "mobile",
+        "result": "PASS",
+        "title": "Spring AI：工具搜索",
+        "codeBlocks": 17,
+        "images": [
+          {
+            "src": "/images/frameworks/spring-ai/tools/spring-ai-tool-search-tool-calling-flow.png",
+            "alt": "工具搜索调用流程：先调用 toolSearchTool 找到相关工具，再向模型提供定义并执行业务工具",
+            "loaded": true,
+            "fits": true,
+            "ratio": 1.3992304873580066,
+            "naturalRatio": 1.3992307692307693
+          }
+        ],
+        "viewport": 390,
+        "pageWidth": 390,
+        "navGroups": ["工具调用", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/tools/tool-calling/#scaling-to-hundreds-of-tools",
+          "#integration-guide",
+          "#index-selection",
+          "#configuration-reference",
+          "#一接入与使用需要时先读",
+          "#何时使用",
+          "#工作流程",
+          "/images/frameworks/spring-ai/tools/spring-ai-tool-search-tool-calling-flow.png",
+          "/frameworks/spring-ai/tools/tool-search-tool/#session-scoping",
+          "#安装",
+          "#快速开始",
+          "/frameworks/spring-ai/tools/tool-search-tool/#spring-boot-auto-configuration",
+          "#会话隔离",
+          "/frameworks/spring-ai/tools/tool-calling/#inside-the-loop",
+          "#spring-boot-自动配置",
+          "/frameworks/spring-ai/tools/tool-calling/#custom-tool-advisor-autoconfig",
+          "#自动选择-toolindex",
+          "#配置示例",
+          "#二索引选型按场景阅读",
+          "#检索策略",
+          "#regextoolindex模式匹配",
+          "#lucenetoolindex关键词检索",
+          "#vectortoolindex语义检索",
+          "#三配置与生命周期参考按需查阅",
+          "#配置",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#builder-options",
+          "/frameworks/spring-ai/tools/tool-search-tool/#index-eviction",
+          "#配置属性参考",
+          "#toolindex-api",
+          "#索引淘汰",
+          "#相关阅读",
+          "/frameworks/spring-ai/tools/tool-calling/#scaling-to-hundreds-of-tools",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 34,
+        "missingIds": [],
+        "groups": [
+          "一、接入与使用（需要时先读）",
+          "二、索引选型（按场景阅读）",
+          "三、配置与生命周期参考（按需查阅）",
+          "相关阅读"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "chatmodel-tool-calling",
+        "device": "desktop",
+        "result": "PASS",
+        "title": "Spring AI：ChatModel 工具调用",
+        "codeBlocks": 8,
+        "images": [],
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "navGroups": ["工具调用", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/tools/tool-calling/",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "/frameworks/spring-ai/tools/tool-calling/",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#observing-the-tool-calling-loop",
+          "#scope-and-responsibility",
+          "#manual-execution-guide",
+          "#execution-options-reference",
+          "#一适用范围先读结论",
+          "#什么时候直接使用-chatmodel",
+          "#chatmodel-不执行工具",
+          "#二手动执行需要时再实践",
+          "#向-chatmodel-提供工具",
+          "#请求级工具",
+          "#模型默认工具",
+          "#覆盖规则",
+          "/frameworks/spring-ai/tools/tool-calling/#passing-tools",
+          "#手动驱动工具循环",
+          "#阻塞调用",
+          "#流式调用",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#user-controlled-streaming",
+          "#三执行选项参考按需查阅",
+          "#工具上下文",
+          "/frameworks/spring-ai/tools/tool-calling/#tool-context",
+          "#直接返回工具结果",
+          "/frameworks/spring-ai/tools/tool-calling/#return-direct",
+          "#相关文档",
+          "/frameworks/spring-ai/tools/tool-calling/",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#user-controlled-streaming"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 24,
+        "missingIds": [],
+        "groups": [
+          "一、适用范围（先读结论）",
+          "二、手动执行（需要时再实践）",
+          "三、执行选项参考（按需查阅）",
+          "相关文档"
+        ],
+        "errors": []
+      },
+      {
+        "check": "responsive-browser",
+        "date": "2026-11-01",
+        "slug": "chatmodel-tool-calling",
+        "device": "mobile",
+        "result": "PASS",
+        "title": "Spring AI：ChatModel 工具调用",
+        "codeBlocks": 8,
+        "images": [],
+        "viewport": 390,
+        "pageWidth": 390,
+        "navGroups": ["工具调用", "Spring AI", "开发框架"],
+        "links": [
+          "/frameworks/spring-ai/tools/tool-calling/",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "/frameworks/spring-ai/tools/tool-calling/",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#observing-the-tool-calling-loop",
+          "#scope-and-responsibility",
+          "#manual-execution-guide",
+          "#execution-options-reference",
+          "#一适用范围先读结论",
+          "#什么时候直接使用-chatmodel",
+          "#chatmodel-不执行工具",
+          "#二手动执行需要时再实践",
+          "#向-chatmodel-提供工具",
+          "#请求级工具",
+          "#模型默认工具",
+          "#覆盖规则",
+          "/frameworks/spring-ai/tools/tool-calling/#passing-tools",
+          "#手动驱动工具循环",
+          "#阻塞调用",
+          "#流式调用",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#user-controlled-streaming",
+          "#三执行选项参考按需查阅",
+          "#工具上下文",
+          "/frameworks/spring-ai/tools/tool-calling/#tool-context",
+          "#直接返回工具结果",
+          "/frameworks/spring-ai/tools/tool-calling/#return-direct",
+          "#相关文档",
+          "/frameworks/spring-ai/tools/tool-calling/",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "/frameworks/spring-ai/tools/tool-calling-advisor/#user-controlled-streaming"
+        ],
+        "literalMarkdown": [],
+        "originalRenderedIds": 24,
+        "missingIds": [],
+        "groups": [
+          "一、适用范围（先读结论）",
+          "二、手动执行（需要时再实践）",
+          "三、执行选项参考（按需查阅）",
+          "相关文档"
+        ],
+        "errors": []
+      }
+    ]
+  },
+  "siteValidation": "本任务未修改站点正文；重新执行桌面及手机浏览器核验，未重跑 check/build。本记录不用于证明其他并行改动或依赖变更的构建结果。",
+  "limitations": "Java 示例仅静态核对，未编译运行，未调用真实模型、MCP 或业务工具。"
+}
