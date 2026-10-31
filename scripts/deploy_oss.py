@@ -4,7 +4,9 @@ import argparse
 import json
 import os
 from pathlib import Path, PurePosixPath
+import re
 import subprocess
+import sys
 import tempfile
 
 
@@ -41,7 +43,9 @@ def checked_oss(runner, args, *, allow_missing=False):
         # Only a missing object is acceptable; authentication/network errors stop deployment.
         if allow_missing and "NoSuchKey" in result.stdout + result.stderr:
             return False
-        raise RuntimeError(f"OSS {args[0]} 操作失败（退出码 {result.returncode}），发布已停止")
+        code = re.search(r"ErrorCode\s*[:=]\s*([A-Za-z0-9]+)", result.stdout + result.stderr)
+        reason = f"，错误码 {code[1]}" if code else ""
+        raise RuntimeError(f"OSS {args[0]} 操作失败（退出码 {result.returncode}{reason}），发布已停止")
     return True
 
 
@@ -82,4 +86,10 @@ if __name__ == "__main__":
     parser.add_argument("--dist", default="dist")
     parser.add_argument("--apply", action="store_true", help="上传并清理；默认仅预览")
     args = parser.parse_args()
-    deploy(args.dist, os.environ.get("OSS_BUCKET", ""), apply=args.apply)
+    try:
+        deploy(args.dist, os.environ.get("OSS_BUCKET", ""), apply=args.apply)
+    except (ValueError, RuntimeError, OSError) as error:
+        # Surface safe diagnostics in Actions annotations without printing credentials or CLI output.
+        message = str(error).replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+        print(f"::error::{message}", file=sys.stderr)
+        sys.exit(1)
