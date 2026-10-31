@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="Hi, Agent! 首页交互原型：连接 AI 知识，构建工程能力。" />
+    <title>Hi, Agent! · 知识，由此连接</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='14' fill='%230b1418'/%3E%3Cpath d='m10 29 10-14v12l9-8v15l10-14' fill='none' stroke='%2379eed6' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./homepage-assets/homepage.css" />
+    <script type="module" src="./homepage-assets/homepage.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#" aria-label="Hi, Agent! 首页">
+          <svg class="brand-symbol" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <rect x="1" y="1" width="38" height="38" rx="12" />
+            <path d="m9 24 9-12v12l8-7v12l7-11" />
+          </svg>
+          <span>Hi, Agent<span class="brand-dot">!</span></span>
+        </a>
+        <nav class="desktop-nav" aria-label="主导航">
+          <a href="#topics">知识探索</a><a href="#paths">学习路线</a><a href="#reading">精选阅读</a>
+        </nav>
+        <div class="header-actions">
+          <button class="search-trigger" aria-label="搜索知识库">
+            <i data-icon="search"></i><span>搜索知识库</span><kbd>⌘ K</kbd>
+          </button>
+          <a
+            class="icon-button github-link"
+            href="https://github.com/wangkaiqistart/Hello-Notes-"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="在新标签页打开 GitHub"
+            ><i data-icon="github"></i
+          ></a>
+          <button
+            class="icon-button menu-toggle"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+            aria-label="展开导航"
+          >
+            <i data-icon="menu"></i>
+          </button>
+        </div>
+      </div>
+      <nav id="mobile-nav" class="mobile-nav" aria-label="手机导航" hidden>
+        <a href="#topics">知识探索</a><a href="#paths">学习路线</a><a href="#reading">精选阅读</a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero container" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="live-dot"></span> A SPACE FOR CURIOUS BUILDERS</div>
+          <h1 id="hero-title">让知识连接，<br /><span>让智能发生。</span></h1>
+          <p class="hero-description">
+            从理解一个模型，到构建一个智能体。<br />把零散的 AI 知识，连接成扎实的工程能力。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#topics"
+              >探索知识库 <i data-icon="arrow-up-right"></i></a
+            ><a
+              class="button secondary"
+              href="https://notes.wwkq.top/frameworks/spring-ai/"
+              target="_blank"
+              rel="noreferrer"
+              data-doc="/frameworks/spring-ai/"
+              >从 Spring AI 开始 <i data-icon="arrow-right"></i
+            ></a>
+          </div>
+          <div class="hero-note">
+            <span class="mini-avatars"><b>学</b><b>思</b><b>建</b></span
+            ><span>持续学习 · 认真记录 · 动手构建</span>
+          </div>
+        </div>
+        <div
+          class="knowledge-scene"
+          id="knowledge-scene"
+          role="group"
+          aria-label="AI 知识网络，点击节点可浏览相关专题"
+        >
+          <div class="scene-halo"></div>
+          <div class="scene-fallback" aria-hidden="true">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <canvas id="knowledge-canvas" aria-hidden="true"></canvas>
+          <div class="scene-heading">
+            <span class="crosshair">+</span> THE KNOWLEDGE GRAPH
+            <span class="scene-index">001 — ∞</span>
+          </div>
+          <a
+            class="graph-core"
+            href="https://notes.wwkq.top/agent/harness/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/agent/harness/"
+            data-node="agent"
+            ><span class="core-icon"><i data-icon="sparkles"></i></span><span>Agent</span
+            ><small>连接，让能力涌现</small></a
+          >
+          <a
+            class="graph-label node-model"
+            href="https://notes.wwkq.top/basics/llm-theory/what-is-llm/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/basics/llm-theory/what-is-llm/"
+            data-node="models"
+            ><i data-icon="box"></i><span>Models<small>智能的起点</small></span
+            ><span class="node-light"></span
+          ></a>
+          <a
+            class="graph-label node-memory"
+            href="https://notes.wwkq.top/frameworks/spring-ai/core/chat-memory/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/frameworks/spring-ai/core/chat-memory/"
+            data-node="memory"
+            ><i data-icon="layers"></i><span>Memory<small>让对话拥有上下文</small></span></a
+          >
+          <a
+            class="graph-label node-rag"
+            href="https://notes.wwkq.top/rag/fundamentals/what-is-rag/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/rag/fundamentals/what-is-rag/"
+            data-node="rag"
+            ><i data-icon="database"></i><span>RAG<small>连接你的知识</small></span></a
+          >
+          <a
+            class="graph-label node-tools"
+            href="https://notes.wwkq.top/frameworks/spring-ai/tools/tool-calling/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/frameworks/spring-ai/tools/tool-calling/"
+            data-node="tools"
+            ><i data-icon="terminal"></i><span>Tools<small>从思考走向行动</small></span></a
+          >
+          <a
+            class="graph-label node-mcp"
+            href="https://notes.wwkq.top/frameworks/mcp/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/frameworks/mcp/"
+            data-node="mcp"
+            ><i data-icon="network"></i><span>MCP<small>开放的连接协议</small></span></a
+          >
+          <div class="scene-bottom">
+            <span><span class="live-dot"></span> EVERYTHING IS CONNECTED</span
+            ><button
+              id="motion-toggle"
+              class="motion-toggle"
+              aria-pressed="false"
+              aria-label="暂停知识网络动画"
+            >
+              <i data-icon="pause"></i>
+            </button>
+          </div>
+        </div>
+        <a class="scroll-cue" href="#topics"><span>向下探索</span><i data-icon="arrow-down"></i></a>
+      </section>
+      <div class="knowledge-strip">
+        <div class="container strip-inner">
+          <span class="strip-label">思想与工具，在这里交汇</span><span>Spring AI</span
+          ><span>LangChain</span><span>LangGraph</span><span>Deep Agents</span><span>MCP</span
+          ><span>RAG</span>
+        </div>
+      </div>
+      <section id="topics" class="container section topics-section" aria-labelledby="topics-title">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow muted">01 / EXPLORE THE KNOWLEDGE</div>
+            <h2 id="topics-title">每一条探索，都有方向。</h2>
+          </div>
+          <p>沿着兴趣出发，让知识逐渐成网。</p>
+        </div>
+        <div class="topic-grid">
+          <a
+            class="topic-card spring-card"
+            href="https://notes.wwkq.top/frameworks/spring-ai/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/frameworks/spring-ai/"
+          >
+            <div class="card-top">
+              <span class="topic-icon green"><i data-icon="leaf"></i></span
+              ><span class="pill">JAVA 开发者入口</span
+              ><i class="card-arrow" data-icon="arrow-up-right"></i>
+            </div>
+            <div class="spring-illustration" aria-hidden="true">
+              <div class="code-line">
+                <span>@Bean</span><br />ChatClient <b>yourNextIdea</b>() {<br />&nbsp;&nbsp;return
+                <span>intelligence</span>;<br />}
+              </div>
+              <div class="spring-orb"><i data-icon="leaf"></i></div>
+            </div>
+            <div class="card-content">
+              <span class="card-kicker">FRAMEWORK / 01</span>
+              <h3>Spring AI</h3>
+              <p>用熟悉的 Java，打开 AI 应用开发的大门。</p>
+              <div class="tags">
+                <span>ChatClient</span><span>Advisors</span><span>Tool Calling</span>
+              </div>
+            </div>
+          </a>
+          <a
+            class="topic-card agents-card"
+            href="https://notes.wwkq.top/frameworks/deepagents/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/frameworks/deepagents/"
+          >
+            <div class="card-top">
+              <span class="topic-icon violet"><i data-icon="network"></i></span
+              ><span class="card-kicker">AGENT / 02</span
+              ><i class="card-arrow" data-icon="arrow-up-right"></i>
+            </div>
+            <div class="agent-illustration" aria-hidden="true">
+              <span class="agent-mini"><i data-icon="terminal"></i></span
+              ><span class="agent-mini center"><i data-icon="sparkles"></i></span
+              ><span class="agent-mini"><i data-icon="layers"></i></span>
+              <div class="agent-link"></div>
+            </div>
+            <div class="card-content">
+              <h3>Deep Agents</h3>
+              <p>从一次问答，到会规划、能协作的智能体。</p>
+              <div class="tags"><span>Planning</span><span>Subagents</span><span>Skills</span></div>
+            </div>
+          </a>
+          <a
+            class="topic-card compact-card rag-card"
+            href="https://notes.wwkq.top/rag/fundamentals/what-is-rag/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/rag/fundamentals/what-is-rag/"
+            ><div class="card-top">
+              <span class="topic-icon blue"><i data-icon="database"></i></span
+              ><i class="card-arrow" data-icon="arrow-up-right"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-kicker">RETRIEVAL / 03</span>
+              <h3>让模型读懂你的知识</h3>
+              <p>文档解析、向量检索与 RAG 工程。</p>
+            </div>
+            <div class="mini-bars" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span
+              ><span></span><span></span><span></span><span></span><span></span></div
+          ></a>
+          <a
+            class="topic-card compact-card context-card"
+            href="https://notes.wwkq.top/agent/context-engineering/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/agent/context-engineering/"
+            ><div class="card-top">
+              <span class="topic-icon amber"><i data-icon="layers"></i></span
+              ><i class="card-arrow" data-icon="arrow-up-right"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-kicker">CONTEXT / 04</span>
+              <h3>为智能准备恰好的上下文</h3>
+              <p>提示词、记忆与上下文工程。</p>
+            </div>
+            <div class="layer-art" aria-hidden="true"><span></span><span></span><span></span></div
+          ></a>
+        </div>
+        <div class="more-topics">
+          <span>还有更多值得连接的知识</span
+          ><a
+            href="https://notes.wwkq.top/frameworks/langchain/langchain-basics/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/frameworks/langchain/langchain-basics/"
+            >LangChain <i data-icon="arrow-up-right"></i></a
+          ><a
+            href="https://notes.wwkq.top/frameworks/langgraph/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/frameworks/langgraph/"
+            >LangGraph <i data-icon="arrow-up-right"></i></a
+          ><a
+            href="https://notes.wwkq.top/frameworks/mcp/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/frameworks/mcp/"
+            >MCP <i data-icon="arrow-up-right"></i></a
+          ><a
+            href="https://notes.wwkq.top/ai-programming/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/ai-programming/"
+            >AI 编程 <i data-icon="arrow-up-right"></i
+          ></a>
+        </div>
+      </section>
+      <section id="paths" class="path-section" aria-labelledby="paths-title">
+        <div class="container section">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow muted">02 / FIND YOUR PATH</div>
+              <h2 id="paths-title">不必一次学完，先走好下一步。</h2>
+            </div>
+            <p>从你的经验出发，找到适合的学习路线。</p>
+          </div>
+          <div class="path-panel">
+            <div class="path-tabs" role="tablist" aria-label="选择学习路线">
+              <button
+                role="tab"
+                id="tab-java"
+                aria-selected="true"
+                aria-controls="path-content"
+                tabindex="0"
+                data-path="java"
+              >
+                <i data-icon="coffee"></i> Java 开发者 <span>01</span></button
+              ><button
+                role="tab"
+                id="tab-python"
+                aria-selected="false"
+                aria-controls="path-content"
+                tabindex="-1"
+                data-path="python"
+              >
+                <i data-icon="code"></i> Python 开发者 <span>02</span></button
+              ><button
+                role="tab"
+                id="tab-agent"
+                aria-selected="false"
+                aria-controls="path-content"
+                tabindex="-1"
+                data-path="agent"
+              >
+                <i data-icon="sparkles"></i> Agent 构建者 <span>03</span>
+              </button>
+            </div>
+            <div
+              id="path-content"
+              class="path-content"
+              role="tabpanel"
+              aria-labelledby="tab-java"
+              tabindex="0"
+            >
+              <div class="path-intro">
+                <span class="pill">从熟悉到可能</span>
+                <h3>把 Spring 经验，变成 AI 能力。</h3>
+                <p>从第一个模型调用开始，逐步加入记忆、检索与工具。</p>
+              </div>
+              <ol class="path-steps" id="path-steps"></ol>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        id="reading"
+        class="container section reading-section"
+        aria-labelledby="reading-title"
+      >
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow muted">03 / WORTH YOUR ATTENTION</div>
+            <h2 id="reading-title">把一个问题，理解得更深。</h2>
+          </div>
+          <span class="small-note">本期阅读推荐 <span class="live-dot"></span></span>
+        </div>
+        <div class="reading-list">
+          <a
+            href="https://notes.wwkq.top/frameworks/spring-ai/core/chat-client/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/frameworks/spring-ai/core/chat-client/"
+            ><span class="reading-number">01</span>
+            <div>
+              <span class="reading-category green-text">SPRING AI</span>
+              <h3>从 ChatClient 开始，与模型对话</h3>
+              <p>模型接入、提示词和流式响应，一条清晰的调用链。</p>
+            </div>
+            <span class="reading-type">API 指南</span><i data-icon="arrow-up-right"></i></a
+          ><a
+            href="https://notes.wwkq.top/agent/harness/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/agent/harness/"
+            ><span class="reading-number">02</span>
+            <div>
+              <span class="reading-category violet-text">AGENT ENGINEERING</span>
+              <h3>模型之外，Agent 还需要什么？</h3>
+              <p>理解 Harness 如何组织工具、上下文与执行循环。</p>
+            </div>
+            <span class="reading-type">工程思考</span><i data-icon="arrow-up-right"></i></a
+          ><a
+            href="https://notes.wwkq.top/frameworks/spring-ai/mcp/overview/"
+            target="_blank"
+            rel="noreferrer"
+            data-doc="/frameworks/spring-ai/mcp/overview/"
+            ><span class="reading-number">03</span>
+            <div>
+              <span class="reading-category blue-text">MCP</span>
+              <h3>让应用与工具，拥有共同语言</h3>
+              <p>从客户端与服务端的关系，理解 MCP 的连接方式。</p>
+            </div>
+            <span class="reading-type">协议入门</span><i data-icon="arrow-up-right"></i
+          ></a>
+        </div>
+      </section>
+      <section class="closing container">
+        <div class="closing-mark" aria-hidden="true">✳</div>
+        <div>
+          <span class="eyebrow muted">STAY CURIOUS. KEEP BUILDING.</span>
+          <h2>下一个想法，从这里开始。</h2>
+          <p>知识的价值，在于你用它创造了什么。</p>
+        </div>
+        <a class="button primary" href="#topics">开始探索 <i data-icon="arrow-up-right"></i></a>
+      </section>
+    </main>
+    <footer class="site-footer container">
+      <a class="brand" href="#"><span class="brand-dot">✳</span> Hi, Agent!</a
+      ><span>个人 AI 技术知识库 · 学习，让连接发生。</span>
+      <div>
+        <a href="https://github.com/wangkaiqistart/Hello-Notes-" target="_blank" rel="noreferrer"
+          >GitHub <i data-icon="arrow-up-right"></i></a
+        ><span class="prototype-badge">首页概念原型 · V1</span>
+      </div>
+    </footer>
+    <dialog id="search-dialog" aria-labelledby="search-title">
+      <div class="search-box">
+        <div class="search-input-wrap">
+          <i data-icon="search"></i
+          ><label class="sr-only" for="search-input" id="search-title">搜索专题与文章</label
+          ><input
+            id="search-input"
+            type="search"
+            placeholder="搜索专题与文章…"
+            autocomplete="off"
+          /><button id="search-close" class="icon-button" aria-label="关闭搜索">
+            <kbd>ESC</kbd>
+          </button>
+        </div>
+        <div class="search-results" id="search-results"></div>
+        <div class="search-footer">
+          <span id="search-count" role="status"></span><span>↑ ↓ 选择 · Enter 阅读</span>
+        </div>
+      </div>
+    </dialog>
+    <noscript
+      ><div class="noscript-note">
+        当前为静态浏览模式，专题链接仍可使用。开启 JavaScript 可体验知识网络与搜索。
+      </div></noscript
+    >
+  </body>
+</html>

@@ -11,6 +11,15 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Hi, Agent!',
+			favicon: '/favicon.png?v=20261101',
+			head: [
+				{ tag: 'link', attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png?v=20261101' } },
+			],
+			customCss: ['./src/styles/site-theme.css', './src/styles/docs.css'],
+			components: {
+				SiteTitle: './src/components/SiteBrand.astro',
+				ThemeSelect: './src/components/ThemeSelect.astro',
+			},
 			logo: {
 				src: './src/assets/logo.png',
 			},

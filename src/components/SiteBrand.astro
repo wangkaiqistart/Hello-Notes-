@@ -1,0 +1,53 @@
+<a href="/" class="site-brand" aria-label="Hi, Agent! 首页" translate="no">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <rect x="1" y="1" width="38" height="38" rx="12"></rect>
+    <path d="m9 24 9-12v12l8-7v12l7-11"></path>
+  </svg>
+  <span>Hi, Agent<span class="brand-accent">!</span></span>
+</a>
+
+<style>
+  .site-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font: 650 21px var(--site-font);
+    letter-spacing: -0.7px;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--site-text);
+  }
+  svg {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+  }
+  rect {
+    fill: var(--site-selected);
+    stroke: var(--site-line);
+  }
+  path {
+    stroke: var(--site-accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .brand-accent {
+    color: var(--site-accent);
+  }
+  .site-brand:focus-visible {
+    outline: 2px solid var(--site-accent);
+    outline-offset: 5px;
+    border-radius: 8px;
+  }
+  @media (max-width: 520px) {
+    .site-brand {
+      font-size: 18px;
+      gap: 8px;
+    }
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+</style>

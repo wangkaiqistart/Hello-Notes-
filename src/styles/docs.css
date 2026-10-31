@@ -1,0 +1,117 @@
+/* Reading pages share the homepage palette while keeping Starlight's navigation. */
+:root {
+  --sl-content-width: 48rem;
+}
+.header {
+  background: var(--site-header);
+}
+.header .social-icons::after {
+  display: none;
+}
+.header .social-icons a {
+  color: var(--site-muted);
+}
+.header .social-icons a:hover {
+  color: var(--site-accent);
+}
+site-search button[data-open-modal] {
+  border: 1px solid var(--site-line);
+  border-radius: 8px;
+  background: var(--site-surface);
+  color: var(--site-muted);
+  box-shadow: none;
+  min-height: 40px;
+}
+site-search button[data-open-modal]:hover {
+  border-color: var(--site-accent);
+}
+.sidebar-content a,
+.right-sidebar a {
+  border-radius: 6px;
+}
+.sidebar-content [aria-current='page'] {
+  background: var(--site-selected);
+  color: var(--site-accent);
+  font-weight: 600;
+}
+.sidebar-content summary:hover,
+.sidebar-content a:hover {
+  color: var(--site-accent);
+}
+.right-sidebar a[aria-current='true'] {
+  color: var(--site-accent);
+}
+.content-panel {
+  border-color: var(--site-line);
+}
+h1 {
+  font-weight: 600;
+  letter-spacing: -0.8px;
+}
+.sl-markdown-content h2 {
+  letter-spacing: -0.5px;
+}
+.sl-markdown-content :is(img, figure, .expressive-code) {
+  border-radius: 12px;
+}
+.sl-markdown-content a:not([class]) {
+  text-underline-offset: 4px;
+}
+.pagination-links a {
+  border-color: var(--site-line);
+  border-radius: 12px;
+  background: var(--site-surface);
+}
+.pagination-links a:hover {
+  border-color: var(--site-accent);
+}
+site-search dialog {
+  border: 1px solid var(--site-line);
+  border-radius: 16px;
+  background: var(--site-surface);
+  color: var(--site-text);
+}
+site-search {
+  --pagefind-ui-primary: var(--site-accent);
+  --pagefind-ui-text: var(--site-text);
+  --pagefind-ui-background: var(--site-surface);
+  --pagefind-ui-border: var(--site-line);
+  --pagefind-ui-tag: var(--site-raised);
+  --pagefind-ui-border-radius: 8px;
+}
+::selection {
+  background: var(--site-selected);
+}
+
+/* Keep appearance controls within reach on narrow reading pages too. */
+@media (max-width: 49.999rem) {
+  .header .right-group {
+    display: flex;
+    gap: 8px;
+  }
+  .header .right-group .social-icons {
+    display: none;
+  }
+  .header {
+    gap: 8px;
+    border-color: var(--site-line);
+  }
+  .mobile-preferences site-theme-select {
+    display: none;
+  }
+  .sl-menu-button {
+    border-radius: 8px;
+    border: 1px solid var(--site-line);
+    background: var(--site-surface);
+    color: var(--site-muted);
+    box-shadow: none;
+  }
+  .sl-menu-button:has(~ :popover-open) {
+    background: var(--site-selected);
+    color: var(--site-accent);
+  }
+}
+site-search input:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 2px;
+}

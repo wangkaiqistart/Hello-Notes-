@@ -1,0 +1,85 @@
+:root {
+  color-scheme: dark;
+  --site-bg: #080c0f;
+  --site-surface: #0e1419;
+  --site-raised: #131b22;
+  --site-text: #f0f4f6;
+  --site-muted: #9aaab4;
+  --site-subtle: #7f909a;
+  --site-line: #ffffff16;
+  --site-accent: #86f3d3;
+  --site-action: #86f3d3;
+  --site-on-accent: #09231d;
+  --site-tint: #86f3d310;
+  --site-selected: #86f3d31c;
+  --site-header: #080c0ff5;
+  --site-header-height: 72px;
+  --site-violet: #b5a0f6;
+  --site-blue: #83baff;
+  --site-amber: #e6c197;
+  --site-title-gradient: linear-gradient(100deg, #d2f7e9, #80e6cd 65%, #66aeeb);
+  --site-font:
+    Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei',
+    sans-serif;
+  --sl-font: var(--site-font);
+  --sl-nav-height: var(--site-header-height);
+  --sl-color-white: var(--site-text);
+  --sl-color-gray-1: #e0e9ed;
+  --sl-color-gray-2: #bbc8cf;
+  --sl-color-gray-3: var(--site-muted);
+  --sl-color-gray-4: #647680;
+  --sl-color-gray-5: #27373e;
+  --sl-color-gray-6: var(--site-raised);
+  --sl-color-black: var(--site-bg);
+  --sl-color-accent-low: #123c31;
+  --sl-color-accent: #41b797;
+  --sl-color-accent-high: var(--site-accent);
+  --sl-color-bg: var(--site-bg);
+  --sl-color-bg-nav: var(--site-header);
+  --sl-color-bg-sidebar: #0b1115;
+  --sl-color-text: #bbc8cf;
+  --sl-color-text-accent: var(--site-accent);
+  --sl-color-text-invert: var(--site-on-accent);
+  --sl-color-hairline-light: var(--site-line);
+  --sl-color-hairline: var(--site-line);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --site-bg: #f6f9f8;
+  --site-surface: #ffffff;
+  --site-raised: #edf3f0;
+  --site-text: #182c24;
+  --site-muted: #4e665d;
+  --site-subtle: #5c756b;
+  --site-line: #193d2c20;
+  --site-accent: #087457;
+  --site-action: #087457;
+  --site-on-accent: #ffffff;
+  --site-tint: #08745708;
+  --site-selected: #08745712;
+  --site-header: #f6f9f8f5;
+  --site-violet: #7151af;
+  --site-blue: #296eaa;
+  --site-amber: #916125;
+  --site-title-gradient: linear-gradient(100deg, #164c39, #087457 65%, #287d9f);
+  --sl-color-gray-1: #233b31;
+  --sl-color-gray-2: #364f44;
+  --sl-color-gray-3: var(--site-muted);
+  --sl-color-gray-4: #71877c;
+  --sl-color-gray-5: #d2dfd8;
+  --sl-color-gray-6: var(--site-raised);
+  --sl-color-gray-7: var(--site-bg);
+  --sl-color-accent-low: #deefe6;
+  --sl-color-accent: var(--site-accent);
+  --sl-color-accent-high: #194c38;
+  --sl-color-bg-sidebar: #f2f6f4;
+  --sl-color-text: #364f44;
+  --sl-color-text-invert: #ffffff;
+}
+
+@media (max-width: 520px) {
+  :root {
+    --site-header-height: 64px;
+  }
+}

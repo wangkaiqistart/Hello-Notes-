@@ -1,0 +1,157 @@
+<site-theme-select>
+  <label>
+    <svg
+      class="theme-icon"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      ><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M8 21h8m-4-4v4"></path></svg
+    >
+    <select aria-label="外观模式" autocomplete="off">
+      <option value="auto">跟随系统</option>
+      <option value="light">浅色</option>
+      <option value="dark">深色</option>
+    </select>
+    <svg
+      class="theme-caret"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"><path d="m7 10 5 5 5-5"></path></svg
+    >
+  </label>
+</site-theme-select>
+
+<script>
+  type Preference = 'auto' | 'light' | 'dark';
+  const storageKey = 'starlight-theme';
+  let preference: Preference = 'auto';
+  const system = matchMedia('(prefers-color-scheme: light)');
+  const parse = (value: string | null): Preference =>
+    value === 'light' || value === 'dark' ? value : 'auto';
+  const glyphs = {
+    auto: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4"/>',
+    light:
+      '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>',
+    dark: '<path d="M20.8 13A9 9 0 0 1 11 3.2 9 9 0 1 0 20.8 13Z"/>',
+  };
+  function load() {
+    try {
+      preference = parse(localStorage.getItem(storageKey));
+    } catch {}
+    return preference;
+  }
+  function apply(value: Preference, persist = false) {
+    preference = value;
+    document.documentElement.dataset.theme =
+      value === 'auto' ? (system.matches ? 'light' : 'dark') : value;
+    if (persist) {
+      try {
+        localStorage.setItem(storageKey, value === 'auto' ? '' : value);
+      } catch {}
+    }
+    document.querySelectorAll('site-theme-select').forEach((picker) => {
+      const select = picker.querySelector('select');
+      if (select) select.value = value;
+      const icon = picker.querySelector('.theme-icon');
+      if (icon) icon.innerHTML = glyphs[value];
+    });
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute(
+        'content',
+        value === 'light' || (value === 'auto' && system.matches) ? '#f6f9f8' : '#080c0f',
+      );
+  }
+  class SiteThemeSelect extends HTMLElement {
+    connectedCallback() {
+      apply(load());
+      this.querySelector('select')?.addEventListener('change', (event) => {
+        if (event.currentTarget instanceof HTMLSelectElement)
+          apply(parse(event.currentTarget.value), true);
+      });
+    }
+  }
+  if (!customElements.get('site-theme-select'))
+    customElements.define('site-theme-select', SiteThemeSelect);
+  system.addEventListener('change', () => {
+    if (load() === 'auto') apply('auto');
+  });
+  window.addEventListener('storage', (event) => {
+    if (event.key === storageKey || event.key === null) apply(load());
+  });
+  window.addEventListener('pageshow', () => apply(load()));
+</script>
+
+<style>
+  site-theme-select {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--site-muted);
+  }
+  label {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  select {
+    font: 12px var(--site-font);
+    width: 112px;
+    height: 40px;
+    border: 1px solid var(--site-line);
+    border-radius: 8px;
+    padding: 0 25px 0 33px;
+    color: var(--site-muted);
+    background: var(--site-surface);
+    appearance: none;
+    cursor: pointer;
+    line-height: normal;
+  }
+  select:hover {
+    border-color: var(--site-accent);
+    color: var(--site-text);
+  }
+  select:focus-visible {
+    outline: 2px solid var(--site-accent);
+    outline-offset: 3px;
+  }
+  option {
+    color: var(--site-text);
+    background: var(--site-surface);
+  }
+  svg {
+    position: absolute;
+    pointer-events: none;
+    width: 16px;
+    height: 16px;
+  }
+  .theme-icon {
+    left: 11px;
+  }
+  .theme-caret {
+    right: 7px;
+    width: 14px;
+    height: 14px;
+  }
+  @media (max-width: 520px) {
+    select {
+      width: 36px;
+      padding: 0;
+      color: transparent;
+    }
+    select:hover {
+      color: transparent;
+    }
+    .theme-icon {
+      left: 10px;
+    }
+    .theme-caret {
+      display: none;
+    }
+  }
+</style>

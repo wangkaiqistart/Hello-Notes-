@@ -1,0 +1,17 @@
+---
+import { iconPaths } from './icons';
+
+interface Props {
+  name: string;
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['icon', className]}
+  viewBox="0 0 24 24"
+  aria-hidden="true"
+  set:html={iconPaths[name] || iconPaths['arrow-right']}
+/>

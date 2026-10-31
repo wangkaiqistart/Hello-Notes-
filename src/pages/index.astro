@@ -1,0 +1,495 @@
+---
+import { getCollection } from 'astro:content';
+import HomeIcon from '../components/home/HomeIcon.astro';
+import SiteBrand from '../components/SiteBrand.astro';
+import ThemeSelect from '../components/ThemeSelect.astro';
+import ThemeInit from '../components/ThemeInit.astro';
+import { learningPaths } from '../data/home';
+import '../styles/site-theme.css';
+import '../styles/home.css';
+
+const pathLabels: Record<string, { label: string; icon: string }> = {
+  java: { label: 'Java 开发者', icon: 'coffee' },
+  python: { label: 'Python 开发者', icon: 'code' },
+  agent: { label: 'Agent 构建者', icon: 'sparkles' },
+};
+const documents = await getCollection('docs', ({ data }) => !data.draft);
+const publishedPaths = new Set(documents.map((doc) => '/' + doc.id.replace(/\/index$/, '') + '/'));
+const featuredLinks = [
+  '/frameworks/spring-ai/',
+  '/agent/harness/',
+  '/basics/llm-theory/what-is-llm/',
+  '/frameworks/spring-ai/core/chat-memory/',
+  '/rag/fundamentals/what-is-rag/',
+  '/frameworks/spring-ai/tools/tool-calling/',
+  '/frameworks/mcp/',
+  '/frameworks/deepagents/',
+  '/agent/context-engineering/',
+  '/frameworks/langchain/langchain-basics/',
+  '/frameworks/langgraph/',
+  '/ai-programming/',
+  '/frameworks/spring-ai/core/chat-client/',
+  '/frameworks/spring-ai/mcp/overview/',
+];
+for (const href of [
+  ...featuredLinks,
+  ...Object.values(learningPaths).flatMap((path) => path.steps.map((step) => step[2])),
+]) {
+  if (!publishedPaths.has(href)) throw new Error(`首页链接没有对应的已发布文档：${href}`);
+}
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <ThemeInit />
+    <meta
+      name="description"
+      content="大模型应用开发学习笔记。探索 Spring AI、Deep Agents、RAG、MCP 与上下文工程，把 AI 知识连接成工程能力。"
+    />
+    <title>Hi, Agent! · 知识，由此连接</title>
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20261101" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20261101" />
+    <link rel="canonical" href={new URL('/', Astro.site)} />
+    <meta name="theme-color" content="#080c0f" />
+    <meta property="og:title" content="Hi, Agent! · 知识，由此连接" />
+    <meta
+      property="og:description"
+      content="从理解一个模型，到构建一个智能体。把零散的 AI 知识，连接成扎实的工程能力。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={new URL('/', Astro.site)} />
+    <script>
+      import '../scripts/home';
+    </script>
+  </head>
+  <body data-pagefind-ignore="all">
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <SiteBrand />
+        <nav class="desktop-nav" aria-label="主导航">
+          <a href="#topics">知识探索</a><a href="#paths">学习路线</a><a href="#reading">精选阅读</a>
+        </nav>
+        <div class="header-actions">
+          <button
+            class="search-trigger"
+            aria-label="搜索知识库"
+            aria-haspopup="dialog"
+            aria-controls="search-dialog"
+            disabled
+          >
+            <HomeIcon name="search" /><span>搜索知识库</span><kbd>⌘ K</kbd>
+          </button>
+          <a
+            class="icon-button github-link"
+            href="https://github.com/wangkaiqistart/Hello-Notes-"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="在新标签页打开 GitHub"><HomeIcon name="github" /></a
+          >
+          <ThemeSelect />
+          <button
+            class="icon-button menu-toggle"
+            disabled
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+            aria-label="展开导航"
+          >
+            <HomeIcon name="menu" />
+          </button>
+        </div>
+      </div>
+      <nav id="mobile-nav" class="mobile-nav" aria-label="手机导航" hidden>
+        <a href="#topics">知识探索</a><a href="#paths">学习路线</a><a href="#reading">精选阅读</a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero container" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="live-dot"></span> A SPACE FOR CURIOUS BUILDERS</div>
+          <h1 id="hero-title">让知识连接，<br /><span>让智能发生。</span></h1>
+          <p class="hero-description">
+            从理解一个模型，到构建一个智能体。<br />把零散的 AI 知识，连接成扎实的工程能力。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#topics"
+              >探索知识库 <HomeIcon name="arrow-up-right" /></a
+            ><a
+              class="button secondary"
+              href="/frameworks/spring-ai/"
+              data-doc="/frameworks/spring-ai/">从 Spring AI 开始 <HomeIcon name="arrow-right" /></a
+            >
+          </div>
+          <div class="hero-note">
+            <span class="mini-avatars"><b>学</b><b>思</b><b>建</b></span><span
+              >持续学习 · 认真记录 · 动手构建</span
+            >
+          </div>
+        </div>
+        <div
+          class="knowledge-scene"
+          id="knowledge-scene"
+          role="group"
+          aria-label="AI 知识网络，点击节点可浏览相关专题"
+        >
+          <div class="scene-halo"></div>
+          <div class="scene-fallback" aria-hidden="true">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <canvas id="knowledge-canvas" aria-hidden="true"></canvas>
+          <div class="scene-heading">
+            <span class="crosshair">+</span> THE KNOWLEDGE GRAPH
+            <span class="scene-index">001 — ∞</span>
+          </div>
+          <a class="graph-core" href="/agent/harness/" data-doc="/agent/harness/" data-node="agent"
+            ><span class="core-icon"><HomeIcon name="sparkles" /></span><span>Agent</span><small
+              >连接，让能力涌现</small
+            ></a
+          >
+          <a
+            class="graph-label node-model"
+            href="/basics/llm-theory/what-is-llm/"
+            data-doc="/basics/llm-theory/what-is-llm/"
+            data-node="models"
+            ><HomeIcon name="box" /><span>Models<small>智能的起点</small></span><span
+              class="node-light"></span></a
+          >
+          <a
+            class="graph-label node-memory"
+            href="/frameworks/spring-ai/core/chat-memory/"
+            data-doc="/frameworks/spring-ai/core/chat-memory/"
+            data-node="memory"
+            ><HomeIcon name="layers" /><span>Memory<small>让对话拥有上下文</small></span></a
+          >
+          <a
+            class="graph-label node-rag"
+            href="/rag/fundamentals/what-is-rag/"
+            data-doc="/rag/fundamentals/what-is-rag/"
+            data-node="rag"
+            ><HomeIcon name="database" /><span>RAG<small>连接你的知识</small></span></a
+          >
+          <a
+            class="graph-label node-tools"
+            href="/frameworks/spring-ai/tools/tool-calling/"
+            data-doc="/frameworks/spring-ai/tools/tool-calling/"
+            data-node="tools"
+            ><HomeIcon name="terminal" /><span>Tools<small>从思考走向行动</small></span></a
+          >
+          <a
+            class="graph-label node-mcp"
+            href="/frameworks/mcp/"
+            data-doc="/frameworks/mcp/"
+            data-node="mcp"
+            ><HomeIcon name="network" /><span>MCP<small>开放的连接协议</small></span></a
+          >
+          <div class="scene-bottom">
+            <span><span class="live-dot"></span> EVERYTHING IS CONNECTED</span><button
+              id="motion-toggle"
+              class="motion-toggle"
+              disabled
+              aria-pressed="false"
+              aria-label="暂停知识网络动画"
+            >
+              <HomeIcon name="pause" />
+            </button>
+          </div>
+        </div>
+        <a class="scroll-cue" href="#topics"><span>向下探索</span><HomeIcon name="arrow-down" /></a>
+      </section>
+      <div class="knowledge-strip">
+        <div class="container strip-inner">
+          <span class="strip-label">思想与工具，在这里交汇</span><span>Spring AI</span><span
+            >LangChain</span
+          ><span>LangGraph</span><span>Deep Agents</span><span>MCP</span><span>RAG</span>
+        </div>
+      </div>
+      <section id="topics" class="container section topics-section" aria-labelledby="topics-title">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow muted">01 / EXPLORE THE KNOWLEDGE</div>
+            <h2 id="topics-title">每一条探索，都有方向。</h2>
+          </div>
+          <p>沿着兴趣出发，让知识逐渐成网。</p>
+        </div>
+        <div class="topic-grid">
+          <a
+            class="topic-card spring-card"
+            href="/frameworks/spring-ai/"
+            data-doc="/frameworks/spring-ai/"
+          >
+            <div class="card-top">
+              <span class="topic-icon green"><HomeIcon name="leaf" /></span><span class="pill"
+                >JAVA 开发者入口</span
+              ><HomeIcon name="arrow-up-right" class="card-arrow" />
+            </div>
+            <div class="spring-illustration" aria-hidden="true">
+              <div class="code-line">
+                <span>@Bean</span><br />ChatClient <b>yourNextIdea</b>() &#123;<br
+                />&nbsp;&nbsp;return
+                <span>intelligence</span>;<br />&#125;
+              </div>
+              <div class="spring-orb"><HomeIcon name="leaf" /></div>
+            </div>
+            <div class="card-content">
+              <span class="card-kicker">FRAMEWORK / 01</span>
+              <h3>Spring AI</h3>
+              <p>用熟悉的 Java，打开 AI 应用开发的大门。</p>
+              <div class="tags">
+                <span>ChatClient</span><span>Advisors</span><span>Tool Calling</span>
+              </div>
+            </div>
+          </a>
+          <a
+            class="topic-card agents-card"
+            href="/frameworks/deepagents/"
+            data-doc="/frameworks/deepagents/"
+          >
+            <div class="card-top">
+              <span class="topic-icon violet"><HomeIcon name="network" /></span><span
+                class="card-kicker">AGENT / 02</span
+              ><HomeIcon name="arrow-up-right" class="card-arrow" />
+            </div>
+            <div class="agent-illustration" aria-hidden="true">
+              <span class="agent-mini"><HomeIcon name="terminal" /></span><span
+                class="agent-mini center"><HomeIcon name="sparkles" /></span
+              ><span class="agent-mini"><HomeIcon name="layers" /></span>
+              <div class="agent-link"></div>
+            </div>
+            <div class="card-content">
+              <h3>Deep Agents</h3>
+              <p>从一次问答，到会规划、能协作的智能体。</p>
+              <div class="tags"><span>Planning</span><span>Subagents</span><span>Skills</span></div>
+            </div>
+          </a>
+          <a
+            class="topic-card compact-card rag-card"
+            href="/rag/fundamentals/what-is-rag/"
+            data-doc="/rag/fundamentals/what-is-rag/"
+            ><div class="card-top">
+              <span class="topic-icon blue"><HomeIcon name="database" /></span><HomeIcon
+                name="arrow-up-right"
+                class="card-arrow"
+              />
+            </div>
+            <div class="card-content">
+              <span class="card-kicker">RETRIEVAL / 03</span>
+              <h3>让模型读懂你的知识</h3>
+              <p>文档解析、向量检索与 RAG 工程。</p>
+            </div>
+            <div class="mini-bars" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span
+              ></span><span></span><span></span><span></span><span></span>
+            </div></a
+          >
+          <a
+            class="topic-card compact-card context-card"
+            href="/agent/context-engineering/"
+            data-doc="/agent/context-engineering/"
+            ><div class="card-top">
+              <span class="topic-icon amber"><HomeIcon name="layers" /></span><HomeIcon
+                name="arrow-up-right"
+                class="card-arrow"
+              />
+            </div>
+            <div class="card-content">
+              <span class="card-kicker">CONTEXT / 04</span>
+              <h3>为智能准备恰好的上下文</h3>
+              <p>提示词、记忆与上下文工程。</p>
+            </div>
+            <div class="layer-art" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div></a
+          >
+        </div>
+        <div class="more-topics">
+          <span>还有更多值得连接的知识</span><a
+            href="/frameworks/langchain/langchain-basics/"
+            data-doc="/frameworks/langchain/langchain-basics/"
+            >LangChain <HomeIcon name="arrow-up-right" /></a
+          ><a href="/frameworks/langgraph/" data-doc="/frameworks/langgraph/"
+            >LangGraph <HomeIcon name="arrow-up-right" /></a
+          ><a href="/frameworks/mcp/" data-doc="/frameworks/mcp/"
+            >MCP <HomeIcon name="arrow-up-right" /></a
+          ><a href="/ai-programming/" data-doc="/ai-programming/"
+            >AI 编程 <HomeIcon name="arrow-up-right" /></a
+          >
+        </div>
+      </section>
+      <section id="paths" class="path-section" aria-labelledby="paths-title">
+        <div class="container section">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow muted">02 / FIND YOUR PATH</div>
+              <h2 id="paths-title">不必一次学完，先走好下一步。</h2>
+            </div>
+            <p>从你的经验出发，找到适合的学习路线。</p>
+          </div>
+          <div class="path-panel">
+            <div class="path-tabs" role="tablist" aria-label="选择学习路线">
+              {
+                Object.entries(learningPaths).map(([key], index) => (
+                  <button
+                    role="tab"
+                    id={`tab-${key}`}
+                    aria-selected={key === 'java'}
+                    aria-controls={`path-${key}`}
+                    tabindex={key === 'java' ? 0 : -1}
+                    data-path={key}
+                    disabled
+                  >
+                    <HomeIcon name={pathLabels[key].icon} />
+                    {pathLabels[key].label}
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                  </button>
+                ))
+              }
+            </div>
+            {
+              Object.entries(learningPaths).map(([key, path]) => (
+                <div
+                  id={`path-${key}`}
+                  class="path-content"
+                  role="tabpanel"
+                  aria-labelledby={`tab-${key}`}
+                  tabindex="0"
+                  data-path-panel={key}
+                  hidden={key !== 'java'}
+                >
+                  <div class="path-intro">
+                    <>
+                      <span class="pill">{path.badge}</span>
+                      <h3>{path.title}</h3>
+                      <p>{path.description}</p>
+                    </>
+                  </div>
+                  <ol class="path-steps">
+                    {path.steps.map(([title, description, href], index) => (
+                      <li>
+                        <a href={href}>
+                          <div class="step-top">
+                            <span class="step-number">{String(index + 1).padStart(2, '0')}</span>
+                            <span class="step-line" />
+                          </div>
+                          <h4>{title}</h4>
+                          <p>{description}</p>
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+      <section
+        id="reading"
+        class="container section reading-section"
+        aria-labelledby="reading-title"
+      >
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow muted">03 / WORTH YOUR ATTENTION</div>
+            <h2 id="reading-title">把一个问题，理解得更深。</h2>
+          </div>
+          <span class="small-note">本期阅读推荐 <span class="live-dot"></span></span>
+        </div>
+        <div class="reading-list">
+          <a
+            href="/frameworks/spring-ai/core/chat-client/"
+            data-doc="/frameworks/spring-ai/core/chat-client/"
+            ><span class="reading-number">01</span>
+            <div>
+              <span class="reading-category green-text">SPRING AI</span>
+              <h3>从 ChatClient 开始，与模型对话</h3>
+              <p>模型接入、提示词和流式响应，一条清晰的调用链。</p>
+            </div>
+            <span class="reading-type">API 指南</span><HomeIcon name="arrow-up-right" /></a
+          ><a href="/agent/harness/" data-doc="/agent/harness/"
+            ><span class="reading-number">02</span>
+            <div>
+              <span class="reading-category violet-text">AGENT ENGINEERING</span>
+              <h3>模型之外，Agent 还需要什么？</h3>
+              <p>理解 Harness 如何组织工具、上下文与执行循环。</p>
+            </div>
+            <span class="reading-type">工程思考</span><HomeIcon name="arrow-up-right" /></a
+          ><a
+            href="/frameworks/spring-ai/mcp/overview/"
+            data-doc="/frameworks/spring-ai/mcp/overview/"
+            ><span class="reading-number">03</span>
+            <div>
+              <span class="reading-category blue-text">MCP</span>
+              <h3>让应用与工具，拥有共同语言</h3>
+              <p>从客户端与服务端的关系，理解 MCP 的连接方式。</p>
+            </div>
+            <span class="reading-type">协议入门</span><HomeIcon name="arrow-up-right" /></a
+          >
+        </div>
+      </section>
+      <section class="closing container">
+        <div class="closing-mark" aria-hidden="true">✳</div>
+        <div>
+          <span class="eyebrow muted">STAY CURIOUS. KEEP BUILDING.</span>
+          <h2>下一个想法，从这里开始。</h2>
+          <p>知识的价值，在于你用它创造了什么。</p>
+        </div>
+        <a class="button primary" href="#topics">开始探索 <HomeIcon name="arrow-up-right" /></a>
+      </section>
+    </main>
+    <footer class="site-footer container">
+      <a class="brand" href="#"><span class="brand-dot">✳</span> Hi, Agent!</a><span
+        >个人 AI 技术知识库 · 学习，让连接发生。</span
+      >
+      <div>
+        <a href="https://github.com/wangkaiqistart/Hello-Notes-" target="_blank" rel="noreferrer"
+          >GitHub <HomeIcon name="arrow-up-right" /></a
+        ><span class="footer-note">Stay curious. Keep building.</span>
+      </div>
+    </footer>
+    <dialog id="search-dialog" aria-labelledby="search-title">
+      <div class="search-box">
+        <div class="search-input-wrap">
+          <HomeIcon name="search" /><label class="sr-only" for="search-input" id="search-title"
+            >搜索专题与文章</label
+          ><input
+            id="search-input"
+            type="search"
+            placeholder="搜索专题与文章…"
+            autocomplete="off"
+          /><button id="search-close" class="icon-button" aria-label="关闭搜索">
+            <kbd>ESC</kbd>
+          </button>
+        </div>
+        <div class="search-results" id="search-results" aria-busy="false"></div>
+        <div class="search-footer">
+          <span id="search-count" role="status"></span><span>↑ ↓ 选择 · Enter 阅读</span>
+        </div>
+      </div>
+    </dialog>
+    <noscript
+      ><style is:inline>
+        .mobile-nav[hidden],
+        [data-path-panel][hidden] {
+          display: block !important;
+        }
+        .path-tabs,
+        .search-trigger,
+        .menu-toggle,
+        .motion-toggle {
+          display: none !important;
+        }
+      </style></noscript
+    >
+    <noscript
+      ><div class="noscript-note">
+        当前为静态浏览模式，专题链接仍可使用。开启 JavaScript 可体验知识网络与搜索。
+      </div></noscript
+    >
+  </body>
+</html>

@@ -1,0 +1,166 @@
+{
+  "date": "2026-11-01",
+  "browser": "Chrome / Playwright",
+  "url": "http://127.0.0.1:4333/prototypes/homepage-v1-2026-11-01.html",
+  "checks": [
+    {
+      "name": "Three.js 首屏渲染",
+      "status": "PASS",
+      "calls": 8,
+      "points": 308,
+      "running": true
+    },
+    {
+      "name": "暂停动画",
+      "status": "PASS"
+    },
+    {
+      "name": "恢复动画",
+      "status": "PASS"
+    },
+    {
+      "name": "三条路线切换及键盘操作",
+      "status": "PASS"
+    },
+    {
+      "name": "搜索、空结果、Enter 打开文章与 Esc 关闭",
+      "status": "PASS"
+    },
+    {
+      "name": "搜索快捷键",
+      "status": "PASS"
+    },
+    {
+      "name": "场景离屏暂停",
+      "status": "PASS"
+    },
+    {
+      "name": "响应式无横向溢出",
+      "status": "PASS",
+      "width": 320
+    },
+    {
+      "name": "响应式无横向溢出",
+      "status": "PASS",
+      "width": 390
+    },
+    {
+      "name": "响应式无横向溢出",
+      "status": "PASS",
+      "width": 768
+    },
+    {
+      "name": "响应式无横向溢出",
+      "status": "PASS",
+      "width": 1024
+    },
+    {
+      "name": "响应式无横向溢出",
+      "status": "PASS",
+      "width": 1440
+    },
+    {
+      "name": "响应式无横向溢出",
+      "status": "PASS",
+      "width": 1920
+    },
+    {
+      "name": "手机菜单展开与导航关闭",
+      "status": "PASS"
+    },
+    {
+      "name": "减少动态效果模式",
+      "status": "PASS"
+    },
+    {
+      "name": "无 JavaScript 时文章仍可打开",
+      "status": "PASS"
+    },
+    {
+      "name": "Three.js 不可用时静态回退",
+      "status": "PASS"
+    },
+    {
+      "name": "正常交互无浏览器错误",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "links": [
+    [
+      "/agent/context-engineering/",
+      "200",
+      ""
+    ],
+    [
+      "/agent/harness/",
+      "200",
+      ""
+    ],
+    [
+      "/ai-programming/",
+      "200",
+      ""
+    ],
+    [
+      "/basics/llm-theory/what-is-llm/",
+      "200",
+      ""
+    ],
+    [
+      "/frameworks/deepagents/",
+      "200",
+      ""
+    ],
+    [
+      "/frameworks/langchain/langchain-basics/",
+      "200",
+      ""
+    ],
+    [
+      "/frameworks/langgraph/",
+      "200",
+      ""
+    ],
+    [
+      "/frameworks/mcp/",
+      "200",
+      ""
+    ],
+    [
+      "/frameworks/spring-ai/",
+      "200",
+      ""
+    ],
+    [
+      "/frameworks/spring-ai/core/chat-client/",
+      "200",
+      ""
+    ],
+    [
+      "/frameworks/spring-ai/core/chat-memory/",
+      "200",
+      ""
+    ],
+    [
+      "/frameworks/spring-ai/getting-started/quickstart/",
+      "200",
+      ""
+    ],
+    [
+      "/frameworks/spring-ai/mcp/overview/",
+      "200",
+      ""
+    ],
+    [
+      "/frameworks/spring-ai/tools/tool-calling/",
+      "200",
+      ""
+    ],
+    [
+      "/rag/fundamentals/what-is-rag/",
+      "200",
+      ""
+    ]
+  ]
+}
