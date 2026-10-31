@@ -1,0 +1,221 @@
+{
+  "springAiVersion": "2.0.2",
+  "mcpSdkVersion": "2.1.0",
+  "date": "2026-10-31",
+  "type": "static source assertions; Java/MCP not run",
+  "sourceArtifacts": [
+    "spring-ai-mcp",
+    "spring-ai-autoconfigure-mcp-client-common",
+    "spring-ai-autoconfigure-mcp-client-httpclient",
+    "spring-ai-autoconfigure-mcp-server-common",
+    "spring-ai-autoconfigure-mcp-server-webmvc",
+    "spring-ai-autoconfigure-mcp-server-webflux",
+    "mcp-spring-webmvc",
+    "mcp-spring-webflux"
+  ],
+  "sdkArtifact": "io.modelcontextprotocol.sdk:mcp-core:2.1.0",
+  "checks": [
+    {
+      "claim": "客户端默认启用",
+      "file": "api/McpClientCommonProperties.java",
+      "assertion": "private boolean enabled = true;",
+      "line": 41,
+      "result": "PASS"
+    },
+    {
+      "claim": "客户端创建后默认初始化",
+      "file": "api/McpClientCommonProperties.java",
+      "assertion": "private boolean initialized = true;",
+      "line": 56,
+      "result": "PASS"
+    },
+    {
+      "claim": "客户端默认20秒超时",
+      "file": "api/McpClientCommonProperties.java",
+      "assertion": "private Duration requestTimeout = Duration.ofSeconds(20);",
+      "line": 63,
+      "result": "PASS"
+    },
+    {
+      "claim": "Roots开关在通用配置",
+      "file": "api/McpClientCommonProperties.java",
+      "assertion": "private boolean rootChangeNotification = true;",
+      "line": 99,
+      "result": "PASS"
+    },
+    {
+      "claim": "初始化返回结果对象",
+      "file": "api/McpSyncClient.java",
+      "assertion": "public McpSchema.InitializeResult initialize()",
+      "line": 187,
+      "result": "PASS"
+    },
+    {
+      "claim": "标准IO启动独立进程",
+      "file": "api/StdioClientTransport.java",
+      "assertion": "processBuilder.start()",
+      "line": 152,
+      "result": "PASS"
+    },
+    {
+      "claim": "真实定制接口名",
+      "file": "api/McpClientCustomizer.java",
+      "assertion": "public interface McpClientCustomizer<B>",
+      "line": 36,
+      "result": "PASS"
+    },
+    {
+      "claim": "定制回调接受连接名与构建器",
+      "file": "api/McpClientCustomizer.java",
+      "assertion": "void customize(String name, B componentBuilder)",
+      "line": 46,
+      "result": "PASS"
+    },
+    {
+      "claim": "默认元数据转换过滤exchange",
+      "file": "api/ToolContextToMcpMetaConverter.java",
+      "assertion": "!McpToolUtils.TOOL_CONTEXT_MCP_EXCHANGE_KEY.equals(entry.getKey())",
+      "line": 56,
+      "result": "PASS"
+    },
+    {
+      "claim": "默认元数据转换过滤null",
+      "file": "api/ToolContextToMcpMetaConverter.java",
+      "assertion": "entry.getValue() != null",
+      "line": 57,
+      "result": "PASS"
+    },
+    {
+      "claim": "工具上下文转元数据可禁用",
+      "file": "api/ToolContextToMcpMetaConverter.java",
+      "assertion": "return toolContext -> Map.of();",
+      "line": 67,
+      "result": "PASS"
+    },
+    {
+      "claim": "无前缀生成器使用原名",
+      "file": "api/McpToolNamePrefixGenerator.java",
+      "assertion": "tool.name()",
+      "line": 48,
+      "result": "PASS"
+    },
+    {
+      "claim": "默认前缀实现先规范化",
+      "file": "api/DefaultMcpToolNamePrefixGenerator.java",
+      "assertion": "McpToolUtils.format(tool.name())",
+      "line": 64,
+      "result": "PASS"
+    },
+    {
+      "claim": "源默认前缀处理重名",
+      "file": "api/DefaultMcpToolNamePrefixGenerator.java",
+      "assertion": "alt_",
+      "line": 42,
+      "result": "PASS"
+    },
+    {
+      "claim": "进度通知含可选total",
+      "file": "api/McpSchema.java",
+      "assertion": "Double total",
+      "line": 5238,
+      "result": "PASS"
+    },
+    {
+      "claim": "服务端属性字段默认Streamable",
+      "file": "api/McpServerProperties.java",
+      "assertion": "private ServerProtocol protocol = ServerProtocol.STREAMABLE;",
+      "line": 100,
+      "result": "PASS"
+    },
+    {
+      "claim": "服务端协议SSE条件缺省命中",
+      "file": "api/McpServerAutoConfiguration.java",
+      "assertion": "havingValue = \"SSE\", matchIfMissing = true",
+      "line": 349,
+      "result": "PASS"
+    },
+    {
+      "claim": "服务端Streamable条件须匹配",
+      "file": "api/McpServerAutoConfiguration.java",
+      "assertion": "havingValue = \"STREAMABLE\", matchIfMissing = false",
+      "line": 356,
+      "result": "PASS"
+    },
+    {
+      "claim": "工具能力默认开启",
+      "file": "api/McpServerProperties.java",
+      "assertion": "boolean tool = true",
+      "line": 232,
+      "result": "PASS"
+    },
+    {
+      "claim": "资源能力默认开启",
+      "file": "api/McpServerProperties.java",
+      "assertion": "boolean resource = true",
+      "line": 230,
+      "result": "PASS"
+    },
+    {
+      "claim": "提示词能力默认开启",
+      "file": "api/McpServerProperties.java",
+      "assertion": "boolean prompt = true",
+      "line": 234,
+      "result": "PASS"
+    },
+    {
+      "claim": "补全能力默认开启",
+      "file": "api/McpServerProperties.java",
+      "assertion": "boolean completion = true",
+      "line": 236,
+      "result": "PASS"
+    },
+    {
+      "claim": "MVC Starter注册独立路由Bean",
+      "file": "api/McpServerStreamableHttpWebMvcAutoConfiguration.java",
+      "assertion": "return webMvcProvider.getRouterFunction();",
+      "line": 71,
+      "result": "PASS"
+    },
+    {
+      "claim": "Flux Starter注册独立路由Bean",
+      "file": "api/McpServerStreamableHttpWebFluxAutoConfiguration.java",
+      "assertion": "return webFluxProvider.getRouterFunction();",
+      "line": 70,
+      "result": "PASS"
+    },
+    {
+      "claim": "MVC传输上下文默认空",
+      "file": "api/WebMvcStreamableServerTransportProvider.java",
+      "assertion": "McpTransportContext.EMPTY",
+      "line": 858,
+      "result": "PASS"
+    },
+    {
+      "claim": "Flux传输上下文默认空",
+      "file": "api/WebFluxStreamableServerTransportProvider.java",
+      "assertion": "McpTransportContext.EMPTY",
+      "line": 602,
+      "result": "PASS"
+    },
+    {
+      "claim": "服务端注解扫描默认开启",
+      "file": "api/McpServerAnnotationScannerProperties.java",
+      "assertion": "private boolean enabled = true;",
+      "line": 29,
+      "result": "PASS"
+    },
+    {
+      "claim": "发布POM的MCP SDK版本",
+      "file": "api/spring-ai-mcp-2.0.2.pom",
+      "assertion": "<version>2.1.0</version>",
+      "line": 74,
+      "result": "PASS"
+    },
+    {
+      "claim": "客户端创建路径未读取Roots开关",
+      "file": "api/McpClientAutoConfiguration.java",
+      "assertion": "isRootChangeNotification( absent",
+      "result": "PASS"
+    }
+  ]
+}

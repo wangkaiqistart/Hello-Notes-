@@ -64,6 +64,14 @@ export default defineConfig({
 										'frameworks/spring-ai/tools/chatmodel-tool-calling',
 									],
 								},
+								{
+									label: 'MCP',
+									items: [
+										'frameworks/spring-ai/mcp/overview',
+										'frameworks/spring-ai/mcp/client',
+										'frameworks/spring-ai/mcp/server',
+									],
+								},
 							],
 						},
 						{ label: 'LangChain', items: [{ autogenerate: { directory: 'frameworks/langchain' } }] },

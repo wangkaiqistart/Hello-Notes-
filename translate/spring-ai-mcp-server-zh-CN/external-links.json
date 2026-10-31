@@ -1,0 +1,172 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html",
+    "anchors": [
+      "",
+      "_sse_webflux_server",
+      "_sse_webmvc_server"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html",
+    "anchors": [
+      "",
+      "_streamable_http_webflux_server",
+      "_streamable_http_webmvc_server"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html",
+    "anchors": [
+      "",
+      "_stateless_webflux_server",
+      "_stateless_webmvc_server"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html",
+    "anchors": [
+      "",
+      "_mcpcomplete",
+      "_mcpprompt",
+      "_mcpresource",
+      "_mcptool"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-special-params.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-special-params.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/docs/learn/server-concepts",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/docs/2026-07-28/learn/server-concepts",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+    "anchors": [
+      "streamable-http"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://github.com/spring-ai-community/mcp-security",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://github.com/spring-ai-community/mcp-security",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-examples.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-examples.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/starter-webflux-server",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/starter-webflux-server",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/starter-stdio-server",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/starter-stdio-server",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/manual-webflux-server",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/manual-webflux-server",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/specification/2026-07-28",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-boot/reference/using/auto-configuration.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-boot/reference/using/auto-configuration.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html",
+    "missingAnchors": []
+  }
+]

@@ -1,0 +1,222 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html",
+  "version": "2.0.2",
+  "retrieved": "2026-10-31",
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "MCP Server Boot Starter"
+    },
+    {
+      "id": "_mcp_server_boot_starters",
+      "text": "MCP Server Boot Starters"
+    },
+    {
+      "id": "_stdio",
+      "text": "STDIO"
+    },
+    {
+      "id": "_webmvc",
+      "text": "WebMVC"
+    },
+    {
+      "id": "_webflux_reactive",
+      "text": "WebFlux (Reactive)"
+    },
+    {
+      "id": "_server_capabilities",
+      "text": "Server Capabilities"
+    },
+    {
+      "id": "_server_protocols",
+      "text": "Server Protocols"
+    },
+    {
+      "id": "securing-the-mcp-server",
+      "text": "Securing the MCP Server"
+    },
+    {
+      "id": "_syncasync_server_api_options",
+      "text": "Sync/Async Server API Options"
+    },
+    {
+      "id": "_mcp_server_annotations",
+      "text": "MCP Server Annotations"
+    },
+    {
+      "id": "_key_annotations",
+      "text": "Key Annotations"
+    },
+    {
+      "id": "_special_parameters",
+      "text": "Special Parameters"
+    },
+    {
+      "id": "_simple_example",
+      "text": "Simple Example"
+    },
+    {
+      "id": "_adding_data_to_mcptransportcontext",
+      "text": "Adding data to McpTransportContext"
+    },
+    {
+      "id": "_auto_configuration",
+      "text": "Auto-Configuration"
+    },
+    {
+      "id": "_configuration_properties",
+      "text": "Configuration Properties"
+    },
+    {
+      "id": "_additional_resources",
+      "text": "Additional Resources"
+    },
+    {
+      "id": "_example_applications",
+      "text": "Example Applications"
+    },
+    {
+      "id": "_additional_resources_2",
+      "text": "Additional Resources"
+    }
+  ],
+  "images": [],
+  "links": [
+    {
+      "href": "https://modelcontextprotocol.io/docs/learn/server-concepts",
+      "text": "Model Context Protocol (MCP) Servers"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/docs/learn/server-concepts",
+      "text": "MCP Servers"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html",
+      "text": "Annotation-based server development"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html#securing-the-mcp-server",
+      "text": "Securing the MCP Server"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html",
+      "text": "Standard Input/Output (STDIO)"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html#<em>sse_webmvc_server",
+      "text": "SSE WebMVC"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html#_streamable_http_webmvc_server",
+      "text": "Streamable-HTTP WebMVC"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html#_stateless_webmvc_server",
+      "text": "Stateless WebMVC"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html#<em>sse_webflux_server",
+      "text": "SSE WebFlux"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html#_streamable_http_webflux_server",
+      "text": "Streamable-HTTP WebFlux"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html#_stateless_webflux_server",
+      "text": "Stateless WebFlux"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html",
+      "text": "STDIO"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html#_sse_webmvc_server",
+      "text": "SSE"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html",
+      "text": "Streamable-HTTP"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http",
+      "text": "Streamable HTTP transport"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html",
+      "text": "Stateless"
+    },
+    {
+      "href": "https://github.com/spring-ai-community/mcp-security",
+      "text": "MCP Security"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html#_mcptool",
+      "text": "@McpTool"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html#_mcpresource",
+      "text": "@McpResource"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html#_mcpprompt",
+      "text": "@McpPrompt"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html#_mcpcomplete",
+      "text": "@McpComplete"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-special-params.html",
+      "text": "special parameter types"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html",
+      "text": "Server Annotations Reference"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-special-params.html",
+      "text": "Special Parameters"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-examples.html",
+      "text": "Examples"
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/starter-webflux-server",
+      "text": "Weather Server (SSE WebFlux)"
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/starter-stdio-server",
+      "text": "Weather Server (STDIO)"
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/weather/manual-webflux-server",
+      "text": "Weather Server Manual Configuration"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html",
+      "text": "MCP Server Annotations"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-special-params.html",
+      "text": "Special Parameters"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-examples.html",
+      "text": "MCP Annotations Examples"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/",
+      "text": "Spring AI Documentation"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/specification",
+      "text": "Model Context Protocol Specification"
+    },
+    {
+      "href": "https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.developing-auto-configuration",
+      "text": "Spring Boot Auto-configuration"
+    }
+  ]
+}

@@ -114,3 +114,15 @@
 - [ChatModel 工具调用](../src/content/docs/frameworks/spring-ai/tools/chatmodel-tool-calling.mdx)：底层工具定义与手动循环；[翻译记录](spring-ai-chatmodel-tool-calling-zh-CN/README.md)。
 
 共保留 75 段代码与 7 张来源图片。基础长文按技能分两块翻译，统一审校；对照 2.0.2 源码修正部分版本不一致的 API、缺失的构造器、手动循环的直接返回分支、Schema 注解与工具搜索配置语义。Java 示例仅做静态核验，未调用真实模型或执行工具。导航新增“工具调用”小节，README 调整为先工具调用/MCP、再 RAG 的学习顺序。
+
+## 后续译文：MCP 小章节
+
+日期：2026-10-31。来源为 Spring AI 2.0.2 的 MCP Overview、MCP Client Boot Starter 与 MCP Server Boot Starter。
+
+- [MCP 概览](../src/content/docs/frameworks/spring-ai/mcp/overview.mdx) · [翻译记录](spring-ai-mcp-overview-zh-CN/README.md)
+- [MCP 客户端](../src/content/docs/frameworks/spring-ai/mcp/client.mdx) · [翻译记录](spring-ai-mcp-client-zh-CN/README.md)
+- [MCP 服务端](../src/content/docs/frameworks/spring-ai/mcp/server.mdx) · [翻译记录](spring-ai-mcp-server-zh-CN/README.md)
+
+概览、Client、Server 三篇完整主题译文共 34 段代码、3 张来源图片；来源 35 段中去掉 1 段完全重复的 Streamable-HTTP 配置，其余保留并逐段核验。修正 9 段示例及若干正文语义：客户端初始化返回值、Roots 配置层级、进度计算、工具注册、元数据过滤、Authorization 空值与上下文读取。完整保留共享协议会话边界。源码确认 SDK 实际版本与传输缺省条件后，区分历史迁移基线与当前依赖，并要求显式配置 STREAMABLE。
+
+来源图保持英文标注与原字节，使用中文替代文本和原尺寸查看链接。39 个外部页面与使用锚点均通过检查。静态核对不代表 Java 编译或真实 MCP/模型调用通过；原文、初稿、审校、修订、定稿和证据均留存。

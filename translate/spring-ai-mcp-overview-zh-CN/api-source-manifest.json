@@ -1,0 +1,302 @@
+{
+  "springAiVersion": "2.0.2",
+  "mcpSdkVersion": "2.1.0",
+  "date": "2026-10-31",
+  "sources": [
+    "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-mcp/2.0.2/spring-ai-mcp-2.0.2-sources.jar",
+    "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-autoconfigure-mcp-client-common/2.0.2/spring-ai-autoconfigure-mcp-client-common-2.0.2-sources.jar",
+    "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-autoconfigure-mcp-client-httpclient/2.0.2/spring-ai-autoconfigure-mcp-client-httpclient-2.0.2-sources.jar",
+    "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-autoconfigure-mcp-server-common/2.0.2/spring-ai-autoconfigure-mcp-server-common-2.0.2-sources.jar",
+    "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-autoconfigure-mcp-server-webmvc/2.0.2/spring-ai-autoconfigure-mcp-server-webmvc-2.0.2-sources.jar",
+    "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-autoconfigure-mcp-server-webflux/2.0.2/spring-ai-autoconfigure-mcp-server-webflux-2.0.2-sources.jar",
+    "https://repo.maven.apache.org/maven2/org/springframework/ai/mcp-spring-webmvc/2.0.2/mcp-spring-webmvc-2.0.2-sources.jar",
+    "https://repo.maven.apache.org/maven2/org/springframework/ai/mcp-spring-webflux/2.0.2/mcp-spring-webflux-2.0.2-sources.jar",
+    "https://repo.maven.apache.org/maven2/io/modelcontextprotocol/sdk/mcp-core/2.1.0/mcp-core-2.1.0-sources.jar"
+  ],
+  "files": [
+    {
+      "path": "api/AsyncMcpToolCallback.java",
+      "sha256": "6e51663836b537a55cdf37f604b16b3daa7ce19d41f6044552e93aac88269dc2"
+    },
+    {
+      "path": "api/AsyncMcpToolCallbackProvider.java",
+      "sha256": "f890f6c85b0f0695253a3555c13ffd9deaaea3ad1f0f2651626f9b348a774b78"
+    },
+    {
+      "path": "api/DefaultMcpToolNamePrefixGenerator.java",
+      "sha256": "e4cdf39ab4f36acdfbf7c358d0b2ac26f486c2840d97ac3ff32056d91b432b8d"
+    },
+    {
+      "path": "api/HeaderUtils.java",
+      "sha256": "c2397bd7d30c4b833869d2f87bd7a40301ce12b45b3bbe50ad033349bfc84aa6"
+    },
+    {
+      "path": "api/McpAsyncClient.java",
+      "sha256": "b305c010ebe64725cd61662dfec3acdce05526a84f1dd6f9300018350056abec"
+    },
+    {
+      "path": "api/McpAsyncClientConfigurer.java",
+      "sha256": "da31b0d6d3c78667eb78702ec049db616909858cab3fb2e77eb1b936d823c479"
+    },
+    {
+      "path": "api/McpAsyncServerCustomizer.java",
+      "sha256": "3f0edfd2d13c8d97400bab52a6ce012d9473f7748cb4ad15edca34c81133d832"
+    },
+    {
+      "path": "api/McpAsyncToolsChangeEventEmmiter.java",
+      "sha256": "6adab11f9492ec14c815b85181ecdd1e1e75d7f3a616cfde8c9851f44713a746"
+    },
+    {
+      "path": "api/McpClientAnnotationScannerAutoConfiguration.java",
+      "sha256": "ea323eb614109aa45ac4d1fad7338515ea17a6f107713087948cf8358adbb843"
+    },
+    {
+      "path": "api/McpClientAnnotationScannerProperties.java",
+      "sha256": "4dd5780f7f171298924441364ceef4fe414038f1f25171ba08bf37b16b478911"
+    },
+    {
+      "path": "api/McpClientAutoConfiguration.java",
+      "sha256": "fa65ecea9e621c182dc75e27ebac6b6955937ee877ffc01e361abbed9b86321f"
+    },
+    {
+      "path": "api/McpClientAutoConfigurationRuntimeHints.java",
+      "sha256": "46b5fcf1a2c9dbab0e6274e967f64023356acd36553f9d07ac4c949c7562b5e3"
+    },
+    {
+      "path": "api/McpClientCommonProperties.java",
+      "sha256": "8c0ed612b8e1c90da91272e87dbbaf1f0cb2eceab454ac6782f71531b13e920d"
+    },
+    {
+      "path": "api/McpClientCustomizer.java",
+      "sha256": "b10acbe18241c5d742ccd420bea01c1079f2ae3a5c66c616f52efda3a2327a21"
+    },
+    {
+      "path": "api/McpConnectionInfo.java",
+      "sha256": "7408153359e01974083533abe3d6bb836c7ff8b82e2441b64118db483fbc66d8"
+    },
+    {
+      "path": "api/McpHints.java",
+      "sha256": "0051246705797e446572f4996d11a20846fec39652bf5a9ac0fab3680d3686ff"
+    },
+    {
+      "path": "api/McpSchema.java",
+      "sha256": "04e9691dbe0224316e89502b4ce3a246b0f4e623c52d28736d7795876f8e2870"
+    },
+    {
+      "path": "api/McpServerAnnotationScannerAutoConfiguration.java",
+      "sha256": "024510d7041246680fafc0a46e692e718f7c863bf04929c3af02ec1b5508429a"
+    },
+    {
+      "path": "api/McpServerAnnotationScannerProperties.java",
+      "sha256": "a097e4b9e9c5ed3662aab0b656f24aed8ed4689fad9f67733297755f129e7297"
+    },
+    {
+      "path": "api/McpServerAutoConfiguration.java",
+      "sha256": "ecd7f84597ad5e9fea1fc636d0fbfc09ece82b8c48922d53603ea7f2dd1f9c7c"
+    },
+    {
+      "path": "api/McpServerChangeNotificationProperties.java",
+      "sha256": "8722e43ee16fc5da82a459d3ebcb41160d858171e3e289ea917a970dd0f7101f"
+    },
+    {
+      "path": "api/McpServerJsonMapperAutoConfiguration.java",
+      "sha256": "9c6bfefb3572e57cfff41d1acf212e0e91de0d42d901419e0965a3cd512e506a"
+    },
+    {
+      "path": "api/McpServerProperties.java",
+      "sha256": "8ea148916b76a16f4ca592a0a384e485ba4d734aa0c318fe18b3b56ab90b2455"
+    },
+    {
+      "path": "api/McpServerSpecificationFactoryAutoConfiguration.java",
+      "sha256": "caa7bf13eb078d0ebdc56109fe8244ee540b58c8aed91540b47183575483648a"
+    },
+    {
+      "path": "api/McpServerSseProperties.java",
+      "sha256": "3927cfd33c434fe88cf25cef5985b63236e539ddd5e0af8df07043fb84a8f995"
+    },
+    {
+      "path": "api/McpServerSseWebMvcAutoConfiguration.java",
+      "sha256": "e86fdc9ad8042ac216794c4678d705c3798f3f3cf035feebc61b4ab951769dc0"
+    },
+    {
+      "path": "api/McpServerStatelessAutoConfiguration.java",
+      "sha256": "c8d2aea6b73d1ff4eb6ac19cabe56fb00c5450ee134d48d7b8c3feaa5e070b31"
+    },
+    {
+      "path": "api/McpServerStatelessWebMvcAutoConfiguration.java",
+      "sha256": "8c048c198d283f6b78af2c62621d9f82e7a9f92a0c530cfec2b0028bc41cdc4c"
+    },
+    {
+      "path": "api/McpServerStdioDisabledCondition.java",
+      "sha256": "aa35f16ab3a1be900e98da880863ff3232394bd79e0331408ab3ca8aa24bbf97"
+    },
+    {
+      "path": "api/McpServerStreamableHttpProperties.java",
+      "sha256": "6a4c67817c2871916a4a8aef40479cc3b235ce9447773dbf0cb644b2650890a8"
+    },
+    {
+      "path": "api/McpServerStreamableHttpWebFluxAutoConfiguration.java",
+      "sha256": "59f0025541a07d5359d10545a68f5441f9b6f78fad9a4217347c2fa7e9a654ab"
+    },
+    {
+      "path": "api/McpServerStreamableHttpWebMvcAutoConfiguration.java",
+      "sha256": "e56cac0de438bb57ac6e922529a7420b614b7aa12914fb60457d94333f6e9d0c"
+    },
+    {
+      "path": "api/McpSseClientConnectionDetails.java",
+      "sha256": "dd660e32d8045f85cf5c4b8cf05d3bf43bc158f05c184eb67956c2b39a7c61e5"
+    },
+    {
+      "path": "api/McpSseClientProperties.java",
+      "sha256": "3db6125fd678cbe3bffc0e3baac1854e3f48a70e5f3ff0bd87111bb17828a903"
+    },
+    {
+      "path": "api/McpStatelessAsyncServerCustomizer.java",
+      "sha256": "c3104f80d48cd97a77fe6cfb2f89e47d21d00be2a0f4400cb054d83e68f6e174"
+    },
+    {
+      "path": "api/McpStatelessSyncServerCustomizer.java",
+      "sha256": "8afbb259abd6dc6590b318e715ea5439fbc1993cf387d71de31499412fc6d9cf"
+    },
+    {
+      "path": "api/McpStdioClientProperties.java",
+      "sha256": "17919e13b6ed3f28ae366211a2bbcf5e489aa7f5ce92c874a544d120b3d4b3e5"
+    },
+    {
+      "path": "api/McpStreamableHttpClientProperties.java",
+      "sha256": "d5d9c1f0aba43efaed9d65f04c237936979b70a3fa18c7f67061555f939b2d3a"
+    },
+    {
+      "path": "api/McpSyncClient.java",
+      "sha256": "a349a36f2be7d98c09d3c370cf568657ae8817708b371944faa21033202fd854"
+    },
+    {
+      "path": "api/McpSyncClientConfigurer.java",
+      "sha256": "c3bb45cc318bf56e3f463bb12a5c7e5a024938d54fad39042453eee6ef517d1e"
+    },
+    {
+      "path": "api/McpSyncServerCustomizer.java",
+      "sha256": "a66a4c2d5e83f4f2f0a6f13fbebc7e633ff0abb141a82fa1edf801879130a510"
+    },
+    {
+      "path": "api/McpSyncToolsChangeEventEmmiter.java",
+      "sha256": "9167a3221b0c28061baec09f47e767058b647644ee43688f85ff26fb6eacfc10"
+    },
+    {
+      "path": "api/McpToolCallbackAutoConfiguration.java",
+      "sha256": "cec52316c0d5fd101542114d7ff604228092c10884c0b270bbf58b116cab602a"
+    },
+    {
+      "path": "api/McpToolFilter.java",
+      "sha256": "6e815bc5b6c7333ff289ce3835784bd73f178fea0b7b136a2de15a53e1598303"
+    },
+    {
+      "path": "api/McpToolNamePrefixGenerator.java",
+      "sha256": "19f6fe1938ed44f473d5e080d8183e386b1d76d5ac24353e2b58442e8cbc4c77"
+    },
+    {
+      "path": "api/McpToolUtils.java",
+      "sha256": "b564fc55e3a0de5cdd1d288c7e14e0c933bc45f61a8fac7f2180cb83214eb4d6"
+    },
+    {
+      "path": "api/McpToolsChangedEvent.java",
+      "sha256": "8e94a34dcfcba2c6bb3fc27a0b6d17238f75177f69527d7764366f682294dad9"
+    },
+    {
+      "path": "api/NamedClientMcpTransport.java",
+      "sha256": "e45027b4e302fb87aff3086ffe690e4b116c79cb73465d40e0bbeff5be06f39e"
+    },
+    {
+      "path": "api/PropertiesMcpSseClientConnectionDetails.java",
+      "sha256": "040cced204f114cccc871908e723d59fb593d476abe9b2b8d5e270bafa0e5219"
+    },
+    {
+      "path": "api/ServerParameters.java",
+      "sha256": "a5ea4191118ce5a1c0609ea738431ae64550706fa92f4f28b6eb86124a16c5bb"
+    },
+    {
+      "path": "api/SseHttpClientTransportAutoConfiguration.java",
+      "sha256": "20a526aeab2c15602f2fd5bfd507133cb456b850eda8ea2ee58c15a3435e7219"
+    },
+    {
+      "path": "api/StatelessServerSpecificationFactoryAutoConfiguration.java",
+      "sha256": "5ff3960178ed66effe75f2b2c5cd46edafb1d94dfda8cbc56d8931bf39630200"
+    },
+    {
+      "path": "api/StatelessToolCallbackConverterAutoConfiguration.java",
+      "sha256": "a95caa85a9b52ec295db1ed721d3ac135cd92a531bb67114378a8b7ba2ca05ca"
+    },
+    {
+      "path": "api/StdioClientTransport.java",
+      "sha256": "05cb82a3432e52d2bd16f9714769029d845696be335f3ce88657f8ca08a72c97"
+    },
+    {
+      "path": "api/StdioTransportAutoConfiguration.java",
+      "sha256": "180c61a8e0c46128e6d04ac90e2731b6a409af7a6d78c82eb9ec03de7617a5d3"
+    },
+    {
+      "path": "api/StreamableHttpHttpClientTransportAutoConfiguration.java",
+      "sha256": "d59d286c9cb3e90443982f5c40f4be2df7b76ba87ec7074501bb64061904bc04"
+    },
+    {
+      "path": "api/SyncMcpToolCallback.java",
+      "sha256": "c15d56db81ce736baf0921740c72329d71e80ca5f10e0e4e8641af0059f93d08"
+    },
+    {
+      "path": "api/SyncMcpToolCallbackProvider.java",
+      "sha256": "19508df386e2564f2da31c1cf98b01fcb58e819d94013979af5678f621865133"
+    },
+    {
+      "path": "api/ToolCallbackConverterAutoConfiguration.java",
+      "sha256": "a8ca07d6aebf488b62ff777e7498736c0b16e0eabd3f91c000151d3ae5912394"
+    },
+    {
+      "path": "api/ToolCallbackUtils.java",
+      "sha256": "70b9dbf61e5b328a47e9e19ecae39453043ed21c93fb86bac677ab82ecf09c79"
+    },
+    {
+      "path": "api/ToolContextToMcpMetaConverter.java",
+      "sha256": "6469fb45a78fd84491aa5b581d910fb5c2044595379023729c4e7ea6f40cdf82"
+    },
+    {
+      "path": "api/WebClientStreamableHttpTransport.java",
+      "sha256": "dff191a0b233ca0ac8835e34d8dea25c15c0092f611c330ff3a434cc5b56a205"
+    },
+    {
+      "path": "api/WebFluxSseClientTransport.java",
+      "sha256": "cdb0a77df720eeeeae1b558fa632041279e1577a564cac641b579e82069f0dea"
+    },
+    {
+      "path": "api/WebFluxSseServerTransportProvider.java",
+      "sha256": "e1834e6cfe3eb863af5991e785618fcf517d4c2f89f831d07c065e7640249a6f"
+    },
+    {
+      "path": "api/WebFluxStatelessServerTransport.java",
+      "sha256": "80cd1eb6b7d29e8b955920804f5db3cb2630da8fee07db1fc1598225e3d9621f"
+    },
+    {
+      "path": "api/WebFluxStreamableServerTransportProvider.java",
+      "sha256": "a74dd756085a2f090017bf580e56af700066c7707f11bcc760e50c22e0d739ca"
+    },
+    {
+      "path": "api/WebMvcSseServerTransportProvider.java",
+      "sha256": "0778ec9d3137e0a142a0b5898e35597241b9ba399db788d611102db437fc2e2a"
+    },
+    {
+      "path": "api/WebMvcStatelessServerTransport.java",
+      "sha256": "e69d880a8481d64e029182890bb0cc3621018316c25d745a8b6a472310e53b34"
+    },
+    {
+      "path": "api/WebMvcStreamableServerTransportProvider.java",
+      "sha256": "cf0850b55aa4b063c333fdb31f2f4cce1248155d88c712e4014666daaf6ae4cf"
+    },
+    {
+      "path": "api/spring-ai-mcp-2.0.2.pom",
+      "sha256": "2fe43e43190a4cc6e9d66975891d6281012c3118bc41e6363d665601df35019d"
+    },
+    {
+      "path": "api/spring-ai-parent-2.0.2.pom",
+      "sha256": "e91a3fd9efdfbd3d454492adfd238ff05404d4d3e307e0fd4dceba66c9ac300c"
+    }
+  ]
+}

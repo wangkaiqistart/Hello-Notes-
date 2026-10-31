@@ -1,0 +1,242 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html",
+  "version": "2.0.2",
+  "retrieved": "2026-10-31",
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "MCP Client Boot Starter"
+    },
+    {
+      "id": "_starters",
+      "text": "Starters"
+    },
+    {
+      "id": "_standard_mcp_client",
+      "text": "Standard MCP Client"
+    },
+    {
+      "id": "_webflux_client",
+      "text": "WebFlux Client"
+    },
+    {
+      "id": "_configuration_properties",
+      "text": "Configuration Properties"
+    },
+    {
+      "id": "_common_properties",
+      "text": "Common Properties"
+    },
+    {
+      "id": "_mcp_annotations_properties",
+      "text": "MCP Annotations Properties"
+    },
+    {
+      "id": "_stdio_transport_properties",
+      "text": "Stdio Transport Properties"
+    },
+    {
+      "id": "_windows_stdio_configuration",
+      "text": "Windows STDIO Configuration"
+    },
+    {
+      "id": "_why_windows_needs_special_handling",
+      "text": "Why Windows Needs Special Handling"
+    },
+    {
+      "id": "_solution_cmd_exe_wrapper",
+      "text": "Solution: cmd.exe Wrapper"
+    },
+    {
+      "id": "_cross_platform_programmatic_configuration",
+      "text": "Cross-Platform Programmatic Configuration"
+    },
+    {
+      "id": "_path_considerations",
+      "text": "Path Considerations"
+    },
+    {
+      "id": "_common_windows_batch_files_requiring_cmd_exe",
+      "text": "Common Windows Batch Files Requiring cmd.exe"
+    },
+    {
+      "id": "_reference_implementation",
+      "text": "Reference Implementation"
+    },
+    {
+      "id": "_streamable_http_transport_properties",
+      "text": "Streamable-HTTP Transport Properties"
+    },
+    {
+      "id": "_sse_transport_properties",
+      "text": "SSE Transport Properties"
+    },
+    {
+      "id": "_url_splitting_guidelines",
+      "text": "URL Splitting Guidelines"
+    },
+    {
+      "id": "_troubleshooting_sse_connections",
+      "text": "Troubleshooting SSE Connections"
+    },
+    {
+      "id": "_streamable_http_transport_properties_2",
+      "text": "Streamable Http Transport Properties"
+    },
+    {
+      "id": "_features",
+      "text": "Features"
+    },
+    {
+      "id": "_syncasync_client_types",
+      "text": "Sync/Async Client Types"
+    },
+    {
+      "id": "client-scope-and-session-boundaries",
+      "text": "Client Scope and Session Boundaries"
+    },
+    {
+      "id": "_client_customization",
+      "text": "Client Customization"
+    },
+    {
+      "id": "_customization_types",
+      "text": "Customization Types"
+    },
+    {
+      "id": "_client_customization_example",
+      "text": "Client Customization Example"
+    },
+    {
+      "id": "_transport_support",
+      "text": "Transport Support"
+    },
+    {
+      "id": "_tool_filtering",
+      "text": "Tool Filtering"
+    },
+    {
+      "id": "mcp-tool-name-prefix-generation",
+      "text": "Tool Name Prefix Generation"
+    },
+    {
+      "id": "_built_in_prefix_generators",
+      "text": "Built-in Prefix Generators"
+    },
+    {
+      "id": "_tool_context_to_mcp_meta_converter",
+      "text": "Tool Context to MCP Meta Converter"
+    },
+    {
+      "id": "_built_in_converters",
+      "text": "Built-in Converters"
+    },
+    {
+      "id": "_disable_the_mcp_toolcallback_auto_configuration",
+      "text": "Disable the MCP ToolCallback Auto-Configuration"
+    },
+    {
+      "id": "_mcp_client_annotations",
+      "text": "MCP Client Annotations"
+    },
+    {
+      "id": "_usage_example",
+      "text": "Usage Example"
+    },
+    {
+      "id": "_example_applications",
+      "text": "Example Applications"
+    },
+    {
+      "id": "_additional_resources",
+      "text": "Additional Resources"
+    }
+  ],
+  "images": [],
+  "links": [
+    {
+      "href": "https://modelcontextprotocol.io/quickstart/user",
+      "text": "Claude Desktop format"
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/filesystem",
+      "text": "Spring AI Examples - Filesystem"
+    },
+    {
+      "href": "http://localhost:3000",
+      "text": "localhost:3000"
+    },
+    {
+      "href": "https://api.service.com",
+      "text": "api.service.com"
+    },
+    {
+      "href": "http://localhost:8080",
+      "text": "localhost:8080"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-security.html#_working_around_spring_ai_autoconfiguration",
+      "text": "Working Around Spring AI Autoconfiguration"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/specification/2025-06-18/client/sampling",
+      "text": "Custom Sampling Handlers"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/specification/2025-06-18/client/roots",
+      "text": "File system (Roots) Access"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation",
+      "text": "Elicitation Handlers"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/logging",
+      "text": "Logging Handlers"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress",
+      "text": "Progress Handlers"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#combining-local-and-mcp-tools",
+      "text": "Combining Local and MCP Tools"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/tools.html#tool-context",
+      "text": "ToolContext"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress#progress-flow",
+      "text": "MCP Progress Flow"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-client.html",
+      "text": "MCP Client Annotations"
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/web-search/brave-chatbot",
+      "text": "Brave Web Search Chatbot"
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/client-starter/starter-default-client",
+      "text": "Default MCP Client Starter"
+    },
+    {
+      "href": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/client-starter/starter-webflux-client",
+      "text": "WebFlux MCP Client Starter"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/",
+      "text": "Spring AI Documentation"
+    },
+    {
+      "href": "https://modelcontextprotocol.github.io/specification/",
+      "text": "Model Context Protocol Specification"
+    },
+    {
+      "href": "https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.developing-auto-configuration",
+      "text": "Spring Boot Auto-configuration"
+    }
+  ]
+}

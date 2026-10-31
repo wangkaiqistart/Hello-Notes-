@@ -1,0 +1,163 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-client.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-client.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/specification/2026-07-28",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-boot/reference/using/auto-configuration.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-boot/reference/using/auto-configuration.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/quickstart/user",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/docs/2026-07-28/develop/connect-local-servers",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/filesystem",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/filesystem",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-security.html",
+    "anchors": [
+      "_working_around_spring_ai_autoconfiguration"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-security.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/client/sampling",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/specification/2025-06-18/client/sampling",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/client/roots",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/specification/2025-06-18/client/roots",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/logging",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/logging",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress",
+    "anchors": [
+      "",
+      "progress-flow"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/web-search/brave-chatbot",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/web-search/brave-chatbot",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/client-starter/starter-default-client",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/client-starter/starter-default-client",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/client-starter/starter-webflux-client",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/client-starter/starter-webflux-client",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html",
+    "missingAnchors": []
+  }
+]

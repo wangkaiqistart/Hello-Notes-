@@ -12,31 +12,21 @@ AI 智能体连接 Slack、GitHub、Jira 或多个 MCP Server 后，可用工具
 
 本篇介绍该 Advisor、`ToolIndex` 检索策略、配置与 Spring Boot 自动配置。它在整体架构中的位置见[扩展到数百个工具](/frameworks/spring-ai/tools/tool-calling/#scaling-to-hundreds-of-tools)。
 
-<a id="how-it-works"></a>
+工具搜索检索的是**工具名称与描述**，目的是选出供模型调用的工具；文档 RAG 检索的是参考资料，目的是为回答补充依据。两者可以复用向量存储，但不必一起引入。首次接入可使用默认的 `RegexToolIndex`，无需先学习向量数据库。
 
-## 工作流程
+阅读层次：[接入与使用](#integration-guide) → [索引选型](#index-selection) → [配置与生命周期参考](#configuration-reference)。
 
-`ToolSearchToolCallingAdvisor` 继承 `ToolCallingAdvisor`，覆盖初始化与每次迭代前的钩子。运行过程如下：
+<a id="integration-guide"></a>
 
-1. **建立索引**：会话开始时，把全部已注册工具写入配置的 `ToolIndex`，此时不向模型发送这些工具定义。
-2. **初始请求**：第一次模型请求只包含内置的 `toolSearchTool` 定义。
-3. **发现能力**：模型需要某项能力时，用自然语言查询调用 `toolSearchTool`。
-4. **搜索并扩展**：`ToolIndex` 找到匹配工具，将其定义加入下一次迭代的上下文。
-5. **请求工具调用**：模型获得定义后，发出普通工具调用请求。
-6. **执行工具**：`ToolCallingManager` 执行已发现的工具，并返回结果。
-7. **生成回答**：模型根据工具结果输出最终答案。
+## 一、接入与使用（需要时先读）
 
-下图重点看“先搜索工具，再执行工具”的两阶段过程，而非把整个工具目录一开始就放入请求：
-
-[![工具搜索调用流程：先调用 toolSearchTool 找到相关工具，再向模型提供定义并执行业务工具](/images/frameworks/spring-ai/tools/spring-ai-tool-search-tool-calling-flow.png)](/images/frameworks/spring-ai/tools/spring-ai-tool-search-tool-calling-flow.png)
-
-索引按会话划分，并发对话使用各自的工具索引，详见[会话隔离](/frameworks/spring-ai/tools/tool-search-tool/#session-scoping)。同一会话的工具集合发生变化时，会根据指纹清空并重建索引；集合未变化时复用已有索引。
+工具选择准确率或定义成本出现问题时，先判断是否适合启用，再完成默认索引接入与会话配置。
 
 <a id="when-to-use"></a>
 
-## 何时使用
+### 何时使用
 
-适合以下情况：
+以下情况值得评估工具搜索，数量与 Token 值只是经验起点：
 
 - `ChatClient` 注册了 10 个以上工具。
 - 每次请求的工具定义占用超过 10K Token。
@@ -49,9 +39,31 @@ AI 智能体连接 Slack、GitHub、Jira 或多个 MCP Server 后，可用工具
 - 每个会话都会频繁用到全部工具。
 - 工具定义很短，额外的搜索往返成本高于节省的 Token。
 
+最终应比较工具选择准确率、工具定义的 Token 用量和总耗时。一次搜索会增加模型与工具之间的往返，工具数量本身不能决定是否值得启用。
+
+<a id="how-it-works"></a>
+
+### 工作流程
+
+`ToolSearchToolCallingAdvisor` 继承 `ToolCallingAdvisor`，覆盖初始化与每次迭代前的钩子。运行过程如下：
+
+1. **建立索引**：会话开始时，把全部已注册工具写入配置的 `ToolIndex`，此时不向模型发送这些工具定义。
+2. **初始请求**：当前消息历史中还没有搜索结果时，只提供内置的 `toolSearchTool` 定义；已有搜索记录时，也可以注入先前发现的工具。
+3. **发现能力**：模型需要某项能力时，用自然语言查询调用 `toolSearchTool`。
+4. **搜索并扩展**：`ToolIndex` 找到匹配工具，将其定义加入下一次迭代的上下文。
+5. **请求工具调用**：模型获得定义后，发出普通工具调用请求。
+6. **执行工具**：`ToolCallingManager` 执行已发现的工具，并返回结果。
+7. **生成回答**：模型根据工具结果输出最终答案。
+
+下图重点看“先搜索工具，再执行工具”的两阶段过程，而非把整个工具目录一开始就放入请求：
+
+[![工具搜索调用流程：先调用 toolSearchTool 找到相关工具，再向模型提供定义并执行业务工具](/images/frameworks/spring-ai/tools/spring-ai-tool-search-tool-calling-flow.png)](/images/frameworks/spring-ai/tools/spring-ai-tool-search-tool-calling-flow.png)
+
+索引按会话划分，并发对话使用各自的工具索引，详见[会话隔离](/frameworks/spring-ai/tools/tool-search-tool/#session-scoping)。同一会话的工具集合发生变化时，会根据指纹清空并重建索引；集合未变化时复用已有索引。
+
 <a id="installation"></a>
 
-## 安装
+### 安装
 
 最简单的方式是使用包含 Lucene 和自动配置的 Spring Boot Starter。
 
@@ -93,15 +105,17 @@ dependencies {
 
 <a id="quick-start"></a>
 
-## 快速开始
+### 快速开始
 
-最简接入见后面的 [Spring Boot 自动配置](/frameworks/spring-ai/tools/tool-search-tool/#spring-boot-auto-configuration)。下面按顺序展示手动装配的几个片段；后续构建器中的 `toolIndex` 代表已经注入的 Bean，`MyTools` 由应用提供：
+Spring Boot 项目引入 Starter 后，启用 `spring.ai.chat.client.tool-search-advisor.enabled=true`，通过自动配置的 `ChatClient.Builder` 构建客户端，并在请求中提供会话 ID，即可使用默认正则索引，见 [Spring Boot 自动配置](/frameworks/spring-ai/tools/tool-search-tool/#spring-boot-auto-configuration)。直接使用 `ChatClient.create(chatModel)` 不会自动读取 Boot 提供的搜索 Advisor 构建器。
+
+下面用不依赖向量库的 `RegexToolIndex` 展示手动装配。几个片段分别对应 Bean 配置、客户端构建与请求；构建器中的 `toolIndex` 代表已注入的 Bean，`MyTools` 由应用提供：
 
 ```java
-// 1. 配置 ToolIndex（语义、关键词或正则检索）
+// 1. 配置 ToolIndex：先用正则索引，不需要 Embedding 或 VectorStore
 @Bean
-ToolIndex toolIndex(VectorStore vectorStore) {
-    return new VectorToolIndex(vectorStore);
+ToolIndex toolIndex() {
+    return new RegexToolIndex();
 }
 
 // 2. 构建 Advisor
@@ -125,11 +139,11 @@ String answer = chatClient.prompt("Help me plan what to wear today in Amsterdam"
 
 <a id="session-scoping"></a>
 
-## 会话隔离
+### 会话隔离
 
 `ToolSearchToolCallingAdvisor` 为每个会话分别建立索引。会话 ID 决定当前请求使用哪组工具索引，从而划分不同租户或不同对话的工具集合。
 
-每次请求都必须提供会话 ID。默认从 Advisor 上下文的 `ChatMemory.CONVERSATION_ID` 键中读取：
+每次请求都必须提供会话 ID。默认从 Advisor 上下文的 `ChatMemory.CONVERSATION_ID` 键中读取；`.toolContext(...)` 属于工具执行上下文，不能代替这里的 `.advisors(...)` 参数：
 
 ```java
 chatClient.prompt()
@@ -152,9 +166,74 @@ var advisor = ToolSearchToolCallingAdvisor.builder()
 
 选择 `tenantId` 表示按租户共享工具索引，并不等于逐用户、逐对话隔离。隔离粒度由键值决定，授权和会话归属校验仍由应用负责。
 
+**索引缓存与已发现工具不是同一份状态。** 索引按会话缓存，工具集合发生变化时重新建立；每次迭代向模型提供哪些工具，则从当前消息历史中的 `toolSearchTool` 响应恢复。只复用会话 ID，不会自动保留上次请求发现的工具。默认位于循环外的记忆 Advisor 不保存中间搜索消息；若要跨请求复用发现结果，需要保留相应消息，见[循环内记忆](/frameworks/spring-ai/tools/tool-calling/#inside-the-loop)。
+
+<a id="spring-boot-auto-configuration"></a>
+
+### Spring Boot 自动配置
+
+引入 `spring-ai-starter-tool-search-advisor` 后，用一个属性启用：
+
+```properties
+spring.ai.chat.client.tool-search-advisor.enabled=true
+```
+
+启用后，自动配置会：
+
+- 注册声明类型为 `ToolCallingAdvisor.Builder<?>` 的 `ToolSearchToolCallingAdvisor.Builder` Bean。默认构建器有 `@ConditionalOnMissingBean` 条件，因此搜索构建器可以替换默认 `ToolCallingAdvisor`，无需修改现有 `ChatClient` 代码。底层机制见[自定义 ToolAdvisor 的自动配置集成](/frameworks/spring-ai/tools/tool-calling/#custom-tool-advisor-autoconfig)。
+- 应用没有显式声明 `ToolIndex` 时，自动注册一个。
+
+<a id="tool-index-auto-selection"></a>
+
+#### 自动选择 ToolIndex
+
+通过 `spring.ai.chat.client.tool-search-advisor.tool-index-type` 选择实现：
+
+| 值              | 实现              | 依赖条件                                                     |
+| --------------- | ----------------- | ------------------------------------------------------------ |
+| `regex`（默认） | `RegexToolIndex`  | 无额外依赖。                                                 |
+| `lucene`        | `LuceneToolIndex` | 类路径中有 `org.apache.lucene:lucene-core`，Starter 已包含。 |
+| `vector`        | `VectorToolIndex` | 应用上下文中存在 `VectorStore` Bean。                        |
+
+应用自定义的 `ToolIndex` Bean 始终优先，`@ConditionalOnMissingBean` 会跳过内置配置。
+
+<a id="example-configurations"></a>
+
+#### 配置示例
+
+Lucene：自定义分数阈值，并启用 TTL 淘汰：
+
+```properties
+spring.ai.chat.client.tool-search-advisor.enabled=true
+spring.ai.chat.client.tool-search-advisor.tool-index-type=lucene
+spring.ai.chat.client.tool-search-advisor.lucene.min-score-threshold=0.4
+spring.ai.chat.client.tool-search-advisor.eviction.ttl=30m
+```
+
+向量检索，需要应用已有 `VectorStore` Bean：
+
+```properties
+spring.ai.chat.client.tool-search-advisor.enabled=true
+spring.ai.chat.client.tool-search-advisor.tool-index-type=vector
+```
+
+多租户部署中，自定义会话 ID 的上下文键：
+
+```properties
+spring.ai.chat.client.tool-search-advisor.enabled=true
+spring.ai.chat.client.tool-search-advisor.tool-index-type=vector
+spring.ai.chat.client.tool-search-advisor.session-id-key-name=tenantId
+```
+
+<a id="index-selection"></a>
+
+## 二、索引选型（按场景阅读）
+
+先了解默认正则索引；需要关键词排名或语义匹配时，再比较 Lucene 与向量索引。
+
 <a id="search-strategies"></a>
 
-## 检索策略
+### 检索策略
 
 `ToolIndex` 抽象检索实现，内置三种策略：
 
@@ -164,24 +243,24 @@ var advisor = ToolSearchToolCallingAdvisor.builder()
 | 关键词检索 | `LuceneToolIndex` | 词汇明确，需要快速、精确的关键词匹配。                                 |
 | 正则匹配   | `RegexToolIndex`  | 将查询词转换为匹配表达式，检索工具名和描述；默认实现，无额外依赖。     |
 
-<a id="vector-tool-index"></a>
+<a id="regex-tool-index"></a>
 
-### VectorToolIndex：语义检索
+#### RegexToolIndex：模式匹配
 
-使用基于嵌入（Embedding）的相似度检索，适合根据自然语言描述查找工具：
+将自然语言查询转成不区分大小写的 OR 正则表达式，匹配工具名称和描述，无额外依赖。它会过滤停用词、转义查询词，名称匹配的权重高于描述；不要把它当成直接执行 `get_*` 这类 glob 通配符的接口：
 
 ```java
 @Bean
-ToolIndex vectorToolIndex(VectorStore vectorStore) {
-    return new VectorToolIndex(vectorStore);
+ToolIndex regexToolIndex() {
+    return new RegexToolIndex();
 }
 ```
 
-需要一个 `VectorStore` Bean，例如通过 `spring-ai-starter-vector-store-pgvector` 提供。建立索引时，对工具名和描述生成向量；查询时，对 `toolSearchTool` 的查询生成向量，返回 Top-K 匹配项。
+未显式设置 `tool-index-type` 时，默认使用它。
 
 <a id="lucene-tool-index"></a>
 
-### LuceneToolIndex：关键词检索
+#### LuceneToolIndex：关键词检索
 
 使用 Apache Lucene 进行关键词检索，速度快，不依赖 Embedding 模型：
 
@@ -195,24 +274,30 @@ ToolIndex luceneToolIndex() {
 
 低于最低分数阈值的命中会被过滤。提高阈值会收紧匹配，降低阈值则放宽匹配。
 
-<a id="regex-tool-index"></a>
+<a id="vector-tool-index"></a>
 
-### RegexToolIndex：模式匹配
+#### VectorToolIndex：语义检索
 
-将自然语言查询转成不区分大小写的 OR 正则表达式，匹配工具名称和描述，无额外依赖。它会过滤停用词、转义查询词，名称匹配的权重高于描述；不要把它当成直接执行 `get_*` 这类 glob 通配符的接口：
+使用基于嵌入（Embedding）的相似度检索，适合根据自然语言描述查找工具：
 
 ```java
 @Bean
-ToolIndex regexToolIndex() {
-    return new RegexToolIndex();
+ToolIndex vectorToolIndex(VectorStore vectorStore) {
+    return new VectorToolIndex(vectorStore);
 }
 ```
 
-未显式设置 `tool-index-type` 时，默认使用它。
+需要一个 `VectorStore` Bean，例如通过 `spring-ai-starter-vector-store-pgvector` 提供。建立索引时，对工具名和描述生成向量；查询时，对 `toolSearchTool` 的查询生成向量，返回 Top-K 匹配项。
+
+<a id="configuration-reference"></a>
+
+## 三、配置与生命周期参考（按需查阅）
+
+查阅完整构建器与属性、ToolIndex API，以及会话索引的释放和淘汰策略。
 
 <a id="configuration"></a>
 
-## 配置
+### 配置
 
 `ToolSearchToolCallingAdvisor.Builder` 继承 `ToolCallingAdvisor.Builder`，增加以下检索选项。继承的选项见 [ToolCallingAdvisor 构建器](/frameworks/spring-ai/tools/tool-calling-advisor/#builder-options)。
 
@@ -227,9 +312,26 @@ ToolIndex regexToolIndex() {
 
 内置搜索工具的描述向模型提示“默认 5 项”，但它只是提示。`maxResults` 配置是模型未给值时的回退，不是服务端强制上限；模型与 Advisor 都未给值时，三个内置索引当前均使用 10 作为默认数量。
 
+<a id="properties-reference"></a>
+
+### 配置属性参考
+
+| 属性                                                                         | 作用                                                                                              | 默认值                        |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `spring.ai.chat.client.tool-search-advisor.enabled`                          | 启用工具搜索；为 `true` 时替换默认 `ToolCallingAdvisor`。                                         | `false`                       |
+| `spring.ai.chat.client.tool-search-advisor.tool-index-type`                  | 工具索引实现：`regex`、`lucene` 或 `vector`。                                                     | `regex`                       |
+| `spring.ai.chat.client.tool-search-advisor.max-results`                      | 模型未提供搜索结果数量时使用的回退值；`null` 交给索引默认行为。                                   | `null`                        |
+| `spring.ai.chat.client.tool-search-advisor.system-message-suffix`            | 附加到系统消息的自定义提示词；`null` 使用内置模板。                                               | `null`                        |
+| `spring.ai.chat.client.tool-search-advisor.reference-tool-name-accumulation` | 是否累积全部搜索轮次发现的工具名；为 `false` 时仅保留最近一轮，包括该轮并行调用的结果。           | `true`                        |
+| `spring.ai.chat.client.tool-search-advisor.session-id-key-name`              | Advisor 上下文中传递会话 ID 的键。                                                                | `chat_memory_conversation_id` |
+| `spring.ai.chat.client.tool-search-advisor.advisor-order`                    | 在处理链中的执行顺序。                                                                            | `HIGHEST_PRECEDENCE + 300`    |
+| `spring.ai.chat.client.tool-search-advisor.eviction.lru-max-sessions`        | LRU 策略保留的最大活跃会话数。                                                                    | `1000`                        |
+| `spring.ai.chat.client.tool-search-advisor.eviction.ttl`                     | 空闲会话的 TTL；设置后使用 LRU 与 TTL 的组合策略，接受 `30m`、`1h` 等 `java.time.Duration` 格式。 | `null`                        |
+| `spring.ai.chat.client.tool-search-advisor.lucene.min-score-threshold`       | Lucene 命中的最低分数阈值，仅对 `tool-index-type=lucene` 生效。                                   | `0.25`                        |
+
 <a id="tool-index-api"></a>
 
-## ToolIndex API
+### ToolIndex API
 
 `ToolIndex` 及配套类型 `ToolSearchRequest`、`ToolSearchResponse`、`ToolReference` 位于 `spring-ai-tool-search-tool` 模块的 `org.springframework.ai.tool.toolsearch` 包。`LuceneToolIndex`、`VectorToolIndex` 和 `RegexToolIndex` 也在这个模块中。
 
@@ -258,7 +360,7 @@ public interface ToolIndex {
 
 <a id="index-eviction"></a>
 
-## 索引淘汰
+### 索引淘汰
 
 每个会话的工具索引都会占用内存。`ToolIndexEvictionStrategy` 决定何时释放它们。
 
@@ -313,80 +415,6 @@ var advisor = ToolSearchToolCallingAdvisor.builder()
     .build();
 ```
 
-<a id="spring-boot-auto-configuration"></a>
-
-## Spring Boot 自动配置
-
-引入 `spring-ai-starter-tool-search-advisor` 后，用一个属性启用：
-
-```properties
-spring.ai.chat.client.tool-search-advisor.enabled=true
-```
-
-启用后，自动配置会：
-
-- 注册声明类型为 `ToolCallingAdvisor.Builder<?>` 的 `ToolSearchToolCallingAdvisor.Builder` Bean。默认构建器有 `@ConditionalOnMissingBean` 条件，因此搜索构建器可以替换默认 `ToolCallingAdvisor`，无需修改现有 `ChatClient` 代码。底层机制见[自定义 ToolAdvisor 的自动配置集成](/frameworks/spring-ai/tools/tool-calling/#custom-tool-advisor-autoconfig)。
-- 应用没有显式声明 `ToolIndex` 时，自动注册一个。
-
-<a id="tool-index-auto-selection"></a>
-
-### 自动选择 ToolIndex
-
-通过 `spring.ai.chat.client.tool-search-advisor.tool-index-type` 选择实现：
-
-| 值              | 实现              | 依赖条件                                                     |
-| --------------- | ----------------- | ------------------------------------------------------------ |
-| `regex`（默认） | `RegexToolIndex`  | 无额外依赖。                                                 |
-| `lucene`        | `LuceneToolIndex` | 类路径中有 `org.apache.lucene:lucene-core`，Starter 已包含。 |
-| `vector`        | `VectorToolIndex` | 应用上下文中存在 `VectorStore` Bean。                        |
-
-应用自定义的 `ToolIndex` Bean 始终优先，`@ConditionalOnMissingBean` 会跳过内置配置。
-
-<a id="properties-reference"></a>
-
-### 配置属性参考
-
-| 属性                                                                         | 作用                                                                                              | 默认值                        |
-| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------- |
-| `spring.ai.chat.client.tool-search-advisor.enabled`                          | 启用工具搜索；为 `true` 时替换默认 `ToolCallingAdvisor`。                                         | `false`                       |
-| `spring.ai.chat.client.tool-search-advisor.tool-index-type`                  | 工具索引实现：`regex`、`lucene` 或 `vector`。                                                     | `regex`                       |
-| `spring.ai.chat.client.tool-search-advisor.max-results`                      | 模型未提供搜索结果数量时使用的回退值；`null` 交给索引默认行为。                                   | `null`                        |
-| `spring.ai.chat.client.tool-search-advisor.system-message-suffix`            | 附加到系统消息的自定义提示词；`null` 使用内置模板。                                               | `null`                        |
-| `spring.ai.chat.client.tool-search-advisor.reference-tool-name-accumulation` | 是否累积全部搜索轮次发现的工具名；为 `false` 时仅保留最近一轮，包括该轮并行调用的结果。           | `true`                        |
-| `spring.ai.chat.client.tool-search-advisor.session-id-key-name`              | Advisor 上下文中传递会话 ID 的键。                                                                | `chat_memory_conversation_id` |
-| `spring.ai.chat.client.tool-search-advisor.advisor-order`                    | 在处理链中的执行顺序。                                                                            | `HIGHEST_PRECEDENCE + 300`    |
-| `spring.ai.chat.client.tool-search-advisor.eviction.lru-max-sessions`        | LRU 策略保留的最大活跃会话数。                                                                    | `1000`                        |
-| `spring.ai.chat.client.tool-search-advisor.eviction.ttl`                     | 空闲会话的 TTL；设置后使用 LRU 与 TTL 的组合策略，接受 `30m`、`1h` 等 `java.time.Duration` 格式。 | `null`                        |
-| `spring.ai.chat.client.tool-search-advisor.lucene.min-score-threshold`       | Lucene 命中的最低分数阈值，仅对 `tool-index-type=lucene` 生效。                                   | `0.25`                        |
-
-<a id="example-configurations"></a>
-
-### 配置示例
-
-Lucene：自定义分数阈值，并启用 TTL 淘汰：
-
-```properties
-spring.ai.chat.client.tool-search-advisor.enabled=true
-spring.ai.chat.client.tool-search-advisor.tool-index-type=lucene
-spring.ai.chat.client.tool-search-advisor.lucene.min-score-threshold=0.4
-spring.ai.chat.client.tool-search-advisor.eviction.ttl=30m
-```
-
-向量检索，需要应用已有 `VectorStore` Bean：
-
-```properties
-spring.ai.chat.client.tool-search-advisor.enabled=true
-spring.ai.chat.client.tool-search-advisor.tool-index-type=vector
-```
-
-多租户部署中，自定义会话 ID 的上下文键：
-
-```properties
-spring.ai.chat.client.tool-search-advisor.enabled=true
-spring.ai.chat.client.tool-search-advisor.tool-index-type=vector
-spring.ai.chat.client.tool-search-advisor.session-id-key-name=tenantId
-```
-
 <a id="see-also"></a>
 
 ## 相关阅读
@@ -396,4 +424,4 @@ spring.ai.chat.client.tool-search-advisor.session-id-key-name=tenantId
 - [智能工具选择：节省 34–64% Token](https://spring.io/blog/2025/12/11/spring-ai-tool-search-tools-tzolov)：2025 年 12 月的测试结果与方法。
 - [动态工具发现指南](https://docs.spring.io/spring-ai/reference/guides/dynamic-tool-search.html)：完整示例。
 
-来源：[工具搜索](https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html)。文档版本：2.0.2；核验日期：2026-10-26。
+来源：[工具搜索](https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html)。文档版本：2.0.2；核验日期：2026-11-01。

@@ -10,7 +10,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 4
     },
     {
       "block": 2,
@@ -18,7 +19,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 7
     },
     {
       "block": 3,
@@ -26,7 +28,8 @@
       "apiChanged": true,
       "reason": "finishReason 从首个 Generation metadata 读取，并保护空结果。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 8
     },
     {
       "block": 4,
@@ -34,7 +37,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 1
     },
     {
       "block": 5,
@@ -42,7 +46,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 9
     },
     {
       "block": 6,
@@ -50,7 +55,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 10
     },
     {
       "block": 7,
@@ -58,7 +64,8 @@
       "apiChanged": true,
       "reason": "补构造器、父类调用、审计字段及 Builder newCopy/copy，保留子类状态。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 11
     },
     {
       "block": 8,
@@ -66,15 +73,19 @@
       "apiChanged": true,
       "reason": "ChatClient.options 传 Builder；流式手动循环处理 returnDirect，保留生成结果。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 12
     },
     {
       "block": 9,
       "result": "PASS",
       "apiChanged": true,
-      "reason": "补构造器、logger 和 Advisor.getName()。",
+      "reason": "补构造器、logger 和 Advisor.getName()。；2026-11-01 复审：观察示例只记录消息数量，不输出完整消息内容。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "reviewedOn": "2026-11-01",
+      "targetSha256": "d849bbb7ebc12e4cb20e6157e25f7dfda70f778a296ccb492ae2a76024fb3089",
+      "targetBlock": 5
     },
     {
       "block": 10,
@@ -82,7 +93,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 6
     },
     {
       "block": 11,
@@ -90,7 +102,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "properties",
-      "targetLanguage": "properties"
+      "targetLanguage": "properties",
+      "targetBlock": 2
     },
     {
       "block": 12,
@@ -98,7 +111,12 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 3
     }
-  ]
+  ],
+  "reviewedOn": "2026-11-01",
+  "reviewRecord": "../spring-ai-tool-calling-zh-CN/2026-11-01-review.md",
+  "blockNumbering": "block 为来源代码段序号；targetBlock 为重排后站点代码段序号。代码内容未改变。",
+  "structureRecord": "../spring-ai-tool-calling-zh-CN/2026-11-01-structure.md"
 }

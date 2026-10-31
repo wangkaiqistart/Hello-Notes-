@@ -1,0 +1,172 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/guides/getting-started-mcp.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/guides/getting-started-mcp.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://java.sdk.modelcontextprotocol.io/latest/",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://java.sdk.modelcontextprotocol.io/latest/",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://start.spring.io",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://start.spring.io/",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://java.sdk.modelcontextprotocol.io/latest/client/",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://java.sdk.modelcontextprotocol.io/latest/client/",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://java.sdk.modelcontextprotocol.io/latest/server/",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://java.sdk.modelcontextprotocol.io/latest/server/",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html",
+    "anchors": [
+      "",
+      "_sse_webflux_server",
+      "_sse_webmvc_server"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html",
+    "anchors": [
+      "",
+      "_streamable_http_webflux_server",
+      "_streamable_http_webmvc_server"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html",
+    "anchors": [
+      "",
+      "_stateless_webflux_server",
+      "_stateless_webmvc_server"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-overview.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-overview.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html",
+    "anchors": [
+      "",
+      "_mcpcomplete",
+      "_mcpprompt",
+      "_mcpresource",
+      "_mcptool"
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-client.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-client.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-special-params.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-special-params.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-mcp/2.0.2/spring-ai-mcp-2.0.2.pom",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-mcp/2.0.2/spring-ai-mcp-2.0.2.pom",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-helpers.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-helpers.html",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://modelcontextprotocol.io/specification/2026-07-28",
+    "missingAnchors": []
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html",
+    "anchors": [
+      ""
+    ],
+    "status": "200",
+    "result": "PASS",
+    "effectiveUrl": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html",
+    "missingAnchors": []
+  }
+]

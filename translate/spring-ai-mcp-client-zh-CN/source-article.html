@@ -1,0 +1,2687 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" data-domain-script="018ee325-b3a7-7753-937b-b8b3e643b1a7"></script><script>function OptanonWrapper() {}</script><script>function setGTM(w, d, s, l, i) { w[l] = w[l] || []; w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js"}); var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != "dataLayer" ? "&l=" + l : ""; j.async = true; j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl; f.parentNode.insertBefore(j, f); } if (document.cookie.indexOf("OptanonConsent") > -1 && document.cookie.indexOf("groups=") > -1) { setGTM(window, document, "script", "dataLayer", "GTM-W8CQ8TL"); } else { waitForOnetrustActiveGroups(); } var timer; function waitForOnetrustActiveGroups() { if (document.cookie.indexOf("OptanonConsent") > -1 && document.cookie.indexOf("groups=") > -1) { clearTimeout(timer); setGTM(window, document, "script", "dataLayer", "GTM-W8CQ8TL"); } else { timer = setTimeout(waitForOnetrustActiveGroups, 250); }}</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>MCP Client Boot Starter :: Spring AI Reference</title>
+    <link rel="canonical" href="https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html">
+    <link rel="prev" href="mcp-overview.html">
+    <link rel="next" href="mcp-server-boot-starter-docs.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.6">
+    <script>
+!function (theme, navWidth) {
+  if (theme === 'dark') document.documentElement.classList.add('dark-theme')
+  if (navWidth) document.documentElement.style.setProperty('--nav-width', `${navWidth}px`)
+}(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)')?.matches && 'dark'),
+  localStorage && localStorage.getItem('nav-width'))
+    </script>
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/search.css">
+    <link rel="stylesheet" href="../../_/css/vendor/page-search.css">
+    <link rel="stylesheet" href="../../_/css/vendor/asciidoctor-tabs.css">
+
+    <meta name="antora-ui-version" content="v0.4.17"> 
+    <meta name="version" content="2.0.2">
+    <meta name="component" content="ai">
+    <meta name="latest-version" content="true">
+    <link rel="icon" href="../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://spring.io">
+        <img
+          id="springlogo"
+          class="block"
+          src="../../_/img/spring-logo.svg"
+          alt="Spring"
+        />
+      </a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Why Spring</a>
+          <div class="navbar-dropdown">
+            <a
+              class="navbar-item"
+              href="https://spring.io/why-spring"
+            >Overview</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/microservices"
+            >Microservices</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/reactive"
+            >Reactive</a>
+            <a class="navbar-item" href="https://spring.io/event-driven">Event
+              Driven</a>
+            <a class="navbar-item" href="https://spring.io/cloud">Cloud</a>
+            <a class="navbar-item" href="https://spring.io/web-applications">Web
+              Applications</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/serverless"
+            >Serverless</a>
+            <a class="navbar-item" href="https://spring.io/batch">Batch</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Learn</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/learn">Overview</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/quickstart"
+            >Quickstart</a>
+            <a class="navbar-item" href="https://spring.io/guides">Guides</a>
+            <a class="navbar-item" href="https://spring.io/blog">Blog</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown" style="min-width: 280px">
+            <a
+              class="navbar-item"
+              href="https://spring.io/projects"
+            >Overview</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/projects/spring-boot"
+            >Spring Boot</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/projects/spring-framework"
+            >Spring Framework</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/projects/spring-cloud"
+            >Spring Cloud</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/projects/spring-cloud-dataflow"
+            >Spring Cloud Data Flow</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/projects/spring-data"
+            >Spring Data</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/projects/spring-integration"
+            >Spring Integration</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/projects/spring-batch"
+            >Spring Batch</a>
+            <a
+              class="navbar-item"
+              href="https://spring.io/projects/spring-security"
+            >Spring Security</a>
+            <a
+              class="navbar-item navbar-item-special"
+              href="https://spring.io/projects"
+            >View all projects</a>
+            <li class="navbar-item navbar-item-special-3">DEVELOPMENT TOOLS</li>
+            <a class="navbar-item" href="https://spring.io/tools">Spring Tools 4</a>
+            <a
+              class="navbar-item navbar-item-special-2"
+              href="https://start.spring.io"
+            >Spring Initializr
+              <svg
+                class="external-link-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+              ><polyline
+                  points="15 10.94 15 15 1 15 1 1 5.06 1"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></polyline><polyline
+                  points="8.93 1 15 1 15 7.07"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></polyline><line
+                  x1="15"
+                  y1="1"
+                  x2="8"
+                  y2="8"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></line></svg></a>
+          </div>
+        </div>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a
+              class="navbar-item"
+              href="https://spring.academy/courses"
+            >Courses</a>
+            <a
+              class="navbar-item"
+              href="https://spring.academy/learning-path"
+            >Get Certified</a>
+          </div>
+        </div>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Solutions</a>
+          <div class="navbar-dropdown lg">
+            <a class="navbar-item" href="https://spring.io/solutions">Overview</a>
+            <a class="navbar-item" href="https://spring.io/support">Spring Runtime</a>
+            <a class="navbar-item" href="https://spring.io/consulting">Spring Consulting</a>
+            <a class="navbar-item" href="https://spring.academy/teams">Spring Academy For Teams</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
+
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a
+              class="navbar-item"
+              href="https://spring.io/community"
+            >Overview</a>
+            <a class="navbar-item" href="https://spring.io/events">Events</a>
+            <a class="navbar-item" href="https://spring.io/team">Team</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <label class="theme-toggler">
+      <input
+        type="checkbox"
+        type="checkbox"
+        id="switch-theme-checkbox"
+        name="switch-theme-checkbox"
+      />
+      <span class="icon"><svg
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="moon"
+          class="svg-inline--fa fa-moon moon"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 384 512"
+        ><path
+            fill="currentColor"
+            d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"
+          ></path>
+        </svg>
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="sun"
+          class="svg-inline--fa fa-sun sun"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+        ><path
+            fill="currentColor"
+            d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z"
+          ></path>
+        </svg></span>
+      <span class="text">light</span>
+    </label>
+  </nav>
+</header>
+<script>
+!function (theme) {
+  if (theme === 'dark') {
+    document.getElementById('switch-theme-checkbox').parentElement.classList.add('active')
+  }
+}(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)')?.matches && 'dark'))
+</script>
+<div class="body">
+<div class="nav-container" data-component="ai" data-version="2.0.2">
+  <aside class="nav">
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+        <nav class="nav-menu">
+<div class="context">
+  <span class="title">Spring AI</span>
+  <span class="version">2.0.2</span>
+  <button class="browse-version" id="browse-version">
+    <svg
+      height="24px"
+      id="Layer_1"
+      style="enable-background:new 0 0 512 512;"
+      version="1.1"
+      viewBox="0 0 512 512"
+      width="24px"
+      xml:space="preserve"
+    ><g><path
+          d="M256,224c-17.7,0-32,14.3-32,32s14.3,32,32,32c17.7,0,32-14.3,32-32S273.7,224,256,224L256,224z"
+        ></path><path
+          d="M128.4,224c-17.7,0-32,14.3-32,32s14.3,32,32,32c17.7,0,32-14.3,32-32S146,224,128.4,224L128.4,224z"
+        ></path><path
+          d="M384,224c-17.7,0-32,14.3-32,32s14.3,32,32,32s32-14.3,32-32S401.7,224,384,224L384,224z"
+        ></path></g></svg>
+  </button>
+  <div class="search">
+  <button class="DocSearch-Button search-button">
+    <svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <path d="M27.414,24.586l-5.077-5.077C23.386,17.928,24,16.035,24,14c0-5.514-4.486-10-10-10S4,8.486,4,14  s4.486,10,10,10c2.035,0,3.928-0.614,5.509-1.663l5.077,5.077c0.78,0.781,2.048,0.781,2.828,0  C28.195,26.633,28.195,25.367,27.414,24.586z M7,14c0-3.86,3.14-7,7-7s7,3.14,7,7s-3.14,7-7,7S7,17.86,7,14z" id="XMLID_223_"/>
+    </svg>
+    <span>Search</span>
+    <span class="search-key"></span>
+  </button>
+</div>
+</div><ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../../index.html">Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../../concepts.html">AI Concepts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link"  href="../../getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Reference</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../chatclient.html">Chat Client API</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../advisors.html">Advisors</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../advisors-recursive.html">Recursive Advisors</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../prompt.html">Prompts</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../usage-handling.html">Chat Response Metadata</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../structured-output.html">Structured Output</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../structured-output/validation.html">Schema Validation &amp; Self-Correction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../structured-output/native.html">Provider-Native Structured Output</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../structured-output/converters.html">Output Converters</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../multimodality.html">Multimodality</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../index.html">Models</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../chatmodel.html">Chat Models</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/comparison.html">Chat Models Comparison</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/bedrock-converse.html">Amazon Bedrock Converse</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/anthropic-chat.html">Anthropic</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/azure-openai-chat.html">Azure OpenAI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/deepseek-chat.html">DeepSeek</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/dmr-chat.html">Docker Model Runner</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/google-genai-chat.html">Google GenAI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/groq-chat.html">Groq</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/mistralai-chat.html">Mistral AI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/minimax-chat.html">MiniMax</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/nvidia-chat.html">NVIDIA</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/ollama-chat.html">Ollama</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/perplexity-chat.html">Perplexity AI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/oci-genai-chat.html">OCI Generative AI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/openai-chat.html">OpenAI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../chat/jinfer-chat.html">Qxotic jinfer</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../embeddings.html">Embedding Models</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../bedrock.html">Amazon Bedrock</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link"  href="../embeddings/bedrock-cohere-embedding.html">Cohere</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link"  href="../embeddings/bedrock-titan-embedding.html">Titan</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../embeddings/azure-openai-embeddings.html">Azure OpenAI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../embeddings/google-genai-embeddings-text.html">Google GenAI Text Embedding</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../embeddings/mistralai-embeddings.html">Mistral AI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../embeddings/oci-genai-embeddings.html">OCI GenAI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../embeddings/ollama-embeddings.html">Ollama</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../embeddings/onnx.html">(ONNX) Transformers</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../embeddings/openai-embeddings.html">OpenAI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../embeddings/postgresml-embeddings.html">PostgresML</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../embeddings/jinfer-embeddings.html">Qxotic jinfer</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">VertexAI</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link"  href="../embeddings/vertexai-embeddings-text.html">Text Embedding</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link"  href="../embeddings/vertexai-embeddings-multimodal.html">Multimodal Embedding</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../imageclient.html">Image Models</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../image/azure-openai-image.html">Azure OpenAI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../image/openai-image.html">OpenAI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../image/stabilityai-image.html">Stability</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../image/google-genai-image.html">Google GenAI</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../audio.html">Audio Models</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../audio/transcriptions.html">Transcription API</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link"  href="../audio/transcriptions/azure-openai-transcriptions.html">Azure OpenAI</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link"  href="../audio/transcriptions/openai-transcriptions.html">OpenAI</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link"  href="../audio/transcriptions/jinfer-transcriptions.html">Qxotic jinfer</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../audio/speech.html">Text-To-Speech (TTS) API</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link"  href="../audio/speech/openai-speech.html">OpenAI</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link"  href="../audio/speech/elevenlabs-speech.html">ElevenLabs</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link"  href="../audio/speech/jinfer-speech.html">Qxotic jinfer</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../moderation.html">Moderation Models</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../moderation/openai-moderation.html">OpenAI</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="../moderation/mistral-ai-moderation.html">Mistral AI</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../chat-memory.html">Chat Memory</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../tools.html">Tool Calling</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../tools/tool-calling-advisor.html">ToolCallingAdvisor</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../tools/tool-search-tool.html">Tool Search Tool</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../tools/chatmodel-tool-calling.html">ChatModel Tool Calling</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="mcp-overview.html">Model Context Protocol (MCP)</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link"  href="mcp-client-boot-starter-docs.html">MCP Client Boot Starters</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="mcp-server-boot-starter-docs.html">MCP Server Boot Starters</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="mcp-stdio-sse-server-boot-starter-docs.html">STDIO and SSE MCP Servers</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="mcp-streamable-http-server-boot-starter-docs.html">Streamable-HTTP MCP Servers</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="mcp-stateless-server-boot-starter-docs.html">Stateless Streamable-HTTP MCP Servers</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="mcp-security.html">MCP Security (WIP)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="mcp-annotations-overview.html">MCP Annotations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="mcp-annotations-client.html">Client Annotations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="mcp-annotations-server.html">Server Annotations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="mcp-annotations-special-params.html">Special Parameters</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link"  href="mcp-annotations-examples.html">MCP Annotations Examples</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../retrieval-augmented-generation.html">Retrieval Augmented Generation (RAG)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../etl-pipeline.html">ETL Pipeline</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../testing.html">Model Evaluation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../vectordbs.html">Vector Databases</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/azure.html">Azure AI Service</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/azure-cosmos-db.html">Azure Cosmos DB</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/bedrock-knowledge-base.html">Amazon Bedrock Knowledge Base</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/apache-cassandra.html">Apache Cassandra Vector Store</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/chroma.html">Chroma</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/couchbase.html">Couchbase</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/elasticsearch.html">Elasticsearch</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/gemfire.html">GemFire</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/mariadb.html">MariaDB Vector Store</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/milvus.html">Milvus</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/mongodb.html">MongoDB Atlas</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/neo4j.html">Neo4j</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/opensearch.html">OpenSearch</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/oracle.html">Oracle</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/pgvector.html">PGvector</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/pinecone.html">Pinecone</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/qdrant.html">Qdrant</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/redis.html">Redis</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/typesense.html">Typesense</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/weaviate.html">Weaviate</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../vectordbs/s3-vector-store.html">S3 Vector Store</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../../observability/index.html">Observability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../docker-compose.html">Development-time Services</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Testing</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link"  href="../testcontainers.html">Testcontainers</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Guides</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="https://github.com/spring-ai-community/awesome-spring-ai">Awesome Spring AI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../../guides/getting-started-mcp.html">Getting Started with MCP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../../guides/dynamic-tool-search.html">Dynamic Tool Discovery</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../../guides/llm-as-judge.html">LLM-as-a-Judge Evaluation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../chat/prompt-engineering-patterns.html">Prompt Engineering Patterns</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../effective-agents.html">Building Effective Agents</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="https://catalog.workshops.aws/java-spring-ai-agents">Building agents with Spring AI by AWS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="https://catalog.workshops.aws/java-spring-ai-agentcore">Building agents with Spring AI and AgentCore by AWS</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="https://github.com/microsoft/Spring-AI-for-Beginners">Spring AI for Beginners by Microsoft</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link"  href="../../upgrade-notes.html">Upgrade Notes</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link"  href="../chat/anthropic-migration.html">Migrating the Anthropic Module to the Official Java SDK</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+          <div class="toggle-sm">
+            <button id="nav-toggle-2" class="nav-toggle"></button>
+          </div>
+        </nav>
+      </div>
+      <div class="nav-collapse">
+        <button id="nav-collapse-toggle"><span></span></button>        
+      </div>
+    </div>
+    <div class="nav-resize"></div>
+  </aside>
+</div>
+<script>
+!function (sidebar) {
+  if (sidebar) {
+    document.body.classList.add('nav-sm')
+  }
+}(localStorage && localStorage.getItem('sidebar') === 'close')
+</script><main class="article">
+<div class="toolbar" role="navigation">
+  <button id="nav-toggle-1" class="nav-toggle"></button>
+<div class="search">
+  <button class="DocSearch-Button search-button">
+    <svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <path d="M27.414,24.586l-5.077-5.077C23.386,17.928,24,16.035,24,14c0-5.514-4.486-10-10-10S4,8.486,4,14  s4.486,10,10,10c2.035,0,3.928-0.614,5.509-1.663l5.077,5.077c0.78,0.781,2.048,0.781,2.828,0  C28.195,26.633,28.195,25.367,27.414,24.586z M7,14c0-3.86,3.14-7,7-7s7,3.14,7,7s-3.14,7-7,7S7,17.86,7,14z" id="XMLID_223_"/>
+    </svg>
+    <span>Search</span>
+    <span class="search-key"></span>
+  </button>
+</div>
+</div>
+  <div class="content">
+<aside class="sidebar">
+  <div class="content">
+    <div
+      class="toc"
+      data-title="MCP Client Boot Starter"
+      data-levels="2"
+    >
+      <div class="toc-menu"></div>
+    </div>
+    <div class="sidebar-links">
+        <a href="https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-docs/src/main/antora/modules/ROOT/pages/api/mcp/mcp-client-boot-starter-docs.adoc">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+          ><path
+              d="m16 2.012 3 3L16.713 7.3l-3-3zM4 14v3h3l8.299-8.287-3-3zm0 6h16v2H4z"
+            ></path></svg>
+          Edit this Page
+        </a>
+              <a href="https://github.com/spring-projects/spring-ai" title="GitHub">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="512px"
+            id="Layer_1"
+            version="1.1"
+            viewBox="0 0 512 512"
+            width="512px"
+          ><style type="text/css"><![CDATA[
+              .st0{fill-rule:evenodd;clip-rule:evenodd;} ]]></style><g><path
+                class="st0"
+                d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"
+              ></path></g></svg>
+          GitHub Project
+        </a>
+        <a href="https://stackoverflow.com/questions/tagged/spring">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path
+              d="M290.7 311L95 269.7 86.8 309l195.7 41zm51-87L188.2 95.7l-25.5 30.8 153.5 128.3zm-31.2 39.7L129.2 179l-16.7 36.5L293.7 300zM262 32l-32 24 119.3 160.3 32-24zm20.5 328h-200v39.7h200zm39.7 80H42.7V320h-40v160h359.5V320h-40z"
+            ></path></svg>
+          Stack Overflow
+        </a>
+    </div>
+  </div>
+</aside>
+<article class="doc">
+<div class="breadcrumbs-container">
+  <nav class="breadcrumbs" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="../../index.html">Spring AI</a></li>
+      <li>Reference</li>
+      <li><a href="mcp-overview.html">Model Context Protocol (MCP)</a></li>
+      <li><a href="mcp-client-boot-starter-docs.html">MCP Client Boot Starters</a></li>
+    </ul>
+  </nav>
+</div><h1 id="page-title" class="page">MCP Client Boot Starter</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Spring AI MCP (Model Context Protocol) Client Boot Starter provides auto-configuration for MCP client functionality in Spring Boot applications.
+It supports both synchronous and asynchronous client implementations with various transport options.</p>
+</div>
+<div class="paragraph">
+<p>The MCP Client Boot Starter provides:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Management of multiple client instances</p>
+</li>
+<li>
+<p>Automatic client initialization (if enabled)</p>
+</li>
+<li>
+<p>Support for multiple named transports (STDIO, Http/SSE and Streamable HTTP)</p>
+</li>
+<li>
+<p>Integration with Spring AI&#8217;s tool execution framework</p>
+</li>
+<li>
+<p>Tool filtering capabilities for selective tool inclusion/exclusion</p>
+</li>
+<li>
+<p>Customizable tool name prefix generation for avoiding naming conflicts</p>
+</li>
+<li>
+<p>Proper lifecycle management with automatic cleanup of resources when the application context is closed</p>
+</li>
+<li>
+<p>Customizable client creation through customizers</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_starters"><a class="anchor" href="#_starters"></a>Starters</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_standard_mcp_client"><a class="anchor" href="#_standard_mcp_client"></a>Standard MCP Client</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-starter-mcp-client&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The standard starter connects simultaneously to one or more MCP servers over <code>STDIO</code> (in-process), <code>SSE</code>, <code>Streamable-HTTP</code> and <code>Stateless Streamable-HTTP</code> transports.
+The SSE and Streamable-Http transports use the JDK HttpClient-based transport implementation.
+Each connection to an MCP server creates a new MCP client instance.
+You can choose either <code>SYNC</code> or <code>ASYNC</code> MCP clients (note: you cannot mix sync and async clients).
+For production deployment, we recommend using the WebFlux-based SSE &amp; StreamableHttp connection with the <code>spring-ai-starter-mcp-client-webflux</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_webflux_client"><a class="anchor" href="#_webflux_client"></a>WebFlux Client</h3>
+<div class="paragraph">
+<p>The WebFlux starter provides similar functionality to the standard starter but uses a WebFlux-based Streamable-Http, Stateless Streamable-Http and SSE transport implementation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-starter-mcp-client-webflux&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_properties"><a class="anchor" href="#_configuration_properties"></a>Configuration Properties</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_common_properties"><a class="anchor" href="#_common_properties"></a>Common Properties</h3>
+<div class="paragraph">
+<p>The common properties are prefixed with <code>spring.ai.mcp.client</code>:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 40%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable/disable the MCP client</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the MCP client instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring-ai-mcp-client</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version of the MCP client instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.0.0</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>initialized</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to initialize clients on creation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>request-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timeout duration for MCP client requests</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>20s</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Client type (SYNC or ASYNC). All clients must be either sync or async; mixing is not supported</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SYNC</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>root-change-notification</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable/disable root change notifications for all clients</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>toolcallback.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable/disable the MCP tool callback integration with Spring AI&#8217;s tool execution framework</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_mcp_annotations_properties"><a class="anchor" href="#_mcp_annotations_properties"></a>MCP Annotations Properties</h3>
+<div class="paragraph">
+<p>MCP Client Annotations provide a declarative way to implement MCP client handlers using Java annotations.
+The client mcp-annotations properties are prefixed with <code>spring.ai.mcp.client.annotation-scanner</code>:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 40%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable/disable the MCP client annotations auto-scanning</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_stdio_transport_properties"><a class="anchor" href="#_stdio_transport_properties"></a>Stdio Transport Properties</h3>
+<div class="paragraph">
+<p>Properties for Standard I/O transport are prefixed with <code>spring.ai.mcp.client.stdio</code>:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 40%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>servers-configuration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource containing the MCP servers configuration in JSON format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map of named stdio connection configurations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections.[name].command</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The command to execute for the MCP server</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections.[name].args</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of command arguments</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections.[name].env</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map of environment variables for the server process</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Example configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  ai:
+    mcp:
+      client:
+        stdio:
+          root-change-notification: true
+          connections:
+            server1:
+              command: /path/to/server
+              args:
+                - --port=8080
+                - --mode=production
+              env:
+                API_KEY: your-api-key
+                DEBUG: "true"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can configure stdio connections using an external JSON file using the <a href="https://modelcontextprotocol.io/quickstart/user">Claude Desktop format</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  ai:
+    mcp:
+      client:
+        stdio:
+          servers-configuration: classpath:mcp-servers.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Claude Desktop format looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/username/Desktop",
+        "/Users/username/Downloads"
+      ]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_windows_stdio_configuration"><a class="anchor" href="#_windows_stdio_configuration"></a>Windows STDIO Configuration</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+On Windows, commands like <code>npx</code>, <code>npm</code>, and <code>node</code> are implemented as <strong>batch files</strong> (<code>.cmd</code>), not native executables. Java&#8217;s <code>ProcessBuilder</code> cannot execute batch files directly and requires the <code>cmd.exe /c</code> wrapper.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_why_windows_needs_special_handling"><a class="anchor" href="#_why_windows_needs_special_handling"></a>Why Windows Needs Special Handling</h4>
+<div class="paragraph">
+<p>When Java&#8217;s <code>ProcessBuilder</code> (used internally by <code>StdioClientTransport</code>) attempts to spawn a process on Windows, it can only execute:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Native executables (<code>.exe</code> files)</p>
+</li>
+<li>
+<p>System commands available to <code>cmd.exe</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Windows batch files like <code>npx.cmd</code>, <code>npm.cmd</code>, and even <code>python.cmd</code> (from the Microsoft Store) require the <code>cmd.exe</code> shell to execute them.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_solution_cmd_exe_wrapper"><a class="anchor" href="#_solution_cmd_exe_wrapper"></a>Solution: cmd.exe Wrapper</h4>
+<div class="paragraph">
+<p>Wrap batch file commands with <code>cmd.exe /c</code>:</p>
+</div>
+<div class="paragraph">
+<p><strong>Windows Configuration:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "mcpServers": {
+    "filesystem": {
+      "command": "cmd.exe",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\username\\Desktop"
+      ]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Linux/macOS Configuration:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/username/Desktop"
+      ]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cross_platform_programmatic_configuration"><a class="anchor" href="#_cross_platform_programmatic_configuration"></a>Cross-Platform Programmatic Configuration</h4>
+<div class="paragraph">
+<p>For applications that need to work across platforms without separate configuration files, use OS detection in your Spring Boot application:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean(destroyMethod = "close")
+@ConditionalOnMissingBean(McpSyncClient.class)
+public McpSyncClient mcpClient() {
+    ServerParameters stdioParams;
+
+    if (isWindows()) {
+        // Windows: cmd.exe /c npx approach
+        var winArgs = new ArrayList&lt;&gt;(Arrays.asList(
+            "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem", "target"));
+        stdioParams = ServerParameters.builder("cmd.exe")
+                .args(winArgs)
+                .build();
+    } else {
+        // Linux/Mac: direct npx approach
+        stdioParams = ServerParameters.builder("npx")
+                .args("-y", "@modelcontextprotocol/server-filesystem", "target")
+                .build();
+    }
+
+    return McpClient.sync(new StdioClientTransport(stdioParams, McpJsonDefaults.getMapper()))
+            .requestTimeout(Duration.ofSeconds(10))
+            .build()
+            .initialize();
+}
+
+private static boolean isWindows() {
+    return System.getProperty("os.name").toLowerCase().contains("win");
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When using programmatic configuration with <code>@Bean</code>, add <code>@ConditionalOnMissingBean(McpSyncClient.class)</code> to avoid conflicts with auto-configuration from JSON files.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_path_considerations"><a class="anchor" href="#_path_considerations"></a>Path Considerations</h4>
+<div class="paragraph">
+<p><strong>Relative paths</strong> (recommended for portability):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "command": "cmd.exe",
+  "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-filesystem", "target"]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The MCP server resolves relative paths based on the application&#8217;s working directory.</p>
+</div>
+<div class="paragraph">
+<p><strong>Absolute paths</strong> (Windows requires backslashes or escaped forward slashes):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "command": "cmd.exe",
+  "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\username\\project\\target"]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_common_windows_batch_files_requiring_cmd_exe"><a class="anchor" href="#_common_windows_batch_files_requiring_cmd_exe"></a>Common Windows Batch Files Requiring cmd.exe</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><code>npx.cmd</code>, <code>npm.cmd</code> - Node package managers</p>
+</li>
+<li>
+<p><code>python.cmd</code> - Python (Microsoft Store installation)</p>
+</li>
+<li>
+<p><code>pip.cmd</code> - Python package manager</p>
+</li>
+<li>
+<p><code>mvn.cmd</code> - Maven wrapper</p>
+</li>
+<li>
+<p><code>gradle.cmd</code> - Gradle wrapper</p>
+</li>
+<li>
+<p>Custom <code>.cmd</code> or <code>.bat</code> scripts</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reference_implementation"><a class="anchor" href="#_reference_implementation"></a>Reference Implementation</h4>
+<div class="paragraph">
+<p>See <a href="https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/filesystem">Spring AI Examples - Filesystem</a> for a complete cross-platform MCP client implementation that automatically detects the OS and configures the client appropriately.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_streamable_http_transport_properties"><a class="anchor" href="#_streamable_http_transport_properties"></a>Streamable-HTTP Transport Properties</h3>
+<div class="paragraph">
+<p>Used for connecting to Streamable-HTTP and Stateless Streamable-HTTP MCP servers.</p>
+</div>
+<div class="paragraph">
+<p>Properties for Streamable-HTTP transport are prefixed with <code>spring.ai.mcp.client.streamable-http</code>:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 40%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map of named Streamable-HTTP connection configurations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections.[name].url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Base URL endpoint for Streamable-Http communication with the MCP server</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections.[name].endpoint</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">the streamable-http endpoint (as url suffix) to use for the connection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/mcp</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Example configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  ai:
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            server1:
+              url: http://localhost:8080
+            server2:
+              url: http://otherserver:8081
+              endpoint: /custom-sse</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sse_transport_properties"><a class="anchor" href="#_sse_transport_properties"></a>SSE Transport Properties</h3>
+<div class="paragraph">
+<p>Properties for Server-Sent Events (SSE) transport are prefixed with <code>spring.ai.mcp.client.sse</code>:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 40%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map of named SSE connection configurations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections.[name].url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Base URL endpoint for SSE communication with the MCP server</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections.[name].sse-endpoint</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">the sse endpoint (as url suffix) to use for the connection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/sse</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Example configurations:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  ai:
+    mcp:
+      client:
+        sse:
+          connections:
+            # Simple configuration using default /sse endpoint
+            server1:
+              url: http://localhost:8080
+            # Custom SSE endpoint
+            server2:
+              url: http://otherserver:8081
+              sse-endpoint: /custom-sse
+            # Complex URL with path and token (like MCP Hub)
+            mcp-hub:
+              url: http://localhost:3000
+              sse-endpoint: /mcp-hub/sse/cf9ec4527e3c4a2cbb149a85ea45ab01
+            # SSE endpoint with query parameters
+            api-server:
+              url: https://api.example.com
+              sse-endpoint: /v1/mcp/events?token=abc123&amp;format=json</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_url_splitting_guidelines"><a class="anchor" href="#_url_splitting_guidelines"></a>URL Splitting Guidelines</h4>
+<div class="paragraph">
+<p>When you have a full SSE URL, split it into base URL and endpoint path:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Full URL</th>
+<th class="tableblock halign-left valign-top">Configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http://localhost:3000/mcp-hub/sse/token123</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>url: <a href="http://localhost:3000" class="bare">localhost:3000</a></code><br>
+<code>sse-endpoint: /mcp-hub/sse/token123</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>https://api.service.com/v2/events?key=secret</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>url: <a href="https://api.service.com" class="bare">api.service.com</a></code><br>
+<code>sse-endpoint: /v2/events?key=secret</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http://localhost:8080/sse</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>url: <a href="http://localhost:8080" class="bare">localhost:8080</a></code><br>
+<code>sse-endpoint: /sse</code> (or omit for default)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_troubleshooting_sse_connections"><a class="anchor" href="#_troubleshooting_sse_connections"></a>Troubleshooting SSE Connections</h4>
+<div class="paragraph">
+<p><strong>404 Not Found Errors:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Verify URL splitting: ensure the base <code>url</code> contains only the scheme, host, and port</p>
+</li>
+<li>
+<p>Check the <code>sse-endpoint</code> starts with <code>/</code> and includes the full path and query parameters</p>
+</li>
+<li>
+<p>Test the full URL directly in a browser or curl to confirm it&#8217;s accessible</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_streamable_http_transport_properties_2"><a class="anchor" href="#_streamable_http_transport_properties_2"></a>Streamable Http Transport Properties</h3>
+<div class="paragraph">
+<p>Properties for Streamable Http transport are prefixed with <code>spring.ai.mcp.client.streamable-http</code>:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 40%;">
+<col style="width: 30%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map of named Streamable Http connection configurations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections.[name].url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Base URL endpoint for Streamable-Http communication with the MCP server</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>connections.[name].endpoint</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">the streamable-http endpoint (as url suffix) to use for the connection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/mcp</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Example configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  ai:
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            server1:
+              url: http://localhost:8080
+            server2:
+              url: http://otherserver:8081
+              endpoint: /custom-sse</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_features"><a class="anchor" href="#_features"></a>Features</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_syncasync_client_types"><a class="anchor" href="#_syncasync_client_types"></a>Sync/Async Client Types</h3>
+<div class="paragraph">
+<p>The starter supports two types of clients:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Synchronous - default client type (<code>spring.ai.mcp.client.type=SYNC</code>), suitable for traditional request-response patterns with blocking operations</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>NOTE:</strong> The SYNC client will register only synchronous MCP annotated methods. Asynchronous methods will be ignored.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Asynchronous - suitable for reactive applications with non-blocking operations, configured using <code>spring.ai.mcp.client.type=ASYNC</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>NOTE:</strong> The ASYNC client will register only asynchronous MCP annotated methods. Synchronous methods will be ignored.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="client-scope-and-session-boundaries"><a class="anchor" href="#client-scope-and-session-boundaries"></a>Client Scope and Session Boundaries</h3>
+<div class="paragraph">
+<p>The auto-configured <code>McpSyncClient</code> and <code>McpAsyncClient</code> beans are application-scoped singletons.
+One client bean is created per configured MCP server connection, and that bean is shared by every request the application serves.</p>
+</div>
+<div class="paragraph">
+<p>Each client represents a single MCP protocol session.
+The session stays attached to the client bean for its whole lifetime and is replaced only when the server terminates it (HTTP 404) or the client is closed.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>The MCP session is not a per-user boundary.</strong></p>
+</div>
+<div class="paragraph">
+<p>Per-request credentials propagated through <code>transportContextProvider(&#8230;&#8203;)</code>, a <code>McpSyncHttpClientRequestCustomizer</code>, or a <code>WebClient</code> <code>ExchangeFilterFunction</code> are applied per request and do reach the server with the calling user&#8217;s identity.
+The MCP protocol session underneath them is still shared by every caller of that client bean.
+Multi-user applications should account for the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>initialize</code> and <code>tools/list</code> exchanges happen once, under whatever identity is available when the client connects, not under the identity of the user who later invokes a tool.</p>
+</li>
+<li>
+<p>Any server-side state keyed on the MCP session alone is shared by all users of the client bean.</p>
+</li>
+<li>
+<p>Server-initiated interactions such as sampling and elicitation arrive on a shared stream and carry no per-user attribution.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Do not treat the MCP session as a user or tenant boundary on either side of the connection.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Whether this matters depends on the MCP server you connect to.
+A shared client is fine against a stateless server, and against a stateful one that authorizes every request from the supplied token and keeps no user-meaningful state on the session.
+Consider a separate session per user or per tenant when:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The server filters <code>tools/list</code>, resources, or prompts by identity, since discovery runs once and every user then sees the first caller&#8217;s view.</p>
+</li>
+<li>
+<p>The server keeps user-meaningful state on the session, such as a working directory, subscriptions, pagination cursors, or cached context.</p>
+</li>
+<li>
+<p>You use sampling or elicitation and need those server-initiated requests attributed to a specific user.</p>
+</li>
+<li>
+<p>The server audits or rate-limits by session, or your deployment requires that tenants not share a protocol session.</p>
+</li>
+<li>
+<p>You cannot verify how a third-party server treats its sessions.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Applications that need a separate MCP protocol session per user or per tenant must manage that lifecycle themselves, creating one transport and client per principal and closing it when that principal&#8217;s work completes.
+The auto-configured beans are not suitable for this, and Spring AI does not provide per-user client pooling.
+See <a href="mcp-security.html#_working_around_spring_ai_autoconfiguration" class="xref page">Working Around Spring AI Autoconfiguration</a> for programmatic client construction.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_client_customization"><a class="anchor" href="#_client_customization"></a>Client Customization</h3>
+<div class="paragraph">
+<p>The auto-configuration provides extensive client spec customization capabilities through callback interfaces. These customizers allow you to configure various aspects of the MCP client behavior, from request timeouts to event handling and message processing.</p>
+</div>
+<div class="sect3">
+<h4 id="_customization_types"><a class="anchor" href="#_customization_types"></a>Customization Types</h4>
+<div class="paragraph">
+<p>The following customization options are available:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Request Configuration</strong> - Set custom request timeouts</p>
+</li>
+<li>
+<p><a href="https://modelcontextprotocol.io/specification/2025-06-18/client/sampling"><strong>Custom Sampling Handlers</strong></a> - standardized way for servers to request LLM sampling (<code>completions</code> or <code>generations</code>) from LLMs via clients. This flow allows clients to maintain control over model access, selection, and permissions while enabling servers to leverage AI capabilities — with no server API keys necessary.</p>
+</li>
+<li>
+<p><a href="https://modelcontextprotocol.io/specification/2025-06-18/client/roots"><strong>File system (Roots) Access</strong></a> - standardized way for clients to expose filesystem <code>roots</code> to servers.
+Roots define the boundaries of where servers can operate within the filesystem, allowing them to understand which directories and files they have access to.
+Servers can request the list of roots from supporting clients and receive notifications when that list changes.</p>
+</li>
+<li>
+<p><a href="https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation"><strong>Elicitation Handlers</strong></a> - standardized way for servers to request additional information from users through the client during interactions.</p>
+</li>
+<li>
+<p><strong>Event Handlers</strong>  - client&#8217;s handler to be notified when a certain server event occurs:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Tools change notifications - when the list of available server tools changes</p>
+</li>
+<li>
+<p>Resources change notifications - when the list of available server resources changes.</p>
+</li>
+<li>
+<p>Prompts change notifications - when the list of available server prompts changes.</p>
+</li>
+<li>
+<p><a href="https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/logging"><strong>Logging Handlers</strong></a> - standardized way for servers to send structured log messages to clients.</p>
+</li>
+<li>
+<p><a href="https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress"><strong>Progress Handlers</strong></a> - standardized way for servers to send structured progress messages to clients.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Clients can control logging verbosity by setting minimum log levels</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_client_customization_example"><a class="anchor" href="#_client_customization_example"></a>Client Customization Example</h4>
+<div class="paragraph">
+<p>You can implement <code>McpCustomizer&lt;McpClient.SyncSpec&gt;</code> for synchronous clients or <code>McpCustomizer&lt;McpClient.AsyncSpec&gt;</code> for asynchronous clients, depending on your application&#8217;s needs.</p>
+</div>
+<div id="_tabs_1" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_1_sync" class="tab">
+<p>Sync</p>
+</li>
+<li id="_tabs_1_async" class="tab">
+<p>Async</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_1_sync--panel" class="tabpanel" aria-labelledby="_tabs_1_sync">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+public class CustomMcpSyncClientCustomizer implements McpClientCustomizer&lt;McpClient.SyncSpec&gt; {
+    @Override
+    public void customize(String serverConfigurationName, McpClient.SyncSpec spec) {
+
+        // Customize the request timeout configuration
+        spec.requestTimeout(Duration.ofSeconds(30));
+
+        // Sets the root URIs that this client can access.
+        spec.roots(roots);
+
+        // Sets a custom sampling handler for processing message creation requests.
+        spec.sampling((CreateMessageRequest messageRequest) -&gt; {
+            // Handle sampling
+            CreateMessageResult result = ...
+            return result;
+        });
+
+        // Sets a custom elicitation handler for processing elicitation requests.
+        spec.elicitation((ElicitRequest request) -&gt; {
+          // handle elicitation
+          return new ElicitResult(ElicitResult.Action.ACCEPT, Map.of("message", request.message()));
+        });
+
+        // Adds a consumer to be notified when progress notifications are received.
+        spec.progressConsumer((ProgressNotification progress) -&gt; {
+         // Handle progress notifications
+        });
+
+        // Adds a consumer to be notified when the available tools change, such as tools
+        // being added or removed.
+        spec.toolsChangeConsumer((List&lt;McpSchema.Tool&gt; tools) -&gt; {
+            // Handle tools change
+        });
+
+        // Adds a consumer to be notified when the available resources change, such as resources
+        // being added or removed.
+        spec.resourcesChangeConsumer((List&lt;McpSchema.Resource&gt; resources) -&gt; {
+            // Handle resources change
+        });
+
+        // Adds a consumer to be notified when the available prompts change, such as prompts
+        // being added or removed.
+        spec.promptsChangeConsumer((List&lt;McpSchema.Prompt&gt; prompts) -&gt; {
+            // Handle prompts change
+        });
+
+        // Adds a consumer to be notified when logging messages are received from the server.
+        spec.loggingConsumer((McpSchema.LoggingMessageNotification log) -&gt; {
+            // Handle log messages
+        });
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_async--panel" class="tabpanel" aria-labelledby="_tabs_1_async">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+public class CustomMcpAsyncClientCustomizer implements McpClientCustomizer&lt;McpClient.AsyncSpec&gt; {
+    @Override
+    public void customize(String serverConfigurationName, McpClient.AsyncSpec spec) {
+        // Customize the async client configuration
+        spec.requestTimeout(Duration.ofSeconds(30));
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>serverConfigurationName</code> parameter is the name of the server configuration that the customizer is being applied to and the MCP Client is created for.</p>
+</div>
+<div class="paragraph">
+<p>The MCP client auto-configuration automatically detects and applies any customizers found in the application context.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_transport_support"><a class="anchor" href="#_transport_support"></a>Transport Support</h3>
+<div class="paragraph">
+<p>The auto-configuration supports multiple transport types:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Standard I/O (Stdio) (activated by the <code>spring-ai-starter-mcp-client</code> and <code>spring-ai-starter-mcp-client-webflux</code>)</p>
+</li>
+<li>
+<p>(HttpClient) HTTP/SSE and Streamable-HTTP (activated by the <code>spring-ai-starter-mcp-client</code>)</p>
+</li>
+<li>
+<p>(WebFlux) HTTP/SSE and Streamable-HTTP (activated by the <code>spring-ai-starter-mcp-client-webflux</code>)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tool_filtering"><a class="anchor" href="#_tool_filtering"></a>Tool Filtering</h3>
+<div class="paragraph">
+<p>The MCP Client Boot Starter supports filtering of discovered tools through the <code>McpToolFilter</code> interface. This allows you to selectively include or exclude tools based on custom criteria such as the MCP connection information or tool properties.</p>
+</div>
+<div class="paragraph">
+<p>To implement tool filtering, create a bean that implements the <code>McpToolFilter</code> interface:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+public class CustomMcpToolFilter implements McpToolFilter {
+
+    @Override
+    public boolean test(McpConnectionInfo connectionInfo, McpSchema.Tool tool) {
+        // Filter logic based on connection information and tool properties
+        // Return true to include the tool, false to exclude it
+
+        // Example: Exclude tools from a specific client
+        if (connectionInfo.clientInfo().name().equals("restricted-client")) {
+            return false;
+        }
+
+        // Example: Only include tools with specific names
+        if (tool.name().startsWith("allowed_")) {
+            return true;
+        }
+
+        // Example: Filter based on tool description or other properties
+        if (tool.description() != null &amp;&amp;
+            tool.description().contains("experimental")) {
+            return false;
+        }
+
+        return true; // Include all other tools by default
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>McpConnectionInfo</code> record provides access to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>clientCapabilities</code> - The capabilities of the MCP client</p>
+</li>
+<li>
+<p><code>clientInfo</code> - Information about the MCP client (name and version)</p>
+</li>
+<li>
+<p><code>initializeResult</code> - The initialization result from the MCP server</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The filter is automatically detected and applied to both synchronous and asynchronous MCP tool callback providers.
+If no custom filter is provided, all discovered tools are included by default.</p>
+</div>
+<div class="paragraph">
+<p>Note: Only one <code>McpToolFilter</code> bean should be defined in the application context.
+If multiple filters are needed, combine them into a single composite filter implementation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="mcp-tool-name-prefix-generation"><a class="anchor" href="#mcp-tool-name-prefix-generation"></a>Tool Name Prefix Generation</h3>
+<div class="paragraph">
+<p>The MCP Client Boot Starter supports customizable tool name prefix generation through the <code>McpToolNamePrefixGenerator</code> interface. This feature helps avoid naming conflicts when integrating tools from multiple MCP servers by adding unique prefixes to tool names.</p>
+</div>
+<div class="paragraph">
+<p>By default, if no custom <code>McpToolNamePrefixGenerator</code> bean is provided, the starter uses <code>DefaultMcpToolNamePrefixGenerator</code> which ensures unique tool names across all MCP client connections. The default generator:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Tracks all existing connections and tool names to ensure uniqueness</p>
+</li>
+<li>
+<p>Formats tool names by replacing non-alphanumeric characters with underscores (e.g., <code>my-tool</code> becomes <code>my_tool</code>)</p>
+</li>
+<li>
+<p>When duplicate tool names are detected across different connections, adds a counter prefix (e.g., <code>alt_1_toolName</code>, <code>alt_2_toolName</code>)</p>
+</li>
+<li>
+<p>Is thread-safe and maintains idempotency - the same combination of (client, server, tool) always gets the same unique name</p>
+</li>
+<li>
+<p>Ensures the final name doesn&#8217;t exceed 64 characters (truncating from the beginning if necessary)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For example:
+* First occurrence of tool <code>search</code> → <code>search</code>
+* Second occurrence of tool <code>search</code> from a different connection → <code>alt_1_search</code>
+* Tool with special characters <code>my-special-tool</code> → <code>my_special_tool</code></p>
+</div>
+<div class="paragraph">
+<p>You can customize this behavior by providing your own implementation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+public class CustomToolNamePrefixGenerator implements McpToolNamePrefixGenerator {
+
+    @Override
+    public String prefixedToolName(McpConnectionInfo connectionInfo, Tool tool) {
+        // Custom logic to generate prefixed tool names
+
+        // Example: Use server name and version as prefix
+        String serverName = connectionInfo.initializeResult().serverInfo().name();
+        String serverVersion = connectionInfo.initializeResult().serverInfo().version();
+        return serverName + "_v" + serverVersion.replace(".", "_") + "_" + tool.name();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>McpConnectionInfo</code> record provides comprehensive information about the MCP connection:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>clientCapabilities</code> - The capabilities of the MCP client</p>
+</li>
+<li>
+<p><code>clientInfo</code> - Information about the MCP client (name, title, and version)</p>
+</li>
+<li>
+<p><code>initializeResult</code> - The initialization result from the MCP server, including server information</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_built_in_prefix_generators"><a class="anchor" href="#_built_in_prefix_generators"></a>Built-in Prefix Generators</h4>
+<div class="paragraph">
+<p>The framework provides several built-in prefix generators:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>DefaultMcpToolNamePrefixGenerator</code> - Ensures unique tool names by tracking duplicates and adding counter prefixes when needed (used by default if no custom bean is provided)</p>
+</li>
+<li>
+<p><code>McpToolNamePrefixGenerator.noPrefix()</code> - Returns tool names without any prefix (may cause conflicts if multiple servers provide tools with the same name)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To disable prefixing entirely and use raw tool names (not recommended if using multiple MCP servers), register the no-prefix generator as a bean:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+public class McpConfiguration {
+
+    @Bean
+    public McpToolNamePrefixGenerator mcpToolNamePrefixGenerator() {
+        return McpToolNamePrefixGenerator.noPrefix();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The prefix generator is automatically detected and applied to both synchronous and asynchronous MCP tool callback providers through Spring&#8217;s <code>ObjectProvider</code> mechanism.
+If no custom generator bean is provided, the <code>DefaultMcpToolNamePrefixGenerator</code> is used automatically.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+When using <code>McpToolNamePrefixGenerator.noPrefix()</code> with multiple MCP servers, duplicate tool names will cause an <code>IllegalStateException</code>. The default <code>DefaultMcpToolNamePrefixGenerator</code> prevents this by automatically adding unique prefixes to duplicate tool names.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This generator only de-duplicates names across MCP connections; it has no visibility into local <code>@Tool</code> methods.
+See <a href="../tools.html#combining-local-and-mcp-tools" class="xref page">Combining Local and MCP Tools</a> for the local/remote collision case and which call paths actually guard against it.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tool_context_to_mcp_meta_converter"><a class="anchor" href="#_tool_context_to_mcp_meta_converter"></a>Tool Context to MCP Meta Converter</h3>
+<div class="paragraph">
+<p>The MCP Client Boot Starter supports customizable conversion of Spring AI&#8217;s <a href="../tools.html#tool-context" class="xref page">ToolContext</a> to MCP tool-call metadata through the <code>ToolContextToMcpMetaConverter</code> interface.
+This feature allows you to pass additional contextual information (e.g. user id, secrets token) as metadata along with the LLM&#8217;s generated call arguments.</p>
+</div>
+<div class="paragraph">
+<p>For example you can pass the MCP <code>progressToken</code> to your <a href="https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress#progress-flow">MCP Progress Flow</a> in the tool context to track the progress of long-running operations:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ChatModel chatModel = ...
+
+String response = ChatClient.create(chatModel)
+        .prompt("Tell me more about the customer with ID 42")
+        .toolContext(Map.of("progressToken", "my-progress-token"))
+        .call()
+        .content();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, if no custom converter bean is provided, the starter uses <code>ToolContextToMcpMetaConverter.defaultConverter()</code> which:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Filters out the MCP exchange key (<code>McpToolUtils.TOOL_CONTEXT_MCP_EXCHANGE_KEY</code>)</p>
+</li>
+<li>
+<p>Filters out entries with null values</p>
+</li>
+<li>
+<p>Passes through all other context entries as metadata</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can customize this behavior by providing your own implementation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+public class CustomToolContextToMcpMetaConverter implements ToolContextToMcpMetaConverter {
+
+    @Override
+    public Map&lt;String, Object&gt; convert(ToolContext toolContext) {
+        if (toolContext == null || toolContext.getContext() == null) {
+            return Map.of();
+        }
+
+        // Custom logic to convert tool context to MCP metadata
+        Map&lt;String, Object&gt; metadata = new HashMap&lt;&gt;();
+
+        // Example: Add custom prefix to all keys
+        for (Map.Entry&lt;String, Object&gt; entry : toolContext.getContext().entrySet()) {
+            if (entry.getValue() != null) {
+                metadata.put("app_" + entry.getKey(), entry.getValue());
+            }
+        }
+
+        // Example: Add additional metadata
+        metadata.put("timestamp", System.currentTimeMillis());
+        metadata.put("source", "spring-ai");
+
+        return metadata;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_built_in_converters"><a class="anchor" href="#_built_in_converters"></a>Built-in Converters</h4>
+<div class="paragraph">
+<p>The framework provides built-in converters:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ToolContextToMcpMetaConverter.defaultConverter()</code> - Filters out MCP exchange key and null values (used by default if no custom bean is provided)</p>
+</li>
+<li>
+<p><code>ToolContextToMcpMetaConverter.noOp()</code> - Returns an empty map, effectively disabling context-to-metadata conversion</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To disable context-to-metadata conversion entirely:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+public class McpConfiguration {
+
+    @Bean
+    public ToolContextToMcpMetaConverter toolContextToMcpMetaConverter() {
+        return ToolContextToMcpMetaConverter.noOp();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The converter is automatically detected and applied to both synchronous and asynchronous MCP tool callbacks through Spring&#8217;s <code>ObjectProvider</code> mechanism.
+If no custom converter bean is provided, the default converter is used automatically.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disable_the_mcp_toolcallback_auto_configuration"><a class="anchor" href="#_disable_the_mcp_toolcallback_auto_configuration"></a>Disable the MCP ToolCallback Auto-Configuration</h3>
+<div class="paragraph">
+<p>The MCP ToolCallback auto-configuration is enabled by default, but can be disabled with the <code>spring.ai.mcp.client.toolcallback.enabled=false</code> property.</p>
+</div>
+<div class="paragraph">
+<p>When disabled, no <code>ToolCallbackProvider</code> bean is created from the available MCP tools.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mcp_client_annotations"><a class="anchor" href="#_mcp_client_annotations"></a>MCP Client Annotations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The MCP Client Boot Starter automatically detects and registers annotated methods for handling various MCP client operations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>@McpLogging</strong> - Handles logging message notifications from MCP servers</p>
+</li>
+<li>
+<p><strong>@McpSampling</strong> - Handles sampling requests from MCP servers for LLM completions</p>
+</li>
+<li>
+<p><strong>@McpElicitation</strong> - Handles elicitation requests to gather additional information from users</p>
+</li>
+<li>
+<p><strong>@McpProgress</strong> - Handles progress notifications for long-running operations</p>
+</li>
+<li>
+<p><strong>@McpToolListChanged</strong> - Handles notifications when the server&#8217;s tool list changes</p>
+</li>
+<li>
+<p><strong>@McpResourceListChanged</strong> - Handles notifications when the server&#8217;s resource list changes</p>
+</li>
+<li>
+<p><strong>@McpPromptListChanged</strong> - Handles notifications when the server&#8217;s prompt list changes</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Example usage:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+public class McpClientHandlers {
+
+    @McpLogging(clients = "server1")
+    public void handleLoggingMessage(LoggingMessageNotification notification) {
+        System.out.println("Received log: " + notification.level() +
+                          " - " + notification.data());
+    }
+
+    @McpSampling(clients = "server1")
+    public CreateMessageResult handleSamplingRequest(CreateMessageRequest request) {
+        // Process the request and generate a response
+        String response = generateLLMResponse(request);
+
+        return CreateMessageResult.builder(Role.ASSISTANT, response, "gpt-4")
+            .build();
+    }
+
+    @McpProgress(clients = "server1")
+    public void handleProgressNotification(ProgressNotification notification) {
+        double percentage = notification.progress() * 100;
+        System.out.println(String.format("Progress: %.2f%% - %s",
+            percentage, notification.message()));
+    }
+
+    @McpToolListChanged(clients = "server1")
+    public void handleToolListChanged(List&lt;McpSchema.Tool&gt; updatedTools) {
+        System.out.println("Tool list updated: " + updatedTools.size() + " tools available");
+        // Update local tool registry
+        toolRegistry.updateTools(updatedTools);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The annotations support both synchronous and asynchronous implementations, and can be configured for specific clients using the <code>clients</code> parameter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@McpLogging(clients = "server1")
+public void handleServer1Logs(LoggingMessageNotification notification) {
+    // Handle logs from specific server
+    logToFile("server1.log", notification);
+}
+
+@McpSampling(clients = "server1")
+public Mono&lt;CreateMessageResult&gt; handleAsyncSampling(CreateMessageRequest request) {
+    return Mono.fromCallable(() -&gt; {
+        String response = generateLLMResponse(request);
+        return CreateMessageResult.builder(Role.ASSISTANT, response, "gpt-4")
+            .build();
+    }).subscribeOn(Schedulers.boundedElastic());
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For detailed information about all available annotations and their usage patterns, see the <a href="mcp-annotations-client.html" class="xref page">MCP Client Annotations</a> documentation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usage_example"><a class="anchor" href="#_usage_example"></a>Usage Example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add the appropriate starter dependency to your project and configure the client in <code>application.properties</code> or <code>application.yml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  ai:
+    mcp:
+      client:
+        enabled: true
+        name: my-mcp-client
+        version: 1.0.0
+        request-timeout: 30s
+        type: SYNC  # or ASYNC for reactive applications
+        sse:
+          connections:
+            server1:
+              url: http://localhost:8080
+            server2:
+              url: http://otherserver:8081
+        streamable-http:
+          connections:
+            server3:
+              url: http://localhost:8083
+              endpoint: /mcp
+        stdio:
+          root-change-notification: false
+          connections:
+            server1:
+              command: /path/to/server
+              args:
+                - --port=8080
+                - --mode=production
+              env:
+                API_KEY: your-api-key
+                DEBUG: "true"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The MCP client beans will be automatically configured and available for injection:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired
+private List&lt;McpSyncClient&gt; mcpSyncClients;  // For sync client
+
+// OR
+
+@Autowired
+private List&lt;McpAsyncClient&gt; mcpAsyncClients;  // For async client</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When tool callbacks are enabled (the default behavior), the registered MCP Tools with all MCP clients are provided as a <code>ToolCallbackProvider</code> instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired
+private SyncMcpToolCallbackProvider toolCallbackProvider;
+ToolCallback[] toolCallbacks = toolCallbackProvider.getToolCallbacks();</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_applications"><a class="anchor" href="#_example_applications"></a>Example Applications</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/web-search/brave-chatbot">Brave Web Search Chatbot</a> - A chatbot that uses the Model Context Protocol to interact with a web search server.</p>
+</li>
+<li>
+<p><a href="https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/client-starter/starter-default-client">Default MCP Client Starter</a> - A simple example of using the default <code>spring-ai-starter-mcp-client</code> MCP Client Boot Starter.</p>
+</li>
+<li>
+<p><a href="https://github.com/spring-projects/spring-ai-examples/tree/main/model-context-protocol/client-starter/starter-webflux-client">WebFlux MCP Client Starter</a> - A simple example of using the <code>spring-ai-starter-mcp-client-webflux</code> MCP Client Boot Starter.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_additional_resources"><a class="anchor" href="#_additional_resources"></a>Additional Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.spring.io/spring-ai/reference/">Spring AI Documentation</a></p>
+</li>
+<li>
+<p><a href="https://modelcontextprotocol.github.io/specification/">Model Context Protocol Specification</a></p>
+</li>
+<li>
+<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.developing-auto-configuration">Spring Boot Auto-configuration</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="mcp-overview.html">Model Context Protocol (MCP)</a></span>
+  <span class="next"><a href="mcp-server-boot-starter-docs.html">MCP Server Boot Starters</a></span>
+</nav>
+</article>  </div>
+</main>
+<div class="modal micromodal-slide" id="modal-versions" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <div class="modal__container" role="dialog" aria-modal="true">
+            <main class="modal__content" id="modal-versions-content">
+              <button data-micromodal-close class="modal-versions-close">
+                <svg width="28px" height="28px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1h{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><title/><g id="cross"><line class="cls-1h" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1h" x1="7" x2="25" y1="25" y2="7"/></g></svg>
+              </button>
+              <div class="colset">
+                <div class="col-left">
+
+                  <ul class="nav-versions">
+                      <li class="component">
+                        <div>
+                          <a class="title" href="../../index.html">Spring AI</a>
+                        </div>                        <div class="version-item is-active">
+                          <div>
+                            <button class="version-toggle" type="button">
+                              <span></span>
+                              Stable
+                            </button>
+                          </div>
+                          <ul class="versions">
+  <li class="version">
+    <a href="../../index.html">
+      2.0.2
+    </a>
+  </li>
+  <li class="version">
+    <a href="../../1.1/index.html">
+      1.1.8
+    </a>
+  </li>
+  <li class="version">
+    <a href="../../1.0/index.html">
+      1.0.9
+    </a>
+  </li>
+</ul>                        </div>
+                        <div class="version-item">
+                          <div>
+                            <button class="version-toggle" type="button">
+                              <span></span>
+                              Preview
+                            </button>
+                          </div>
+                          <ul class="versions">
+  <li class="version">
+    <a href="../../2.1/index.html">
+      2.1.0-RC1
+    </a>
+  </li>
+</ul>                        </div>
+                        <div class="version-item">
+                          <div>
+                            <button class="version-toggle" type="button">
+                              <span></span>
+                              Snapshot
+                            </button>
+                          </div>
+                          <ul class="versions">
+  <li class="version">
+    <a href="../../2.1-SNAPSHOT/index.html">
+      2.1.0-SNAPSHOT
+    </a>
+  </li>
+  <li class="version">
+    <a href="../../2.0-SNAPSHOT/index.html">
+      2.0.3-SNAPSHOT
+    </a>
+  </li>
+</ul>                        </div>
+                        
+                      </li>
+                  </ul>
+                </div>
+                <div class="col-right">
+                  <ul class="projects">
+  <li>
+    Related Spring Documentation
+    <ul class="projects-list">
+        <li>
+<a href="https://docs.spring.io/spring-boot/">
+  Spring Boot
+</a>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-framework/reference/">
+  Spring Framework
+</a>
+</li>
+        <li>
+<a class="anchor"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+  Spring Cloud
+<ul>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-build/reference/">
+  Spring Cloud Build
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-bus/reference/">
+  Spring Cloud Bus
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-circuitbreaker/reference/">
+  Spring Cloud Circuit Breaker
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-commons/reference/">
+  Spring Cloud Commons
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-config/reference/">
+  Spring Cloud Config
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-consul/reference/">
+  Spring Cloud Consul
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-contract/reference/">
+  Spring Cloud Contract
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-function/reference/">
+  Spring Cloud Function
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-gateway/reference/">
+  Spring Cloud Gateway
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-kubernetes/reference/">
+  Spring Cloud Kubernetes
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-netflix/reference/">
+  Spring Cloud Netflix
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-openfeign/reference/">
+  Spring Cloud OpenFeign
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-stream/reference/">
+  Spring Cloud Stream
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-task/reference/">
+  Spring Cloud Task
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-vault/reference/">
+  Spring Cloud Vault
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-cloud-zookeeper/reference/">
+  Spring Cloud Zookeeper
+</a>
+</li>
+</ul>
+</li>
+        <li>
+<a class="anchor"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+  Spring Data
+<ul>
+    <li>
+<a href="https://docs.spring.io/spring-data/cassandra/reference/">
+  Spring Data Cassandra
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/commons/reference/">
+  Spring Data Commons
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/couchbase/reference/">
+  Spring Data Couchbase
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/elasticsearch/reference/">
+  Spring Data Elasticsearch
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/jpa/reference/">
+  Spring Data JPA
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/keyvalue/reference/">
+  Spring Data KeyValue
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/ldap/reference/">
+  Spring Data LDAP
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/mongodb/reference/">
+  Spring Data MongoDB
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/neo4j/reference/">
+  Spring Data Neo4j
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/redis/reference/">
+  Spring Data Redis
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/relational/reference/">
+  Spring Data JDBC &amp; R2DBC
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-data/rest/reference/">
+  Spring Data REST
+</a>
+</li>
+</ul>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-integration/reference/">
+  Spring Integration
+</a>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-batch/reference/">
+  Spring Batch
+</a>
+</li>
+        <li>
+<a class="anchor"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+<a href="https://docs.spring.io/spring-security/reference/">
+  Spring Security
+</a>
+<ul>
+    <li>
+<a href="https://docs.spring.io/spring-authorization-server/reference/">
+  Spring Authorization Server
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-ldap/reference/">
+  Spring LDAP
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-security-kerberos/reference/">
+  Spring Security Kerberos
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-session/reference/">
+  Spring Session
+</a>
+</li>
+    <li>
+<a href="https://docs.spring.io/spring-vault/reference/">
+  Spring Vault
+</a>
+</li>
+</ul>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-ai/reference/">
+  Spring AI
+</a>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-amqp/reference/">
+  Spring AMQP
+</a>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-cli/reference/">
+  Spring CLI
+</a>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-graphql/reference/">
+  Spring GraphQL
+</a>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-kafka/reference/">
+  Spring for Apache Kafka
+</a>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-modulith/reference/">
+  Spring Modulith
+</a>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-pulsar/reference/">
+  Spring for Apache Pulsar
+</a>
+</li>
+        <li>
+<a href="https://docs.spring.io/spring-shell/reference/">
+  Spring Shell
+</a>
+</li>
+    </ul>
+  </li
+  <li><a href="../../spring-projects.html">All Docs...</a></li>
+</ul>
+                </div>
+              </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+</div>
+<footer class="footer flex">
+    <div id="spring-links flex">
+        <img id="springlogo" src="../../_/img/spring-logo.svg" alt="Spring">
+        <p class="smallest antialiased">Copyright © 2005 - <script>var d = new Date();
+        document.write(d.getFullYear());</script> Broadcom. All Rights Reserved. The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.<br /><a href="https://www.vmware.com/help/legal.html">Terms of Use</a> • <a href="https://www.vmware.com/help/privacy.html" rel="noopener noreferrer">Privacy</a> • <a href="https://spring.io/trademarks">Trademark Guidelines</a> <span id="thank-you-mobile">• <a href="https://spring.io/thank-you">Thank you</a></span> • <a href="https://www.vmware.com/help/privacy/california-privacy-rights.html">Your California Privacy Rights</a> • <a class="ot-sdk-show-settings">Cookie Settings</a> <span id="teconsent"></span></p>
+        <p class="smallest antialiased has-gray-text">Apache®, Apache Tomcat®, Apache Kafka®, Apache Cassandra&trade;, and Apache Geode&trade; are trademarks or registered trademarks of the Apache Software Foundation in the United States and/or other countries. Java&trade;, Java&trade; SE, Java&trade; EE, and OpenJDK&trade; are trademarks of Oracle and/or its affiliates. Kubernetes® is a registered trademark of the Linux Foundation in the United States and other countries. Linux® is the registered trademark of Linus Torvalds in the United States and other countries. Windows® and Microsoft® Azure are registered trademarks of Microsoft Corporation. “AWS” and “Amazon Web Services” are trademarks or registered trademarks of Amazon.com Inc. or its affiliates. All other trademarks and copyrights are property of their respective owners and are only mentioned for informative purposes. Other names may be trademarks of their respective owners.</p>
+    </div>
+    <div id="social-icons" class="flex jc-between">
+        <a href="https://www.youtube.com/user/SpringSourceDev" title="Youtube"><svg id="youtube-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle class="cls-1" cx="20" cy="20" r="20"/><path class="cls-2" d="M30.91,14.53a2.89,2.89,0,0,0-2-2C27.12,12,20,12,20,12s-7.12,0-8.9.47a2.9,2.9,0,0,0-2,2A30.56,30.56,0,0,0,8.63,20a30.44,30.44,0,0,0,.46,5.47,2.89,2.89,0,0,0,2,2C12.9,28,20,28,20,28s7.12,0,8.9-.47a2.87,2.87,0,0,0,2-2A30.56,30.56,0,0,0,31.37,20,28.88,28.88,0,0,0,30.91,14.53ZM17.73,23.41V16.59L23.65,20Z"/></svg></a>
+        <a href="https://github.com/spring-projects" title="GitHub"><svg id="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><path class="cls-1" d="M38,0a38,38,0,1,0,38,38A38,38,0,0,0,38,0Z"/></g><path class="cls-2" d="M38,15.59A22.95,22.95,0,0,0,30.71,60.3c1.15.21,1.57-.5,1.57-1.11s0-2,0-3.9c-6.38,1.39-7.73-3.07-7.73-3.07A6.09,6.09,0,0,0,22,48.86c-2.09-1.42.15-1.39.15-1.39a4.81,4.81,0,0,1,3.52,2.36c2,3.5,5.37,2.49,6.67,1.91a4.87,4.87,0,0,1,1.46-3.07c-5.09-.58-10.45-2.55-10.45-11.34a8.84,8.84,0,0,1,2.36-6.15,8.29,8.29,0,0,1,.23-6.07s1.92-.62,6.3,2.35a21.82,21.82,0,0,1,11.49,0c4.38-3,6.3-2.35,6.3-2.35a8.29,8.29,0,0,1,.23,6.07,8.84,8.84,0,0,1,2.36,6.15c0,8.81-5.37,10.75-10.48,11.32a5.46,5.46,0,0,1,1.56,4.25c0,3.07,0,5.54,0,6.29s.42,1.33,1.58,1.1A22.94,22.94,0,0,0,38,15.59Z"/></svg></a>
+        <a href="https://twitter.com/springcentral" title="Twitter"><svg id="twitter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><circle class="cls-1" cx="37.97" cy="37.97" r="37.97"/><path id="Twitter-2" data-name="Twitter" class="cls-2" d="M55.2,22.73a15.43,15.43,0,0,1-4.88,1.91,7.56,7.56,0,0,0-5.61-2.49A7.78,7.78,0,0,0,37,30a7.56,7.56,0,0,0,.2,1.79,21.63,21.63,0,0,1-15.84-8.23,8,8,0,0,0,2.37,10.52,7.66,7.66,0,0,1-3.48-1v.09A7.84,7.84,0,0,0,26.45,41a7.54,7.54,0,0,1-2,.28A7.64,7.64,0,0,1,23,41.09a7.71,7.71,0,0,0,7.18,5.47,15.21,15.21,0,0,1-9.55,3.37,15.78,15.78,0,0,1-1.83-.11,21.41,21.41,0,0,0,11.78,3.54c14.13,0,21.86-12,21.86-22.42,0-.34,0-.68,0-1a15.67,15.67,0,0,0,3.83-4.08,14.9,14.9,0,0,1-4.41,1.24A7.8,7.8,0,0,0,55.2,22.73Z"/></svg></a>
+    </div>
+</footer>
+<script src="../../_/js/vendor/import.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
+
+<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+            <main class="modal__content" id="modal-1-content">
+                <div id="searchbox"></div>
+                <div id="counter"></div>
+                <div class="search-link-box">
+                    <a class="search-link" href="../../search.html">Search in all Spring Docs</a>
+                </div>
+                <div class="search-by">
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.algolia.com/" aria-label="Search by Algolia">
+                        <img class="light" width="140" src="../../_/img/algolia-light.svg" />
+                        <img class="dark" width="140" src="../../_/img/algolia-dark.svg" />
+                    </a>
+                </div>
+                <div id="hits"></div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.17.0/dist/algoliasearch-lite.umd.js" integrity="sha256-Lf9DrpGmcRip6OQzbcL6lnvNmoZNSKpyQX5pMlwatWE=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.54.1/dist/instantsearch.production.min.js" integrity="sha256-xYsZPDeNjYNTBWLvqD2Lxe98hOxcDgOHyMPfz4tVAbk=" crossorigin="anonymous"></script>
+<script async id="search-script" src="../../_/js/vendor/search.js" data-app-id="WB1FQYI187" data-api-key="c2e84f15fa630d534f1c62b1c413bb77" data-index-name="springdocs" data-stylesheet="../../_/css/vendor/search.css" data-page-version="2.0.2" data-page-component="ai"></script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+[
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>io.modelcontextprotocol.sdk</groupId>\n    <artifactId>mcp-spring-webflux</artifactId>\n</dependency>\n\n<dependency>\n    <groupId>io.modelcontextprotocol.sdk</groupId>\n    <artifactId>mcp-spring-webmvc</artifactId>\n</dependency>"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>mcp-spring-webflux</artifactId>\n</dependency>\n\n<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>mcp-spring-webmvc</artifactId>\n</dependency>"
+  },
+  {
+    "language": "java",
+    "code": "// Before\nimport io.modelcontextprotocol.server.transport.WebFluxSseServerTransportProvider;\nimport io.modelcontextprotocol.server.transport.WebMvcSseServerTransportProvider;\nimport io.modelcontextprotocol.client.transport.WebFluxSseClientTransport;\nimport io.modelcontextprotocol.client.transport.WebClientStreamableHttpTransport;\n\n// After\nimport org.springframework.ai.mcp.server.webflux.transport.WebFluxSseServerTransportProvider;\nimport org.springframework.ai.mcp.server.webmvc.transport.WebMvcSseServerTransportProvider;\nimport org.springframework.ai.mcp.client.webflux.transport.WebFluxSseClientTransport;\nimport org.springframework.ai.mcp.client.webflux.transport.WebClientStreamableHttpTransport;"
+  }
+]

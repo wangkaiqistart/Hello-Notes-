@@ -1,0 +1,207 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html",
+  "version": "2.0.2",
+  "retrieved": "2026-10-31",
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Model Context Protocol (MCP)"
+    },
+    {
+      "id": "_mcp_java_sdk_architecture",
+      "text": "MCP Java SDK Architecture"
+    },
+    {
+      "id": "_clientserver_layer_top",
+      "text": "Client/Server Layer (Top)"
+    },
+    {
+      "id": "_session_layer_middle",
+      "text": "Session Layer (Middle)"
+    },
+    {
+      "id": "_transport_layer_bottom",
+      "text": "Transport Layer (Bottom)"
+    },
+    {
+      "id": "_spring_ai_mcp_integration",
+      "text": "Spring AI MCP Integration"
+    },
+    {
+      "id": "_client_starters",
+      "text": "Client Starters"
+    },
+    {
+      "id": "_server_starters",
+      "text": "Server Starters"
+    },
+    {
+      "id": "_stdio",
+      "text": "STDIO"
+    },
+    {
+      "id": "_webmvc",
+      "text": "WebMVC"
+    },
+    {
+      "id": "_webflux_reactive",
+      "text": "WebFlux (Reactive)"
+    },
+    {
+      "id": "_spring_ai_mcp_annotations",
+      "text": "Spring AI MCP Annotations"
+    },
+    {
+      "id": "_upgrading_to_spring_ai_2_0",
+      "text": "Upgrading to Spring AI 2.0"
+    },
+    {
+      "id": "_maven_dependency_group_id_change",
+      "text": "Maven Dependency Group ID Change"
+    },
+    {
+      "id": "_java_package_relocation",
+      "text": "Java Package Relocation"
+    },
+    {
+      "id": "_mcp_sdk_version_requirement",
+      "text": "MCP SDK Version Requirement"
+    },
+    {
+      "id": "_spring_boot_auto_configuration_users",
+      "text": "Spring Boot Auto-configuration Users"
+    },
+    {
+      "id": "_additional_resources",
+      "text": "Additional Resources"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/mcp/mcp-stack.svg",
+      "alt": "MCP Stack Architecture"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/mcp/java-mcp-client-architecture.jpg",
+      "alt": "Java MCP Client Architecture"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/mcp/java-mcp-server-architecture.jpg",
+      "alt": "Java MCP Server Architecture"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/guides/getting-started-mcp.html",
+      "text": "Getting Started with MCP"
+    },
+    {
+      "href": "https://modelcontextprotocol.org/docs/concepts/architecture",
+      "text": "Model Context Protocol"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/sdk/java/mcp-overview",
+      "text": "MCP Java SDK"
+    },
+    {
+      "href": "https://start.spring.io",
+      "text": "Spring Initializer"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/sdk/java/mcp-overview",
+      "text": "MCP Java SDK architecture"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html#_spring_ai_mcp_integration",
+      "text": "Spring AI MCP Boot Starters"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/sdk/java/mcp-client",
+      "text": "MCP Client"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/sdk/java/mcp-server",
+      "text": "MCP Server"
+    },
+    {
+      "href": "https://modelcontextprotocol.io/sdk/java/mcp-overview",
+      "text": "MCP Java SDK documentation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html",
+      "text": "Client Starters"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html",
+      "text": "Server Starters"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html",
+      "text": "Standard Input/Output (STDIO)"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html#_sse_webmvc_server",
+      "text": "SSE WebMVC"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html#_streamable_http_webmvc_server",
+      "text": "Streamable-HTTP WebMVC"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html#_stateless_webmvc_server",
+      "text": "Stateless Streamable-HTTP WebMVC"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stdio-sse-server-boot-starter-docs.html#_sse_webflux_server",
+      "text": "SSE WebFlux"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-streamable-http-server-boot-starter-docs.html#_streamable_http_webflux_server",
+      "text": "Streamable-HTTP WebFlux"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-stateless-server-boot-starter-docs.html#_stateless_webflux_server",
+      "text": "Stateless Streamable-HTTP WebFlux"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-overview.html",
+      "text": "Spring AI MCP Annotations"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-overview.html",
+      "text": "MCP Annotations"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-server.html",
+      "text": "Server Annotations"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-client.html",
+      "text": "Client Annotations"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-special-params.html",
+      "text": "Special Parameters"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-annotations-overview.html",
+      "text": "MCP Annotations Documentation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html",
+      "text": "MCP Client Boot Starters Documentation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html",
+      "text": "MCP Server Boot Starters Documentation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-helpers.html",
+      "text": "MCP Utilities Documentation"
+    },
+    {
+      "href": "https://modelcontextprotocol.github.io/specification/",
+      "text": "Model Context Protocol Specification"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+[
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-mcp-client</artifactId>\n</dependency>"
+  },
+  {
+    "language": "xml",
+    "code": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-mcp-client-webflux</artifactId>\n</dependency>"
+  },
+  {
+    "language": "yaml",
+    "code": "spring:\n  ai:\n    mcp:\n      client:\n        stdio:\n          root-change-notification: true\n          connections:\n            server1:\n              command: /path/to/server\n              args:\n                - --port=8080\n                - --mode=production\n              env:\n                API_KEY: your-api-key\n                DEBUG: \"true\""
+  },
+  {
+    "language": "yaml",
+    "code": "spring:\n  ai:\n    mcp:\n      client:\n        stdio:\n          servers-configuration: classpath:mcp-servers.json"
+  },
+  {
+    "language": "json",
+    "code": "{\n  \"mcpServers\": {\n    \"filesystem\": {\n      \"command\": \"npx\",\n      \"args\": [\n        \"-y\",\n        \"@modelcontextprotocol/server-filesystem\",\n        \"/Users/username/Desktop\",\n        \"/Users/username/Downloads\"\n      ]\n    }\n  }\n}"
+  },
+  {
+    "language": "json",
+    "code": "{\n  \"mcpServers\": {\n    \"filesystem\": {\n      \"command\": \"cmd.exe\",\n      \"args\": [\n        \"/c\",\n        \"npx\",\n        \"-y\",\n        \"@modelcontextprotocol/server-filesystem\",\n        \"C:\\\\Users\\\\username\\\\Desktop\"\n      ]\n    }\n  }\n}"
+  },
+  {
+    "language": "json",
+    "code": "{\n  \"mcpServers\": {\n    \"filesystem\": {\n      \"command\": \"npx\",\n      \"args\": [\n        \"-y\",\n        \"@modelcontextprotocol/server-filesystem\",\n        \"/Users/username/Desktop\"\n      ]\n    }\n  }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Bean(destroyMethod = \"close\")\n@ConditionalOnMissingBean(McpSyncClient.class)\npublic McpSyncClient mcpClient() {\n    ServerParameters stdioParams;\n\n    if (isWindows()) {\n        // Windows: cmd.exe /c npx approach\n        var winArgs = new ArrayList<>(Arrays.asList(\n            \"/c\", \"npx\", \"-y\", \"@modelcontextprotocol/server-filesystem\", \"target\"));\n        stdioParams = ServerParameters.builder(\"cmd.exe\")\n                .args(winArgs)\n                .build();\n    } else {\n        // Linux/Mac: direct npx approach\n        stdioParams = ServerParameters.builder(\"npx\")\n                .args(\"-y\", \"@modelcontextprotocol/server-filesystem\", \"target\")\n                .build();\n    }\n\n    return McpClient.sync(new StdioClientTransport(stdioParams, McpJsonDefaults.getMapper()))\n            .requestTimeout(Duration.ofSeconds(10))\n            .build()\n            .initialize();\n}\n\nprivate static boolean isWindows() {\n    return System.getProperty(\"os.name\").toLowerCase().contains(\"win\");\n}"
+  },
+  {
+    "language": "json",
+    "code": "{\n  \"command\": \"cmd.exe\",\n  \"args\": [\"/c\", \"npx\", \"-y\", \"@modelcontextprotocol/server-filesystem\", \"target\"]\n}"
+  },
+  {
+    "language": "json",
+    "code": "{\n  \"command\": \"cmd.exe\",\n  \"args\": [\"/c\", \"npx\", \"-y\", \"@modelcontextprotocol/server-filesystem\", \"C:\\\\Users\\\\username\\\\project\\\\target\"]\n}"
+  },
+  {
+    "language": "yaml",
+    "code": "spring:\n  ai:\n    mcp:\n      client:\n        streamable-http:\n          connections:\n            server1:\n              url: http://localhost:8080\n            server2:\n              url: http://otherserver:8081\n              endpoint: /custom-sse"
+  },
+  {
+    "language": "yaml",
+    "code": "spring:\n  ai:\n    mcp:\n      client:\n        sse:\n          connections:\n            # Simple configuration using default /sse endpoint\n            server1:\n              url: http://localhost:8080\n            # Custom SSE endpoint\n            server2:\n              url: http://otherserver:8081\n              sse-endpoint: /custom-sse\n            # Complex URL with path and token (like MCP Hub)\n            mcp-hub:\n              url: http://localhost:3000\n              sse-endpoint: /mcp-hub/sse/cf9ec4527e3c4a2cbb149a85ea45ab01\n            # SSE endpoint with query parameters\n            api-server:\n              url: https://api.example.com\n              sse-endpoint: /v1/mcp/events?token=abc123&format=json"
+  },
+  {
+    "language": "yaml",
+    "code": "spring:\n  ai:\n    mcp:\n      client:\n        streamable-http:\n          connections:\n            server1:\n              url: http://localhost:8080\n            server2:\n              url: http://otherserver:8081\n              endpoint: /custom-sse"
+  },
+  {
+    "language": "java",
+    "code": "@Component\npublic class CustomMcpSyncClientCustomizer implements McpClientCustomizer<McpClient.SyncSpec> {\n    @Override\n    public void customize(String serverConfigurationName, McpClient.SyncSpec spec) {\n\n        // Customize the request timeout configuration\n        spec.requestTimeout(Duration.ofSeconds(30));\n\n        // Sets the root URIs that this client can access.\n        spec.roots(roots);\n\n        // Sets a custom sampling handler for processing message creation requests.\n        spec.sampling((CreateMessageRequest messageRequest) -> {\n            // Handle sampling\n            CreateMessageResult result = ...\n            return result;\n        });\n\n        // Sets a custom elicitation handler for processing elicitation requests.\n        spec.elicitation((ElicitRequest request) -> {\n          // handle elicitation\n          return new ElicitResult(ElicitResult.Action.ACCEPT, Map.of(\"message\", request.message()));\n        });\n\n        // Adds a consumer to be notified when progress notifications are received.\n        spec.progressConsumer((ProgressNotification progress) -> {\n         // Handle progress notifications\n        });\n\n        // Adds a consumer to be notified when the available tools change, such as tools\n        // being added or removed.\n        spec.toolsChangeConsumer((List<McpSchema.Tool> tools) -> {\n            // Handle tools change\n        });\n\n        // Adds a consumer to be notified when the available resources change, such as resources\n        // being added or removed.\n        spec.resourcesChangeConsumer((List<McpSchema.Resource> resources) -> {\n            // Handle resources change\n        });\n\n        // Adds a consumer to be notified when the available prompts change, such as prompts\n        // being added or removed.\n        spec.promptsChangeConsumer((List<McpSchema.Prompt> prompts) -> {\n            // Handle prompts change\n        });\n\n        // Adds a consumer to be notified when logging messages are received from the server.\n        spec.loggingConsumer((McpSchema.LoggingMessageNotification log) -> {\n            // Handle log messages\n        });\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Component\npublic class CustomMcpAsyncClientCustomizer implements McpClientCustomizer<McpClient.AsyncSpec> {\n    @Override\n    public void customize(String serverConfigurationName, McpClient.AsyncSpec spec) {\n        // Customize the async client configuration\n        spec.requestTimeout(Duration.ofSeconds(30));\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Component\npublic class CustomMcpToolFilter implements McpToolFilter {\n\n    @Override\n    public boolean test(McpConnectionInfo connectionInfo, McpSchema.Tool tool) {\n        // Filter logic based on connection information and tool properties\n        // Return true to include the tool, false to exclude it\n\n        // Example: Exclude tools from a specific client\n        if (connectionInfo.clientInfo().name().equals(\"restricted-client\")) {\n            return false;\n        }\n\n        // Example: Only include tools with specific names\n        if (tool.name().startsWith(\"allowed_\")) {\n            return true;\n        }\n\n        // Example: Filter based on tool description or other properties\n        if (tool.description() != null &&\n            tool.description().contains(\"experimental\")) {\n            return false;\n        }\n\n        return true; // Include all other tools by default\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Component\npublic class CustomToolNamePrefixGenerator implements McpToolNamePrefixGenerator {\n\n    @Override\n    public String prefixedToolName(McpConnectionInfo connectionInfo, Tool tool) {\n        // Custom logic to generate prefixed tool names\n\n        // Example: Use server name and version as prefix\n        String serverName = connectionInfo.initializeResult().serverInfo().name();\n        String serverVersion = connectionInfo.initializeResult().serverInfo().version();\n        return serverName + \"_v\" + serverVersion.replace(\".\", \"_\") + \"_\" + tool.name();\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Configuration\npublic class McpConfiguration {\n\n    @Bean\n    public McpToolNamePrefixGenerator mcpToolNamePrefixGenerator() {\n        return McpToolNamePrefixGenerator.noPrefix();\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "ChatModel chatModel = ...\n\nString response = ChatClient.create(chatModel)\n        .prompt(\"Tell me more about the customer with ID 42\")\n        .toolContext(Map.of(\"progressToken\", \"my-progress-token\"))\n        .call()\n        .content();"
+  },
+  {
+    "language": "java",
+    "code": "@Component\npublic class CustomToolContextToMcpMetaConverter implements ToolContextToMcpMetaConverter {\n\n    @Override\n    public Map<String, Object> convert(ToolContext toolContext) {\n        if (toolContext == null || toolContext.getContext() == null) {\n            return Map.of();\n        }\n\n        // Custom logic to convert tool context to MCP metadata\n        Map<String, Object> metadata = new HashMap<>();\n\n        // Example: Add custom prefix to all keys\n        for (Map.Entry<String, Object> entry : toolContext.getContext().entrySet()) {\n            if (entry.getValue() != null) {\n                metadata.put(\"app_\" + entry.getKey(), entry.getValue());\n            }\n        }\n\n        // Example: Add additional metadata\n        metadata.put(\"timestamp\", System.currentTimeMillis());\n        metadata.put(\"source\", \"spring-ai\");\n\n        return metadata;\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Configuration\npublic class McpConfiguration {\n\n    @Bean\n    public ToolContextToMcpMetaConverter toolContextToMcpMetaConverter() {\n        return ToolContextToMcpMetaConverter.noOp();\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Component\npublic class McpClientHandlers {\n\n    @McpLogging(clients = \"server1\")\n    public void handleLoggingMessage(LoggingMessageNotification notification) {\n        System.out.println(\"Received log: \" + notification.level() +\n                          \" - \" + notification.data());\n    }\n\n    @McpSampling(clients = \"server1\")\n    public CreateMessageResult handleSamplingRequest(CreateMessageRequest request) {\n        // Process the request and generate a response\n        String response = generateLLMResponse(request);\n\n        return CreateMessageResult.builder(Role.ASSISTANT, response, \"gpt-4\")\n            .build();\n    }\n\n    @McpProgress(clients = \"server1\")\n    public void handleProgressNotification(ProgressNotification notification) {\n        double percentage = notification.progress() * 100;\n        System.out.println(String.format(\"Progress: %.2f%% - %s\",\n            percentage, notification.message()));\n    }\n\n    @McpToolListChanged(clients = \"server1\")\n    public void handleToolListChanged(List<McpSchema.Tool> updatedTools) {\n        System.out.println(\"Tool list updated: \" + updatedTools.size() + \" tools available\");\n        // Update local tool registry\n        toolRegistry.updateTools(updatedTools);\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@McpLogging(clients = \"server1\")\npublic void handleServer1Logs(LoggingMessageNotification notification) {\n    // Handle logs from specific server\n    logToFile(\"server1.log\", notification);\n}\n\n@McpSampling(clients = \"server1\")\npublic Mono<CreateMessageResult> handleAsyncSampling(CreateMessageRequest request) {\n    return Mono.fromCallable(() -> {\n        String response = generateLLMResponse(request);\n        return CreateMessageResult.builder(Role.ASSISTANT, response, \"gpt-4\")\n            .build();\n    }).subscribeOn(Schedulers.boundedElastic());\n}"
+  },
+  {
+    "language": "yaml",
+    "code": "spring:\n  ai:\n    mcp:\n      client:\n        enabled: true\n        name: my-mcp-client\n        version: 1.0.0\n        request-timeout: 30s\n        type: SYNC  # or ASYNC for reactive applications\n        sse:\n          connections:\n            server1:\n              url: http://localhost:8080\n            server2:\n              url: http://otherserver:8081\n        streamable-http:\n          connections:\n            server3:\n              url: http://localhost:8083\n              endpoint: /mcp\n        stdio:\n          root-change-notification: false\n          connections:\n            server1:\n              command: /path/to/server\n              args:\n                - --port=8080\n                - --mode=production\n              env:\n                API_KEY: your-api-key\n                DEBUG: \"true\""
+  },
+  {
+    "language": "java",
+    "code": "@Autowired\nprivate List<McpSyncClient> mcpSyncClients;  // For sync client\n\n// OR\n\n@Autowired\nprivate List<McpAsyncClient> mcpAsyncClients;  // For async client"
+  },
+  {
+    "language": "java",
+    "code": "@Autowired\nprivate SyncMcpToolCallbackProvider toolCallbackProvider;\nToolCallback[] toolCallbacks = toolCallbackProvider.getToolCallbacks();"
+  }
+]

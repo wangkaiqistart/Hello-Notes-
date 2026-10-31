@@ -10,7 +10,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "xml",
-      "targetLanguage": "xml"
+      "targetLanguage": "xml",
+      "targetBlock": 1
     },
     {
       "block": 2,
@@ -18,7 +19,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "gradle",
-      "targetLanguage": "groovy"
+      "targetLanguage": "groovy",
+      "targetBlock": 2
     },
     {
       "block": 3,
@@ -26,7 +28,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "xml",
-      "targetLanguage": "xml"
+      "targetLanguage": "xml",
+      "targetBlock": 3
     },
     {
       "block": 4,
@@ -34,15 +37,19 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "gradle",
-      "targetLanguage": "groovy"
+      "targetLanguage": "groovy",
+      "targetBlock": 4
     },
     {
       "block": 5,
       "result": "PASS",
-      "apiChanged": false,
-      "reason": "除注释及空白外与来源一致",
+      "apiChanged": true,
+      "reason": "除注释及空白外与来源一致；2026-11-01 复审：入门例改用 RegexToolIndex；向量索引完整示例仍在策略节保留。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "reviewedOn": "2026-11-01",
+      "targetSha256": "79c963dec89dc98cf473aca3ce7c3fe4fcde38c04ea509abe3d4177ced697445",
+      "targetBlock": 5
     },
     {
       "block": 6,
@@ -50,7 +57,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 6
     },
     {
       "block": 7,
@@ -58,7 +66,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 7
     },
     {
       "block": 8,
@@ -66,7 +75,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 14
     },
     {
       "block": 9,
@@ -74,7 +84,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 13
     },
     {
       "block": 10,
@@ -82,7 +93,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 12
     },
     {
       "block": 11,
@@ -90,7 +102,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "xml",
-      "targetLanguage": "xml"
+      "targetLanguage": "xml",
+      "targetBlock": 15
     },
     {
       "block": 12,
@@ -98,7 +111,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 16
     },
     {
       "block": 13,
@@ -106,7 +120,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 17
     },
     {
       "block": 14,
@@ -114,7 +129,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "properties",
-      "targetLanguage": "properties"
+      "targetLanguage": "properties",
+      "targetBlock": 8
     },
     {
       "block": 15,
@@ -122,7 +138,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "properties",
-      "targetLanguage": "properties"
+      "targetLanguage": "properties",
+      "targetBlock": 9
     },
     {
       "block": 16,
@@ -130,7 +147,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "properties",
-      "targetLanguage": "properties"
+      "targetLanguage": "properties",
+      "targetBlock": 10
     },
     {
       "block": 17,
@@ -138,7 +156,12 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "properties",
-      "targetLanguage": "properties"
+      "targetLanguage": "properties",
+      "targetBlock": 11
     }
-  ]
+  ],
+  "reviewedOn": "2026-11-01",
+  "reviewRecord": "../spring-ai-tool-calling-zh-CN/2026-11-01-review.md",
+  "blockNumbering": "block 为来源代码段序号；targetBlock 为重排后站点代码段序号。代码内容未改变。",
+  "structureRecord": "../spring-ai-tool-calling-zh-CN/2026-11-01-structure.md"
 }

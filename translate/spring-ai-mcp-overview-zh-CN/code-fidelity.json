@@ -1,0 +1,32 @@
+{
+  "sourceBlocks": 3,
+  "targetBlocks": 3,
+  "removedDuplicateSourceBlocks": [],
+  "checks": [
+    {
+      "sourceBlock": 1,
+      "targetBlock": 1,
+      "language": "xml",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 2,
+      "targetBlock": 2,
+      "language": "xml",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 3,
+      "targetBlock": 3,
+      "language": "java",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    }
+  ],
+  "method": "静态对照，除已标注改动外保留API与字符串；不表示编译或实际调用通过。"
+}

@@ -10,7 +10,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 1
     },
     {
       "block": 2,
@@ -18,7 +19,8 @@
       "apiChanged": true,
       "reason": "OllamaChatModel.Builder.options 接收 OllamaChatOptions。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 2
     },
     {
       "block": 3,
@@ -26,7 +28,8 @@
       "apiChanged": true,
       "reason": "使用 OllamaChatOptions 并补充 OllamaApi 构建。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 3
     },
     {
       "block": 4,
@@ -34,15 +37,19 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 4
     },
     {
       "block": 5,
       "result": "PASS",
-      "apiChanged": false,
-      "reason": "除注释及空白外与来源一致",
+      "apiChanged": true,
+      "reason": "除注释及空白外与来源一致；2026-11-01 复审：直接返回分支构建 ChatResponse 并退出，统一普通输出与工具输出。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "reviewedOn": "2026-11-01",
+      "targetSha256": "693264c5322d0438615e5ad11e9fdd41951b8ef3981055cbcd17e7df247a2d41",
+      "targetBlock": 5
     },
     {
       "block": 6,
@@ -50,7 +57,8 @@
       "apiChanged": true,
       "reason": "流式循环处理空聚合和 returnDirect，直接返回工具生成结果。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 6
     },
     {
       "block": 7,
@@ -58,15 +66,23 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 7
     },
     {
       "block": 8,
       "result": "PASS",
-      "apiChanged": false,
-      "reason": "除注释及空白外与来源一致",
+      "apiChanged": true,
+      "reason": "除注释及空白外与来源一致；2026-11-01 复审：直接返回示例使用 ChatResponse，不把全部历史作为答案。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "reviewedOn": "2026-11-01",
+      "targetSha256": "fb4a75b2f983b6e170391f19d54a5330fd03f0f192ed443ee6bfdffd9ac07b82",
+      "targetBlock": 8
     }
-  ]
+  ],
+  "reviewedOn": "2026-11-01",
+  "reviewRecord": "../spring-ai-tool-calling-zh-CN/2026-11-01-review.md",
+  "blockNumbering": "block 为来源代码段序号；targetBlock 为重排后站点代码段序号。代码内容未改变。",
+  "structureRecord": "../spring-ai-tool-calling-zh-CN/2026-11-01-structure.md"
 }

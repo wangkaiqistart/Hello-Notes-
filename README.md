@@ -84,7 +84,7 @@ Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro 
 5. [对话记忆（Chat Memory）](src/content/docs/frameworks/spring-ai/core/chat-memory.mdx)：理解会话标识、记忆窗口和会话隔离。
 6. [Advisors](https://docs.spring.io/spring-ai/reference/api/advisors.html)：理解请求处理链及上下文处理方式。
 7. [工具调用基础](src/content/docs/frameworks/spring-ai/tools/tool-calling.mdx) → [工具调用 Advisor](src/content/docs/frameworks/spring-ai/tools/tool-calling-advisor.mdx)：理解工具定义、执行循环与记忆配合；[工具搜索](src/content/docs/frameworks/spring-ai/tools/tool-search-tool.mdx)和 [ChatModel 工具调用](src/content/docs/frameworks/spring-ai/tools/chatmodel-tool-calling.mdx)按需深入。
-8. [MCP Overview](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html)：理解 Client、Server、工具发现和传输方式。
+8. [MCP 概览](src/content/docs/frameworks/spring-ai/mcp/overview.mdx) → [MCP 客户端](src/content/docs/frameworks/spring-ai/mcp/client.mdx) → [MCP 服务端](src/content/docs/frameworks/spring-ai/mcp/server.mdx)：理解协议能力、传输、共享会话和工具接入；注解完整参考与高级配置按需查阅来源链接。
 9. [ETL Pipeline](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html)、[Embeddings](https://docs.spring.io/spring-ai/reference/api/embeddings.html)、[Vector Stores](https://docs.spring.io/spring-ai/reference/api/vectordbs.html)：完成文档读取、切分、向量化与存储。
 10. [RAG](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html)：学习检索增强、Top-K、相似度阈值和元数据过滤。
 11. [Model Evaluation](https://docs.spring.io/spring-ai/reference/api/testing.html)、[Observability](https://docs.spring.io/spring-ai/reference/observability/index.html)：建立评估、耗时和用量记录。
@@ -121,15 +121,15 @@ Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro 
 ### 学习进度
 
 - [ ] 第 1 周：聊天、流式输出、结构化输出与会话隔离通过验证。
-- [ ] 第 2 周：文档入库、检索和带来源的 RAG 问答通过验证。
-- [ ] 第 3 周：模拟订单工具与 MCP 调用通过验证。
+- [ ] 第 2 周：模拟订单工具与 MCP 调用通过验证。
+- [ ] 第 3 周：文档入库、检索和带来源的 RAG 问答通过验证。
 - [ ] 第 4 周：完成整合演示、约 30 条回归题集和评估记录。
 
 后续按实际需求深入多模型路由、多模态和复杂 Agent 编排。
 
 ### 笔记目录规划
 
-笔记按主题组织，学习进度按周推进。框架知识放在 `src/content/docs/frameworks/spring-ai/`，综合项目记录放在 `src/content/docs/projects/spring-ai-assistant/`。当前规划 29 篇笔记；[Spring AI 总览](src/content/docs/frameworks/spring-ai/index.mdx)、[AI 核心概念](src/content/docs/frameworks/spring-ai/concepts.mdx)、[快速入门](src/content/docs/frameworks/spring-ai/getting-started/quickstart.mdx)、[ChatClient API](src/content/docs/frameworks/spring-ai/core/chat-client.mdx)、[提示词](src/content/docs/frameworks/spring-ai/core/prompts.mdx)、[响应元数据](src/content/docs/frameworks/spring-ai/core/chat-response-metadata.mdx)、[结构化输出](src/content/docs/frameworks/spring-ai/core/structured-output.mdx)、[Advisors API](src/content/docs/frameworks/spring-ai/core/advisors.mdx)、[多模态](src/content/docs/frameworks/spring-ai/core/multimodality.mdx)和[模型小节](src/content/docs/frameworks/spring-ai/models/index.mdx)（概览、聊天、Embedding、图像、音频和审核模型），以及[对话记忆](src/content/docs/frameworks/spring-ai/core/chat-memory.mdx)已创建并接入侧边栏，其余页面随学习逐篇补充。提示词、响应元数据按来源章节整理；结构化输出将高层用法、校验与自动纠正、原生输出和转换器合为一篇，便于按需深入。以下为完整目录规划。
+笔记按主题组织，学习进度按周推进。框架知识放在 `src/content/docs/frameworks/spring-ai/`，综合项目记录放在 `src/content/docs/projects/spring-ai-assistant/`。当前规划 31 篇笔记；[Spring AI 总览](src/content/docs/frameworks/spring-ai/index.mdx)、[AI 核心概念](src/content/docs/frameworks/spring-ai/concepts.mdx)、[快速入门](src/content/docs/frameworks/spring-ai/getting-started/quickstart.mdx)、[ChatClient API](src/content/docs/frameworks/spring-ai/core/chat-client.mdx)、[提示词](src/content/docs/frameworks/spring-ai/core/prompts.mdx)、[响应元数据](src/content/docs/frameworks/spring-ai/core/chat-response-metadata.mdx)、[结构化输出](src/content/docs/frameworks/spring-ai/core/structured-output.mdx)、[Advisors API](src/content/docs/frameworks/spring-ai/core/advisors.mdx)、[多模态](src/content/docs/frameworks/spring-ai/core/multimodality.mdx)和[模型小节](src/content/docs/frameworks/spring-ai/models/index.mdx)（概览、聊天、Embedding、图像、音频和审核模型），以及[对话记忆](src/content/docs/frameworks/spring-ai/core/chat-memory.mdx)已创建并接入侧边栏，其余页面随学习逐篇补充。提示词、响应元数据按来源章节整理；结构化输出将高层用法、校验与自动纠正、原生输出和转换器合为一篇，便于按需深入。以下为完整目录规划。
 
 ```text
 src/content/docs/
@@ -162,8 +162,11 @@ src/content/docs/
 │       │   ├── tool-calling.mdx                # @Tool、参数描述、执行与结果回传、异常处理
 │       │   ├── tool-calling-advisor.mdx        # 执行循环、顺序、钩子扩展与流式观察
 │       │   ├── tool-search-tool.mdx            # 渐进式工具暴露、索引策略与会话隔离
-│       │   ├── chatmodel-tool-calling.mdx      # 底层请求、默认工具覆盖与手动循环
-│       │   └── mcp-integration.mdx             # MCP Client / Server、工具发现与调用
+│       │   └── chatmodel-tool-calling.mdx      # 底层请求、默认工具覆盖与手动循环
+│       ├── mcp/
+│       │   ├── overview.mdx                   # 协议能力、SDK 架构、传输与版本迁移
+│       │   ├── client.mdx                     # 连接配置、共享会话、工具回调与客户端注解
+│       │   └── server.mdx                     # 服务端传输、能力注册、注解与安全边界
 │       └── engineering/
 │           ├── workflows.mdx                   # 意图识别、路由、文档问答与业务工具组合
 │           ├── evaluation.mdx                  # 题集设计、判断标准、质量与回归评估方法
@@ -181,11 +184,11 @@ src/content/docs/
 | 阶段    | 本周笔记                                                                       | 项目记录                                                                                          |
 | ------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
 | 第 1 周 | `index.mdx`、`concepts.mdx`、`getting-started/quickstart.mdx`、`core/` 下 7 篇、`models/index.mdx` 与 `models/chat-model.mdx` | 在 `src/content/docs/projects/spring-ai-assistant/index.mdx` 记录运行方式、聊天接口和会话隔离验证 |
-| 第 2 周 | `tools/tool-calling.mdx`、`tools/tool-calling-advisor.mdx`、`tools/mcp-integration.mdx`；工具搜索与底层 ChatModel 两篇按需阅读 | 补充订单工具和 MCP 接入过程，记录查无结果、参数缺失和超时案例                                     |
+| 第 2 周 | `tools/tool-calling.mdx`、`tools/tool-calling-advisor.mdx`、`mcp/` 下 3 篇；工具搜索与底层 ChatModel 两篇按需阅读 | 补充订单工具和 MCP 接入过程，记录查无结果、参数缺失和超时案例                                     |
 | 第 3 周 | `models/embedding-model.mdx`、`rag/` 下 3 篇                                                                 | 在项目记录中补充文档入库与问答链路；在 `experiments-and-evaluation.mdx` 记录切分、Top-K、阈值对比 |
 | 第 4 周 | `engineering/` 下 3 篇                                                         | 完善完整架构、演示步骤、约 30 条题集及实际评估结果                                                |
 
-项目总览和实验记录从第一周开始持续更新，第 4 周汇总。工具调用的三个进阶页面从原基础页拆出，规划由 26 篇调整为 29 篇；MCP 接入仍待补充。每周的笔记是实践结论的整理，不要求每篇等长；未验证的判断应明确标注“待验证”。
+项目总览和实验记录从第一周开始持续更新，第 4 周汇总。工具调用增加三个进阶页面，MCP 接入由单篇扩展为概览、客户端和服务端三篇，规划由 29 篇调整为 31 篇。译文完成不代表实践验收已完成，进度勾选仍以实际调用和验证为准。每周的笔记是实践结论的整理，不要求每篇等长；未验证的判断应明确标注“待验证”。
 
 #### 页面内容约定
 
@@ -205,7 +208,7 @@ src/content/docs/
 
 #### 站点导航规划
 
-- 在“开发框架”中增加“Spring AI”，按“总览 → 入门 → 核心 API → RAG → 工具与 MCP → 工程实践”排列；分组使用中文名称，组内页面按学习顺序排列。
+- 在“开发框架”中增加“Spring AI”，按“总览 → 入门 → 核心 API → 工具调用 → MCP → RAG → 工程实践”排列；分组使用中文名称，组内页面按学习顺序排列。
 - 在“实战项目”中展示“Spring AI 文档与订单助手”，由现有 `projects` 自动导航收录；框架总览与项目总览互相链接。
 - 页面 frontmatter 使用 `title`、`description` 和 `sidebar`，与现有 MDX 笔记保持一致；在自动生成的分组中使用 `sidebar.order` 控制顺序。
 - 页面路径跟随文件路径，例如 `frameworks/spring-ai/core/chat-client.mdx` 对应 `/frameworks/spring-ai/core/chat-client/`，无需另设 `slug`。
@@ -218,3 +221,5 @@ Advisors API 与 ChatClient API 在 Spring AI 导航中同级。基础处理链�
 对话记忆放在模型小节之后，与 ChatClient API、Advisors API 同级。主线先理解会话 ID、消息窗口与 ChatClient 接入；数据库配置按需阅读。窗口记忆不替代完整聊天历史，工具消息是否保存还取决于 Advisor 位置和 Repository 能力。
 
 工具调用小节接在对话记忆之后，已完成[基础](src/content/docs/frameworks/spring-ai/tools/tool-calling.mdx)、[Advisor](src/content/docs/frameworks/spring-ai/tools/tool-calling-advisor.mdx)、[工具搜索](src/content/docs/frameworks/spring-ai/tools/tool-search-tool.mdx)与 [ChatModel 底层调用](src/content/docs/frameworks/spring-ai/tools/chatmodel-tool-calling.mdx)四篇。按当前学习安排先完成工具调用与 MCP，再进入 RAG；后两篇进阶内容不增加第二周的必做任务。
+
+MCP 小节已完成[概览](src/content/docs/frameworks/spring-ai/mcp/overview.mdx)、[客户端](src/content/docs/frameworks/spring-ai/mcp/client.mdx)和[服务端](src/content/docs/frameworks/spring-ai/mcp/server.mdx)。先理解协议和传输，再连接已有工具，最后发布自己的工具；完整注解、认证集成和各传输高级配置保留来源入口，按需深入。

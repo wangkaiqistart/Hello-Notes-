@@ -10,9 +10,19 @@ sidebar:
 
 大多数应用应使用 [ChatClient](/frameworks/spring-ai/tools/tool-calling/)：它通过 [ToolCallingAdvisor](/frameworks/spring-ai/tools/tool-calling-advisor/) 驱动工具调用循环，可以组合记忆、可观测性等 Advisor，并提供自动配置扩展点。本文适合明确需要底层控制的场景。
 
+阅读本文前，先掌握[工具调用基础](/frameworks/spring-ai/tools/tool-calling/)。这里的手动循环把工具执行、历史传递、直接返回和失败处理交给应用；如果只是想观察中间进度，优先使用[循环内的观察 Advisor](/frameworks/spring-ai/tools/tool-calling-advisor/#observing-the-tool-calling-loop)。
+
+阅读层次：[适用范围](#scope-and-responsibility) → [手动执行](#manual-execution-guide) → [执行选项参考](#execution-options-reference)。
+
+<a id="scope-and-responsibility"></a>
+
+## 一、适用范围（先读结论）
+
+先确认是否需要绕过 ChatClient，以及工具执行和循环由谁负责。
+
 <a id="when-to-use"></a>
 
-## 什么时候直接使用 ChatModel
+### 什么时候直接使用 ChatModel
 
 - 不需要 Advisor 处理链，包括记忆 Advisor、可观测性 Advisor 和 `ToolCallingAdvisor`。
 - 要接入自行管理循环的编排器，例如领域工作流引擎或非 Spring 的 Agent 框架。
@@ -22,21 +32,27 @@ sidebar:
 
 <a id="no-internal-tool-execution"></a>
 
-## ChatModel 不执行工具
+### ChatModel 不执行工具
 
 `ChatModel.call(prompt)` 和 `ChatModel.stream(prompt)` 返回模型原始响应，其中可能包含工具调用请求。工具执行和携带结果再次调用模型，都由调用方负责。
 
 Spring AI 1.x 中，各 `ChatModel` 有自己的内部工具循环；2.0 已移除这一机制。迁移说明见[工具调用从 1.x 升级到 2.0](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#tool-calling-1x-to-2x)。
 
+<a id="manual-execution-guide"></a>
+
+## 二、手动执行（需要时再实践）
+
+自定义编排器需要接管工具循环时，再实践工具选项、覆盖规则、阻塞与流式执行。
+
 <a id="passing-tools"></a>
 
-## 向 ChatModel 提供工具
+### 向 ChatModel 提供工具
 
 使用 `ToolCallingChatOptions.toolCallbacks(...)` 传入 `List<ToolCallback>` 或 `ToolCallback[]`。对于包含 `@Tool` 方法的对象，先通过 `ToolCallbacks.from(...)` 转换为回调。
 
 <a id="per-request-tools"></a>
 
-### 请求级工具
+#### 请求级工具
 
 ```java
 ChatModel chatModel = ...
@@ -54,7 +70,7 @@ ChatResponse response = chatModel.call(prompt);
 
 <a id="default-tools"></a>
 
-### 模型默认工具
+#### 模型默认工具
 
 部分 `ChatModel` 构建器允许设置默认选项。默认工具会应用于每次请求，除非被请求级选项覆盖：
 
@@ -75,7 +91,7 @@ Ollama 示例使用提供方专用的 `OllamaChatOptions`；运行前还需连�
 
 <a id="override-semantics"></a>
 
-### 覆盖规则
+#### 覆盖规则
 
 模型默认选项和请求级选项都设置了工具时，**请求级工具列表整体替换默认列表**：
 
@@ -110,13 +126,13 @@ ChatOptions runtimeOptions = ToolCallingChatOptions.builder()
 
 <a id="driving-the-loop-manually"></a>
 
-## 手动驱动工具循环
+### 手动驱动工具循环
 
 模型返回工具调用请求后，应用执行工具，把结果加入消息历史，再次调用模型。这正是 `ToolCallingAdvisor` 为 `ChatClient` 自动完成的流程；直接使用 `ChatModel` 时由应用编写。
 
 <a id="blocking-loop"></a>
 
-### 阻塞调用
+#### 阻塞调用
 
 ```java
 ChatModel chatModel = ...
@@ -134,8 +150,11 @@ while (response.hasToolCalls()) {
     ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, response);
 
     if (result.returnDirect()) {
-        // 全部被调用工具均直接返回时，不再调用模型。
-        return result.conversationHistory();
+        // 把工具输出转换成统一的响应，再退出循环，不把整段消息历史作为答案。
+        response = ChatResponse.builder()
+            .generations(ToolExecutionResult.buildGenerations(result))
+            .build();
+        break;
     }
 
     prompt = new Prompt(result.conversationHistory(), chatOptions);
@@ -145,6 +164,8 @@ while (response.hasToolCalls()) {
 String finalAnswer = response.getResult().getOutput().getText();
 ```
 
+示例统一以 `ChatResponse` 承接普通回答和直接返回的工具输出。若模型同轮请求多个直接返回工具，结果会包含多个 `Generation`；`getResult()` 只取第一项，需要全部输出时应读取 `getResults()`。
+
 关键对象与方法：
 
 - `ToolCallingManager`：执行工具调用。Spring Boot 自动配置默认实现 `DefaultToolCallingManager`；未使用自动配置时，可调用 `ToolCallingManager.builder().build()` 创建。
@@ -153,9 +174,11 @@ String finalAnswer = response.getResult().getOutput().getText();
 - `result.returnDirect()`：本轮所调用的工具全部设置了 `returnDirect = true` 时才为 `true`。
 - `result.conversationHistory()`：包含原有消息、助手的工具调用请求，以及工具响应。下一次模型请求使用这份消息列表。
 
+示例中的 Manager 是独立构建的，不会读取 Spring Boot 自动配置 Bean 的限制、异常处理器或观测设置。Boot 应用优先注入已配置的 `ToolCallingManager`。手动循环也应捕获 `ToolCallLimitExceededException` 等异常并明确结束；框架自动循环中的超限响应转换不会在这里替应用执行。
+
 <a id="streaming-loop"></a>
 
-### 流式调用
+#### 流式调用
 
 流式响应需要先聚合每次迭代的分片，再判断是否有完整的工具调用请求。聚合的同时，可以把原始分片转发给 SSE 等下游订阅者：
 
@@ -196,13 +219,19 @@ while (true) {
 
 直接返回时，示例将工具结果转换成 `ChatResponse` 后交给 `forwardToSse(...)`，避免只退出循环却漏掉结果。
 
-示例通过 `MessageAggregator` 聚合 `ChatResponse`，使用 `blockLast()` 等待本次迭代完成。它演示的是逐次等待的手动循环；`forwardToSse(...)` 由应用实现。
+示例通过 `MessageAggregator` 聚合 `ChatResponse`，使用 `blockLast()` 等待本次迭代完成。它演示的是逐次等待的手动循环，不能直接放进 WebFlux 事件循环线程；`forwardToSse(...)` 由应用实现。
 
 如果希望保留完整的 Advisor 组合能力，见 [ChatClient 的用户控制流式调用](/frameworks/spring-ai/tools/tool-calling-advisor/#user-controlled-streaming)。
 
+<a id="execution-options-reference"></a>
+
+## 三、执行选项参考（按需查阅）
+
+实现手动循环时，在这里查阅应用侧上下文和直接返回结果的处理方式。
+
 <a id="tool-context"></a>
 
-## 工具上下文
+### 工具上下文
 
 工具上下文用于把非模型数据传给工具方法，使用方式与 `ChatClient` 一致，通过 `ToolCallingChatOptions` 设置：
 
@@ -222,7 +251,7 @@ chatModel.call(prompt);
 
 <a id="return-direct"></a>
 
-## 直接返回工具结果
+### 直接返回工具结果
 
 `ToolCallingManager.executeToolCalls(...)` 会处理工具的 `returnDirect` 标志，手动循环需检查返回值：
 
@@ -231,7 +260,9 @@ ToolExecutionResult result = toolCallingManager.executeToolCalls(prompt, respons
 
 if (result.returnDirect()) {
     // 跳过下一次模型调用，把工具结果交给调用方。
-    return result.conversationHistory();
+    return ChatResponse.builder()
+        .generations(ToolExecutionResult.buildGenerations(result))
+        .build();
 }
 ```
 
@@ -246,4 +277,4 @@ if (result.returnDirect()) {
 - [ChatClient 用户控制流式调用](/frameworks/spring-ai/tools/tool-calling-advisor/#user-controlled-streaming)：保留 Advisor 处理链的手动循环方式。
 - [工具调用升级说明](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#tool-calling-1x-to-2x)。
 
-来源：[ChatModel 工具调用](https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html)。文档版本：2.0.2；核验日期：2026-10-26。
+来源：[ChatModel 工具调用](https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html)。文档版本：2.0.2；核验日期：2026-11-01。

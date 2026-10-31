@@ -1,0 +1,32 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/mcp/mcp-stack.svg",
+    "path": "public/images/frameworks/spring-ai/mcp/mcp-stack.svg",
+    "sha256": "8efa11212af6c781c23d41afbbf4003d055bd49661c6f755e4a50b0b8457f5c0",
+    "dimensions": [
+      343.69525,
+      195.14102
+    ],
+    "localization": "original English labels, Chinese alt, full-resolution link"
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/mcp/java-mcp-client-architecture.jpg",
+    "path": "public/images/frameworks/spring-ai/mcp/java-mcp-client-architecture.jpg",
+    "sha256": "fe12a96c60f447eb63117a07e20cb54ca84b1381ac8ee3046648080e7c8c85e7",
+    "dimensions": [
+      4047,
+      3953
+    ],
+    "localization": "original English labels, Chinese alt, full-resolution link"
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/_images/mcp/java-mcp-server-architecture.jpg",
+    "path": "public/images/frameworks/spring-ai/mcp/java-mcp-server-architecture.jpg",
+    "sha256": "fc25f5a78dce6f5b233c1c3f2473b27bea91ad82f11880c769abf0b7416f120b",
+    "dimensions": [
+      4659,
+      3433
+    ],
+    "localization": "original English labels, Chinese alt, full-resolution link"
+  }
+]

@@ -1,0 +1,210 @@
+{
+  "sourceBlocks": 26,
+  "targetBlocks": 25,
+  "removedDuplicateSourceBlocks": [
+    13
+  ],
+  "checks": [
+    {
+      "sourceBlock": 1,
+      "targetBlock": 1,
+      "language": "xml",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 2,
+      "targetBlock": 2,
+      "language": "xml",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 3,
+      "targetBlock": 3,
+      "language": "yaml",
+      "apiChanged": true,
+      "reason": "Roots属性移动到client通用层级。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 4,
+      "targetBlock": 4,
+      "language": "yaml",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 5,
+      "targetBlock": 5,
+      "language": "json",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 6,
+      "targetBlock": 6,
+      "language": "json",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 7,
+      "targetBlock": 7,
+      "language": "json",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 8,
+      "targetBlock": 8,
+      "language": "java",
+      "apiChanged": true,
+      "reason": "先build客户端，再initialize，最后返回客户端。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 9,
+      "targetBlock": 9,
+      "language": "json",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 10,
+      "targetBlock": 10,
+      "language": "json",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 11,
+      "targetBlock": 11,
+      "language": "yaml",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 12,
+      "targetBlock": 12,
+      "language": "yaml",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 14,
+      "targetBlock": 13,
+      "language": "java",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 15,
+      "targetBlock": 14,
+      "language": "java",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 16,
+      "targetBlock": 15,
+      "language": "java",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 17,
+      "targetBlock": 16,
+      "language": "java",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 18,
+      "targetBlock": 17,
+      "language": "java",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 19,
+      "targetBlock": 18,
+      "language": "java",
+      "apiChanged": true,
+      "reason": "添加MCP工具Provider注册和占位声明分号。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 20,
+      "targetBlock": 19,
+      "language": "java",
+      "apiChanged": true,
+      "reason": "自定义元数据转换器保留默认exchange过滤。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 21,
+      "targetBlock": 20,
+      "language": "java",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 22,
+      "targetBlock": 21,
+      "language": "java",
+      "apiChanged": true,
+      "reason": "进度按progress/total计算，total未知时展示原始量。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 23,
+      "targetBlock": 22,
+      "language": "java",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 24,
+      "targetBlock": 23,
+      "language": "yaml",
+      "apiChanged": true,
+      "reason": "Roots属性移动到client通用层级。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 25,
+      "targetBlock": 24,
+      "language": "java",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    },
+    {
+      "sourceBlock": 26,
+      "targetBlock": 25,
+      "language": "java",
+      "apiChanged": false,
+      "reason": "除注释和空白外与来源一致。",
+      "result": "PASS"
+    }
+  ],
+  "method": "静态对照，除已标注改动外保留API与字符串；不表示编译或实际调用通过。"
+}

@@ -8,9 +8,12 @@
       "block": 1,
       "result": "PASS",
       "apiChanged": true,
-      "reason": "用 ZonedDateTime.now(userZone) 取得用户时区的当前时间，避免错误地重新标记本地时间。",
+      "reason": "用 ZonedDateTime.now(userZone) 取得用户时区的当前时间，避免错误地重新标记本地时间。；2026-11-01 复审：补全 java.time 三个 import；保留此前时区修正。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "reviewedOn": "2026-11-01",
+      "targetSha256": "2dc19b963367b65fa6f52b823bf3bd123ffdc7d3dd60fa6889d2e899e7e76f98",
+      "targetBlock": 1
     },
     {
       "block": 2,
@@ -18,7 +21,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 2
     },
     {
       "block": 3,
@@ -26,7 +30,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 3
     },
     {
       "block": 4,
@@ -34,7 +39,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 4
     },
     {
       "block": 5,
@@ -42,7 +48,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 27
     },
     {
       "block": 6,
@@ -50,7 +57,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 28
     },
     {
       "block": 7,
@@ -58,7 +66,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 13
     },
     {
       "block": 8,
@@ -66,7 +75,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 14
     },
     {
       "block": 9,
@@ -74,7 +84,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 5
     },
     {
       "block": 10,
@@ -82,7 +93,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 15
     },
     {
       "block": 11,
@@ -90,7 +102,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 16
     },
     {
       "block": 12,
@@ -98,7 +111,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "properties",
-      "targetLanguage": "properties"
+      "targetLanguage": "properties",
+      "targetBlock": 30
     },
     {
       "block": 13,
@@ -106,7 +120,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "xml",
-      "targetLanguage": "xml"
+      "targetLanguage": "xml",
+      "targetBlock": 17
     },
     {
       "block": 14,
@@ -114,7 +129,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "properties",
-      "targetLanguage": "properties"
+      "targetLanguage": "properties",
+      "targetBlock": 18
     },
     {
       "block": 15,
@@ -122,7 +138,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 19
     },
     {
       "block": 16,
@@ -130,7 +147,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "xml",
-      "targetLanguage": "xml"
+      "targetLanguage": "xml",
+      "targetBlock": 20
     },
     {
       "block": 17,
@@ -138,7 +156,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 21
     },
     {
       "block": 18,
@@ -146,7 +165,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 22
     },
     {
       "block": 19,
@@ -154,7 +174,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 31
     },
     {
       "block": 20,
@@ -162,15 +183,19 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 32
     },
     {
       "block": 21,
       "result": "PASS",
       "apiChanged": true,
-      "reason": "ChatClient.options 传入 chatOptions.mutate()；手动循环处理 returnDirect 并返回工具结果。",
+      "reason": "ChatClient.options 传入 chatOptions.mutate()；手动循环处理 returnDirect 并返回工具结果。；2026-11-01 复审：补明关闭自动注册的前提；仅改注释。",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "reviewedOn": "2026-11-01",
+      "targetSha256": "59e2e7a79241c65e6efb7e6e2e873cc63d14771aeae7be674bd06916d5204dc6",
+      "targetBlock": 33
     },
     {
       "block": 22,
@@ -178,7 +203,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "properties",
-      "targetLanguage": "properties"
+      "targetLanguage": "properties",
+      "targetBlock": 34
     },
     {
       "block": 23,
@@ -186,7 +212,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 35
     },
     {
       "block": 24,
@@ -194,7 +221,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 24
     },
     {
       "block": 25,
@@ -202,7 +230,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 25
     },
     {
       "block": 26,
@@ -210,7 +239,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 26
     },
     {
       "block": 27,
@@ -218,7 +248,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 6
     },
     {
       "block": 28,
@@ -226,7 +257,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 7
     },
     {
       "block": 29,
@@ -234,7 +266,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 8
     },
     {
       "block": 30,
@@ -242,7 +275,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 9
     },
     {
       "block": 31,
@@ -250,7 +284,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 29
     },
     {
       "block": 32,
@@ -258,7 +293,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 10
     },
     {
       "block": 33,
@@ -266,7 +302,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 11
     },
     {
       "block": 34,
@@ -274,7 +311,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 12
     },
     {
       "block": 35,
@@ -282,7 +320,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 36
     },
     {
       "block": 36,
@@ -290,7 +329,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "java",
-      "targetLanguage": "java"
+      "targetLanguage": "java",
+      "targetBlock": 37
     },
     {
       "block": 37,
@@ -298,7 +338,8 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "properties",
-      "targetLanguage": "properties"
+      "targetLanguage": "properties",
+      "targetBlock": 38
     },
     {
       "block": 38,
@@ -306,7 +347,12 @@
       "apiChanged": false,
       "reason": "除注释及空白外与来源一致",
       "sourceLanguage": "properties",
-      "targetLanguage": "properties"
+      "targetLanguage": "properties",
+      "targetBlock": 23
     }
-  ]
+  ],
+  "reviewedOn": "2026-11-01",
+  "reviewRecord": "../spring-ai-tool-calling-zh-CN/2026-11-01-review.md",
+  "blockNumbering": "block 为来源代码段序号；targetBlock 为重排后站点代码段序号。代码内容未改变。",
+  "structureRecord": "../spring-ai-tool-calling-zh-CN/2026-11-01-structure.md"
 }

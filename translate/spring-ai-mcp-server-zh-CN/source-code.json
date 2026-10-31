@@ -1,0 +1,26 @@
+[
+  {
+    "language": "java",
+    "code": "@Component\npublic class CalculatorTools {\n\n    @McpTool(name = \"add\", description = \"Add two numbers together\")\n    public int add(\n            @McpToolParam(description = \"First number\", required = true) int a,\n            @McpToolParam(description = \"Second number\", required = true) int b) {\n        return a + b;\n    }\n\n    @McpResource(uri = \"config://{key}\", name = \"Configuration\")\n    public String getConfig(String key) {\n        return configData.get(key);\n    }\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Bean\npublic WebMvcStreamableServerTransportProvider transport() {\n    return WebMvcStreamableServerTransportProvider.builder()\n        .contextExtractor(serverRequest -> {\n            String authorization = serverRequest.headers().firstHeader(\"Authorization\");\n            return McpTransportContext.create(Map.of(\"authorization\", authorization));\n        })\n        .build();\n}"
+  },
+  {
+    "language": "java",
+    "code": "@Bean\npublic WebFluxStreamableServerTransportProvider transport() {\n    return WebFluxStreamableServerTransportProvider.builder()\n        .contextExtractor(serverRequest -> {\n            String authorization = serverRequest.headers().firstHeader(\"Authorization\");\n            return McpTransportContext.create(Map.of(\"authorization\", authorization));\n        })\n        .build();\n}"
+  },
+  {
+    "language": "java",
+    "code": "@McpTool\npublic String accessProtectedResource(McpSyncRequestContext requestContext) {\n    McpTransportContext context = requestContext.transportContext();\n    String authorization = (String) context.get(\"authorization\");\n\n    return \"Successfully accessed protected resource.\";\n}"
+  },
+  {
+    "language": "java",
+    "code": "@SpringBootApplication\npublic class McpServerApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(McpServerApplication.class, args);\n    }\n}"
+  },
+  {
+    "language": "yaml",
+    "code": "spring:\n  ai:\n    mcp:\n      server:\n        type: SYNC  # or ASYNC\n        annotation-scanner:\n          enabled: true"
+  }
+]
