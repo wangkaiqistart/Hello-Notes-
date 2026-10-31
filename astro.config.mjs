@@ -11,6 +11,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Hi, Agent!',
+			locales: { root: { label: '简体中文', lang: 'zh-CN' } },
 			favicon: '/favicon.png?v=20261101',
 			head: [
 				{ tag: 'link', attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png?v=20261101' } },

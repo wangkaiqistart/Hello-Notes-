@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: deploy-oss
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,6 +24,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Check deployment cleanup
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
+
       - run: npm run build
 
       - name: Upload to OSS
@@ -29,4 +36,7 @@ jobs:
           access-key-id: ${{ secrets.OSS_ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
 
-      - run: ossutil cp -r ./dist oss://${{ secrets.OSS_BUCKET }}/ --force
+      - name: Publish and remove retired HTML pages
+        env:
+          OSS_BUCKET: ${{ secrets.OSS_BUCKET }}
+        run: python3 scripts/deploy_oss.py --apply

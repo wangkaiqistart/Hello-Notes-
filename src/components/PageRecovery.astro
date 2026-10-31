@@ -1,0 +1,71 @@
+<div class="page-recovery" data-pagefind-ignore>
+  <nav aria-label="页面恢复导航">
+    <a class="recovery-home" href="/">返回首页 <span aria-hidden="true">↗</span></a>
+    <button type="button" data-recovery-search hidden>搜索知识库</button>
+  </nav>
+  <p>继续学习：<a href="/frameworks/spring-ai/">从 Spring AI 开始</a></p>
+</div>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-recovery-search]');
+  const search = document.querySelector<HTMLButtonElement>('site-search button[data-open-modal]');
+  if (button && search) {
+    button.hidden = false;
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      search.click();
+    });
+  }
+</script>
+
+<style>
+  .page-recovery {
+    margin-block-start: -1rem;
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  nav a,
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--site-line);
+    border-radius: 999px;
+    background: var(--site-surface);
+    color: var(--site-text);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .recovery-home {
+    background: var(--site-action);
+    color: var(--site-on-accent);
+    border-color: transparent;
+  }
+  [hidden] {
+    display: none;
+  }
+  nav a:hover,
+  button:hover {
+    border-color: var(--site-accent);
+  }
+  :is(a, button):focus-visible {
+    outline: 2px solid var(--site-accent);
+    outline-offset: 4px;
+  }
+  p {
+    margin-block-start: 2rem;
+    color: var(--site-muted);
+  }
+  p a {
+    color: var(--site-accent);
+    text-underline-offset: 4px;
+  }
+</style>
