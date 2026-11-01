@@ -1,0 +1,79 @@
+{
+  "version": "2.0.2",
+  "result": "PASS",
+  "checks": [
+    {
+      "check": "HNSW默认索引",
+      "file": "PgVectorStoreProperties.java",
+      "evidence": "PgIndexType.HNSW",
+      "result": "PASS"
+    },
+    {
+      "check": "COSINE默认距离",
+      "file": "PgVectorStoreProperties.java",
+      "evidence": "PgDistanceType.COSINE_DISTANCE",
+      "result": "PASS"
+    },
+    {
+      "check": "默认不删表",
+      "file": "PgVectorStoreProperties.java",
+      "evidence": "removeExistingVectorStoreTable = false",
+      "result": "PASS"
+    },
+    {
+      "check": "默认结构验证关闭",
+      "file": "PgVectorStore.java",
+      "evidence": "DEFAULT_SCHEMA_VALIDATION = false",
+      "result": "PASS"
+    },
+    {
+      "check": "默认初始化关闭",
+      "file": "PgVectorStore.java",
+      "evidence": "private boolean initializeSchema;",
+      "result": "PASS"
+    },
+    {
+      "check": "表结构初始化按开关执行",
+      "file": "PgVectorStore.java",
+      "evidence": "if (!this.initializeSchema)",
+      "result": "PASS"
+    },
+    {
+      "check": "校验名称在SQL前",
+      "file": "PgVectorStore.java",
+      "evidence": "validateNames(this.getSchemaName(), this.getVectorTableName())",
+      "result": "PASS"
+    },
+    {
+      "check": "默认维度回退1536",
+      "file": "PgVectorStore.java",
+      "evidence": "OPENAI_EMBEDDING_DIMENSION_SIZE = 1536",
+      "result": "PASS"
+    },
+    {
+      "check": "手动维度优先",
+      "file": "PgVectorStore.java",
+      "evidence": "if (this.dimensions > 0)",
+      "result": "PASS"
+    },
+    {
+      "check": "从模型读取维度",
+      "file": "PgVectorStore.java",
+      "evidence": "this.embeddingModel.dimensions()",
+      "result": "PASS"
+    },
+    {
+      "check": "批文档数默认10000",
+      "file": "PgVectorStore.java",
+      "evidence": "MAX_DOCUMENT_BATCH_SIZE = 10_000",
+      "result": "PASS"
+    },
+    {
+      "check": "自动配置应用批文档数",
+      "file": "PgVectorStoreAutoConfiguration.java",
+      "evidence": ".maxDocumentBatchSize(properties.getMaxDocumentBatchSize())",
+      "result": "PASS"
+    }
+  ],
+  "boundary": "Static source inspection only; Java examples not compiled or executed; no database or model calls."
+}

@@ -164,14 +164,14 @@ Gradle 的 `platform(...)` 用于导入 Maven BOM，将其中的依赖版本约�
 
 ## 添加具体组件依赖
 
-导入 BOM 后，还需要添加实际使用的组件依赖。各章节分别说明所需模块和配置：
+导入 BOM 后，还需要添加实际使用的组件依赖。先按下面的站内笔记选择组件；模型笔记中的“提供方入口”或“按需查询”保留了具体实现的文档，所需依赖、认证和配置以对应提供方章节为准：
 
-- [聊天模型](https://docs.spring.io/spring-ai/reference/api/chatmodel.html)
-- [嵌入模型](https://docs.spring.io/spring-ai/reference/api/embeddings.html)
-- [图像生成模型](https://docs.spring.io/spring-ai/reference/api/imageclient.html)
-- [语音转写模型](https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html)
-- [语音合成（TTS）模型](https://docs.spring.io/spring-ai/reference/api/audio/speech.html)
-- [向量数据库](https://docs.spring.io/spring-ai/reference/api/vectordbs.html)
+- [聊天模型](/frameworks/spring-ai/models/chat-model/)
+- [嵌入模型](/frameworks/spring-ai/models/embedding-model/)
+- [图像生成模型](/frameworks/spring-ai/models/image-model/)
+- [语音转写模型](/frameworks/spring-ai/models/audio-model/#语音转文字)
+- [语音合成（TTS）模型](/frameworks/spring-ai/models/audio-model/#文字转语音)
+- [向量数据库](/frameworks/spring-ai/rag/vector-stores/)
 
 ## 示例与学习资源
 

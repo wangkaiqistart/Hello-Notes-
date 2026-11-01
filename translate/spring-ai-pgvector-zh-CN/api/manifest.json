@@ -1,0 +1,20 @@
+{
+  "version": "2.0.2",
+  "files": [
+    {
+      "file": "PgVectorStore.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-pgvector-store/src/main/java/org/springframework/ai/vectorstore/pgvector/PgVectorStore.java",
+      "sha256": "5fb7c74cf74099279c9945615d1b47d941a9bd74e4acaf1d5eaab74662185a09"
+    },
+    {
+      "file": "PgVectorStoreAutoConfiguration.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-pgvector/src/main/java/org/springframework/ai/vectorstore/pgvector/autoconfigure/PgVectorStoreAutoConfiguration.java",
+      "sha256": "e0f38cfa84003d6d68cb7adc63eb5991ce8f85c88436c98236c87746eae8b41d"
+    },
+    {
+      "file": "PgVectorStoreProperties.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-pgvector/src/main/java/org/springframework/ai/vectorstore/pgvector/autoconfigure/PgVectorStoreProperties.java",
+      "sha256": "c9982d66fe17cb6b5707a0f64f3f202705fd7681015f7ac252e6704c82677a2e"
+    }
+  ]
+}

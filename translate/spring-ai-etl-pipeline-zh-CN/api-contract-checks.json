@@ -1,0 +1,225 @@
+{
+  "date": "2026-11-01",
+  "version": "2.0.2",
+  "type": "static source assertions, not Java compilation or runtime testing",
+  "result": "PASS",
+  "checks": [
+    {
+      "file": "api/Document.java",
+      "assertion": "Document 不继承 Content/MediaContent",
+      "snippet": "public class Document {",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/Document.java",
+      "assertion": "文本访问 API",
+      "snippet": "public @Nullable String getText()",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/Document.java",
+      "assertion": "无旧版 getContent API",
+      "snippet": "getContent()",
+      "expectPresent": false,
+      "result": "PASS"
+    },
+    {
+      "file": "api/Document.java",
+      "assertion": "媒体访问 API 返回单个 Media",
+      "snippet": "public @Nullable Media getMedia()",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/Document.java",
+      "assertion": "text 与 media 二选一",
+      "snippet": "text != null ^ media != null",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/DocumentReader.java",
+      "assertion": "Reader 函数式接口",
+      "snippet": "extends Supplier<List<Document>>",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/DocumentWriter.java",
+      "assertion": "Writer 函数式接口",
+      "snippet": "extends Consumer<List<Document>>",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/DocumentTransformer.java",
+      "assertion": "Transformer 函数式接口",
+      "snippet": "extends Function<List<Document>, List<Document>>",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/JsonReader.java",
+      "assertion": "JSON 完整载入树",
+      "snippet": "readTree(this.resource.getInputStream())",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/JsonReader.java",
+      "assertion": "数组 Stream 遍历不等于流式解析",
+      "snippet": "StreamSupport.stream(rootNode.spliterator(), true)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/JsonReader.java",
+      "assertion": "JSON 文本包含字段名与值",
+      "snippet": "sb.append(key).append(\": \").append(item.get(key))",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/JsonReader.java",
+      "assertion": "无匹配字段时回退到对象文本",
+      "snippet": "String content = sb.isEmpty() ? item.toString() : sb.toString()",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TextReader.java",
+      "assertion": "文本默认 UTF-8",
+      "snippet": "StandardCharsets.UTF_8",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TextReader.java",
+      "assertion": "source 元数据最终回退",
+      "snippet": "return resource.getDescription()",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TokenTextSplitter.java",
+      "assertion": "切分默认编码",
+      "snippet": "DEFAULT_ENCODING_TYPE = EncodingType.CL100K_BASE",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TokenTextSplitter.java",
+      "assertion": "使用所配置的编码",
+      "snippet": "this.registry.getEncoding(encodingType)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TokenTextSplitter.java",
+      "assertion": "默认块大小",
+      "snippet": "DEFAULT_CHUNK_SIZE = 800",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TokenTextSplitter.java",
+      "assertion": "默认标点位置阈值",
+      "snippet": "MIN_CHUNK_SIZE_CHARS = 350",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TokenTextSplitter.java",
+      "assertion": "默认纳入长度",
+      "snippet": "MIN_CHUNK_LENGTH_TO_EMBED = 5",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TokenTextSplitter.java",
+      "assertion": "默认主循环最大次数",
+      "snippet": "MAX_NUM_CHUNKS = 10000",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TokenTextSplitter.java",
+      "assertion": "短文本不按标点截断",
+      "snippet": "tokens.size() > chunkSize",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TokenTextSplitter.java",
+      "assertion": "按断点字符位置判断",
+      "snippet": "lastPunctuation > this.minChunkSizeChars",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TokenTextSplitter.java",
+      "assertion": "按字符串长度严格大于判断",
+      "snippet": "chunkTextToAppend.length() > this.minChunkLengthToEmbed",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TokenTextSplitter.java",
+      "assertion": "主循环结束仍追加尾块",
+      "snippet": "chunks.add(remaining_text)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/TextSplitter.java",
+      "assertion": "切分元数据保留父 ID",
+      "snippet": "enhancedMetadata.put(\"parent_document_id\", originalId)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/KeywordMetadataEnricher.java",
+      "assertion": "关键词构建器入口",
+      "snippet": "public static Builder builder(ChatModel chatModel)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/KeywordMetadataEnricher.java",
+      "assertion": "自定义模板优先",
+      "snippet": "if (this.keywordsTemplate != null)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/SummaryMetadataEnricher.java",
+      "assertion": "摘要默认元数据模式",
+      "snippet": "MetadataMode.ALL",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/FileDocumentWriter.java",
+      "assertion": "文件写入默认字符集与 append 参数",
+      "snippet": "new FileWriter(this.fileName, this.append)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/FileDocumentWriter.java",
+      "assertion": "文件写入默认值",
+      "snippet": "this(fileName, false, MetadataMode.NONE, false)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/VectorStore.java",
+      "assertion": "VectorStore 实现文档写入接口",
+      "snippet": "extends DocumentWriter",
+      "expectPresent": true,
+      "result": "PASS"
+    }
+  ]
+}

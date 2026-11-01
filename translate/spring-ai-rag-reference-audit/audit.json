@@ -1,0 +1,1910 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "scope": "All eight RAG pages. Only Spring AI module local document references; original code, source anchors, headings, figures and external source URLs preserved.",
+  "summary": {
+    "pages": 8,
+    "pagesChanged": 6,
+    "paragraphsUpdated": 20,
+    "codeBlocksPreserved": 184,
+    "sourceAnchorsPreserved": 197,
+    "imagesPreserved": 3,
+    "localDocumentReferences": 122,
+    "uniqueExternalUrls": 84,
+    "otherModuleReferences": 0,
+    "externalDocumentUrls": 82,
+    "localServiceExampleUrls": 2,
+    "retainedExternalCategories": {
+      "provider-detail": 41,
+      "provenance": 8,
+      "original-paper": 1,
+      "missing-equivalent": 7,
+      "source-evidence": 5,
+      "background-detail": 3,
+      "out-of-learning-scope": 17,
+      "local-service-example": 2
+    }
+  },
+  "pages": [
+    {
+      "name": "document-ingestion",
+      "slug": "etl-pipeline",
+      "page": "src/content/docs/frameworks/spring-ai/rag/document-ingestion.mdx",
+      "changed": false,
+      "changes": [],
+      "route": "/frameworks/spring-ai/rag/document-ingestion/",
+      "result": "PASS",
+      "pageSha256": "2cb8548738d1b72df0649c64b0ec080cafd4cf71217f25fb46993a19ad3ab671",
+      "codeBlocksPreserved": 41,
+      "sourceAnchorsPreserved": 83,
+      "imagesPreserved": 3,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/chat-model/",
+          "label": "聊天模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "url": "#etl-class-diagram",
+          "label": "ETL 类图"
+        },
+        {
+          "url": "#_parameters_4",
+          "label": "TokenTextSplitter 参数"
+        },
+        {
+          "url": "#_notes_3",
+          "label": "注意事项"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+          "label": "PromptTemplate"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#api-overview",
+          "label": "向量存储总览：API 概览"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_vectorstore_implementations",
+          "label": "向量存储实现"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+          "label": "PGvector"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://tika.apache.org/3.1.0/formats.html",
+          "label": "Tika 文档",
+          "category": "provider-detail",
+          "reason": "TikaDocumentReader 用法不包含 Apache Tika 的完整支持格式表。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html",
+          "label": "Spring AI ETL Pipeline",
+          "category": "provenance",
+          "reason": "本篇原文来源，用于溯源，保留官方链接。"
+        }
+      ]
+    },
+    {
+      "name": "retrieval-and-generation",
+      "slug": "rag",
+      "page": "src/content/docs/frameworks/spring-ai/rag/retrieval-and-generation.mdx",
+      "changed": false,
+      "changes": [],
+      "route": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+      "result": "PASS",
+      "pageSha256": "c6992fd7b6d3186b945998cc0815fbd0465d9383e17e868447ff97ca38e6c474",
+      "codeBlocksPreserved": 21,
+      "sourceAnchorsPreserved": 26,
+      "imagesPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/core/advisors/#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B",
+          "label": "Advisor API"
+        },
+        {
+          "url": "/frameworks/spring-ai/concepts/#rag%E5%85%88%E6%A3%80%E7%B4%A2%E5%86%8D%E7%94%9F%E6%88%90",
+          "label": "AI 核心概念：先检索，再生成"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "ETL 管道"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/#%E5%88%9B%E5%BB%BA-chatclient",
+          "label": "ChatClient 或 ChatClient.Builder"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#api-overview",
+          "label": "VectorStore"
+        },
+        {
+          "url": "/frameworks/spring-ai/engineering/evaluation/#_relevancy_evaluator",
+          "label": "评估测试"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+          "label": "SearchRequest"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "label": "元数据过滤表达式"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/#%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%A8%A1%E6%9D%BF",
+          "label": "ChatClient 提示词模板"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+          "label": "PromptTemplate"
+        },
+        {
+          "url": "#modules",
+          "label": "RAG 模块"
+        },
+        {
+          "url": "#_vectorstoredocumentretriever",
+          "label": "VectorStoreDocumentRetriever"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://arxiv.org/abs/2407.21059",
+          "label": "Modular RAG: Transforming RAG Systems into LEGO-like Reconfigurable Frameworks",
+          "category": "original-paper",
+          "reason": "论文原始出处；Spring AI 模块未收录全文，保留来源引用。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html#reranking",
+          "label": "Qxotic jinfer",
+          "category": "missing-equivalent",
+          "reason": "Spring AI 模块没有完整的 jinfer 重排序接入说明；其他 jinfer 主题不等价。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html",
+          "label": "Spring AI Retrieval Augmented Generation",
+          "category": "provenance",
+          "reason": "本篇原文来源，用于溯源，保留官方链接。"
+        }
+      ]
+    },
+    {
+      "name": "vector-stores/elasticsearch",
+      "slug": "elasticsearch",
+      "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/elasticsearch.mdx",
+      "changed": true,
+      "changes": [
+        {
+          "before": "随后可以注入 `VectorStore`，写入文档并执行相似度检索：",
+          "after": "随后可以注入 `VectorStore`，写入文档并执行相似度检索。文档读取和切分见 [ETL 管道](/frameworks/spring-ai/rag/document-ingestion/)，统一检索参数见 [SearchRequest](/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder)："
+        },
+        {
+          "before": "这些通用过滤表达式会自动转换为 Elasticsearch 的 [Query string query]",
+          "after": "通过 Advisor 按请求传入条件时，见 [RAG 动态过滤](/frameworks/spring-ai/rag/retrieval-and-generation/#_dynamic_filter_expressions)。这些通用过滤表达式会自动转换为 Elasticsearch 的 [Query string query]"
+        }
+      ],
+      "route": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+      "result": "PASS",
+      "pageSha256": "ff052d5a2e57648cce3aae6c03a66981953b0279fe9e92bf3829550118de575d",
+      "codeBlocksPreserved": 15,
+      "sourceAnchorsPreserved": 6,
+      "imagesPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量存储总览"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "label": "依赖管理"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "label": "制品仓库"
+        },
+        {
+          "url": "#elasticsearchvector-properties",
+          "label": "配置属性"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "EmbeddingModel"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "ETL 管道"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+          "label": "SearchRequest"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "label": "元数据过滤表达式"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/#_dynamic_filter_expressions",
+          "label": "RAG 动态过滤"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://www.elastic.co/elasticsearch",
+          "label": "Elasticsearch",
+          "category": "provider-detail",
+          "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。"
+        },
+        {
+          "url": "https://hub.docker.com/_/elasticsearch/",
+          "label": "Docker",
+          "category": "provider-detail",
+          "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。"
+        },
+        {
+          "url": "https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#elasticsearch-install-packages",
+          "label": "自行部署 Elasticsearch",
+          "category": "provider-detail",
+          "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。"
+        },
+        {
+          "url": "https://www.elastic.co/cloud/elasticsearch-service/signup?page=docs&placement=docs-body",
+          "label": "Elastic Cloud",
+          "category": "provider-detail",
+          "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "label": "升级说明",
+          "category": "missing-equivalent",
+          "reason": "Spring AI 模块没有完整的版本升级迁移说明，不能用当前快速入门替代。"
+        },
+        {
+          "url": "https://github.com/spring-projects/spring-boot/blob/v4.1.2/module/spring-boot-elasticsearch/src/main/java/org/springframework/boot/elasticsearch/autoconfigure/ElasticsearchProperties.java",
+          "label": "Spring Boot 4.1.2 属性类",
+          "category": "source-evidence",
+          "reason": "固定版本的源码或 API 证据，用于核对实际实现；站内说明不代替原始证据。"
+        },
+        {
+          "url": "https://www.elastic.co/guide/en/elasticsearch/reference/master/dense-vector.html#dense-vector-params",
+          "label": "Elasticsearch dense_vector 文档",
+          "category": "provider-detail",
+          "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。"
+        },
+        {
+          "url": "https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html",
+          "label": "Query string query",
+          "category": "provider-detail",
+          "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。"
+        },
+        {
+          "url": "https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/java-rest-low-usage-initialization.html",
+          "label": "Elasticsearch 客户端文档",
+          "category": "provider-detail",
+          "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/elasticsearch.html",
+          "label": "Elasticsearch",
+          "category": "provenance",
+          "reason": "本篇原文来源，用于溯源，保留官方链接。"
+        }
+      ]
+    },
+    {
+      "name": "vector-stores/index",
+      "slug": "vector-stores",
+      "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/index.mdx",
+      "changed": true,
+      "changes": [
+        {
+          "before": "与关系型数据库常见的精确匹配查询不同，向量检索查找的是与查询向量相似的向量。相似度的计算方式见[向量相似度](/rag/vector-db/chroma-vector-store/#相似度怎么理解)。该笔记使用 Python 示例，此处只引用相似度概念；Spring AI 的 Java 接入以本篇为准。",
+          "after": "与关系型数据库常见的精确匹配查询不同，向量检索查找的是与查询向量相似的向量。向量表示与语义相似的关系见 [AI 核心概念：Embedding](/frameworks/spring-ai/concepts/#embedding内容的向量表示)；余弦、欧几里得和内积度量可对照 [Redis 的距离度量说明](/frameworks/spring-ai/rag/vector-stores/redis/#_distance_metrics)，具体分数换算取决于后端实现。"
+        },
+        {
+          "before": "基础见 [Embedding](/basics/embedding/embedding-basics/)与[相似度笔记](/rag/vector-db/chroma-vector-store/#相似度怎么理解)，几何推导见[附录](#_understanding_vectors)。",
+          "after": "基础见 [Embedding 模型](/frameworks/spring-ai/models/embedding-model/)与 [Redis 距离度量](/frameworks/spring-ai/rag/vector-stores/redis/#_distance_metrics)，几何推导见[附录](#_understanding_vectors)。"
+        },
+        {
+          "before": "基础概念可先看本站的 [Embedding 基础](/basics/embedding/embedding-basics/)与 [Chroma：相似度怎么理解](/rag/vector-db/chroma-vector-store/#相似度怎么理解)。Chroma 笔记使用 Python 示例，这里只引用其原理说明；需要向量几何和距离推导时，再查 [Understanding Vectors](https://docs.spring.io/spring-ai/reference/api/vectordbs/understand-vectordbs.html)。",
+          "after": "基础概念先看 [AI 核心概念：Embedding](/frameworks/spring-ai/concepts/#embedding内容的向量表示)，模型 API 与维度、向量空间要求见 [Embedding 模型](/frameworks/spring-ai/models/embedding-model/)。度量及分数换算可对照 [Redis 距离度量](/frameworks/spring-ai/rag/vector-stores/redis/#_distance_metrics)；这些工程说明不包含完整数学推导，需要向量几何和距离推导时，再查 [Understanding Vectors](https://docs.spring.io/spring-ai/reference/api/vectordbs/understand-vectordbs.html)。"
+        },
+        {
+          "before": "过滤语法详见[元数据过滤](#metadata-filters)。",
+          "after": "过滤语法详见[元数据过滤](#metadata-filters)。Top-K 与阈值的实际效果可结合 [RAG 评估测试](/frameworks/spring-ai/engineering/evaluation/#_relevancy_evaluator)检查；使用 S3 时，还需留意该版本的[阈值处理与正文回填边界](/frameworks/spring-ai/rag/vector-stores/s3-vector-store/#s3-properties)。"
+        }
+      ],
+      "route": "/frameworks/spring-ai/rag/vector-stores/",
+      "result": "PASS",
+      "pageSha256": "1dbf1562c2afc2100755b2b63d2379e9d5f0e148d38f31428a09a7cd6c7d8d96",
+      "codeBlocksPreserved": 32,
+      "sourceAnchorsPreserved": 34,
+      "imagesPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/concepts/#embedding%E5%86%85%E5%AE%B9%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA",
+          "label": "AI 核心概念：Embedding"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/redis/#_distance_metrics",
+          "label": "Redis 的距离度量说明"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "检索增强生成（RAG）"
+        },
+        {
+          "url": "#api-overview",
+          "label": "API 概览"
+        },
+        {
+          "url": "#_example_usage",
+          "label": "基本读写"
+        },
+        {
+          "url": "#metadata-filters",
+          "label": "元数据过滤"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+          "label": "PGvector"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG"
+        },
+        {
+          "url": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "评估测试"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+          "label": "Milvus"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/redis/",
+          "label": "Redis"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+          "label": "S3 Vector Store"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+          "label": "Elasticsearch（ES）"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/#vectorstore",
+          "label": "ETL 管道"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "EmbeddingModel"
+        },
+        {
+          "url": "#metadata-filters",
+          "label": "元数据过滤"
+        },
+        {
+          "url": "/frameworks/spring-ai/engineering/evaluation/#_relevancy_evaluator",
+          "label": "RAG 评估测试"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/#s3-properties",
+          "label": "阈值处理与正文回填边界"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/#tokentextsplitter",
+          "label": "TokenTextSplitter"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+          "label": "PGvector"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+          "label": "Milvus"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/redis/",
+          "label": "Redis"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+          "label": "S3 Vector Store"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+          "label": "Elasticsearch（ES）"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/redis/#_distance_metrics",
+          "label": "Redis 距离度量"
+        },
+        {
+          "url": "#_understanding_vectors",
+          "label": "附录"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+          "label": "Elasticsearch Vector Store"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+          "label": "Milvus Vector Store"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+          "label": "PgVector Store"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/redis/",
+          "label": "Redis Vector Store"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+          "label": "S3 Vector Store"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "ETL 管道"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG 的检索与生成"
+        },
+        {
+          "url": "/frameworks/spring-ai/concepts/#embedding%E5%86%85%E5%AE%B9%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA",
+          "label": "AI 核心概念：Embedding"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/redis/#_distance_metrics",
+          "label": "Redis 距离度量"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Word2vec",
+          "label": "Word2Vec",
+          "category": "background-detail",
+          "reason": "Spring AI 模块未分别介绍 Word2Vec、GloVe、BERT 的完整背景，通用 Embedding 说明不能替代。"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/GloVe_(machine_learning)",
+          "label": "GloVe",
+          "category": "background-detail",
+          "reason": "Spring AI 模块未分别介绍 Word2Vec、GloVe、BERT 的完整背景，通用 Embedding 说明不能替代。"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/BERT_(language_model)",
+          "label": "BERT",
+          "category": "background-detail",
+          "reason": "Spring AI 模块未分别介绍 Word2Vec、GloVe、BERT 的完整背景，通用 Embedding 说明不能替代。"
+        },
+        {
+          "url": "https://platform.openai.com/docs/guides/embeddings/embedding-models",
+          "label": "OpenAI 嵌入模型的输入限制",
+          "category": "provider-detail",
+          "reason": "Embedding 模型笔记只说明通用接口，未完整覆盖 OpenAI 专有配置或模型输入限制。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure.html",
+          "label": "Azure Vector Search",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/azure/search/vector-search-overview",
+          "label": "Azure",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure-cosmos-db.html",
+          "label": "Azure Cosmos DB",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/bedrock-knowledge-base.html",
+          "label": "Amazon Bedrock Knowledge Base",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/couchbase.html",
+          "label": "Couchbase",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/apache-cassandra.html",
+          "label": "Apache Cassandra",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://cassandra.apache.org/doc/latest/cassandra/vector-search/overview.html",
+          "label": "Apache Cassandra",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/chroma.html",
+          "label": "Chroma Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://www.trychroma.com/",
+          "label": "Chroma",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://www.elastic.co/",
+          "label": "Elasticsearch",
+          "category": "provider-detail",
+          "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/gemfire.html",
+          "label": "GemFire Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://tanzu.vmware.com/content/blog/vmware-gemfire-vector-database-extension",
+          "label": "GemFire",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mariadb.html",
+          "label": "MariaDB Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://mariadb.com/",
+          "label": "MariaDB",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://milvus.io/",
+          "label": "Milvus",
+          "category": "provider-detail",
+          "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mongodb.html",
+          "label": "MongoDB Atlas Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://www.mongodb.com/atlas/database",
+          "label": "MongoDB Atlas",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/neo4j.html",
+          "label": "Neo4j Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://neo4j.com/",
+          "label": "Neo4j",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/opensearch.html",
+          "label": "OpenSearch Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://opensearch.org/platform/search/vector-database.html",
+          "label": "OpenSearch",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/oracle.html",
+          "label": "Oracle Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://docs.oracle.com/en/database/oracle/oracle-database/23/vecse/overview-ai-vector-search.html",
+          "label": "Oracle Database",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://github.com/pgvector/pgvector",
+          "label": "PostgreSQL/PGVector",
+          "category": "provider-detail",
+          "reason": "pgvector 扩展及索引类型限制的原始资料，适配层文档不能替代其完整说明。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pinecone.html",
+          "label": "Pinecone Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://www.pinecone.io/",
+          "label": "Pinecone",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/qdrant.html",
+          "label": "Qdrant Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://www.qdrant.tech/",
+          "label": "Qdrant",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://redis.io/",
+          "label": "Redis",
+          "category": "provider-detail",
+          "reason": "Redis 产品、云服务或原生查询语法文档；站内 Spring AI 适配说明不是完整替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/typesense.html",
+          "label": "Typesense Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://typesense.org/docs/0.24.0/api/vector-search.html",
+          "label": "Typesense",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/weaviate.html",
+          "label": "Weaviate Vector Store",
+          "category": "out-of-learning-scope",
+          "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。"
+        },
+        {
+          "url": "https://weaviate.io/",
+          "label": "Weaviate",
+          "category": "provider-detail",
+          "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。"
+        },
+        {
+          "url": "https://aws.amazon.com/s3/features/vectors/",
+          "label": "AWS S3",
+          "category": "provider-detail",
+          "reason": "AWS S3 Vectors 产品、资源创建或 SDK 文档；Spring AI 适配说明未覆盖其完整服务和 API。"
+        },
+        {
+          "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/SimpleVectorStore.java",
+          "label": "SimpleVectorStore",
+          "category": "source-evidence",
+          "reason": "固定版本的源码或 API 证据，用于核对实际实现；站内说明不代替原始证据。"
+        },
+        {
+          "url": "https://azurecosmosdb.github.io/spring-ai/docs/index.html",
+          "label": "azurecosmosdb.github.io/spring-ai/docs/index.html",
+          "category": "out-of-learning-scope",
+          "reason": "外部团队维护的集成说明；当前 Spring AI 模块没有等价页面。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/understand-vectordbs.html",
+          "label": "Understanding Vectors",
+          "category": "missing-equivalent",
+          "reason": "Spring AI 模块有向量概念和距离度量说明，但未完整翻译向量几何与数学推导。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+          "label": "Vector Databases",
+          "category": "provenance",
+          "reason": "本篇原文来源，用于溯源，保留官方链接。"
+        }
+      ]
+    },
+    {
+      "name": "vector-stores/milvus",
+      "slug": "milvus",
+      "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/milvus.mdx",
+      "changed": true,
+      "changes": [
+        {
+          "before": "完成配置后，可注入 `VectorStore` 写入文档并进行相似度检索：",
+          "after": "完成配置后，可注入 `VectorStore` 写入文档并进行相似度检索。文档读取和切分见 [ETL 管道](/frameworks/spring-ai/rag/document-ingestion/)，统一检索参数见 [SearchRequest](/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder)："
+        },
+        {
+          "before": "当 `nativeExpression` 和通用的 `filterExpression` 同时设置时，**优先使用 `nativeExpression`**。",
+          "after": "当 `nativeExpression` 和通用的 `filterExpression` 同时设置时，**优先使用 `nativeExpression`**。通用过滤条件通过 Advisor 传入的方式，见 [RAG 动态过滤](/frameworks/spring-ai/rag/retrieval-and-generation/#_dynamic_filter_expressions)。"
+        },
+        {
+          "before": "`nativeExpression` 负责更具体的条件过滤；`searchParamsJson` 用于调整检索行为，评估不同 `nprobe` 下的召回率和查询延迟。",
+          "after": "`nativeExpression` 负责更具体的条件过滤；`searchParamsJson` 用于调整检索行为，评估不同 `nprobe` 下的召回率和查询延迟。检索结果接入生成模型可参考 [RAG Advisor](/frameworks/spring-ai/rag/retrieval-and-generation/#_advisors)，回答质量检查见[评估测试](/frameworks/spring-ai/engineering/evaluation/)；回答评估不能代替检索召回率和延迟测量。"
+        }
+      ],
+      "route": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+      "result": "PASS",
+      "pageSha256": "d8110f0654f5096fef0cc28fe2dda8f2aa40b6d0f029e148c0fd99a7fa45f837",
+      "codeBlocksPreserved": 15,
+      "sourceAnchorsPreserved": 10,
+      "imagesPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量存储总览"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "EmbeddingModel"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "label": "依赖管理"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "label": "制品仓库"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "url": "#milvus-properties",
+          "label": "配置参考"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "ETL 管道"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+          "label": "SearchRequest"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "label": "Spring AI BOM"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "label": "元数据过滤表达式"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/#_dynamic_filter_expressions",
+          "label": "RAG 动态过滤"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/#_advisors",
+          "label": "RAG Advisor"
+        },
+        {
+          "url": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "评估测试"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://milvus.io/",
+          "label": "Milvus",
+          "category": "provider-detail",
+          "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。"
+        },
+        {
+          "url": "https://milvus.io/docs/install_standalone-docker.md",
+          "label": "Milvus Standalone",
+          "category": "provider-detail",
+          "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。"
+        },
+        {
+          "url": "https://milvus.io/docs/install_cluster-milvusoperator.md",
+          "label": "Milvus Cluster",
+          "category": "provider-detail",
+          "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "label": "升级说明",
+          "category": "missing-equivalent",
+          "reason": "Spring AI 模块没有完整的版本升级迁移说明，不能用当前快速入门替代。"
+        },
+        {
+          "url": "https://milvus.io/docs/boolean.md",
+          "label": "Milvus Filtering",
+          "category": "provider-detail",
+          "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。"
+        },
+        {
+          "url": "https://milvus.io/docs/index.md?tab=floating",
+          "label": "Milvus Vector Index",
+          "category": "provider-detail",
+          "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。"
+        },
+        {
+          "url": "http://localhost:19530",
+          "label": "http://localhost:19530",
+          "category": "local-service-example",
+          "reason": "本地部署后的服务或管理地址，属于运行示例，不是知识库文档引用。"
+        },
+        {
+          "url": "http://localhost:9001",
+          "label": "http://localhost:9001",
+          "category": "local-service-example",
+          "reason": "本地部署后的服务或管理地址，属于运行示例，不是知识库文档引用。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/milvus.html",
+          "label": "Milvus",
+          "category": "provenance",
+          "reason": "本篇原文来源，用于溯源，保留官方链接。"
+        }
+      ]
+    },
+    {
+      "name": "vector-stores/pgvector",
+      "slug": "pgvector",
+      "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/pgvector.mdx",
+      "changed": true,
+      "changes": [
+        {
+          "before": "完成配置后，即可注入 `VectorStore`，写入文档并执行相似度检索：",
+          "after": "完成配置后，即可注入 `VectorStore`，写入文档并执行相似度检索。示例中的文档可通过 [ETL 管道](/frameworks/spring-ai/rag/document-ingestion/)读取和切分；统一检索参数见 [SearchRequest](/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder)："
+        },
+        {
+          "before": "更换模型时还要保持文档向量与查询向量空间兼容。",
+          "after": "更换模型时还要保持文档向量与查询向量空间兼容，详见 [Embedding 的维度与向量空间要求](/frameworks/spring-ai/models/embedding-model/#工程上先记住三点)。"
+        },
+        {
+          "before": "这些表达式会被转换为 PostgreSQL JSON path 表达式，用于过滤文档元数据。",
+          "after": "这些表达式会被转换为 PostgreSQL JSON path 表达式，用于过滤文档元数据。通过 Advisor 按请求传入条件时，见 [RAG 动态过滤](/frameworks/spring-ai/rag/retrieval-and-generation/#_dynamic_filter_expressions)。"
+        }
+      ],
+      "route": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+      "result": "PASS",
+      "pageSha256": "b3b78101598864b8be37cf4eac3ce6e5aef7688818efa4c87c19238fb8a31580",
+      "codeBlocksPreserved": 14,
+      "sourceAnchorsPreserved": 7,
+      "imagesPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量存储总览"
+        },
+        {
+          "url": "#_run_postgres_pgvector_db_locally",
+          "label": "本地运行"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "label": "依赖管理"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "label": "构件仓库"
+        },
+        {
+          "url": "#pgvector-properties",
+          "label": "配置属性"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "ETL 管道"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+          "label": "SearchRequest"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_batching_strategy",
+          "label": "总览"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/#%E5%B7%A5%E7%A8%8B%E4%B8%8A%E5%85%88%E8%AE%B0%E4%BD%8F%E4%B8%89%E7%82%B9",
+          "label": "Embedding 的维度与向量空间要求"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "label": "元数据过滤语法"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/#_dynamic_filter_expressions",
+          "label": "RAG 动态过滤"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "label": "依赖管理"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://github.com/pgvector/pgvector",
+          "label": "PGvector",
+          "category": "provider-detail",
+          "reason": "pgvector 扩展及索引类型限制的原始资料，适配层文档不能替代其完整说明。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/docker-compose.html",
+          "label": "Docker Compose",
+          "category": "missing-equivalent",
+          "reason": "Spring AI 模块没有等价的开发服务集成与自动连接配置说明。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/testcontainers.html",
+          "label": "Testcontainers",
+          "category": "missing-equivalent",
+          "reason": "Spring AI 模块没有等价的开发服务集成与自动连接配置说明。"
+        },
+        {
+          "url": "https://github.com/pgvector/pgvector/blob/v0.8.1/README.md#hnsw",
+          "label": "pgvector 的索引类型说明",
+          "category": "provider-detail",
+          "reason": "pgvector 扩展及索引类型限制的原始资料，适配层文档不能替代其完整说明。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "label": "升级说明",
+          "category": "missing-equivalent",
+          "reason": "Spring AI 模块没有完整的版本升级迁移说明，不能用当前快速入门替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/openai-embeddings.html",
+          "label": "OpenAI EmbeddingModel",
+          "category": "provider-detail",
+          "reason": "Embedding 模型笔记只说明通用接口，未完整覆盖 OpenAI 专有配置或模型输入限制。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose",
+          "label": "Docker Compose 开发服务",
+          "category": "missing-equivalent",
+          "reason": "Spring AI 模块没有等价的开发服务集成与自动连接配置说明。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.testcontainers",
+          "label": "Testcontainers 开发服务",
+          "category": "missing-equivalent",
+          "reason": "Spring AI 模块没有等价的开发服务集成与自动连接配置说明。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html",
+          "label": "PGvector",
+          "category": "provenance",
+          "reason": "本篇原文来源，用于溯源，保留官方链接。"
+        }
+      ]
+    },
+    {
+      "name": "vector-stores/redis",
+      "slug": "redis",
+      "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/redis.mdx",
+      "changed": true,
+      "changes": [
+        {
+          "before": "距离度量、HNSW 调参、文本与范围检索按需深入；语义缓存是独立的应用能力，保留完整配置和隔离参考。",
+          "after": "距离度量、HNSW 调参、文本与范围检索按需深入；语义缓存是独立的应用能力，保留完整配置和隔离参考。统一读写与检索接口见[向量存储总览](/frameworks/spring-ai/rag/vector-stores/)。"
+        },
+        {
+          "before": "随后可以注入 `VectorStore`，写入文档并查询：",
+          "after": "随后可以注入 `VectorStore`，写入文档并查询。文档读取和切分见 [ETL 管道](/frameworks/spring-ai/rag/document-ingestion/)，统一检索参数见 [SearchRequest](/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder)："
+        },
+        {
+          "before": "Spring AI 将后端分数转换为越高越相似的 `Document.score`。",
+          "after": "Spring AI 将后端分数转换为越高越相似的 `Document.score`，阈值参数的统一入口见 [SearchRequest](/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder)。"
+        },
+        {
+          "before": "的 [Advisor 机制](/frameworks/spring-ai/core/advisors/)集成，",
+          "after": "的 [Advisor 机制](/frameworks/spring-ai/core/advisors/#核心组件与执行流程)集成，"
+        },
+        {
+          "before": "这些过滤表达式会自动转换为 [Redis 查询语法]",
+          "after": "通过 Advisor 按请求传入条件时，见 [RAG 动态过滤](/frameworks/spring-ai/rag/retrieval-and-generation/#_dynamic_filter_expressions)。这些过滤表达式会自动转换为 [Redis 查询语法]"
+        }
+      ],
+      "route": "/frameworks/spring-ai/rag/vector-stores/redis/",
+      "result": "PASS",
+      "pageSha256": "39a047bad4ef71517ca8bda1a14d7b007fe9e734bdcd8db92d557f16da885bd8",
+      "codeBlocksPreserved": 33,
+      "sourceAnchorsPreserved": 24,
+      "imagesPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量存储总览"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "label": "依赖管理"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "label": "Artifact Repositories"
+        },
+        {
+          "url": "#redisvector-properties",
+          "label": "配置属性"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "EmbeddingModel"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "ETL 管道"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+          "label": "SearchRequest"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "label": "元数据过滤"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/#_dynamic_filter_expressions",
+          "label": "RAG 动态过滤"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+          "label": "SearchRequest"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/advisors/#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B",
+          "label": "Advisor 机制"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://redis.io",
+          "label": "Redis",
+          "category": "provider-detail",
+          "reason": "Redis 产品、云服务或原生查询语法文档；站内 Spring AI 适配说明不是完整替代。"
+        },
+        {
+          "url": "https://redis.io/docs/interact/search-and-query/",
+          "label": "Redis Search and Query",
+          "category": "provider-detail",
+          "reason": "Redis 产品、云服务或原生查询语法文档；站内 Spring AI 适配说明不是完整替代。"
+        },
+        {
+          "url": "https://app.redislabs.com/#/",
+          "label": "Redis Cloud",
+          "category": "provider-detail",
+          "reason": "Redis 产品、云服务或原生查询语法文档；站内 Spring AI 适配说明不是完整替代。"
+        },
+        {
+          "url": "https://hub.docker.com/r/redis/redis-stack",
+          "label": "Docker 镜像",
+          "category": "provider-detail",
+          "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "label": "升级说明",
+          "category": "missing-equivalent",
+          "reason": "Spring AI 模块没有完整的版本升级迁移说明，不能用当前快速入门替代。"
+        },
+        {
+          "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis/src/main/java/org/springframework/ai/vectorstore/redis/autoconfigure/RedisVectorStoreProperties.java",
+          "label": "RedisVectorStoreProperties",
+          "category": "source-evidence",
+          "reason": "固定版本的源码或 API 证据，用于核对实际实现；站内说明不代替原始证据。"
+        },
+        {
+          "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis/src/main/java/org/springframework/ai/vectorstore/redis/autoconfigure/RedisVectorStoreAutoConfiguration.java",
+          "label": "RedisVectorStoreAutoConfiguration",
+          "category": "source-evidence",
+          "reason": "固定版本的源码或 API 证据，用于核对实际实现；站内说明不代替原始证据。"
+        },
+        {
+          "url": "https://redis.io/docs/interact/search-and-query/query/",
+          "label": "Redis 查询语法",
+          "category": "provider-detail",
+          "reason": "Redis 产品、云服务或原生查询语法文档；站内 Spring AI 适配说明不是完整替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/redis.html",
+          "label": "Redis",
+          "category": "provenance",
+          "reason": "本篇原文来源，用于溯源，保留官方链接。"
+        }
+      ]
+    },
+    {
+      "name": "vector-stores/s3-vector-store",
+      "slug": "s3-vector-store",
+      "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/s3-vector-store.mdx",
+      "changed": true,
+      "changes": [
+        {
+          "before": "完成配置后，可以注入 `VectorStore` 写入文档并进行相似度检索：",
+          "after": "完成配置后，可以注入 `VectorStore` 写入文档并进行相似度检索。文档读取、切分及元数据准备见 [ETL 管道](/frameworks/spring-ai/rag/document-ingestion/)，统一检索参数见 [SearchRequest](/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder)："
+        },
+        {
+          "before": "因此，接入 RAG 时应通过向量键或元数据中的业务标识回查正文，再交给生成模型。",
+          "after": "因此，接入 [RAG Advisor](/frameworks/spring-ai/rag/retrieval-and-generation/#_advisors) 前，应通过向量键或元数据中的业务标识回查正文，再交给生成模型。"
+        },
+        {
+          "before": "可以直接传入字符串过滤条件删除文档：",
+          "after": "统一删除接口及文档版本管理见[向量存储的删除参考](/frameworks/spring-ai/rag/vector-stores/#_deleting_documents_from_vector_store)。可以直接传入字符串过滤条件删除文档："
+        }
+      ],
+      "route": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+      "result": "PASS",
+      "pageSha256": "6709fd76bacd3054d4b28081cef274cd4d1ad8858856fda6612a12800850228d",
+      "codeBlocksPreserved": 13,
+      "sourceAnchorsPreserved": 7,
+      "imagesPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量存储总览"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "EmbeddingModel"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "label": "依赖管理"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "label": "制品仓库"
+        },
+        {
+          "url": "#s3-properties",
+          "label": "配置属性"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "EmbeddingModel"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "ETL 管道"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+          "label": "SearchRequest"
+        },
+        {
+          "url": "#_manual_configuration",
+          "label": "手动配置"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/#_advisors",
+          "label": "RAG Advisor"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "label": "元数据过滤"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_deleting_documents_from_vector_store",
+          "label": "向量存储的删除参考"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://aws.amazon.com/s3/features/vectors/",
+          "label": "AWS S3 Vectors",
+          "category": "provider-detail",
+          "reason": "AWS S3 Vectors 产品、资源创建或 SDK 文档；Spring AI 适配说明未覆盖其完整服务和 API。"
+        },
+        {
+          "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors.html",
+          "label": "S3 Vectors API",
+          "category": "provider-detail",
+          "reason": "AWS S3 Vectors 产品、资源创建或 SDK 文档；Spring AI 适配说明未覆盖其完整服务和 API。"
+        },
+        {
+          "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-buckets-create.html",
+          "label": "How to create S3 Vector Bucket",
+          "category": "provider-detail",
+          "reason": "AWS S3 Vectors 产品、资源创建或 SDK 文档；Spring AI 适配说明未覆盖其完整服务和 API。"
+        },
+        {
+          "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-s3-vector-store/src/main/java/org/springframework/ai/vectorstore/s3/S3VectorStore.java",
+          "label": "v2.0.2 的 S3VectorStore 源码",
+          "category": "source-evidence",
+          "reason": "固定版本的源码或 API 证据，用于核对实际实现；站内说明不代替原始证据。"
+        },
+        {
+          "url": "https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/core/document/Document.html",
+          "label": "AWS SDK for Java V2 的过滤 Document 对象",
+          "category": "provider-detail",
+          "reason": "AWS S3 Vectors 产品、资源创建或 SDK 文档；Spring AI 适配说明未覆盖其完整服务和 API。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/s3-vector-store.html",
+          "label": "S3 Vector Store",
+          "category": "provenance",
+          "reason": "本篇原文来源，用于溯源，保留官方链接。"
+        }
+      ]
+    }
+  ],
+  "retainedExternalReferences": [
+    {
+      "url": "https://tika.apache.org/3.1.0/formats.html",
+      "label": "Tika 文档",
+      "category": "provider-detail",
+      "reason": "TikaDocumentReader 用法不包含 Apache Tika 的完整支持格式表。",
+      "pages": ["document-ingestion"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html",
+      "label": "Spring AI ETL Pipeline",
+      "category": "provenance",
+      "reason": "本篇原文来源，用于溯源，保留官方链接。",
+      "pages": ["document-ingestion"]
+    },
+    {
+      "url": "https://arxiv.org/abs/2407.21059",
+      "label": "Modular RAG: Transforming RAG Systems into LEGO-like Reconfigurable Frameworks",
+      "category": "original-paper",
+      "reason": "论文原始出处；Spring AI 模块未收录全文，保留来源引用。",
+      "pages": ["retrieval-and-generation"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html#reranking",
+      "label": "Qxotic jinfer",
+      "category": "missing-equivalent",
+      "reason": "Spring AI 模块没有完整的 jinfer 重排序接入说明；其他 jinfer 主题不等价。",
+      "pages": ["retrieval-and-generation"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html",
+      "label": "Spring AI Retrieval Augmented Generation",
+      "category": "provenance",
+      "reason": "本篇原文来源，用于溯源，保留官方链接。",
+      "pages": ["retrieval-and-generation"]
+    },
+    {
+      "url": "https://www.elastic.co/elasticsearch",
+      "label": "Elasticsearch",
+      "category": "provider-detail",
+      "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。",
+      "pages": ["vector-stores/elasticsearch"]
+    },
+    {
+      "url": "https://hub.docker.com/_/elasticsearch/",
+      "label": "Docker",
+      "category": "provider-detail",
+      "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。",
+      "pages": ["vector-stores/elasticsearch"]
+    },
+    {
+      "url": "https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#elasticsearch-install-packages",
+      "label": "自行部署 Elasticsearch",
+      "category": "provider-detail",
+      "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。",
+      "pages": ["vector-stores/elasticsearch"]
+    },
+    {
+      "url": "https://www.elastic.co/cloud/elasticsearch-service/signup?page=docs&placement=docs-body",
+      "label": "Elastic Cloud",
+      "category": "provider-detail",
+      "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。",
+      "pages": ["vector-stores/elasticsearch"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+      "label": "升级说明",
+      "category": "missing-equivalent",
+      "reason": "Spring AI 模块没有完整的版本升级迁移说明，不能用当前快速入门替代。",
+      "pages": [
+        "vector-stores/elasticsearch",
+        "vector-stores/milvus",
+        "vector-stores/pgvector",
+        "vector-stores/redis"
+      ]
+    },
+    {
+      "url": "https://github.com/spring-projects/spring-boot/blob/v4.1.2/module/spring-boot-elasticsearch/src/main/java/org/springframework/boot/elasticsearch/autoconfigure/ElasticsearchProperties.java",
+      "label": "Spring Boot 4.1.2 属性类",
+      "category": "source-evidence",
+      "reason": "固定版本的源码或 API 证据，用于核对实际实现；站内说明不代替原始证据。",
+      "pages": ["vector-stores/elasticsearch"]
+    },
+    {
+      "url": "https://www.elastic.co/guide/en/elasticsearch/reference/master/dense-vector.html#dense-vector-params",
+      "label": "Elasticsearch dense_vector 文档",
+      "category": "provider-detail",
+      "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。",
+      "pages": ["vector-stores/elasticsearch"]
+    },
+    {
+      "url": "https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html",
+      "label": "Query string query",
+      "category": "provider-detail",
+      "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。",
+      "pages": ["vector-stores/elasticsearch"]
+    },
+    {
+      "url": "https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/java-rest-low-usage-initialization.html",
+      "label": "Elasticsearch 客户端文档",
+      "category": "provider-detail",
+      "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。",
+      "pages": ["vector-stores/elasticsearch"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/elasticsearch.html",
+      "label": "Elasticsearch",
+      "category": "provenance",
+      "reason": "本篇原文来源，用于溯源，保留官方链接。",
+      "pages": ["vector-stores/elasticsearch"]
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Word2vec",
+      "label": "Word2Vec",
+      "category": "background-detail",
+      "reason": "Spring AI 模块未分别介绍 Word2Vec、GloVe、BERT 的完整背景，通用 Embedding 说明不能替代。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/GloVe_(machine_learning)",
+      "label": "GloVe",
+      "category": "background-detail",
+      "reason": "Spring AI 模块未分别介绍 Word2Vec、GloVe、BERT 的完整背景，通用 Embedding 说明不能替代。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/BERT_(language_model)",
+      "label": "BERT",
+      "category": "background-detail",
+      "reason": "Spring AI 模块未分别介绍 Word2Vec、GloVe、BERT 的完整背景，通用 Embedding 说明不能替代。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://platform.openai.com/docs/guides/embeddings/embedding-models",
+      "label": "OpenAI 嵌入模型的输入限制",
+      "category": "provider-detail",
+      "reason": "Embedding 模型笔记只说明通用接口，未完整覆盖 OpenAI 专有配置或模型输入限制。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure.html",
+      "label": "Azure Vector Search",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/search/vector-search-overview",
+      "label": "Azure",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure-cosmos-db.html",
+      "label": "Azure Cosmos DB",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/bedrock-knowledge-base.html",
+      "label": "Amazon Bedrock Knowledge Base",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/couchbase.html",
+      "label": "Couchbase",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/apache-cassandra.html",
+      "label": "Apache Cassandra",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://cassandra.apache.org/doc/latest/cassandra/vector-search/overview.html",
+      "label": "Apache Cassandra",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/chroma.html",
+      "label": "Chroma Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://www.trychroma.com/",
+      "label": "Chroma",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://www.elastic.co/",
+      "label": "Elasticsearch",
+      "category": "provider-detail",
+      "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/gemfire.html",
+      "label": "GemFire Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://tanzu.vmware.com/content/blog/vmware-gemfire-vector-database-extension",
+      "label": "GemFire",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mariadb.html",
+      "label": "MariaDB Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://mariadb.com/",
+      "label": "MariaDB",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://milvus.io/",
+      "label": "Milvus",
+      "category": "provider-detail",
+      "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。",
+      "pages": ["vector-stores/index", "vector-stores/milvus"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mongodb.html",
+      "label": "MongoDB Atlas Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://www.mongodb.com/atlas/database",
+      "label": "MongoDB Atlas",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/neo4j.html",
+      "label": "Neo4j Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://neo4j.com/",
+      "label": "Neo4j",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/opensearch.html",
+      "label": "OpenSearch Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://opensearch.org/platform/search/vector-database.html",
+      "label": "OpenSearch",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/oracle.html",
+      "label": "Oracle Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.oracle.com/en/database/oracle/oracle-database/23/vecse/overview-ai-vector-search.html",
+      "label": "Oracle Database",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://github.com/pgvector/pgvector",
+      "label": "PostgreSQL/PGVector",
+      "category": "provider-detail",
+      "reason": "pgvector 扩展及索引类型限制的原始资料，适配层文档不能替代其完整说明。",
+      "pages": ["vector-stores/index", "vector-stores/pgvector"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pinecone.html",
+      "label": "Pinecone Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://www.pinecone.io/",
+      "label": "Pinecone",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/qdrant.html",
+      "label": "Qdrant Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://www.qdrant.tech/",
+      "label": "Qdrant",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://redis.io/",
+      "label": "Redis",
+      "category": "provider-detail",
+      "reason": "Redis 产品、云服务或原生查询语法文档；站内 Spring AI 适配说明不是完整替代。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/typesense.html",
+      "label": "Typesense Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://typesense.org/docs/0.24.0/api/vector-search.html",
+      "label": "Typesense",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/weaviate.html",
+      "label": "Weaviate Vector Store",
+      "category": "out-of-learning-scope",
+      "reason": "当前未安排翻译的后端接入文档；Spring AI 模块没有同等页面，保留查询入口。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://weaviate.io/",
+      "label": "Weaviate",
+      "category": "provider-detail",
+      "reason": "后端产品与功能入口；当前 Spring AI 模块没有等价的产品手册。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://aws.amazon.com/s3/features/vectors/",
+      "label": "AWS S3",
+      "category": "provider-detail",
+      "reason": "AWS S3 Vectors 产品、资源创建或 SDK 文档；Spring AI 适配说明未覆盖其完整服务和 API。",
+      "pages": ["vector-stores/index", "vector-stores/s3-vector-store"]
+    },
+    {
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/SimpleVectorStore.java",
+      "label": "SimpleVectorStore",
+      "category": "source-evidence",
+      "reason": "固定版本的源码或 API 证据，用于核对实际实现；站内说明不代替原始证据。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://azurecosmosdb.github.io/spring-ai/docs/index.html",
+      "label": "azurecosmosdb.github.io/spring-ai/docs/index.html",
+      "category": "out-of-learning-scope",
+      "reason": "外部团队维护的集成说明；当前 Spring AI 模块没有等价页面。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/understand-vectordbs.html",
+      "label": "Understanding Vectors",
+      "category": "missing-equivalent",
+      "reason": "Spring AI 模块有向量概念和距离度量说明，但未完整翻译向量几何与数学推导。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+      "label": "Vector Databases",
+      "category": "provenance",
+      "reason": "本篇原文来源，用于溯源，保留官方链接。",
+      "pages": ["vector-stores/index"]
+    },
+    {
+      "url": "https://milvus.io/docs/install_standalone-docker.md",
+      "label": "Milvus Standalone",
+      "category": "provider-detail",
+      "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。",
+      "pages": ["vector-stores/milvus"]
+    },
+    {
+      "url": "https://milvus.io/docs/install_cluster-milvusoperator.md",
+      "label": "Milvus Cluster",
+      "category": "provider-detail",
+      "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。",
+      "pages": ["vector-stores/milvus"]
+    },
+    {
+      "url": "https://milvus.io/docs/boolean.md",
+      "label": "Milvus Filtering",
+      "category": "provider-detail",
+      "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。",
+      "pages": ["vector-stores/milvus"]
+    },
+    {
+      "url": "https://milvus.io/docs/index.md?tab=floating",
+      "label": "Milvus Vector Index",
+      "category": "provider-detail",
+      "reason": "Milvus 产品、部署、原生过滤或索引参数说明；站内只有 Spring AI 适配接口和示例。",
+      "pages": ["vector-stores/milvus"]
+    },
+    {
+      "url": "http://localhost:19530",
+      "label": "http://localhost:19530",
+      "category": "local-service-example",
+      "reason": "本地部署后的服务或管理地址，属于运行示例，不是知识库文档引用。",
+      "pages": ["vector-stores/milvus"]
+    },
+    {
+      "url": "http://localhost:9001",
+      "label": "http://localhost:9001",
+      "category": "local-service-example",
+      "reason": "本地部署后的服务或管理地址，属于运行示例，不是知识库文档引用。",
+      "pages": ["vector-stores/milvus"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/milvus.html",
+      "label": "Milvus",
+      "category": "provenance",
+      "reason": "本篇原文来源，用于溯源，保留官方链接。",
+      "pages": ["vector-stores/milvus"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/docker-compose.html",
+      "label": "Docker Compose",
+      "category": "missing-equivalent",
+      "reason": "Spring AI 模块没有等价的开发服务集成与自动连接配置说明。",
+      "pages": ["vector-stores/pgvector"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/testcontainers.html",
+      "label": "Testcontainers",
+      "category": "missing-equivalent",
+      "reason": "Spring AI 模块没有等价的开发服务集成与自动连接配置说明。",
+      "pages": ["vector-stores/pgvector"]
+    },
+    {
+      "url": "https://github.com/pgvector/pgvector/blob/v0.8.1/README.md#hnsw",
+      "label": "pgvector 的索引类型说明",
+      "category": "provider-detail",
+      "reason": "pgvector 扩展及索引类型限制的原始资料，适配层文档不能替代其完整说明。",
+      "pages": ["vector-stores/pgvector"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/openai-embeddings.html",
+      "label": "OpenAI EmbeddingModel",
+      "category": "provider-detail",
+      "reason": "Embedding 模型笔记只说明通用接口，未完整覆盖 OpenAI 专有配置或模型输入限制。",
+      "pages": ["vector-stores/pgvector"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose",
+      "label": "Docker Compose 开发服务",
+      "category": "missing-equivalent",
+      "reason": "Spring AI 模块没有等价的开发服务集成与自动连接配置说明。",
+      "pages": ["vector-stores/pgvector"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.testcontainers",
+      "label": "Testcontainers 开发服务",
+      "category": "missing-equivalent",
+      "reason": "Spring AI 模块没有等价的开发服务集成与自动连接配置说明。",
+      "pages": ["vector-stores/pgvector"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html",
+      "label": "PGvector",
+      "category": "provenance",
+      "reason": "本篇原文来源，用于溯源，保留官方链接。",
+      "pages": ["vector-stores/pgvector"]
+    },
+    {
+      "url": "https://redis.io",
+      "label": "Redis",
+      "category": "provider-detail",
+      "reason": "Redis 产品、云服务或原生查询语法文档；站内 Spring AI 适配说明不是完整替代。",
+      "pages": ["vector-stores/redis"]
+    },
+    {
+      "url": "https://redis.io/docs/interact/search-and-query/",
+      "label": "Redis Search and Query",
+      "category": "provider-detail",
+      "reason": "Redis 产品、云服务或原生查询语法文档；站内 Spring AI 适配说明不是完整替代。",
+      "pages": ["vector-stores/redis"]
+    },
+    {
+      "url": "https://app.redislabs.com/#/",
+      "label": "Redis Cloud",
+      "category": "provider-detail",
+      "reason": "Redis 产品、云服务或原生查询语法文档；站内 Spring AI 适配说明不是完整替代。",
+      "pages": ["vector-stores/redis"]
+    },
+    {
+      "url": "https://hub.docker.com/r/redis/redis-stack",
+      "label": "Docker 镜像",
+      "category": "provider-detail",
+      "reason": "产品、部署或客户端／原生查询文档；Spring AI 接入笔记未覆盖这些外部产品的完整用法。",
+      "pages": ["vector-stores/redis"]
+    },
+    {
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis/src/main/java/org/springframework/ai/vectorstore/redis/autoconfigure/RedisVectorStoreProperties.java",
+      "label": "RedisVectorStoreProperties",
+      "category": "source-evidence",
+      "reason": "固定版本的源码或 API 证据，用于核对实际实现；站内说明不代替原始证据。",
+      "pages": ["vector-stores/redis"]
+    },
+    {
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis/src/main/java/org/springframework/ai/vectorstore/redis/autoconfigure/RedisVectorStoreAutoConfiguration.java",
+      "label": "RedisVectorStoreAutoConfiguration",
+      "category": "source-evidence",
+      "reason": "固定版本的源码或 API 证据，用于核对实际实现；站内说明不代替原始证据。",
+      "pages": ["vector-stores/redis"]
+    },
+    {
+      "url": "https://redis.io/docs/interact/search-and-query/query/",
+      "label": "Redis 查询语法",
+      "category": "provider-detail",
+      "reason": "Redis 产品、云服务或原生查询语法文档；站内 Spring AI 适配说明不是完整替代。",
+      "pages": ["vector-stores/redis"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/redis.html",
+      "label": "Redis",
+      "category": "provenance",
+      "reason": "本篇原文来源，用于溯源，保留官方链接。",
+      "pages": ["vector-stores/redis"]
+    },
+    {
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors.html",
+      "label": "S3 Vectors API",
+      "category": "provider-detail",
+      "reason": "AWS S3 Vectors 产品、资源创建或 SDK 文档；Spring AI 适配说明未覆盖其完整服务和 API。",
+      "pages": ["vector-stores/s3-vector-store"]
+    },
+    {
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-buckets-create.html",
+      "label": "How to create S3 Vector Bucket",
+      "category": "provider-detail",
+      "reason": "AWS S3 Vectors 产品、资源创建或 SDK 文档；Spring AI 适配说明未覆盖其完整服务和 API。",
+      "pages": ["vector-stores/s3-vector-store"]
+    },
+    {
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-s3-vector-store/src/main/java/org/springframework/ai/vectorstore/s3/S3VectorStore.java",
+      "label": "v2.0.2 的 S3VectorStore 源码",
+      "category": "source-evidence",
+      "reason": "固定版本的源码或 API 证据，用于核对实际实现；站内说明不代替原始证据。",
+      "pages": ["vector-stores/s3-vector-store"]
+    },
+    {
+      "url": "https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/core/document/Document.html",
+      "label": "AWS SDK for Java V2 的过滤 Document 对象",
+      "category": "provider-detail",
+      "reason": "AWS S3 Vectors 产品、资源创建或 SDK 文档；Spring AI 适配说明未覆盖其完整服务和 API。",
+      "pages": ["vector-stores/s3-vector-store"]
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/s3-vector-store.html",
+      "label": "S3 Vector Store",
+      "category": "provenance",
+      "reason": "本篇原文来源，用于溯源，保留官方链接。",
+      "pages": ["vector-stores/s3-vector-store"]
+    }
+  ],
+  "validation": {
+    "check": {
+      "command": "npm run check",
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0
+    },
+    "build": {
+      "command": "npm run build",
+      "result": "PASS",
+      "pages": 92
+    },
+    "browser": {
+      "record": "browser.json",
+      "pages": 8,
+      "responsivePageChecks": 16,
+      "uniqueLocalTargets": 245,
+      "uniqueLocalResources": 19,
+      "otherModuleReferences": 0
+    },
+    "boundary": "Only local documents, fragments, assets and rendering verified live. External URLs retained with semantic matching reasons; no Java compilation, model calls, database or cloud execution."
+  },
+  "followUpAudits": [
+    {
+      "date": "2026-11-01",
+      "record": "../spring-ai-docker-compose-zh-CN/coverage-audit.json",
+      "change": "Docker Compose page added. Two previously retained PGvector URLs now point to local Spring AI documentation. Initial audit pages, external list and browser checks remain historical snapshots.",
+      "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/pgvector.mdx",
+      "pageSha256": "842e825ff09b259103364a9171aff48122274d669100218b97f4f6daddc212e2",
+      "replacements": {
+        "https://docs.spring.io/spring-ai/reference/api/docker-compose.html": "/frameworks/spring-ai/engineering/docker-compose/",
+        "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose": "/frameworks/spring-ai/engineering/docker-compose/#service-connection-lifecycle"
+      }
+    }
+  ]
+}

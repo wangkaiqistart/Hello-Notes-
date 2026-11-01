@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-01",
+  "replacement": {
+    "from": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+    "to": "/frameworks/spring-ai/rag/vector-stores/#_vectorstore_implementations",
+    "reason": "向量存储总览已完成，含完整后端入口列表。"
+  },
+  "change": "Only one Markdown link replaced; all code blocks, anchors and images preserved.",
+  "pageSha256": "335bc449eb033c6caf798f54a4c33b899a0fc6d0a0e114fd06ed587fa546352a",
+  "verification": {
+    "status": "PASS",
+    "target": "/frameworks/spring-ai/rag/vector-stores/#_vectorstore_implementations",
+    "browser": "Desktop and mobile HTTP 200 and anchor resolution, vector-store page validation record"
+  }
+}

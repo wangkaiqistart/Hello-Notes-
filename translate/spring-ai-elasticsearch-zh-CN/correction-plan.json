@@ -1,0 +1,5 @@
+{
+  "10": "按转换器修正IN作用域和字符串引号。",
+  "13": "按Apache HttpComponents5修正HttpHost构造顺序。",
+  "14": "修正小写相似度枚举、维度注释与Embedding模型构造。"
+}

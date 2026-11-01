@@ -1,0 +1,65 @@
+{
+  "version": "2.0.2",
+  "files": [
+    {
+      "file": "AbstractFilterExpressionConverter.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/filter/converter/AbstractFilterExpressionConverter.java",
+      "sha256": "fa9bf7973b477bb3406bbed0f58353c89b2a7a053cbdfbbc4efa9bdc9d7225a2"
+    },
+    {
+      "file": "BootElasticsearchProperties.java",
+      "url": "https://github.com/spring-projects/spring-boot/blob/v4.1.2/module/spring-boot-elasticsearch/src/main/java/org/springframework/boot/elasticsearch/autoconfigure/ElasticsearchProperties.java",
+      "sha256": "88b4ada31b24e31da0dadeaac040d7a62714be9430d74f7ed2946c9d5db468b1"
+    },
+    {
+      "file": "BootElasticsearchRestClientConfigurations.java",
+      "url": "https://github.com/spring-projects/spring-boot/blob/v4.1.2/module/spring-boot-elasticsearch/src/main/java/org/springframework/boot/elasticsearch/autoconfigure/ElasticsearchRestClientConfigurations.java",
+      "sha256": "5a15e992604c6562120f20c02680a99c0642ecbb865a6d92542e9b631c1025b4"
+    },
+    {
+      "file": "ElasticsearchAiSearchFilterExpressionConverter.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-elasticsearch-store/src/main/java/org/springframework/ai/vectorstore/elasticsearch/ElasticsearchAiSearchFilterExpressionConverter.java",
+      "sha256": "404f8e48dc80c3e911aa72a2227425a57a8adc194777c90109f5c78370d46fbc"
+    },
+    {
+      "file": "ElasticsearchVectorStore.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-elasticsearch-store/src/main/java/org/springframework/ai/vectorstore/elasticsearch/ElasticsearchVectorStore.java",
+      "sha256": "7c03d2d5c91cce8e4004a2d3b7568a3fcf6a605322205f38da1bcad6373312e8"
+    },
+    {
+      "file": "ElasticsearchVectorStoreAutoConfiguration.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-elasticsearch/src/main/java/org/springframework/ai/vectorstore/elasticsearch/autoconfigure/ElasticsearchVectorStoreAutoConfiguration.java",
+      "sha256": "90a6e11f4c59e44cf95c0cca7937ce5cb9de92de1e83d5d2541aa1e0e175a8a9"
+    },
+    {
+      "file": "ElasticsearchVectorStoreOptions.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-elasticsearch-store/src/main/java/org/springframework/ai/vectorstore/elasticsearch/ElasticsearchVectorStoreOptions.java",
+      "sha256": "5487daaf520f4347f319c489dca8e90e312b6b240f2be01976b4df945e01614b"
+    },
+    {
+      "file": "ElasticsearchVectorStoreProperties.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-elasticsearch/src/main/java/org/springframework/ai/vectorstore/elasticsearch/autoconfigure/ElasticsearchVectorStoreProperties.java",
+      "sha256": "a66842e2aa041c07880e4f897acd7ac13337e0ce98917da15e80dcb7e914b2d8"
+    },
+    {
+      "file": "Filters.g4",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/antlr4/org/springframework/ai/vectorstore/filter/antlr4/Filters.g4",
+      "sha256": "a6f49d59e9c496391a07c0e62970a331e61080b658afd1bb53a4bd854807c591"
+    },
+    {
+      "file": "OpenAiEmbeddingModel.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-openai/src/main/java/org/springframework/ai/openai/OpenAiEmbeddingModel.java",
+      "sha256": "6ccc2885bf731d35e4574955740c50bdda4dc280b23a8ee33bab12cfe882d132"
+    },
+    {
+      "file": "OpenAiSetup.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-openai/src/main/java/org/springframework/ai/openai/setup/OpenAiSetup.java",
+      "sha256": "673ec1c11c734b2e41134c88bf69f2f09584d85b715a006ef83d828fcaae577e"
+    },
+    {
+      "file": "SimilarityFunction.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-elasticsearch-store/src/main/java/org/springframework/ai/vectorstore/elasticsearch/SimilarityFunction.java",
+      "sha256": "c2af28473ed25ce06df0b524fc2f7042b28fe2674c1a9d0b812507c7021f7aac"
+    }
+  ]
+}

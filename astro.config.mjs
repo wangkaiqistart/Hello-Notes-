@@ -89,6 +89,34 @@ export default defineConfig({
 										'frameworks/spring-ai/mcp/server',
 									],
 								},
+								{
+									label: 'RAG',
+									collapsed: true,
+									items: [
+										'frameworks/spring-ai/rag/retrieval-and-generation',
+										'frameworks/spring-ai/rag/document-ingestion',
+										{
+											label: '向量存储',
+											collapsed: true,
+											items: [
+												'frameworks/spring-ai/rag/vector-stores',
+												'frameworks/spring-ai/rag/vector-stores/pgvector',
+												'frameworks/spring-ai/rag/vector-stores/milvus',
+												'frameworks/spring-ai/rag/vector-stores/redis',
+												'frameworks/spring-ai/rag/vector-stores/s3-vector-store',
+												'frameworks/spring-ai/rag/vector-stores/elasticsearch',
+											],
+										},
+									],
+								},
+								{
+									label: '工程实践',
+									collapsed: true,
+									items: [
+										'frameworks/spring-ai/engineering/evaluation',
+										'frameworks/spring-ai/engineering/docker-compose',
+									],
+								},
 							],
 						},
 						{ label: 'LangChain', collapsed: true, items: [{ autogenerate: { directory: 'frameworks/langchain', collapsed: true } }] },

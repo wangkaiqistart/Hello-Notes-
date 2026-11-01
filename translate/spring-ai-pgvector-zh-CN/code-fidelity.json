@@ -1,0 +1,121 @@
+{
+  "result": "PASS",
+  "codeBlocks": 14,
+  "correctedBlocks": 2,
+  "blocks": [
+    {
+      "index": 1,
+      "language": "sql",
+      "status": "corrected",
+      "reason": "PostgreSQL注释由//改为--。",
+      "sourceSha256": "b93e7768e4ab36fd456fa1ff439c4dc87a9305047468bb602549343562997dfd",
+      "targetSha256": "c6da1dad9a7305db3b9c79eab128ad3556413dc9232cc9eb1c62b2723fab4ded",
+      "diff": "--- source\n+++ translation\n@@ -6,7 +6,7 @@\n \tid uuid DEFAULT uuid_generate_v4() PRIMARY KEY,\n \tcontent text,\n \tmetadata json,\n-\tembedding vector(1536) // 1536 is the default embedding dimension\n+\tembedding vector(1536) -- 1536 is the example embedding dimension\n );\n \n CREATE INDEX ON vector_store USING HNSW (embedding vector_cosine_ops);"
+    },
+    {
+      "index": 2,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "9089c7e8f3ea5016d27982ceb6c1d4f06df8d2ea4b4f41a4fc52000650d998b3",
+      "targetSha256": "9089c7e8f3ea5016d27982ceb6c1d4f06df8d2ea4b4f41a4fc52000650d998b3"
+    },
+    {
+      "index": 3,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "b0052d005f2d63dabe37f1eb1402459e3d91eaf9a72acac37c4871e4b6895c68",
+      "targetSha256": "b0052d005f2d63dabe37f1eb1402459e3d91eaf9a72acac37c4871e4b6895c68"
+    },
+    {
+      "index": 4,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "2d730b8063960477a67a8bf746ae0742479cf2cd1843a0f1256066ef72811e26",
+      "targetSha256": "2d730b8063960477a67a8bf746ae0742479cf2cd1843a0f1256066ef72811e26"
+    },
+    {
+      "index": 5,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "9583f14cf8ea04d8242f0930d075ef6f369aff5019493ed7f0db7ec90dab422a",
+      "targetSha256": "9583f14cf8ea04d8242f0930d075ef6f369aff5019493ed7f0db7ec90dab422a"
+    },
+    {
+      "index": 6,
+      "language": "yaml",
+      "status": "corrected",
+      "reason": "修复YAML缩进，显式开启本地首次初始化。",
+      "sourceSha256": "ec5c21eefc75780ad60214197d2b3e952bf5dbac0c309f4387f5b8896c06bf6a",
+      "targetSha256": "89e80fff17057ea145dbd6b992cc99705c9d9f8db5c769536d69f7480a398991",
+      "diff": "--- source\n+++ translation\n@@ -4,9 +4,10 @@\n     username: postgres\n     password: postgres\n   ai:\n-\tvectorstore:\n-\t  pgvector:\n-\t\tindex-type: HNSW\n-\t\tdistance-type: COSINE_DISTANCE\n-\t\tdimensions: 1536\n-\t\tmax-document-batch-size: 10000 # Optional: Maximum number of documents per batch+    vectorstore:\n+      pgvector:\n+        initialize-schema: true # 本地首次创建；已有结构可设为 false\n+        index-type: HNSW\n+        distance-type: COSINE_DISTANCE\n+        dimensions: 1536\n+        max-document-batch-size: 10000 # 每批文档数上限"
+    },
+    {
+      "index": 7,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "380c7a1bc0eee9ce0e65a0c576493aee72801c0b293868546726302ef38296b5",
+      "targetSha256": "380c7a1bc0eee9ce0e65a0c576493aee72801c0b293868546726302ef38296b5"
+    },
+    {
+      "index": 8,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "d21e9d88d947ca6a4f6ba0be89299057a87f4cdb49ab49c2e3d68e1214dc6351",
+      "targetSha256": "d21e9d88d947ca6a4f6ba0be89299057a87f4cdb49ab49c2e3d68e1214dc6351"
+    },
+    {
+      "index": 9,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "9cc4b8ebcec61c7881b23c80e67ae2d8eb5cd29d7fb15dbb5dcd703be7a1b177",
+      "targetSha256": "9cc4b8ebcec61c7881b23c80e67ae2d8eb5cd29d7fb15dbb5dcd703be7a1b177"
+    },
+    {
+      "index": 10,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "c57686d5b6ee684def4f6f36e534645e23594947e4ac185d2fc7a95c36b70a9c",
+      "targetSha256": "c57686d5b6ee684def4f6f36e534645e23594947e4ac185d2fc7a95c36b70a9c"
+    },
+    {
+      "index": 11,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "4b3f85cb601d22d6ec3b371d045c56e2321845c2a51b0c4b529ef583d4136caa",
+      "targetSha256": "4b3f85cb601d22d6ec3b371d045c56e2321845c2a51b0c4b529ef583d4136caa"
+    },
+    {
+      "index": 12,
+      "language": "bash",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "f78113ed7ba58f19ac24b3481310b6954a365a4b0cd299909bcdadeae17e2b7e",
+      "targetSha256": "f78113ed7ba58f19ac24b3481310b6954a365a4b0cd299909bcdadeae17e2b7e"
+    },
+    {
+      "index": 13,
+      "language": "bash",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "a1a8d348ee16e111a9eecb53d8a2a64e5d429a79c321e3b0e326405e82f3bcf9",
+      "targetSha256": "a1a8d348ee16e111a9eecb53d8a2a64e5d429a79c321e3b0e326405e82f3bcf9"
+    },
+    {
+      "index": 14,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "2b28fe307975fb083eae67bd725f0e9f458d3ef097de5ebe28cebaaef3ba20d5",
+      "targetSha256": "2b28fe307975fb083eae67bd725f0e9f458d3ef097de5ebe28cebaaef3ba20d5"
+    }
+  ]
+}

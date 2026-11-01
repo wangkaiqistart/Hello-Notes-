@@ -1,0 +1,580 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html",
+  "version": "2.0.2",
+  "retrieved": "2026-11-01",
+  "sourceHtmlSha256": "65748528239149026b65affc6f94d57ae8361a01f758520ab6c29fb30dd6e50a",
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "ETL Pipeline"
+    },
+    {
+      "id": "_api_overview",
+      "text": "API Overview"
+    },
+    {
+      "id": "_etl_interfaces",
+      "text": "ETL Interfaces"
+    },
+    {
+      "id": "_documentreader",
+      "text": "DocumentReader"
+    },
+    {
+      "id": "_documenttransformer",
+      "text": "DocumentTransformer"
+    },
+    {
+      "id": "_documentwriter",
+      "text": "DocumentWriter"
+    },
+    {
+      "id": "etl-class-diagram",
+      "text": "ETL Class Diagram"
+    },
+    {
+      "id": "_documentreaders",
+      "text": "DocumentReaders"
+    },
+    {
+      "id": "_json",
+      "text": "JSON"
+    },
+    {
+      "id": "_example",
+      "text": "Example"
+    },
+    {
+      "id": "_constructor_options",
+      "text": "Constructor Options"
+    },
+    {
+      "id": "_parameters",
+      "text": "Parameters"
+    },
+    {
+      "id": "_behavior",
+      "text": "Behavior"
+    },
+    {
+      "id": "_using_json_pointers",
+      "text": "Using JSON Pointers"
+    },
+    {
+      "id": "_the_getstring_pointer_method",
+      "text": "The get(String pointer) method"
+    },
+    {
+      "id": "_parameters_2",
+      "text": "Parameters"
+    },
+    {
+      "id": "_return_value",
+      "text": "Return Value"
+    },
+    {
+      "id": "_behavior_2",
+      "text": "Behavior"
+    },
+    {
+      "id": "_example_2",
+      "text": "Example"
+    },
+    {
+      "id": "_example_json_structure",
+      "text": "Example JSON Structure"
+    },
+    {
+      "id": "_notes",
+      "text": "Notes"
+    },
+    {
+      "id": "_text",
+      "text": "Text"
+    },
+    {
+      "id": "_example_3",
+      "text": "Example"
+    },
+    {
+      "id": "_constructor_options_2",
+      "text": "Constructor Options"
+    },
+    {
+      "id": "_parameters_3",
+      "text": "Parameters"
+    },
+    {
+      "id": "_configuration",
+      "text": "Configuration"
+    },
+    {
+      "id": "_behavior_3",
+      "text": "Behavior"
+    },
+    {
+      "id": "_notes_2",
+      "text": "Notes"
+    },
+    {
+      "id": "_html_jsoup",
+      "text": "HTML (JSoup)"
+    },
+    {
+      "id": "_dependencies",
+      "text": "Dependencies"
+    },
+    {
+      "id": "_example_4",
+      "text": "Example"
+    },
+    {
+      "id": "_sample_document_my_page_html",
+      "text": "Sample Document: my-page.html"
+    },
+    {
+      "id": "_markdown",
+      "text": "Markdown"
+    },
+    {
+      "id": "_dependencies_2",
+      "text": "Dependencies"
+    },
+    {
+      "id": "_example_5",
+      "text": "Example"
+    },
+    {
+      "id": "_sample_document_code_md",
+      "text": "Sample Document: code.md"
+    },
+    {
+      "id": "_pdf_page",
+      "text": "PDF Page"
+    },
+    {
+      "id": "_dependencies_3",
+      "text": "Dependencies"
+    },
+    {
+      "id": "_example_6",
+      "text": "Example"
+    },
+    {
+      "id": "_pdf_paragraph",
+      "text": "PDF Paragraph"
+    },
+    {
+      "id": "_dependencies_4",
+      "text": "Dependencies"
+    },
+    {
+      "id": "_example_7",
+      "text": "Example"
+    },
+    {
+      "id": "_tika_docx_pptx_html",
+      "text": "Tika (DOCX, PPTX, HTML…​)"
+    },
+    {
+      "id": "_dependencies_5",
+      "text": "Dependencies"
+    },
+    {
+      "id": "_example_8",
+      "text": "Example"
+    },
+    {
+      "id": "_transformers",
+      "text": "Transformers"
+    },
+    {
+      "id": "_textsplitter",
+      "text": "TextSplitter"
+    },
+    {
+      "id": "_tokentextsplitter",
+      "text": "TokenTextSplitter"
+    },
+    {
+      "id": "_usage",
+      "text": "Usage"
+    },
+    {
+      "id": "_basic_usage",
+      "text": "Basic Usage"
+    },
+    {
+      "id": "_custom_encoding_type",
+      "text": "Custom Encoding Type"
+    },
+    {
+      "id": "_custom_punctuation_marks",
+      "text": "Custom Punctuation Marks"
+    },
+    {
+      "id": "_configuration_2",
+      "text": "Configuration"
+    },
+    {
+      "id": "_parameters_4",
+      "text": "Parameters"
+    },
+    {
+      "id": "_behavior_4",
+      "text": "Behavior"
+    },
+    {
+      "id": "_example_9",
+      "text": "Example"
+    },
+    {
+      "id": "_notes_3",
+      "text": "Notes"
+    },
+    {
+      "id": "_contentformattransformer",
+      "text": "ContentFormatTransformer"
+    },
+    {
+      "id": "_keywordmetadataenricher",
+      "text": "KeywordMetadataEnricher"
+    },
+    {
+      "id": "_usage_2",
+      "text": "Usage"
+    },
+    {
+      "id": "_constructor_options_3",
+      "text": "Constructor Options"
+    },
+    {
+      "id": "_behavior_5",
+      "text": "Behavior"
+    },
+    {
+      "id": "_customization",
+      "text": "Customization"
+    },
+    {
+      "id": "_example_10",
+      "text": "Example"
+    },
+    {
+      "id": "_notes_4",
+      "text": "Notes"
+    },
+    {
+      "id": "_summarymetadataenricher",
+      "text": "SummaryMetadataEnricher"
+    },
+    {
+      "id": "_usage_3",
+      "text": "Usage"
+    },
+    {
+      "id": "_constructor",
+      "text": "Constructor"
+    },
+    {
+      "id": "_parameters_5",
+      "text": "Parameters"
+    },
+    {
+      "id": "_behavior_6",
+      "text": "Behavior"
+    },
+    {
+      "id": "_customization_2",
+      "text": "Customization"
+    },
+    {
+      "id": "_example_11",
+      "text": "Example"
+    },
+    {
+      "id": "_notes_5",
+      "text": "Notes"
+    },
+    {
+      "id": "_writers",
+      "text": "Writers"
+    },
+    {
+      "id": "_file",
+      "text": "File"
+    },
+    {
+      "id": "_usage_4",
+      "text": "Usage"
+    },
+    {
+      "id": "_constructors",
+      "text": "Constructors"
+    },
+    {
+      "id": "_parameters_6",
+      "text": "Parameters"
+    },
+    {
+      "id": "_behavior_7",
+      "text": "Behavior"
+    },
+    {
+      "id": "_document_markers",
+      "text": "Document Markers"
+    },
+    {
+      "id": "_metadata_handling",
+      "text": "Metadata Handling"
+    },
+    {
+      "id": "_example_12",
+      "text": "Example"
+    },
+    {
+      "id": "_notes_6",
+      "text": "Notes"
+    },
+    {
+      "id": "_vectorstore",
+      "text": "VectorStore"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/spring-ai-document1-api.jpg",
+      "alt": "Spring AI Message API"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/etl-pipeline.jpg",
+      "alt": "etl pipeline"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/_images/etl-class-diagram.jpg",
+      "alt": "etl class diagram"
+    }
+  ],
+  "links": [
+    {
+      "href": "#etl-class-diagram",
+      "text": "ETL Class Diagram"
+    },
+    {
+      "href": "https://tika.apache.org/3.1.0/formats.html",
+      "text": "Tika documentation"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+      "text": "Vector DB Documentation"
+    }
+  ],
+  "codeBlocks": [
+    {
+      "index": 1,
+      "language": "java",
+      "text": "vectorStore.accept(tokenTextSplitter.apply(pdfReader.get()));"
+    },
+    {
+      "index": 2,
+      "language": "java",
+      "text": "vectorStore.write(tokenTextSplitter.split(pdfReader.read()));"
+    },
+    {
+      "index": 3,
+      "language": "java",
+      "text": "public interface DocumentReader extends Supplier<List<Document>> {\n\n    default List<Document> read() {\n\t\treturn get();\n\t}\n}"
+    },
+    {
+      "index": 4,
+      "language": "java",
+      "text": "public interface DocumentTransformer extends Function<List<Document>, List<Document>> {\n\n    default List<Document> transform(List<Document> transform) {\n\t\treturn apply(transform);\n\t}\n}"
+    },
+    {
+      "index": 5,
+      "language": "java",
+      "text": "public interface DocumentWriter extends Consumer<List<Document>> {\n\n    default void write(List<Document> documents) {\n\t\taccept(documents);\n\t}\n}"
+    },
+    {
+      "index": 6,
+      "language": "java",
+      "text": "@Component\nclass MyJsonReader {\n\n\tprivate final Resource resource;\n\n    MyJsonReader(@Value(\"classpath:bikes.json\") Resource resource) {\n        this.resource = resource;\n    }\n\n\tList<Document> loadJsonAsDocuments() {\n        JsonReader jsonReader = new JsonReader(this.resource, \"description\", \"content\");\n        return jsonReader.get();\n\t}\n}"
+    },
+    {
+      "index": 7,
+      "language": "java",
+      "text": "public List<Document> get(String pointer)"
+    },
+    {
+      "index": 8,
+      "language": "java",
+      "text": "JsonReader jsonReader = new JsonReader(resource, \"description\");\nList<Document> documents = this.jsonReader.get(\"/store/books/0\");"
+    },
+    {
+      "index": 9,
+      "language": "json",
+      "text": "[\n  {\n    \"id\": 1,\n    \"brand\": \"Trek\",\n    \"description\": \"A high-performance mountain bike for trail riding.\"\n  },\n  {\n    \"id\": 2,\n    \"brand\": \"Cannondale\",\n    \"description\": \"An aerodynamic road bike for racing enthusiasts.\"\n  }\n]"
+    },
+    {
+      "index": 10,
+      "language": "java",
+      "text": "@Component\nclass MyTextReader {\n\n    private final Resource resource;\n\n    MyTextReader(@Value(\"classpath:text-source.txt\") Resource resource) {\n        this.resource = resource;\n    }\n\n\tList<Document> loadText() {\n\t\tTextReader textReader = new TextReader(this.resource);\n\t\ttextReader.getCustomMetadata().put(\"filename\", \"text-source.txt\");\n\n\t\treturn textReader.read();\n    }\n}"
+    },
+    {
+      "index": 11,
+      "language": "java",
+      "text": "List<Document> documents = textReader.get();\nList<Document> splitDocuments = TokenTextSplitter.builder().build().apply(this.documents);"
+    },
+    {
+      "index": 12,
+      "language": "xml",
+      "text": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-jsoup-document-reader</artifactId>\n</dependency>"
+    },
+    {
+      "index": 13,
+      "language": "groovy",
+      "text": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-jsoup-document-reader'\n}"
+    },
+    {
+      "index": 14,
+      "language": "java",
+      "text": "@Component\nclass MyHtmlReader {\n\n    private final Resource resource;\n\n    MyHtmlReader(@Value(\"classpath:/my-page.html\") Resource resource) {\n        this.resource = resource;\n    }\n\n    List<Document> loadHtml() {\n        JsoupDocumentReaderConfig config = JsoupDocumentReaderConfig.builder()\n            .selector(\"article p\") // Extract paragraphs within <article> tags\n            .charset(\"ISO-8859-1\")  // Use ISO-8859-1 encoding\n            .includeLinkUrls(true) // Include link URLs in metadata\n            .metadataTags(List.of(\"author\", \"date\")) // Extract author and date meta tags\n            .additionalMetadata(\"source\", \"my-page.html\") // Add custom metadata\n            .build();\n\n        JsoupDocumentReader reader = new JsoupDocumentReader(this.resource, config);\n        return reader.get();\n    }\n}"
+    },
+    {
+      "index": 15,
+      "language": "html",
+      "text": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>My Web Page</title>\n    <meta name=\"description\" content=\"A sample web page for Spring AI\">\n    <meta name=\"keywords\" content=\"spring, ai, html, example\">\n    <meta name=\"author\" content=\"John Doe\">\n    <meta name=\"date\" content=\"2024-01-15\">\n    <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n    <header>\n        <h1>Welcome to My Page</h1>\n    </header>\n    <nav>\n        <ul>\n            <li><a href=\"/\">Home</a></li>\n            <li><a href=\"/about\">About</a></li>\n        </ul>\n    </nav>\n    <article>\n        <h2>Main Content</h2>\n        <p>This is the main content of my web page.</p>\n        <p>It contains multiple paragraphs.</p>\n        <a href=\"https://www.example.com\">External Link</a>\n    </article>\n    <footer>\n        <p>&copy; 2024 John Doe</p>\n    </footer>\n</body>\n</html>"
+    },
+    {
+      "index": 16,
+      "language": "xml",
+      "text": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-markdown-document-reader</artifactId>\n</dependency>"
+    },
+    {
+      "index": 17,
+      "language": "groovy",
+      "text": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-markdown-document-reader'\n}"
+    },
+    {
+      "index": 18,
+      "language": "java",
+      "text": "@Component\nclass MyMarkdownReader {\n\n    private final Resource resource;\n\n    MyMarkdownReader(@Value(\"classpath:code.md\") Resource resource) {\n        this.resource = resource;\n    }\n\n    List<Document> loadMarkdown() {\n        MarkdownDocumentReaderConfig config = MarkdownDocumentReaderConfig.builder()\n            .withHorizontalRuleCreateDocument(true)\n            .withIncludeCodeBlock(false)\n            .withIncludeBlockquote(false)\n            .withAdditionalMetadata(\"filename\", \"code.md\")\n            .build();\n\n        MarkdownDocumentReader reader = new MarkdownDocumentReader(this.resource, config);\n        return reader.get();\n    }\n}"
+    },
+    {
+      "index": 19,
+      "language": "markdown",
+      "text": "This is a Java sample application:\n\n```java\npackage com.example.demo;\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\n\n@SpringBootApplication\npublic class DemoApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(DemoApplication.class, args);\n    }\n}\n```\n\nMarkdown also provides the possibility to `use inline code formatting throughout` the entire sentence.\n\n---\n\nAnother possibility is to set block code without specific highlighting:\n\n```\n./mvnw spring-javaformat:apply\n```"
+    },
+    {
+      "index": 20,
+      "language": "xml",
+      "text": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-pdf-document-reader</artifactId>\n</dependency>"
+    },
+    {
+      "index": 21,
+      "language": "groovy",
+      "text": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-pdf-document-reader'\n}"
+    },
+    {
+      "index": 22,
+      "language": "java",
+      "text": "@Component\npublic class MyPagePdfDocumentReader {\n\n\tList<Document> getDocsFromPdf() {\n\n\t\tPagePdfDocumentReader pdfReader = new PagePdfDocumentReader(\"classpath:/sample1.pdf\",\n\t\t\t\tPdfDocumentReaderConfig.builder()\n\t\t\t\t\t.withPageTopMargin(0)\n\t\t\t\t\t.withPageExtractedTextFormatter(ExtractedTextFormatter.builder()\n\t\t\t\t\t\t.withNumberOfTopTextLinesToDelete(0)\n\t\t\t\t\t\t.build())\n\t\t\t\t\t.withPagesPerDocument(1)\n\t\t\t\t\t.build());\n\n\t\treturn pdfReader.read();\n    }\n\n}"
+    },
+    {
+      "index": 23,
+      "language": "xml",
+      "text": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-pdf-document-reader</artifactId>\n</dependency>"
+    },
+    {
+      "index": 24,
+      "language": "groovy",
+      "text": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-pdf-document-reader'\n}"
+    },
+    {
+      "index": 25,
+      "language": "java",
+      "text": "@Component\npublic class MyPagePdfDocumentReader {\n\n\tList<Document> getDocsFromPdfWithCatalog() {\n\n        ParagraphPdfDocumentReader pdfReader = new ParagraphPdfDocumentReader(\"classpath:/sample1.pdf\",\n                PdfDocumentReaderConfig.builder()\n                    .withPageTopMargin(0)\n                    .withPageExtractedTextFormatter(ExtractedTextFormatter.builder()\n                        .withNumberOfTopTextLinesToDelete(0)\n                        .build())\n                    .withPagesPerDocument(1)\n                    .build());\n\n\t    return pdfReader.read();\n    }\n}"
+    },
+    {
+      "index": 26,
+      "language": "xml",
+      "text": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-tika-document-reader</artifactId>\n</dependency>"
+    },
+    {
+      "index": 27,
+      "language": "groovy",
+      "text": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-tika-document-reader'\n}"
+    },
+    {
+      "index": 28,
+      "language": "java",
+      "text": "@Component\nclass MyTikaDocumentReader {\n\n    private final Resource resource;\n\n    MyTikaDocumentReader(@Value(\"classpath:/word-sample.docx\")\n                            Resource resource) {\n        this.resource = resource;\n    }\n\n    List<Document> loadText() {\n        TikaDocumentReader tikaDocumentReader = new TikaDocumentReader(this.resource);\n        return tikaDocumentReader.read();\n    }\n}"
+    },
+    {
+      "index": 29,
+      "language": "java",
+      "text": "@Component\nclass MyTokenTextSplitter {\n\n    public List<Document> splitDocuments(List<Document> documents) {\n        TokenTextSplitter splitter = TokenTextSplitter.builder().build();\n        return splitter.apply(documents);\n    }\n\n    public List<Document> splitCustomized(List<Document> documents) {\n        TokenTextSplitter splitter = TokenTextSplitter.builder()\n            .withChunkSize(1000)\n            .withMinChunkSizeChars(400)\n            .withMinChunkLengthToEmbed(10)\n            .withMaxNumChunks(5000)\n            .withKeepSeparator(true)\n            .build();\n        return splitter.apply(documents);\n    }\n}"
+    },
+    {
+      "index": 30,
+      "language": "java",
+      "text": "TokenTextSplitter splitter = TokenTextSplitter.builder()\n    .withEncodingType(EncodingType.O200K_BASE)\n    .withChunkSize(1000)\n    .build();"
+    },
+    {
+      "index": 31,
+      "language": "java",
+      "text": "@Component\nclass MyInternationalTextSplitter {\n\n    public List<Document> splitChineseText(List<Document> documents) {\n        // Use Chinese punctuation marks\n        TokenTextSplitter splitter = TokenTextSplitter.builder()\n            .withChunkSize(800)\n            .withMinChunkSizeChars(350)\n            .withPunctuationMarks(List.of('。', '？', '！', '；'))  // Chinese punctuation\n            .build();\n\n        return splitter.apply(documents);\n    }\n\n    public List<Document> splitWithCustomMarks(List<Document> documents) {\n        // Mix of English and other punctuation marks\n        TokenTextSplitter splitter = TokenTextSplitter.builder()\n            .withChunkSize(800)\n            .withPunctuationMarks(List.of('.', '?', '!', '\\n', ';', ':', '。'))\n            .build();\n\n        return splitter.apply(documents);\n    }\n}"
+    },
+    {
+      "index": 32,
+      "language": "java",
+      "text": "Document doc1 = new Document(\"This is a long piece of text that needs to be split into smaller chunks for processing.\",\n        Map.of(\"source\", \"example.txt\"));\nDocument doc2 = new Document(\"Another document with content that will be split based on token count.\",\n        Map.of(\"source\", \"example2.txt\"));\n\nTokenTextSplitter splitter = TokenTextSplitter.builder().build();\nList<Document> splitDocuments = splitter.apply(List.of(doc1, doc2));\n\nfor (Document doc : splitDocuments) {\n    System.out.println(\"Chunk: \" + doc.getContent());\n    System.out.println(\"Metadata: \" + doc.getMetadata());\n}"
+    },
+    {
+      "index": 33,
+      "language": "java",
+      "text": "@Component\nclass MyKeywordEnricher {\n\n    private final ChatModel chatModel;\n\n    MyKeywordEnricher(ChatModel chatModel) {\n        this.chatModel = chatModel;\n    }\n\n    List<Document> enrichDocuments(List<Document> documents) {\n        KeywordMetadataEnricher enricher = KeywordMetadataEnricher.builder(chatModel)\n                .keywordCount(5)\n                .build();\n\n        // Or use custom templates\n        KeywordMetadataEnricher enricher = KeywordMetadataEnricher.builder(chatModel)\n               .keywordsTemplate(YOUR_CUSTOM_TEMPLATE)\n               .build();\n\n        return enricher.apply(documents);\n    }\n}"
+    },
+    {
+      "index": 34,
+      "language": "java",
+      "text": "\\{context_str}. Give %s unique keywords for this document. Format as comma separated. Keywords:"
+    },
+    {
+      "index": 35,
+      "language": "java",
+      "text": "ChatModel chatModel = // initialize your chat model\nKeywordMetadataEnricher enricher = KeywordMetadataEnricher.builder(chatModel)\n                .keywordCount(5)\n                .build();\n\n// Or use custom templates\nKeywordMetadataEnricher enricher = KeywordMetadataEnricher.builder(chatModel)\n                .keywordsTemplate(new PromptTemplate(\"Extract 5 important keywords from the following text and separate them with commas:\\n{context_str}\"))\n                .build();\n\nDocument doc = new Document(\"This is a document about artificial intelligence and its applications in modern technology.\");\n\nList<Document> enrichedDocs = enricher.apply(List.of(this.doc));\n\nDocument enrichedDoc = this.enrichedDocs.get(0);\nString keywords = (String) this.enrichedDoc.getMetadata().get(\"excerpt_keywords\");\nSystem.out.println(\"Extracted keywords: \" + keywords);"
+    },
+    {
+      "index": 36,
+      "language": "java",
+      "text": "@Configuration\nclass EnricherConfig {\n\n    @Bean\n    public SummaryMetadataEnricher summaryMetadata(OpenAiChatModel aiClient) {\n        return new SummaryMetadataEnricher(aiClient,\n            List.of(SummaryType.PREVIOUS, SummaryType.CURRENT, SummaryType.NEXT));\n    }\n}\n\n@Component\nclass MySummaryEnricher {\n\n    private final SummaryMetadataEnricher enricher;\n\n    MySummaryEnricher(SummaryMetadataEnricher enricher) {\n        this.enricher = enricher;\n    }\n\n    List<Document> enrichDocuments(List<Document> documents) {\n        return this.enricher.apply(documents);\n    }\n}"
+    },
+    {
+      "index": 37,
+      "language": "java",
+      "text": "\"\"\"\nHere is the content of the section:\n{context_str}\n\nSummarize the key topics and entities of the section.\n\nSummary:\n\"\"\""
+    },
+    {
+      "index": 38,
+      "language": "java",
+      "text": "ChatModel chatModel = // initialize your chat model\nSummaryMetadataEnricher enricher = new SummaryMetadataEnricher(chatModel,\n    List.of(SummaryType.PREVIOUS, SummaryType.CURRENT, SummaryType.NEXT));\n\nDocument doc1 = new Document(\"Content of document 1\");\nDocument doc2 = new Document(\"Content of document 2\");\n\nList<Document> enrichedDocs = enricher.apply(List.of(this.doc1, this.doc2));\n\n// Check the metadata of the enriched documents\nfor (Document doc : enrichedDocs) {\n    System.out.println(\"Current summary: \" + doc.getMetadata().get(\"section_summary\"));\n    System.out.println(\"Previous summary: \" + doc.getMetadata().get(\"prev_section_summary\"));\n    System.out.println(\"Next summary: \" + doc.getMetadata().get(\"next_section_summary\"));\n}"
+    },
+    {
+      "index": 39,
+      "language": "java",
+      "text": "@Component\nclass MyDocumentWriter {\n\n    public void writeDocuments(List<Document> documents) {\n        FileDocumentWriter writer = new FileDocumentWriter(\"output.txt\", true, MetadataMode.ALL, false);\n        writer.accept(documents);\n    }\n}"
+    },
+    {
+      "index": 40,
+      "language": "",
+      "text": "### Doc: [index], pages:[start_page_number,end_page_number]"
+    },
+    {
+      "index": 41,
+      "language": "java",
+      "text": "List<Document> documents = // initialize your documents\nFileDocumentWriter writer = new FileDocumentWriter(\"output.txt\", true, MetadataMode.ALL, true);\nwriter.accept(documents);"
+    }
+  ],
+  "excludes": "Site breadcrumbs, page pagination, and empty heading permalink controls; article body retained."
+}

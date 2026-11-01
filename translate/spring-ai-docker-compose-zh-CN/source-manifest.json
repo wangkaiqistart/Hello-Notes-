@@ -1,0 +1,53 @@
+{
+  "sourceUrl": "https://docs.spring.io/spring-ai/reference/api/docker-compose.html",
+  "date": "2026-11-01",
+  "version": "2.0.2",
+  "sourceSha256": "a4611f06395c6c5e30c8dd36cf392c781b89f60f2581b107eb42e2c784f055be",
+  "headings": [
+    {
+      "id": "page-title",
+      "title": "Docker Compose"
+    },
+    {
+      "id": "_service_connections",
+      "title": "Service Connections"
+    }
+  ],
+  "codeBlocks": [
+    {
+      "language": "xml",
+      "content": "<dependency>\n   <groupId>org.springframework.ai</groupId>\n   <artifactId>spring-ai-spring-boot-docker-compose</artifactId>\n</dependency>",
+      "sha256": "7afa01a28352ab25eb9310d27ea68e84262e622daa50bf4bbd8166a9523c6a1f"
+    },
+    {
+      "language": "groovy",
+      "content": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-spring-boot-docker-compose'\n}",
+      "sha256": "4f3928fd1759871d65eee47c5325d7a2ae2e6ce4a3b346a020fcf9c4621a3a28"
+    }
+  ],
+  "images": [],
+  "serviceConnections": [
+    [["AwsOpenSearchConnectionDetails"], ["localstack/localstack"]],
+    [["ChromaConnectionDetails"], ["chromadb/chroma", "ghcr.io/chroma-core/chroma"]],
+    [["MilvusServiceClientConnectionDetails"], ["milvusdb/milvus"]],
+    [["OllamaConnectionDetails"], ["ollama/ollama"]],
+    [["OpenSearchConnectionDetails"], ["opensearchproject/opensearch"]],
+    [["QdrantConnectionDetails"], ["qdrant/qdrant"]],
+    [["TypesenseConnectionDetails"], ["typesense/typesense"]],
+    [
+      ["WeaviateConnectionDetails"],
+      ["semitechnologies/weaviate", "cr.weaviate.io/semitechnologies/weaviate"]
+    ],
+    [["McpSseClientConnectionDetails"], ["docker/mcp-gateway"]]
+  ],
+  "links": [
+    {
+      "label": "Dependency Management",
+      "url": "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management"
+    },
+    {
+      "label": "Docker Compose Support",
+      "url": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose"
+    }
+  ]
+}

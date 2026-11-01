@@ -42,7 +42,7 @@ Spring AI 的消息 API 用统一结构表达多模态输入：
 来源页仍写着“`AssistantMessage` 只包含文本，媒体只适用于用户输入”。但 [2.0.2 的 `AssistantMessage` API](https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/chat/messages/AssistantMessage.html) 已实现 `MediaContent`，并提供 `getMedia()`。是否能返回音频等媒体，还要看所用模型与适配器；不能将来源的旧说明当作当前通用限制。
 :::
 
-生成图片、语音等输出时，按提供方文档选择专用模型 API，或其支持的多模态聊天接口。下文的 `.content()` 只提取回答文本，不负责提取媒体数据。
+生成图片、语音等输出时，可先查阅[图像模型](/frameworks/spring-ai/models/image-model/)和[音频模型](/frameworks/spring-ai/models/audio-model/)笔记，再按提供方文档选择专用模型 API，或其支持的多模态聊天接口。下文的 `.content()` 只提取回答文本，不负责提取媒体数据。
 
 ## 示例：让模型描述图片
 

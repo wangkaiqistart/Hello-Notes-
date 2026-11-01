@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-01",
+  "images": [
+    {
+      "sourceUrl": "https://docs.spring.io/spring-ai/reference/_images/spring-ai-document1-api.jpg",
+      "localPath": "public/images/spring-ai/etl/document-api.jpg",
+      "sha256": "7548a6c83f0c463b0b3e7685b51ddf143bd1bc1169b19c74426857fbc559e005",
+      "width": 4159,
+      "height": 3330,
+      "action": "Original JPG preserved; page uses a Chinese PNG with text-only replacement. All pixels outside text rectangles are unchanged.",
+      "note": "Source diagram is outdated; adjacent text explains actual 2.0.2 Document API.",
+      "localizedPath": "public/images/spring-ai/etl/document-api-zh-CN.png",
+      "localizedSha256": "f0583386643c1211c823bd7f9c837d189b26806a8043c44cad7fdb6f21aa4d30"
+    },
+    {
+      "sourceUrl": "https://docs.spring.io/spring-ai/reference/_images/etl-pipeline.jpg",
+      "localPath": "public/images/spring-ai/etl/etl-pipeline.jpg",
+      "sha256": "31f1394d332a8476091a95af11d90aa2633bed0d5b803331687ab628b92375f5",
+      "width": 4903,
+      "height": 816,
+      "action": "Original JPG preserved; page uses a Chinese PNG with text-only replacement. All pixels outside text rectangles are unchanged.",
+      "note": "Java API identifiers remain in English.",
+      "localizedPath": "public/images/spring-ai/etl/etl-pipeline-zh-CN.png",
+      "localizedSha256": "ca3ab687d4e84aa534ab6a484cf95856d4e65d84b07bceae40652e1a7e3ea18e"
+    },
+    {
+      "sourceUrl": "https://docs.spring.io/spring-ai/reference/_images/etl-class-diagram.jpg",
+      "localPath": "public/images/spring-ai/etl/etl-class-diagram.jpg",
+      "sha256": "82a24b3a81be1cf488ec0e4a31b64fd442fa875582523aa4c05c9dd1890f93af",
+      "width": 2816,
+      "height": 1420,
+      "action": "Original JPG preserved; page uses a Chinese PNG with text-only replacement. All pixels outside text rectangles are unchanged.",
+      "note": "Java API identifiers remain in English.",
+      "localizedPath": "public/images/spring-ai/etl/etl-class-diagram-zh-CN.png",
+      "localizedSha256": "66785333692a483c33b59b6dc2de02fa556e576f1601802ec38d06c2fb3b9357"
+    }
+  ],
+  "latestLocalizationAudit": "2026-11-01-image-localization.json"
+}

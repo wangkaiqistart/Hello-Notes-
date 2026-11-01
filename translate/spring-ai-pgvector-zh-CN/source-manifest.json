@@ -1,0 +1,171 @@
+{
+  "sourceUrl": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html",
+  "date": "2026-11-01",
+  "version": "2.0.2",
+  "sourceSha256": "0a5a1b7f5334fd1a59311b0a8d328360ac8647ffee736bd800042172dc414d74",
+  "headings": [
+    {
+      "id": "_prerequisites",
+      "title": "Prerequisites"
+    },
+    {
+      "id": "_auto_configuration",
+      "title": "Auto-Configuration"
+    },
+    {
+      "id": "pgvector-properties",
+      "title": "Configuration properties"
+    },
+    {
+      "id": "_metadata_filtering",
+      "title": "Metadata filtering"
+    },
+    {
+      "id": "_manual_configuration",
+      "title": "Manual Configuration"
+    },
+    {
+      "id": "_run_postgres_pgvector_db_locally",
+      "title": "Run Postgres & PGVector DB locally"
+    },
+    {
+      "id": "_accessing_the_native_client",
+      "title": "Accessing the Native Client"
+    }
+  ],
+  "codeBlocks": [
+    {
+      "language": "text",
+      "content": "CREATE EXTENSION IF NOT EXISTS vector;\nCREATE EXTENSION IF NOT EXISTS hstore;\nCREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";\n\nCREATE TABLE IF NOT EXISTS vector_store (\n\tid uuid DEFAULT uuid_generate_v4() PRIMARY KEY,\n\tcontent text,\n\tmetadata json,\n\tembedding vector(1536) // 1536 is the default embedding dimension\n);\n\nCREATE INDEX ON vector_store USING HNSW (embedding vector_cosine_ops);",
+      "sha256": "b93e7768e4ab36fd456fa1ff439c4dc87a9305047468bb602549343562997dfd"
+    },
+    {
+      "language": "xml",
+      "content": "<dependency>\n\t<groupId>org.springframework.ai</groupId>\n\t<artifactId>spring-ai-starter-vector-store-pgvector</artifactId>\n</dependency>",
+      "sha256": "9089c7e8f3ea5016d27982ceb6c1d4f06df8d2ea4b4f41a4fc52000650d998b3"
+    },
+    {
+      "language": "groovy",
+      "content": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-vector-store-pgvector'\n}",
+      "sha256": "b0052d005f2d63dabe37f1eb1402459e3d91eaf9a72acac37c4871e4b6895c68"
+    },
+    {
+      "language": "xml",
+      "content": "<dependency>\n\t<groupId>org.springframework.ai</groupId>\n\t<artifactId>spring-ai-starter-model-openai</artifactId>\n</dependency>",
+      "sha256": "2d730b8063960477a67a8bf746ae0742479cf2cd1843a0f1256066ef72811e26"
+    },
+    {
+      "language": "groovy",
+      "content": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-model-openai'\n}",
+      "sha256": "9583f14cf8ea04d8242f0930d075ef6f369aff5019493ed7f0db7ec90dab422a"
+    },
+    {
+      "language": "text",
+      "content": "spring:\n  datasource:\n    url: jdbc:postgresql://localhost:5432/postgres\n    username: postgres\n    password: postgres\n  ai:\n\tvectorstore:\n\t  pgvector:\n\t\tindex-type: HNSW\n\t\tdistance-type: COSINE_DISTANCE\n\t\tdimensions: 1536\n\t\tmax-document-batch-size: 10000 # Optional: Maximum number of documents per batch",
+      "sha256": "ec5c21eefc75780ad60214197d2b3e952bf5dbac0c309f4387f5b8896c06bf6a"
+    },
+    {
+      "language": "java",
+      "content": "@Autowired VectorStore vectorStore;\n\n// ...\n\nList<Document> documents = List.of(\n    new Document(\"Spring AI rocks!! Spring AI rocks!! Spring AI rocks!! Spring AI rocks!! Spring AI rocks!!\", Map.of(\"meta1\", \"meta1\")),\n    new Document(\"The World is Big and Salvation Lurks Around the Corner\"),\n    new Document(\"You walk forward facing the past and you turn back toward the future.\", Map.of(\"meta2\", \"meta2\")));\n\n// Add the documents to PGVector\nvectorStore.add(documents);\n\n// Retrieve documents similar to a query\nList<Document> results = this.vectorStore.similaritySearch(SearchRequest.builder().query(\"Spring\").topK(5).build());",
+      "sha256": "380c7a1bc0eee9ce0e65a0c576493aee72801c0b293868546726302ef38296b5"
+    },
+    {
+      "language": "java",
+      "content": "vectorStore.similaritySearch(\n    SearchRequest.builder()\n    .query(\"The World\")\n    .topK(TOP_K)\n    .similarityThreshold(SIMILARITY_THRESHOLD)\n    .filterExpression(\"author in ['john', 'jill'] && article_type == 'blog'\").build());",
+      "sha256": "d21e9d88d947ca6a4f6ba0be89299057a87f4cdb49ab49c2e3d68e1214dc6351"
+    },
+    {
+      "language": "java",
+      "content": "FilterExpressionBuilder b = new FilterExpressionBuilder();\n\nvectorStore.similaritySearch(SearchRequest.builder()\n    .query(\"The World\")\n    .topK(TOP_K)\n    .similarityThreshold(SIMILARITY_THRESHOLD)\n    .filterExpression(b.and(\n        b.in(\"author\",\"john\", \"jill\"),\n        b.eq(\"article_type\", \"blog\")).build()).build());",
+      "sha256": "9cc4b8ebcec61c7881b23c80e67ae2d8eb5cd29d7fb15dbb5dcd703be7a1b177"
+    },
+    {
+      "language": "xml",
+      "content": "<dependency>\n\t<groupId>org.springframework.boot</groupId>\n\t<artifactId>spring-boot-starter-jdbc</artifactId>\n</dependency>\n\n<dependency>\n\t<groupId>org.postgresql</groupId>\n\t<artifactId>postgresql</artifactId>\n\t<scope>runtime</scope>\n</dependency>\n\n<dependency>\n\t<groupId>org.springframework.ai</groupId>\n\t<artifactId>spring-ai-pgvector-store</artifactId>\n</dependency>",
+      "sha256": "c57686d5b6ee684def4f6f36e534645e23594947e4ac185d2fc7a95c36b70a9c"
+    },
+    {
+      "language": "java",
+      "content": "@Bean\npublic VectorStore vectorStore(JdbcTemplate jdbcTemplate, EmbeddingModel embeddingModel) {\n    return PgVectorStore.builder(jdbcTemplate, embeddingModel)\n        .dimensions(1536)                    // Optional: defaults to model dimensions or 1536\n        .distanceType(COSINE_DISTANCE)       // Optional: defaults to COSINE_DISTANCE\n        .indexType(HNSW)                     // Optional: defaults to HNSW\n        .initializeSchema(true)              // Optional: defaults to false\n        .schemaName(\"public\")                // Optional: defaults to \"public\"\n        .vectorTableName(\"vector_store\")     // Optional: defaults to \"vector_store\"\n        .maxDocumentBatchSize(10000)         // Optional: defaults to 10000\n        .build();\n}",
+      "sha256": "4b3f85cb601d22d6ec3b371d045c56e2321845c2a51b0c4b529ef583d4136caa"
+    },
+    {
+      "language": "text",
+      "content": "docker run -it --rm --name postgres -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres pgvector/pgvector",
+      "sha256": "f78113ed7ba58f19ac24b3481310b6954a365a4b0cd299909bcdadeae17e2b7e"
+    },
+    {
+      "language": "text",
+      "content": "psql -U postgres -h localhost -p 5432",
+      "sha256": "a1a8d348ee16e111a9eecb53d8a2a64e5d429a79c321e3b0e326405e82f3bcf9"
+    },
+    {
+      "language": "java",
+      "content": "PgVectorStore vectorStore = context.getBean(PgVectorStore.class);\nOptional<JdbcTemplate> nativeClient = vectorStore.getNativeClient();\n\nif (nativeClient.isPresent()) {\n    JdbcTemplate jdbc = nativeClient.get();\n    // Use the native client for PostgreSQL-specific operations\n}",
+      "sha256": "2b28fe307975fb083eae67bd725f0e9f458d3ef097de5ebe28cebaaef3ba20d5"
+    }
+  ],
+  "images": [],
+  "links": [
+    {
+      "url": "https://github.com/pgvector/pgvector",
+      "text": "PGvector"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/docker-compose.html",
+      "text": "Docker Compose"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/testcontainers.html",
+      "text": "Testcontainers"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html#_run_postgres_pgvector_db_locally",
+      "text": "setup local Postgres/PGVector"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations",
+      "text": "EmbeddingModel"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+      "text": "upgrade notes"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations",
+      "text": "EmbeddingModel Implementations"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/openai-embeddings.html",
+      "text": "OpenAI EmbeddingModel"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management",
+      "text": "Dependency Management"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/getting-started.html#artifact-repositories",
+      "text": "Artifact Repositories"
+    },
+    {
+      "url": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose",
+      "text": "Docker Compose"
+    },
+    {
+      "url": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.testcontainers",
+      "text": "Testcontainers"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html#pgvector-properties",
+      "text": "configuration parameters"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#_metadata_filters",
+      "text": "metadata filters"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management",
+      "text": "Dependency Management"
+    }
+  ]
+}

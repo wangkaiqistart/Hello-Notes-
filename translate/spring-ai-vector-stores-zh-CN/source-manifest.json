@@ -1,0 +1,509 @@
+{
+  "sourceUrl": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+  "date": "2026-11-01",
+  "version": "2.0.2",
+  "sourceSha256": "45f53ab5b4092061547a18abcef6e7e3d550da96db6a7e4aa776ba855ae2c42b",
+  "headings": [
+    {
+      "id": "api-overview",
+      "title": "API Overview"
+    },
+    {
+      "id": "_vectorstoreretriever_interface",
+      "title": "VectorStoreRetriever Interface"
+    },
+    {
+      "id": "_vectorstore_interface",
+      "title": "VectorStore Interface"
+    },
+    {
+      "id": "_searchrequest_builder",
+      "title": "SearchRequest Builder"
+    },
+    {
+      "id": "_schema_initialization",
+      "title": "Schema Initialization"
+    },
+    {
+      "id": "_batching_strategy",
+      "title": "Batching Strategy"
+    },
+    {
+      "id": "_default_implementation",
+      "title": "Default Implementation"
+    },
+    {
+      "id": "_working_with_auto_truncation",
+      "title": "Working with Auto-Truncation"
+    },
+    {
+      "id": "_configuration_for_auto_truncation",
+      "title": "Configuration for Auto-Truncation"
+    },
+    {
+      "id": "_why_this_works",
+      "title": "Why This Works"
+    },
+    {
+      "id": "_best_practices",
+      "title": "Best Practices"
+    },
+    {
+      "id": "_spring_boot_auto_configuration",
+      "title": "Spring Boot Auto-Configuration"
+    },
+    {
+      "id": "_custom_implementation",
+      "title": "Custom Implementation"
+    },
+    {
+      "id": "_vectorstore_implementations",
+      "title": "VectorStore Implementations"
+    },
+    {
+      "id": "_example_usage",
+      "title": "Example Usage"
+    },
+    {
+      "id": "_writing_to_a_vector_store",
+      "title": "Writing to a Vector Store"
+    },
+    {
+      "id": "_reading_from_a_vector_store",
+      "title": "Reading from a Vector Store"
+    },
+    {
+      "id": "_separation_of_read_and_write_operations",
+      "title": "Separation of Read and Write Operations"
+    },
+    {
+      "id": "_retrieval_operations_with_vectorstoreretriever",
+      "title": "Retrieval Operations with VectorStoreRetriever"
+    },
+    {
+      "id": "_benefits_of_using_vectorstoreretriever",
+      "title": "Benefits of Using VectorStoreRetriever"
+    },
+    {
+      "id": "_example_usage_2",
+      "title": "Example Usage"
+    },
+    {
+      "id": "_integration_with_rag_applications",
+      "title": "Integration with RAG Applications"
+    },
+    {
+      "id": "metadata-filters",
+      "title": "Metadata Filters"
+    },
+    {
+      "id": "_filter_string",
+      "title": "Filter String"
+    },
+    {
+      "id": "_filter_expression",
+      "title": "Filter.Expression"
+    },
+    {
+      "id": "_partitioning_a_shared_index",
+      "title": "Partitioning a Shared Index"
+    },
+    {
+      "id": "_deleting_documents_from_vector_store",
+      "title": "Deleting Documents from Vector Store"
+    },
+    {
+      "id": "_delete_by_document_ids",
+      "title": "Delete by Document IDs"
+    },
+    {
+      "id": "_delete_by_filter_expression",
+      "title": "Delete by Filter Expression"
+    },
+    {
+      "id": "_delete_by_string_filter_expression",
+      "title": "Delete by String Filter Expression"
+    },
+    {
+      "id": "_error_handling_when_calling_the_delete_api",
+      "title": "Error Handling When Calling the Delete API"
+    },
+    {
+      "id": "_document_versioning_use_case",
+      "title": "Document Versioning Use Case"
+    },
+    {
+      "id": "_performance_considerations_while_deleting_documents",
+      "title": "Performance Considerations While Deleting Documents"
+    },
+    {
+      "id": "_understanding_vectors",
+      "title": "Understanding Vectors"
+    }
+  ],
+  "codeBlocks": [
+    {
+      "language": "java",
+      "content": "@FunctionalInterface\npublic interface VectorStoreRetriever {\n\n    List<Document> similaritySearch(SearchRequest request);\n\n    default List<Document> similaritySearch(String query) {\n        return this.similaritySearch(SearchRequest.builder().query(query).build());\n    }\n}",
+      "sha256": "30c2288145b842e5d35197dcf1d650434fea39303886b9d9b84fd7fb82fa610e"
+    },
+    {
+      "language": "java",
+      "content": "public interface VectorStore extends DocumentWriter, VectorStoreRetriever {\n\n    default String getName() {\n\t\treturn this.getClass().getSimpleName();\n\t}\n\n    void add(List<Document> documents);\n\n    void delete(List<String> idList);\n\n    void delete(Filter.Expression filterExpression);\n\n    default void delete(String filterExpression) { ... }\n\n    default <T> Optional<T> getNativeClient() {\n\t\treturn Optional.empty();\n\t}\n}",
+      "sha256": "beccc1a16389912222997b1380f288a21bd17bbfaefe439e5172d6f1d6241930"
+    },
+    {
+      "language": "java",
+      "content": "public class SearchRequest {\n\n\tpublic static final double SIMILARITY_THRESHOLD_ACCEPT_ALL = 0.0;\n\n\tpublic static final int DEFAULT_TOP_K = 4;\n\n\tprivate String query = \"\";\n\n\tprivate int topK = DEFAULT_TOP_K;\n\n\tprivate double similarityThreshold = SIMILARITY_THRESHOLD_ACCEPT_ALL;\n\n\t@Nullable\n\tprivate Filter.Expression filterExpression;\n\n    public static Builder from(SearchRequest originalSearchRequest) {\n\t\treturn builder().query(originalSearchRequest.getQuery())\n\t\t\t.topK(originalSearchRequest.getTopK())\n\t\t\t.similarityThreshold(originalSearchRequest.getSimilarityThreshold())\n\t\t\t.filterExpression(originalSearchRequest.getFilterExpression());\n\t}\n\n\tpublic static class Builder {\n\n\t\tprivate final SearchRequest searchRequest = new SearchRequest();\n\n\t\tpublic Builder query(String query) {\n\t\t\tAssert.notNull(query, \"Query can not be null.\");\n\t\t\tthis.searchRequest.query = query;\n\t\t\treturn this;\n\t\t}\n\n\t\tpublic Builder topK(int topK) {\n\t\t\tAssert.isTrue(topK >= 0, \"TopK should be positive.\");\n\t\t\tthis.searchRequest.topK = topK;\n\t\t\treturn this;\n\t\t}\n\n\t\tpublic Builder similarityThreshold(double threshold) {\n\t\t\tAssert.isTrue(threshold >= 0 && threshold <= 1, \"Similarity threshold must be in [0,1] range.\");\n\t\t\tthis.searchRequest.similarityThreshold = threshold;\n\t\t\treturn this;\n\t\t}\n\n\t\tpublic Builder similarityThresholdAll() {\n\t\t\tthis.searchRequest.similarityThreshold = 0.0;\n\t\t\treturn this;\n\t\t}\n\n\t\tpublic Builder filterExpression(@Nullable Filter.Expression expression) {\n\t\t\tthis.searchRequest.filterExpression = expression;\n\t\t\treturn this;\n\t\t}\n\n\t\tpublic Builder filterExpression(@Nullable String textExpression) {\n\t\t\tthis.searchRequest.filterExpression = (textExpression != null)\n\t\t\t\t\t? new FilterExpressionTextParser().parse(textExpression) : null;\n\t\t\treturn this;\n\t\t}\n\n\t\tpublic SearchRequest build() {\n\t\t\treturn this.searchRequest;\n\t\t}\n\n\t}\n\n\tpublic String getQuery() {...}\n\tpublic int getTopK() {...}\n\tpublic double getSimilarityThreshold() {...}\n\tpublic Filter.Expression getFilterExpression() {...}\n}",
+      "sha256": "a597f48c32ebff99561c1f244afee3a85b1d2b6d4a03cdbd1b670eaeeaa0c47b"
+    },
+    {
+      "language": "java",
+      "content": "public interface BatchingStrategy {\n    List<List<Document>> batch(List<Document> documents);\n}",
+      "sha256": "ec70ee944284db9b7f321f0b6bad0520518869ded58be99587b64b65031822d1"
+    },
+    {
+      "language": "java",
+      "content": "@Configuration\npublic class EmbeddingConfig {\n    @Bean\n    public BatchingStrategy customTokenCountBatchingStrategy() {\n        return new TokenCountBatchingStrategy(\n            EncodingType.CL100K_BASE,  // Specify the encoding type\n            8000,                      // Set the maximum input token count\n            0.1                        // Set the reserve percentage\n        );\n    }\n}",
+      "sha256": "dd3355eb48923198fa8d07b64575a0f7638d55c138c438347d6e689ae71a6870"
+    },
+    {
+      "language": "java",
+      "content": "TokenCountEstimator customEstimator = new YourCustomTokenCountEstimator();\nTokenCountBatchingStrategy strategy = new TokenCountBatchingStrategy(\n\t\tthis.customEstimator,\n    8000,  // maxInputTokenCount\n    0.1,   // reservePercentage\n    Document.DEFAULT_CONTENT_FORMATTER,\n    MetadataMode.NONE\n);",
+      "sha256": "3202725ebd91df20aeb3c6a181e36c15468731c319c69c41ffbf4c7a4fcb4542"
+    },
+    {
+      "language": "java",
+      "content": "@Configuration\npublic class AutoTruncationEmbeddingConfig {\n\n    @Bean\n    public VertexAiTextEmbeddingModel vertexAiEmbeddingModel(\n            VertexAiEmbeddingConnectionDetails connectionDetails) {\n\n        VertexAiTextEmbeddingOptions options = VertexAiTextEmbeddingOptions.builder()\n                .model(VertexAiTextEmbeddingOptions.DEFAULT_MODEL_NAME)\n                .autoTruncate(true)  // Enable auto-truncation\n                .build();\n\n        return new VertexAiTextEmbeddingModel(connectionDetails, options);\n    }\n\n    @Bean\n    public BatchingStrategy batchingStrategy() {\n        // Only use a high token limit if auto-truncation is enabled in your embedding model.\n        // Set a much higher token count than the model actually supports\n        // (e.g., 132,900 when Vertex AI supports only up to 20,000)\n        return new TokenCountBatchingStrategy(\n                EncodingType.CL100K_BASE,\n                132900,  // Artificially high limit\n                0.1      // 10% reserve\n        );\n    }\n\n    @Bean\n    public VectorStore vectorStore(JdbcTemplate jdbcTemplate, EmbeddingModel embeddingModel, BatchingStrategy batchingStrategy) {\n        return PgVectorStore.builder(jdbcTemplate, embeddingModel)\n            // other properties omitted here\n            .build();\n    }\n}",
+      "sha256": "8a9c8d95219da40055cba13627bfdecac34765c86883ca351795a7c894eebb52"
+    },
+    {
+      "language": "java",
+      "content": "@Bean\npublic BatchingStrategy customBatchingStrategy() {\n    // This bean will override the default BatchingStrategy\n    return new TokenCountBatchingStrategy(\n            EncodingType.CL100K_BASE,\n            132900,  // Much higher than model's actual limit\n            0.1\n    );\n}",
+      "sha256": "38818f55b963fc6a165fd97eb4146ba343770d7e1a811ad4e97920528aafb685"
+    },
+    {
+      "language": "java",
+      "content": "@Configuration\npublic class EmbeddingConfig {\n    @Bean\n    public BatchingStrategy customBatchingStrategy() {\n        return new CustomBatchingStrategy();\n    }\n}",
+      "sha256": "335addc40c7ce12538eff9ceb0a85784d98591bc0f13e49b4946d056838f60a6"
+    },
+    {
+      "language": "java",
+      "content": "@Autowired\nVectorStore vectorStore;\n\nvoid load(String sourceFile) {\n    JsonReader jsonReader = new JsonReader(new FileSystemResource(sourceFile),\n            \"price\", \"name\", \"shortDescription\", \"description\", \"tags\");\n    List<Document> documents = jsonReader.get();\n    this.vectorStore.add(documents);\n}",
+      "sha256": "e1289f9dfa8fe66b4ce263c94b82fd072f2a6d19fd32be016f98c5c286626a93"
+    },
+    {
+      "language": "java",
+      "content": "@Autowired\nVectorStoreRetriever retriever; // Could also use VectorStore here\n\nString question = \"<question from user>\";\nList<Document> similarDocuments = retriever.similaritySearch(question);\n\n// Or with more specific search parameters\nSearchRequest request = SearchRequest.builder()\n    .query(question)\n    .topK(5)                       // Return top 5 results\n    .similarityThreshold(0.7)      // Only return results with similarity score >= 0.7\n    .build();\n\nList<Document> filteredDocuments = retriever.similaritySearch(request);",
+      "sha256": "b7493dd123bc7378b1d5bf96b57a5d91c239420167bf5796e029bb0a0c3c81e8"
+    },
+    {
+      "language": "java",
+      "content": "// Write operations in a service that needs full access\n@Service\nclass DocumentIndexer {\n    private final VectorStore vectorStore;\n\n    DocumentIndexer(VectorStore vectorStore) {\n        this.vectorStore = vectorStore;\n    }\n\n    public void indexDocuments(List<Document> documents) {\n        vectorStore.add(documents);\n    }\n}\n\n// Read-only operations in a service that only needs retrieval\n@Service\nclass DocumentRetriever {\n    private final VectorStoreRetriever retriever;\n\n    DocumentRetriever(VectorStoreRetriever retriever) {\n        this.retriever = retriever;\n    }\n\n    public List<Document> findSimilar(String query) {\n        return retriever.similaritySearch(query);\n    }\n}",
+      "sha256": "641df23422967fb550a73617c55854a1353167473d5f65f3cd3c53a835957f62"
+    },
+    {
+      "language": "java",
+      "content": "@Service\npublic class DocumentRetrievalService {\n\n    private final VectorStoreRetriever retriever;\n\n    public DocumentRetrievalService(VectorStoreRetriever retriever) {\n        this.retriever = retriever;\n    }\n\n    public List<Document> findSimilarDocuments(String query) {\n        return retriever.similaritySearch(query);\n    }\n\n    public List<Document> findSimilarDocumentsWithFilters(String query, String country) {\n        SearchRequest request = SearchRequest.builder()\n            .query(query)\n            .topK(5)\n            .filterExpression(\"country == '\" + country + \"'\")\n            .build();\n\n        return retriever.similaritySearch(request);\n    }\n}",
+      "sha256": "bfab80a3c7e33a7a9fac895fcbd03ec4b95856e16f5a1d48975b25b8c0063bbe"
+    },
+    {
+      "language": "java",
+      "content": "@Service\npublic class RagService {\n\n    private final VectorStoreRetriever retriever;\n    private final ChatModel chatModel;\n\n    public RagService(VectorStoreRetriever retriever, ChatModel chatModel) {\n        this.retriever = retriever;\n        this.chatModel = chatModel;\n    }\n\n    public String generateResponse(String userQuery) {\n        // Retrieve relevant documents\n        List<Document> relevantDocs = retriever.similaritySearch(userQuery);\n\n        // Extract content from documents to use as context\n        String context = relevantDocs.stream()\n            .map(Document::getContent)\n            .collect(Collectors.joining(\"\\n\\n\"));\n\n        // Generate response using the retrieved context\n        String prompt = \"Context information:\\n\" + context + \"\\n\\nUser query: \" + userQuery;\n        return chatModel.generate(prompt);\n    }\n}",
+      "sha256": "b41ddf593f677b2b0f988a4e2a318314f972777f86732b6eb84bd3d80119ca41"
+    },
+    {
+      "language": "java",
+      "content": "FilterExpressionBuilder b = new FilterExpressionBuilder();\nExpression expression = this.b.eq(\"country\", \"BG\").build();",
+      "sha256": "2e7e909febf0cf5a607284bda13a5a2dad4f61d49ed639f739496ff9e3278c30"
+    },
+    {
+      "language": "text",
+      "content": "EQUALS: '=='\nMINUS : '-'\nPLUS: '+'\nGT: '>'\nGE: '>='\nLT: '<'\nLE: '<='\nNE: '!='",
+      "sha256": "a123eba3904b54a3b65d6dbc4cf76ad313211eab0cc6574d71d4c8340c61c0d0"
+    },
+    {
+      "language": "text",
+      "content": "AND: 'AND' | 'and' | '&&';\nOR: 'OR' | 'or' | '||';",
+      "sha256": "058a604abb9e3da17dce5e705e280dc2b8220109f883a380d2c1741d23d4163a"
+    },
+    {
+      "language": "java",
+      "content": "Expression exp = b.and(b.eq(\"genre\", \"drama\"), b.gte(\"year\", 2020)).build();",
+      "sha256": "ffb9bd73a68c1a54c40f9423846d8bf6a5c661f6ac5c96b2ad02d606b2d744c9"
+    },
+    {
+      "language": "text",
+      "content": "IN: 'IN' | 'in';\nNIN: 'NIN' | 'nin';\nNOT: 'NOT' | 'not';",
+      "sha256": "cec2b51772e89cf3ae7fbd05b895f6bb215167efa159e59aa8e13f841be2e300"
+    },
+    {
+      "language": "java",
+      "content": "Expression exp = b.and(b.in(\"genre\", \"drama\", \"documentary\"), b.not(b.lt(\"year\", 2020))).build();",
+      "sha256": "280bcb422d7cb8417acdaa91bb2c6815b300de104bfffa49358287c95e1a5109"
+    },
+    {
+      "language": "text",
+      "content": "IS: 'IS' | 'is';\nNULL: 'NULL' | 'null';\nNOT NULL: 'NOT NULL' | 'not null';",
+      "sha256": "a6669fc8fa63685af29a1cc7036ed78f0098851d65fc21b7d9daf87b0685b18e"
+    },
+    {
+      "language": "java",
+      "content": "Expression exp = b.and(b.isNull(\"year\")).build();\nExpression exp = b.and(b.isNotNull(\"year\")).build();",
+      "sha256": "6dc76800d4fb4dbbd22eb7276858cd42996e7bb95aa0479a1b0b81ffda14eafa"
+    },
+    {
+      "language": "java",
+      "content": "// When writing, record the group the document belongs to.\nDocument document = new Document(content, Map.of(\"group\", groupId));\nvectorStore.add(List.of(document));\n\n// When searching, select documents from that group.\nList<Document> results = vectorStore.similaritySearch(SearchRequest.builder()\n    .query(query)\n    .filterExpression(\"group == '\" + groupId + \"'\")\n    .build());\n\n// When deleting by filter, target the same group.\nFilter.Expression scoped = new FilterExpressionBuilder().eq(\"group\", groupId).build();\nvectorStore.delete(scoped);",
+      "sha256": "d25c157bfadeb36b3026bf62e4e0ba29238933cc4cffc0ff0d21c4d271722f78"
+    },
+    {
+      "language": "java",
+      "content": "void delete(List<String> idList);",
+      "sha256": "a96ab51025958469c2c4b1dcebb73a9beccd5a0a7dc9772c82af8a18c6f42a57"
+    },
+    {
+      "language": "java",
+      "content": "// Create and add document\nDocument document = new Document(\"The World is Big\",\n    Map.of(\"country\", \"Netherlands\"));\nvectorStore.add(List.of(document));\n\n// Delete document by ID\nvectorStore.delete(List.of(document.getId()));",
+      "sha256": "6276eb85cb519d658927798c55cf64eafa0e3a9686e4fc24f9ea581012d1cb01"
+    },
+    {
+      "language": "java",
+      "content": "void delete(Filter.Expression filterExpression);",
+      "sha256": "687de93aac61eeff45db657571477c0a092544efd47431592bf64921a31b1486"
+    },
+    {
+      "language": "java",
+      "content": "// Create test documents with different metadata\nDocument bgDocument = new Document(\"The World is Big\",\n    Map.of(\"country\", \"Bulgaria\"));\nDocument nlDocument = new Document(\"The World is Big\",\n    Map.of(\"country\", \"Netherlands\"));\n\n// Add documents to the store\nvectorStore.add(List.of(bgDocument, nlDocument));\n\n// Delete documents from Bulgaria using filter expression\nFilter.Expression filterExpression = new Filter.Expression(\n    Filter.ExpressionType.EQ,\n    new Filter.Key(\"country\"),\n    new Filter.Value(\"Bulgaria\")\n);\nvectorStore.delete(filterExpression);\n\n// Verify deletion with search\nSearchRequest request = SearchRequest.builder()\n    .query(\"World\")\n    .filterExpression(\"country == 'Bulgaria'\")\n    .build();\nList<Document> results = vectorStore.similaritySearch(request);\n// results will be empty as Bulgarian document was deleted",
+      "sha256": "36e3a5cb9e2efcfb87ab9560b694db545c8354f7d5f79f5dd2c460bd1a93cc6e"
+    },
+    {
+      "language": "java",
+      "content": "void delete(String filterExpression);",
+      "sha256": "ec911dc9a3aa753d1c7550859bd40efbd7a94bfb78f98b13d683c28d6bc20de5"
+    },
+    {
+      "language": "java",
+      "content": "// Create and add documents\nDocument bgDocument = new Document(\"The World is Big\",\n    Map.of(\"country\", \"Bulgaria\"));\nDocument nlDocument = new Document(\"The World is Big\",\n    Map.of(\"country\", \"Netherlands\"));\nvectorStore.add(List.of(bgDocument, nlDocument));\n\n// Delete Bulgarian documents using string filter\nvectorStore.delete(\"country == 'Bulgaria'\");\n\n// Verify remaining documents\nSearchRequest request = SearchRequest.builder()\n    .query(\"World\")\n    .topK(5)\n    .build();\nList<Document> results = vectorStore.similaritySearch(request);\n// results will only contain the Netherlands document",
+      "sha256": "0e78f94533e9a8a642972e71a1675012272dede90c5d20fef1cb4f843ee42b5e"
+    },
+    {
+      "language": "java",
+      "content": "try {\n    vectorStore.delete(\"country == 'Bulgaria'\");\n}\ncatch (Exception  e) {\n    logger.error(\"Invalid filter expression\", e);\n}",
+      "sha256": "02a1bea47d392e5c1a487827b726d817df9a0a6fdd03dab66b46fa575e5323a1"
+    },
+    {
+      "language": "java",
+      "content": "// Create initial document (v1) with version metadata\nDocument documentV1 = new Document(\n    \"AI and Machine Learning Best Practices\",\n    Map.of(\n        \"docId\", \"AIML-001\",\n        \"version\", \"1.0\",\n        \"lastUpdated\", \"2024-01-01\"\n    )\n);\n\n// Add v1 to the vector store\nvectorStore.add(List.of(documentV1));\n\n// Create updated version (v2) of the same document\nDocument documentV2 = new Document(\n    \"AI and Machine Learning Best Practices - Updated\",\n    Map.of(\n        \"docId\", \"AIML-001\",\n        \"version\", \"2.0\",\n        \"lastUpdated\", \"2024-02-01\"\n    )\n);\n\n// First, delete the old version using filter expression\nFilter.Expression deleteOldVersion = new Filter.Expression(\n    Filter.ExpressionType.AND,\n    new Filter.Expression(\n        Filter.ExpressionType.EQ,\n        new Filter.Key(\"docId\"),\n        new Filter.Value(\"AIML-001\")\n    ),\n    new Filter.Expression(\n        Filter.ExpressionType.EQ,\n        new Filter.Key(\"version\"),\n        new Filter.Value(\"1.0\")\n    )\n);\nvectorStore.delete(deleteOldVersion);\n\n// Add the new version\nvectorStore.add(List.of(documentV2));\n\n// Verify only v2 exists\nSearchRequest request = SearchRequest.builder()\n    .query(\"AI and Machine Learning\")\n    .filterExpression(\"docId == 'AIML-001'\")\n    .build();\nList<Document> results = vectorStore.similaritySearch(request);\n// results will contain only v2 of the document",
+      "sha256": "971935a17ccc12d36a1a1418f1c7f2e04a66ce4315244993e3052e15d87b2b90"
+    },
+    {
+      "language": "java",
+      "content": "// Delete old version using string filter\nvectorStore.delete(\"docId == 'AIML-001' AND version == '1.0'\");\n\n// Add new version\nvectorStore.add(List.of(documentV2));",
+      "sha256": "7a71b41b20702c39c86706dd705c0c8304ead7e2a205a2dbda4857088e6e5ed5"
+    }
+  ],
+  "images": [],
+  "links": [
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/index.html",
+      "text": "Spring AI"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+      "text": "Vector Databases"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/understand-vectordbs.html#vectordbs-similarity",
+      "text": "Vector Similarity"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/concepts.html#concept-rag",
+      "text": "Retrieval Augmented Generation (RAG)"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Word2vec",
+      "text": "Word2Vec"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/GloVe_(machine_learning)",
+      "text": "GLoVE"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/BERT_(language_model)",
+      "text": "BERT"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#metadata-filters",
+      "text": "Metadata Filters"
+    },
+    {
+      "url": "https://platform.openai.com/docs/guides/embeddings/embedding-models",
+      "text": "OpenAI’s max input token count"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure.html",
+      "text": "Azure Vector Search"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/search/vector-search-overview",
+      "text": "Azure"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/apache-cassandra.html",
+      "text": "Apache Cassandra"
+    },
+    {
+      "url": "https://cassandra.apache.org/doc/latest/cassandra/vector-search/overview.html",
+      "text": "Apache Cassandra"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/chroma.html",
+      "text": "Chroma Vector Store"
+    },
+    {
+      "url": "https://www.trychroma.com/",
+      "text": "Chroma"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/elasticsearch.html",
+      "text": "Elasticsearch Vector Store"
+    },
+    {
+      "url": "https://www.elastic.co/",
+      "text": "Elasticsearch"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/gemfire.html",
+      "text": "GemFire Vector Store"
+    },
+    {
+      "url": "https://tanzu.vmware.com/content/blog/vmware-gemfire-vector-database-extension",
+      "text": "GemFire"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mariadb.html",
+      "text": "MariaDB Vector Store"
+    },
+    {
+      "url": "https://mariadb.com/",
+      "text": "MariaDB"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/milvus.html",
+      "text": "Milvus Vector Store"
+    },
+    {
+      "url": "https://milvus.io/",
+      "text": "Milvus"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mongodb.html",
+      "text": "MongoDB Atlas Vector Store"
+    },
+    {
+      "url": "https://www.mongodb.com/atlas/database",
+      "text": "MongoDB Atlas"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/neo4j.html",
+      "text": "Neo4j Vector Store"
+    },
+    {
+      "url": "https://neo4j.com/",
+      "text": "Neo4j"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/opensearch.html",
+      "text": "OpenSearch Vector Store"
+    },
+    {
+      "url": "https://opensearch.org/platform/search/vector-database.html",
+      "text": "OpenSearch"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/oracle.html",
+      "text": "Oracle Vector Store"
+    },
+    {
+      "url": "https://docs.oracle.com/en/database/oracle/oracle-database/23/vecse/overview-ai-vector-search.html",
+      "text": "Oracle Database"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html",
+      "text": "PgVector Store"
+    },
+    {
+      "url": "https://github.com/pgvector/pgvector",
+      "text": "PostgreSQL/PGVector"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pinecone.html",
+      "text": "Pinecone Vector Store"
+    },
+    {
+      "url": "https://www.pinecone.io/",
+      "text": "Pinecone"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/qdrant.html",
+      "text": "Qdrant Vector Store"
+    },
+    {
+      "url": "https://www.qdrant.tech/",
+      "text": "Qdrant"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/redis.html",
+      "text": "Redis Vector Store"
+    },
+    {
+      "url": "https://redis.io/",
+      "text": "Redis"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/typesense.html",
+      "text": "Typesense Vector Store"
+    },
+    {
+      "url": "https://typesense.org/docs/0.24.0/api/vector-search.html",
+      "text": "Typesense"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/weaviate.html",
+      "text": "Weaviate Vector Store"
+    },
+    {
+      "url": "https://weaviate.io/",
+      "text": "Weaviate"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/s3-vector-store.html",
+      "text": "S3 Vector Store"
+    },
+    {
+      "url": "https://aws.amazon.com/s3/features/vectors/",
+      "text": "AWS S3"
+    },
+    {
+      "url": "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/SimpleVectorStore.java",
+      "text": "SimpleVectorStore"
+    },
+    {
+      "url": "https://azurecosmosdb.github.io/spring-ai/docs/index.html",
+      "text": "azurecosmosdb.github.io/spring-ai/docs/index.html"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/understand-vectordbs.html",
+      "text": "Understanding Vectors"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/testing.html",
+      "text": "Model Evaluation"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure.html",
+      "text": "Azure AI Service"
+    }
+  ]
+}

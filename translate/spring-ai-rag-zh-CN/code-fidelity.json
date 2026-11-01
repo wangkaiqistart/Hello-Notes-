@@ -1,0 +1,219 @@
+{
+  "date": "2026-11-01",
+  "version": "2.0.2",
+  "validation": "Static source comparison only; snippets not compiled or run.",
+  "sourceBlocks": 21,
+  "targetBlocks": 21,
+  "blocks": [
+    {
+      "sourceBlock": 1,
+      "targetBlock": 1,
+      "sourceLanguage": "xml",
+      "targetLanguage": "xml",
+      "sourceSha256": "ae9ec2d30ef2cb5a90b8e14bd5f87cac650709e78ec28f787877bafcfdfac6d7",
+      "targetSha256": "e60dd0258c2060bf6037e1d806e399a4598c01e1805017295a8cadb18ed9cd03",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 2,
+      "targetBlock": 2,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "f85d46a3d2ebd99a43be4c5013e323992eadcd3e27f29d870e3ec8c3caa4afac",
+      "targetSha256": "d0b9a78d2accb64483c9ab552c3cd09bfe010f094674c0094c14a7989d1f3ada",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 3,
+      "targetBlock": 3,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "6492b6945a08aa5fb25f15510a3524c5539c8b03cd5a655e824621ae88a4687a",
+      "targetSha256": "11ae5a931c9b536e3e208c3926d406ad7591ab5928afc0cba5402e0319cbd5dc",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 4,
+      "targetBlock": 4,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "fc3738ac88f77a9131a3d043143dda8733ee8acf9f775a003343f6188aef12eb",
+      "targetSha256": "96cb156e4246e9de221f11b1afa3105da939222d19a531b0991627bb7443b94b",
+      "status": "documented-correction",
+      "note": "将错误的 this.chatClient 改为前面声明的局部 chatClient。"
+    },
+    {
+      "sourceBlock": 5,
+      "targetBlock": 5,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "c9d08ab797e349092875d02c2bac8bac1455d1ee6d4279a0c47df98aac78b11f",
+      "targetSha256": "2a7604d1b8e86302b09f0c55f2dbce43320f1f14256ae0c7a8b2768217f37f17",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 6,
+      "targetBlock": 6,
+      "sourceLanguage": "xml",
+      "targetLanguage": "xml",
+      "sourceSha256": "1c3d67feecfafa16e608887d8ecdbe9c9c952df221f8277b10f836ac80c169d5",
+      "targetSha256": "1dbfcf94602a30312ceae1c01877b9cfcd0378006ec9c3bc79840d549c6b2619",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 7,
+      "targetBlock": 7,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "e0beb2b4cb021ff3030a052800795847a50c19199020a9aed3449ac5ec5a7531",
+      "targetSha256": "f8e1e409eefc1dd9b22ed8e04ba9c8ada58dea23bd9e6b70193b1495e1dab85e",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 8,
+      "targetBlock": 8,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "5ed5a3fb765c61d39bb9ad452902394c5a3d0261a3f04e2f36f8b5bc26012949",
+      "targetSha256": "ffcf2ad062aca59d032d149d1fae9742b1a6cfbbb182fcd9c9ff75b9c00182dd",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 9,
+      "targetBlock": 9,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "0a9c5019a4aadc7626f7be504609592f7af830b6900f8500a733503eeaaeb94d",
+      "targetSha256": "f75e1da85e35f55da0af3e2b49fb313b9edeca21b7f448c39deb91514f956162",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 10,
+      "targetBlock": 10,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "8e9c1540fef85c1e68ea615065116d4fead926c488e23dca71987fd64b905e71",
+      "targetSha256": "f9d61cf757e5463f2e7f57cf3cdec21158b37b4cdff99e3e0c3df580be6db870",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 11,
+      "targetBlock": 11,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "a762e2fca57896168c358b0fa010e931fdb1c3baf94f76317f94a75849a6412b",
+      "targetSha256": "9f8a1698b029a88a8a02975ce44cd7ea8c97c2b33493775c4cf6172002c13dae",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 12,
+      "targetBlock": 12,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "005bd06a177bc0f8b06f7066990296ccbd8b87e3c0b985a50637b45ecc8a99c8",
+      "targetSha256": "a598bc68b2c3924c28d3e278fa075ac49cbad5b85464a32945bc65b222130309",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 13,
+      "targetBlock": 13,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "6762424cccc66a2469db31d81850c7c314e1970f59c66c57131122ad0378a35c",
+      "targetSha256": "1c3cc11395c02dd59a7d0ed72e17b917dd20df9835ce9dcf3d8d23cd39e524e3",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 14,
+      "targetBlock": 14,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "9b79adc8bceb64b44112fc775be4887bdbdae63baf39681cc948c8edfe408ba4",
+      "targetSha256": "0c83147e1c9a8e6688b829964a67b7a1823ec881e52743df8c1b7f11cc234526",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 15,
+      "targetBlock": 15,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "71089cead1b5f2e7f1b56575f1bee718bed0c40a441927b0a64e55a2cffab3c5",
+      "targetSha256": "162cc563ac7f55089eb29062c147684bdb31d3bf8fe1b2a4043d51d67ca1aab8",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 16,
+      "targetBlock": 16,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "28a07c2810147a852e7386b2c13fc7c26f965868ed6ca1f437ac0ecf58bb0b54",
+      "targetSha256": "162cad83e62476b772aaba1b4faa131ce218cadd6fa02dde48a7a8ce3f17d760",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 17,
+      "targetBlock": 17,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "1abe48341d28c74bc69175b140330e420fde37009151ef207a143fcc9d0c5710",
+      "targetSha256": "96abcc62c5fe2d20d9f56e76b7f4796551be0f96a27050a61f9a3c98d7795797",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 18,
+      "targetBlock": 18,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "628f720c718305d25f0244bef545f31e39e189f2aa9fa3548f5ce2b5d93bbc10",
+      "targetSha256": "fed4ed55f79b587f18d0dc8a555d7e9693fb14f3e2a6cad10ac7ffb8d3cda546",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 19,
+      "targetBlock": 19,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "42755b5cb9e4d3028084453471cb6ac830e29bb657a39ad5709134827191cf8e",
+      "targetSha256": "f530a6e5503a2c868531955a47725bf500b076b1a675a62f69f38c250ff2ead7",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 20,
+      "targetBlock": 20,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "f6658ddeab251448ea14503a5bab9ac324fba448faf76383e13f4cb432c2f79d",
+      "targetSha256": "42e8921658534a988b3053b7d21ebf0713c498b0dd8d3119b631504b0245e3f3",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 21,
+      "targetBlock": 21,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "5ea2e47b24b2688ec2a9a6cd0665c888a762f2dd1ab16270ea44da6dec0f8e9a",
+      "targetSha256": "2459806c456d14b53e9a7d59c48250fa164be0b9eb9b164f73d8ec68bcac8a15",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    }
+  ]
+}

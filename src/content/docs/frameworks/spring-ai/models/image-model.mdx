@@ -12,7 +12,7 @@ sidebar:
 
 ## 核心 API
 
-`ImageModel` 建立在通用模型 API 之上：
+`ImageModel` 建立在[通用模型 API](/frameworks/spring-ai/models/#统一-api-统一了什么) 之上：
 
 ```java
 @FunctionalInterface

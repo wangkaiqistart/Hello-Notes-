@@ -1,0 +1,30 @@
+{
+  "version": "2.0.2",
+  "files": [
+    {
+      "file": "MilvusSearchRequest.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-milvus-store/src/main/java/org/springframework/ai/vectorstore/milvus/MilvusSearchRequest.java",
+      "sha256": "5ddc05aa3f5813b1a42833d34ba68a457724d854faefe8b5ba8ff1099a8e817a"
+    },
+    {
+      "file": "MilvusServiceClientProperties.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-milvus/src/main/java/org/springframework/ai/vectorstore/milvus/autoconfigure/MilvusServiceClientProperties.java",
+      "sha256": "4186abe2f1a725dbb9ebc0200acb1ddc41deff8f8059458f856f8b96344524b1"
+    },
+    {
+      "file": "MilvusVectorStore.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-milvus-store/src/main/java/org/springframework/ai/vectorstore/milvus/MilvusVectorStore.java",
+      "sha256": "72eaefc09baf30f14dac05b09877366adcc181d8eecf3f69ce84ba4ead529b6f"
+    },
+    {
+      "file": "MilvusVectorStoreAutoConfiguration.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-milvus/src/main/java/org/springframework/ai/vectorstore/milvus/autoconfigure/MilvusVectorStoreAutoConfiguration.java",
+      "sha256": "a4c1c251f1611d1aea9e3ef9722c78e1cc71f0baa6869eababd50a87047cee79"
+    },
+    {
+      "file": "MilvusVectorStoreProperties.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-milvus/src/main/java/org/springframework/ai/vectorstore/milvus/autoconfigure/MilvusVectorStoreProperties.java",
+      "sha256": "2156c421a6c4c4063b68219b3e73a8c5803d8f726b5a75708109a66fd39115ea"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "version": "2.0.2",
+  "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/index.mdx",
+  "pageSha256": "1dbf1562c2afc2100755b2b63d2379e9d5f0e148d38f31428a09a7cd6c7d8d96",
+  "sourceSections": 34,
+  "targetSourceSections": 34,
+  "sourceCodeBlocks": 32,
+  "targetCodeBlocks": 32,
+  "sourceImages": 0,
+  "targetImages": 0,
+  "sourceLinksCovered": 48,
+  "excludedNavigationLinks": {
+    "https://docs.spring.io/spring-ai/reference/index.html": "Source breadcrumb",
+    "https://docs.spring.io/spring-ai/reference/api/testing.html": "Source previous-page navigation; local evaluation link exists in reading route"
+  },
+  "sourceLinkOverrides": {
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/milvus.html": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/redis.html": "/frameworks/spring-ai/rag/vector-stores/redis/",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/s3-vector-store.html": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/elasticsearch.html": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/understand-vectordbs.html#vectordbs-similarity": "/rag/vector-db/chroma-vector-store/#相似度怎么理解",
+    "https://docs.spring.io/spring-ai/reference/concepts.html#concept-rag": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#metadata-filters": "#metadata-filters",
+    "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/SimpleVectorStore.java": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/SimpleVectorStore.java"
+  },
+  "directoryPlan": "directory-plan.json",
+  "codeFidelity": "code-fidelity.json",
+  "apiChecks": "api-contract-checks.json",
+  "scope": "Full overview; selected PGvector, Milvus, Redis, S3 Vector Store, and Elasticsearch translations completed separately. Other 16 backends are reference links only.",
+  "latestRagReferenceAudit": "../spring-ai-rag-reference-audit/audit.json"
+}

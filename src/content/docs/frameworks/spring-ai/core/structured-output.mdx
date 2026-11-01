@@ -603,8 +603,8 @@ ActorsFilms films = chatClient.prompt()
 
 结构化输出默认是尽力而为的转换；需要更可靠的结构时，启用 `validateSchema()`、`useProviderStructuredOutput()`，或组合使用。
 
-`StructuredOutputConverter` 不用于[工具调用](https://docs.spring.io/spring-ai/reference/api/tools.html)；工具调用本身通过工具协议提供结构化信息。
+`StructuredOutputConverter` 不用于[工具调用](/frameworks/spring-ai/tools/tool-calling/)；工具调用本身通过工具协议提供结构化信息。
 
-继续阅读：[Advisors：调用链与递归](/frameworks/spring-ai/core/advisors/)，理解校验循环与其他 Advisor 的组合；下一主题是[对话记忆](https://docs.spring.io/spring-ai/reference/api/chat-memory.html)。
+继续阅读：[Advisors：调用链与递归](/frameworks/spring-ai/core/advisors/)，理解校验循环与其他 Advisor 的组合；下一主题是[对话记忆](/frameworks/spring-ai/core/chat-memory/)。
 
 来源：[Structured Output](https://docs.spring.io/spring-ai/reference/api/structured-output.html)、[Schema Validation & Self-Correction](https://docs.spring.io/spring-ai/reference/api/structured-output/validation.html)、[Provider-Native Structured Output](https://docs.spring.io/spring-ai/reference/api/structured-output/native.html)、[Output Converters](https://docs.spring.io/spring-ai/reference/api/structured-output/converters.html)。文档版本：2.0.2；核验日期：2026-10-25。

@@ -1,0 +1,50 @@
+{
+  "version": "2.0.2",
+  "files": [
+    {
+      "file": "AbstractObservationVectorStore.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/observation/AbstractObservationVectorStore.java",
+      "sha256": "d99f094ff15fd696cc462a1cb994120bd4d149b7f2757ae6f33676719e47be94"
+    },
+    {
+      "file": "OpenAiEmbeddingModel.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-openai/src/main/java/org/springframework/ai/openai/OpenAiEmbeddingModel.java",
+      "sha256": "6ccc2885bf731d35e4574955740c50bdda4dc280b23a8ee33bab12cfe882d132"
+    },
+    {
+      "file": "OpenAiSetup.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-openai/src/main/java/org/springframework/ai/openai/setup/OpenAiSetup.java",
+      "sha256": "673ec1c11c734b2e41134c88bf69f2f09584d85b715a006ef83d828fcaae577e"
+    },
+    {
+      "file": "S3VectorFilterExpressionConverter.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-s3-vector-store/src/main/java/org/springframework/ai/vectorstore/s3/S3VectorFilterExpressionConverter.java",
+      "sha256": "19b363a33afecc8c5a7ef816bf7d303f124261a7acc381549a7cebad06c8b7ef"
+    },
+    {
+      "file": "S3VectorFilterSearchExpressionConverter.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-s3-vector-store/src/main/java/org/springframework/ai/vectorstore/s3/S3VectorFilterSearchExpressionConverter.java",
+      "sha256": "c0561fcca748bf6dfdc7449d7dd595df0ac0ff3e67079b8fbd4d874afae9bbf6"
+    },
+    {
+      "file": "S3VectorStore.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-s3-vector-store/src/main/java/org/springframework/ai/vectorstore/s3/S3VectorStore.java",
+      "sha256": "0af3bb13278b7fb4ddf98758eb7d2f595ed4abd7f55c322f01593d33d5402dea"
+    },
+    {
+      "file": "S3VectorStoreAutoConfiguration.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-s3/src/main/java/org/springframework/ai/vectorstore/s3/autoconfigure/S3VectorStoreAutoConfiguration.java",
+      "sha256": "c53f5637c3047504a25036f4c534836008cdeb11dda595c8a58041ab5a022e63"
+    },
+    {
+      "file": "S3VectorStoreFilterExpressionEvaluator.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-s3-vector-store/src/main/java/org/springframework/ai/vectorstore/s3/S3VectorStoreFilterExpressionEvaluator.java",
+      "sha256": "019727996f38e8b7ad49585b1495ad7cbe5ad3712e3182584c866f9396451049"
+    },
+    {
+      "file": "S3VectorStoreProperties.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-s3/src/main/java/org/springframework/ai/vectorstore/s3/autoconfigure/S3VectorStoreProperties.java",
+      "sha256": "fe6b13253e162320e6dcfcc1ad426407066cff00219d6f6f6cc02aeaeb63071a"
+    }
+  ]
+}

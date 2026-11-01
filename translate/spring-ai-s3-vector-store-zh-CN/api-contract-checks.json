@@ -1,0 +1,113 @@
+{
+  "version": "2.0.2",
+  "result": "PASS",
+  "checks": [
+    {
+      "check": "索引无默认值",
+      "file": "S3VectorStoreProperties.java",
+      "evidence": "private @Nullable String indexName;",
+      "result": "PASS"
+    },
+    {
+      "check": "向量桶无默认值",
+      "file": "S3VectorStoreProperties.java",
+      "evidence": "private @Nullable String vectorBucketName;",
+      "result": "PASS"
+    },
+    {
+      "check": "自动配置要求索引",
+      "file": "S3VectorStoreAutoConfiguration.java",
+      "evidence": "Assert.notNull(p.getIndexName()",
+      "result": "PASS"
+    },
+    {
+      "check": "自动配置要求向量桶",
+      "file": "S3VectorStoreAutoConfiguration.java",
+      "evidence": "Assert.notNull(p.getVectorBucketName()",
+      "result": "PASS"
+    },
+    {
+      "check": "客户端由Bean注入",
+      "file": "S3VectorStoreAutoConfiguration.java",
+      "evidence": "S3VectorStore s3VectorStore(S3VectorsClient s3VectorsClient, EmbeddingModel embeddingModel)",
+      "result": "PASS"
+    },
+    {
+      "check": "写入包含键",
+      "file": "S3VectorStore.java",
+      "evidence": ".key(document.getId())",
+      "result": "PASS"
+    },
+    {
+      "check": "写入包含元数据",
+      "file": "S3VectorStore.java",
+      "evidence": ".metadata(constructMetadata(document.getMetadata()))",
+      "result": "PASS"
+    },
+    {
+      "check": "检索text为向量键",
+      "file": "S3VectorStore.java",
+      "evidence": "Document.builder().metadata(metadata).text(vector.key()).build()",
+      "result": "PASS"
+    },
+    {
+      "check": "距离保存到元数据",
+      "file": "S3VectorStore.java",
+      "evidence": "metadata.put(\"SPRING_AI_S3_DISTANCE\", vector.distance())",
+      "result": "PASS"
+    },
+    {
+      "check": "列表每页500",
+      "file": "S3VectorStore.java",
+      "evidence": "LIST_VECTORS_MAX_RESULTS = 500",
+      "result": "PASS"
+    },
+    {
+      "check": "删除每批500键",
+      "file": "S3VectorStore.java",
+      "evidence": "DELETE_VECTORS_MAX_KEYS = 500",
+      "result": "PASS"
+    },
+    {
+      "check": "过滤在本地判断",
+      "file": "S3VectorStore.java",
+      "evidence": "this.filterExpressionEvaluator.evaluate(filterExpression",
+      "result": "PASS"
+    },
+    {
+      "check": "使用分页Token",
+      "file": "S3VectorStore.java",
+      "evidence": "while (StringUtils.hasText(nextToken))",
+      "result": "PASS"
+    },
+    {
+      "check": "支持定制过滤转换",
+      "file": "S3VectorStore.java",
+      "evidence": "Builder filterExpressionConverter(S3VectorFilterExpressionConverter converter)",
+      "result": "PASS"
+    },
+    {
+      "check": "SDK AND转换",
+      "file": "S3VectorFilterSearchExpressionConverter.java",
+      "evidence": "case AND -> \"$and\"",
+      "result": "PASS"
+    },
+    {
+      "check": "基类委托具体检索",
+      "file": "AbstractObservationVectorStore.java",
+      "evidence": "var documents = this.doSimilaritySearch(request)",
+      "result": "PASS"
+    },
+    {
+      "check": "模型builder支持",
+      "file": "OpenAiEmbeddingModel.java",
+      "evidence": "public static Builder builder()",
+      "result": "PASS"
+    },
+    {
+      "check": "S3原文正文未保存、阈值未处理、资源未初始化核对",
+      "result": "PASS"
+    }
+  ],
+  "boundary": "Static source inspection only; Java examples not compiled or executed; no database or model calls."
+}

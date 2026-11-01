@@ -1,0 +1,13 @@
+
+> hello-notes@0.1.0 check
+> astro check
+
+15:04:47 [content] Syncing content
+15:04:47 [content] Synced content
+15:04:47 [types] Generated 506ms
+15:04:47 [check] Getting diagnostics for Astro files in /Volumes/Data/my_project/my-knowledge-base...
+Result (18 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+

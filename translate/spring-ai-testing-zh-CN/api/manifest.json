@@ -1,0 +1,56 @@
+{
+  "version": "2.0.2",
+  "retrieved": "2026-11-01",
+  "files": [
+    {
+      "file": "EvaluationRequest.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/evaluation/EvaluationRequest.java",
+      "sha256": "e5793ba66286dbf7e29d8a0c254caa01b4b334d2165fe4eeaf8159f8ccf51fd5"
+    },
+    {
+      "file": "EvaluationResponse.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/evaluation/EvaluationResponse.java",
+      "sha256": "97942f744350dbe2cb1bfa6d8e38b4ae7f5a329d4e816e37d662ce3c11b0f097"
+    },
+    {
+      "file": "Evaluator.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/evaluation/Evaluator.java",
+      "sha256": "e3514735d8d0e48afd5be7fac5acccd7fb3726136f8cdd2125a7bcf4a51be071"
+    },
+    {
+      "file": "FactCheckingEvaluator.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-client-chat/src/main/java/org/springframework/ai/chat/evaluation/FactCheckingEvaluator.java",
+      "sha256": "76cfddf097738e5dad0aee420cf163680fce3850666c82b43ab4e6651be063c2"
+    },
+    {
+      "file": "FactCheckingEvaluatorTests.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-client-chat/src/test/java/org/springframework/ai/chat/evaluation/FactCheckingEvaluatorTests.java",
+      "sha256": "57e7df9bd9f4ce2f5708f70834c9254ba31a6defd8625a5aee503d4878677bf7"
+    },
+    {
+      "file": "OllamaApi.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-ollama/src/main/java/org/springframework/ai/ollama/api/OllamaApi.java",
+      "sha256": "e2b2c0052233fcb647d58952689300181429cecb01d6595653275598a18eca27"
+    },
+    {
+      "file": "OllamaChatModel.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-ollama/src/main/java/org/springframework/ai/ollama/OllamaChatModel.java",
+      "sha256": "55d3524b0d45cb277eb1a5f91a5891e09fd4726f6fa7c3ea276656a5801082a6"
+    },
+    {
+      "file": "PromptTemplate.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-model/src/main/java/org/springframework/ai/chat/prompt/PromptTemplate.java",
+      "sha256": "83bc4794cd0e4e133dd7c13e6d79cfaaec16bfff5774e4bd875b8965aef08db7"
+    },
+    {
+      "file": "RelevancyEvaluator.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-client-chat/src/main/java/org/springframework/ai/chat/evaluation/RelevancyEvaluator.java",
+      "sha256": "bc7ac51334fcf5f1b93a3280c8a294f54d6824782e919b8076a43a4233f5906b"
+    },
+    {
+      "file": "RetrievalAugmentationAdvisor.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-rag/src/main/java/org/springframework/ai/rag/advisor/RetrievalAugmentationAdvisor.java",
+      "sha256": "796eaa7a7c05e6ad48637e6ed1692fd490b9a1a27c91a1da310ea0fa783afd1c"
+    }
+  ]
+}

@@ -1,0 +1,255 @@
+{
+  "url": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html",
+  "version": "2.0.2",
+  "retrieved": "2026-11-01",
+  "sourceHtmlSha256": "256232a945962ba07067a405fa68ed6c4ba2e79a50554b40a03506a2f50c8c56",
+  "headings": [
+    {
+      "id": "page-title",
+      "text": "Retrieval Augmented Generation"
+    },
+    {
+      "id": "_advisors",
+      "text": "Advisors"
+    },
+    {
+      "id": "_questionansweradvisor",
+      "text": "QuestionAnswerAdvisor"
+    },
+    {
+      "id": "_dynamic_filter_expressions",
+      "text": "Dynamic Filter Expressions"
+    },
+    {
+      "id": "_custom_template",
+      "text": "Custom Template"
+    },
+    {
+      "id": "_retrievalaugmentationadvisor",
+      "text": "RetrievalAugmentationAdvisor"
+    },
+    {
+      "id": "_sequential_rag_flows",
+      "text": "Sequential RAG Flows"
+    },
+    {
+      "id": "_naive_rag",
+      "text": "Naive RAG"
+    },
+    {
+      "id": "_advanced_rag",
+      "text": "Advanced RAG"
+    },
+    {
+      "id": "modules",
+      "text": "Modules"
+    },
+    {
+      "id": "_pre_retrieval",
+      "text": "Pre-Retrieval"
+    },
+    {
+      "id": "_query_transformation",
+      "text": "Query Transformation"
+    },
+    {
+      "id": "_compressionquerytransformer",
+      "text": "CompressionQueryTransformer"
+    },
+    {
+      "id": "_rewritequerytransformer",
+      "text": "RewriteQueryTransformer"
+    },
+    {
+      "id": "_translationquerytransformer",
+      "text": "TranslationQueryTransformer"
+    },
+    {
+      "id": "_query_expansion",
+      "text": "Query Expansion"
+    },
+    {
+      "id": "_multiqueryexpander",
+      "text": "MultiQueryExpander"
+    },
+    {
+      "id": "_retrieval",
+      "text": "Retrieval"
+    },
+    {
+      "id": "_document_search",
+      "text": "Document Search"
+    },
+    {
+      "id": "_vectorstoredocumentretriever",
+      "text": "VectorStoreDocumentRetriever"
+    },
+    {
+      "id": "_document_join",
+      "text": "Document Join"
+    },
+    {
+      "id": "_concatenationdocumentjoiner",
+      "text": "ConcatenationDocumentJoiner"
+    },
+    {
+      "id": "_post_retrieval",
+      "text": "Post-Retrieval"
+    },
+    {
+      "id": "_document_post_processing",
+      "text": "Document Post-Processing"
+    },
+    {
+      "id": "_generation",
+      "text": "Generation"
+    },
+    {
+      "id": "_query_augmentation",
+      "text": "Query Augmentation"
+    },
+    {
+      "id": "_contextualqueryaugmenter",
+      "text": "ContextualQueryAugmenter"
+    }
+  ],
+  "images": [],
+  "links": [
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/concepts.html#concept-rag",
+      "text": "concepts"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/chatclient.html#_prompt_templates",
+      "text": "ChatClient Prompt Templates"
+    },
+    {
+      "href": "https://www.stringtemplate.org/",
+      "text": "StringTemplate"
+    },
+    {
+      "href": "#modules",
+      "text": "library of RAG modules"
+    },
+    {
+      "href": "#_vectorstoredocumentretriever",
+      "text": "VectorStoreDocumentRetriever"
+    },
+    {
+      "href": "https://arxiv.org/abs/2407.21059",
+      "text": "Modular RAG: Transforming RAG Systems into LEGO-like Reconfigurable Frameworks"
+    },
+    {
+      "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html#reranking",
+      "text": "Qxotic jinfer"
+    }
+  ],
+  "codeBlocks": [
+    {
+      "index": 1,
+      "language": "xml",
+      "text": "<dependency>\n   <groupId>org.springframework.ai</groupId>\n   <artifactId>spring-ai-vector-store-advisor</artifactId>\n</dependency>"
+    },
+    {
+      "index": 2,
+      "language": "java",
+      "text": "ChatResponse response = ChatClient.builder(chatModel)\n        .build().prompt()\n        .advisors(QuestionAnswerAdvisor.builder(vectorStore).build())\n        .user(userText)\n        .call()\n        .chatResponse();"
+    },
+    {
+      "index": 3,
+      "language": "java",
+      "text": "var qaAdvisor = QuestionAnswerAdvisor.builder(vectorStore)\n        .searchRequest(SearchRequest.builder().similarityThreshold(0.8d).topK(6).build())\n        .build();"
+    },
+    {
+      "index": 4,
+      "language": "java",
+      "text": "ChatClient chatClient = ChatClient.builder(chatModel)\n    .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore)\n        .searchRequest(SearchRequest.builder().build())\n        .build())\n    .build();\n\n// Update filter expression at runtime\nString content = this.chatClient.prompt()\n    .user(\"Please answer my question XYZ\")\n    .advisors(a -> a.param(QuestionAnswerAdvisor.FILTER_EXPRESSION, \"type == 'Spring'\"))\n    .call()\n    .content();"
+    },
+    {
+      "index": 5,
+      "language": "java",
+      "text": "PromptTemplate customPromptTemplate = PromptTemplate.builder()\n    .renderer(StTemplateRenderer.builder().startDelimiterToken('<').endDelimiterToken('>').build())\n    .template(\"\"\"\n            <query>\n\n            Context information is below.\n\n\t\t\t---------------------\n\t\t\t<question_answer_context>\n\t\t\t---------------------\n\n\t\t\tGiven the context information and no prior knowledge, answer the query.\n\n\t\t\tFollow these rules:\n\n\t\t\t1. If the answer is not in the context, just say that you don't know.\n\t\t\t2. Avoid statements like \"Based on the context...\" or \"The provided information...\".\n            \"\"\")\n    .build();\n\n    String question = \"Where does the adventure of Anacletus and Birba take place?\";\n\n    QuestionAnswerAdvisor qaAdvisor = QuestionAnswerAdvisor.builder(vectorStore)\n        .promptTemplate(customPromptTemplate)\n        .build();\n\n    String response = ChatClient.builder(chatModel).build()\n        .prompt(question)\n        .advisors(qaAdvisor)\n        .call()\n        .content();"
+    },
+    {
+      "index": 6,
+      "language": "xml",
+      "text": "<dependency>\n   <groupId>org.springframework.ai</groupId>\n   <artifactId>spring-ai-rag</artifactId>\n</dependency>"
+    },
+    {
+      "index": 7,
+      "language": "java",
+      "text": "Advisor retrievalAugmentationAdvisor = RetrievalAugmentationAdvisor.builder()\n        .documentRetriever(VectorStoreDocumentRetriever.builder()\n                .similarityThreshold(0.50)\n                .vectorStore(vectorStore)\n                .build())\n        .build();\n\nString answer = chatClient.prompt()\n        .advisors(retrievalAugmentationAdvisor)\n        .user(question)\n        .call()\n        .content();"
+    },
+    {
+      "index": 8,
+      "language": "java",
+      "text": "Advisor retrievalAugmentationAdvisor = RetrievalAugmentationAdvisor.builder()\n        .documentRetriever(VectorStoreDocumentRetriever.builder()\n                .similarityThreshold(0.50)\n                .vectorStore(vectorStore)\n                .build())\n        .queryAugmenter(ContextualQueryAugmenter.builder()\n                .allowEmptyContext(true)\n                .build())\n        .build();\n\nString answer = chatClient.prompt()\n        .advisors(retrievalAugmentationAdvisor)\n        .user(question)\n        .call()\n        .content();"
+    },
+    {
+      "index": 9,
+      "language": "java",
+      "text": "Advisor retrievalAugmentationAdvisor = RetrievalAugmentationAdvisor.builder()\n        .documentRetriever(VectorStoreDocumentRetriever.builder()\n                .similarityThreshold(0.50)\n                .vectorStore(vectorStore)\n                .build())\n        .build();\n\nString answer = chatClient.prompt()\n        .advisors(retrievalAugmentationAdvisor)\n        .advisors(a -> a.param(VectorStoreDocumentRetriever.FILTER_EXPRESSION, \"type == 'Spring'\"))\n        .user(question)\n        .call()\n        .content();"
+    },
+    {
+      "index": 10,
+      "language": "java",
+      "text": "Advisor retrievalAugmentationAdvisor = RetrievalAugmentationAdvisor.builder()\n        .queryTransformers(RewriteQueryTransformer.builder()\n                .chatClientBuilder(chatClientBuilder.build().mutate())\n                .build())\n        .documentRetriever(VectorStoreDocumentRetriever.builder()\n                .similarityThreshold(0.50)\n                .vectorStore(vectorStore)\n                .build())\n        .build();\n\nString answer = chatClient.prompt()\n        .advisors(retrievalAugmentationAdvisor)\n        .user(question)\n        .call()\n        .content();"
+    },
+    {
+      "index": 11,
+      "language": "java",
+      "text": "Query query = Query.builder()\n        .text(\"And what is its second largest city?\")\n        .history(new UserMessage(\"What is the capital of Denmark?\"),\n                new AssistantMessage(\"Copenhagen is the capital of Denmark.\"))\n        .build();\n\nQueryTransformer queryTransformer = CompressionQueryTransformer.builder()\n        .chatClientBuilder(chatClientBuilder)\n        .build();\n\nQuery transformedQuery = queryTransformer.transform(query);"
+    },
+    {
+      "index": 12,
+      "language": "java",
+      "text": "Query query = new Query(\"I'm studying machine learning. What is an LLM?\");\n\nQueryTransformer queryTransformer = RewriteQueryTransformer.builder()\n        .chatClientBuilder(chatClientBuilder)\n        .build();\n\nQuery transformedQuery = queryTransformer.transform(query);"
+    },
+    {
+      "index": 13,
+      "language": "java",
+      "text": "Query query = new Query(\"Hvad er Danmarks hovedstad?\");\n\nQueryTransformer queryTransformer = TranslationQueryTransformer.builder()\n        .chatClientBuilder(chatClientBuilder)\n        .targetLanguage(\"english\")\n        .build();\n\nQuery transformedQuery = queryTransformer.transform(query);"
+    },
+    {
+      "index": 14,
+      "language": "java",
+      "text": "MultiQueryExpander queryExpander = MultiQueryExpander.builder()\n    .chatClientBuilder(chatClientBuilder)\n    .numberOfQueries(3)\n    .build();\nList<Query> queries = queryExpander.expand(new Query(\"How to run a Spring Boot app?\"));"
+    },
+    {
+      "index": 15,
+      "language": "java",
+      "text": "MultiQueryExpander queryExpander = MultiQueryExpander.builder()\n    .chatClientBuilder(chatClientBuilder)\n    .includeOriginal(false)\n    .build();"
+    },
+    {
+      "index": 16,
+      "language": "java",
+      "text": "DocumentRetriever retriever = VectorStoreDocumentRetriever.builder()\n    .vectorStore(vectorStore)\n    .similarityThreshold(0.73)\n    .topK(5)\n    .filterExpression(new FilterExpressionBuilder()\n        .eq(\"genre\", \"fairytale\")\n        .build())\n    .build();\nList<Document> documents = retriever.retrieve(new Query(\"What is the main character of the story?\"));"
+    },
+    {
+      "index": 17,
+      "language": "java",
+      "text": "DocumentRetriever retriever = VectorStoreDocumentRetriever.builder()\n    .vectorStore(vectorStore)\n    .filterExpression(() -> new FilterExpressionBuilder()\n        .eq(\"tenant\", TenantContextHolder.getTenantIdentifier())\n        .build())\n    .build();\nList<Document> documents = retriever.retrieve(new Query(\"What are the KPIs for the next semester?\"));"
+    },
+    {
+      "index": 18,
+      "language": "java",
+      "text": "Query query = Query.builder()\n    .text(\"Who is Anacletus?\")\n    .context(Map.of(VectorStoreDocumentRetriever.FILTER_EXPRESSION, \"location == 'Whispering Woods'\"))\n    .build();\nList<Document> retrievedDocuments = documentRetriever.retrieve(query);"
+    },
+    {
+      "index": 19,
+      "language": "java",
+      "text": "Map<Query, List<List<Document>>> documentsForQuery = ...\nDocumentJoiner documentJoiner = new ConcatenationDocumentJoiner();\nList<Document> documents = documentJoiner.join(documentsForQuery);"
+    },
+    {
+      "index": 20,
+      "language": "java",
+      "text": "QueryAugmenter queryAugmenter = ContextualQueryAugmenter.builder().build();"
+    },
+    {
+      "index": 21,
+      "language": "java",
+      "text": "QueryAugmenter queryAugmenter = ContextualQueryAugmenter.builder()\n        .allowEmptyContext(true)\n        .build();"
+    }
+  ],
+  "excludes": "Site breadcrumbs, page pagination, and empty heading permalink controls; article body retained."
+}

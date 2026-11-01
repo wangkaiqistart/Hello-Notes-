@@ -1,0 +1,72 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "scope": "Only RAG and ETL document references and synchronized translation records. Local document citations must stay under /frameworks/spring-ai/; same-page anchors and static image links are allowed. No source code, source anchors, diagrams, or navigation changed.",
+  "page": {
+    "page": "src/content/docs/frameworks/spring-ai/rag/document-ingestion.mdx",
+    "slug": "etl-pipeline",
+    "codeBlocksPreserved": 41,
+    "anchorsPreserved": 83,
+    "figuresPreserved": 3,
+    "localReferences": [
+      "/frameworks/spring-ai/rag/retrieval-and-generation/",
+      "/frameworks/spring-ai/models/chat-model/",
+      "/frameworks/spring-ai/models/embedding-model/",
+      "#etl-class-diagram",
+      "#_parameters_4",
+      "#_notes_3",
+      "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+      "/frameworks/spring-ai/rag/vector-stores/#api-overview",
+      "/frameworks/spring-ai/rag/vector-stores/#_vectorstore_implementations",
+      "/frameworks/spring-ai/rag/vector-stores/pgvector/"
+    ],
+    "externalReferences": [
+      "https://tika.apache.org/3.1.0/formats.html",
+      "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html"
+    ],
+    "pageSha256": "2cb8548738d1b72df0649c64b0ec080cafd4cf71217f25fb46993a19ad3ab671"
+  },
+  "changes": [
+    {
+      "before": "关键词、摘要增强会调用聊天模型，",
+      "after": "关键词、摘要增强会调用[聊天模型](/frameworks/spring-ai/models/chat-model/)，"
+    },
+    {
+      "before": "分块边界与语义完整性的取舍，见[文档处理与分块：策略怎么选](/rag/document-parsing/document-processing-and-chunking/#分块策略怎么选)。下面介绍 Spring AI 的具体实现。",
+      "after": "分块边界与语义完整性的取舍，结合下文 [TokenTextSplitter 参数](#_parameters_4)和[注意事项](#_notes_3)理解，重点关注 Token 数、字符长度与标点断句的区别。下面介绍 Spring AI 的具体实现。"
+    },
+    {
+      "before": "可以使用默认模板，也可以通过 `keywordsTemplate` 参数指定模板。默认模板如下：",
+      "after": "可以使用默认模板，也可以通过 `keywordsTemplate` 参数指定模板，模板变量的用法见 [PromptTemplate](/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词)。默认模板如下："
+    },
+    {
+      "before": "向量存储与相似度检索的基本概念，可参考 [Chroma 向量库与检索](/rag/vector-db/chroma-vector-store/)（该篇使用 Python 示例）。Spring AI 支持的向量存储完整列表见[向量存储总览](/frameworks/spring-ai/rag/vector-stores/#_vectorstore_implementations)。",
+      "after": "向量存储与相似度检索的基本用法，见[向量存储总览：API 概览](/frameworks/spring-ai/rag/vector-stores/#api-overview)。完整后端列表与阅读顺序见[向量存储实现](/frameworks/spring-ai/rag/vector-stores/#_vectorstore_implementations)，具体接入可从 [PGvector](/frameworks/spring-ai/rag/vector-stores/pgvector/) 开始。"
+    }
+  ],
+  "retainedExternalReferences": [
+    {
+      "url": "https://tika.apache.org/3.1.0/formats.html",
+      "reason": "Spring AI 的 TikaDocumentReader 用法不包含 Apache Tika 的完整支持格式列表。"
+    }
+  ],
+  "provenanceLinks": ["https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html"],
+  "browser": {
+    "record": "2026-11-01-spring-ai-only-page-validation.json",
+    "result": "PASS",
+    "views": 2,
+    "combinedUniqueLocalTargets": 132
+  },
+  "check": {
+    "command": "npm run check",
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0
+  },
+  "build": {
+    "command": "npm run build",
+    "result": "PASS",
+    "pages": 92
+  },
+  "boundary": "No model, Java, or database execution. Retained external URLs were matched by topic and left unchanged; this pass verified local targets and fragments in the browser."
+}

@@ -1,0 +1,32 @@
+{
+  "result": "PASS",
+  "sourceBlocks": 2,
+  "preservedSourceBlocks": 2,
+  "addedBlocks": 2,
+  "blocks": [
+    {
+      "index": 1,
+      "language": "xml",
+      "status": "source-preserved",
+      "sha256": "ae5fed4b7099681f1410c559ca03629462cd9b715fa293a93e37eaaa16a6461b"
+    },
+    {
+      "index": 2,
+      "language": "groovy",
+      "status": "source-preserved",
+      "sha256": "f74303c7e09e7120ee187059e70f04ebd019343fcfe6b6aaeb10eecf0d5f32b3"
+    },
+    {
+      "index": 3,
+      "language": "yaml",
+      "status": "supplementary-example",
+      "sha256": "f766345ae51fcb0d2e36597a7fec9376a872dd60d992e86e186a7f9a66c79902"
+    },
+    {
+      "index": 4,
+      "language": "yaml",
+      "status": "supplementary-example",
+      "sha256": "da4dcd661398658dbf9c96dd250c1398b1efb1f63e5f9b93cea92f892d185b57"
+    }
+  ]
+}

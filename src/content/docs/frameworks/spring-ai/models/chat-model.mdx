@@ -45,7 +45,7 @@ String text = response.getResult().getOutput().getText();
 Flux<ChatResponse> responses = chatModel.stream(prompt);
 ```
 
-流中的元素代表逐步到达的响应，不应把每个元素都当成完整回答。常规文本消费也可以使用 `chatClient.prompt().user(...).stream().content()`，具体见 [ChatClient 流式调用](/frameworks/spring-ai/core/chat-client/)。
+流中的元素代表逐步到达的响应，不应把每个元素都当成完整回答。常规文本消费也可以使用 `chatClient.prompt().user(...).stream().content()`，具体见 [ChatClient 流式调用](/frameworks/spring-ai/core/chat-client/#流式响应)。
 
 ## ChatOptions：通用选项与专有选项
 
@@ -68,7 +68,7 @@ String text = chatClient.prompt()
     .content();
 ```
 
-2.0.2 的请求级 `options(...)` 接收 `ChatOptions.Builder`，这里传入尚未 `build()` 的构建器；所选模型还需支持 `temperature`。默认参数、请求级覆盖与提供方专有选项的关系，见 [ChatClient 参数配置](/frameworks/spring-ai/core/chat-client/)。
+2.0.2 的请求级 `options(...)` 接收 `ChatOptions.Builder`，这里传入尚未 `build()` 的构建器；所选模型还需支持 `temperature`。默认参数、请求级覆盖与提供方专有选项的关系，见 [ChatClient 参数配置](/frameworks/spring-ai/core/chat-client/#默认配置)。
 
 ## 需要时再查的内容
 

@@ -1,0 +1,92 @@
+{
+  "version": "2.0.2",
+  "source": "https://github.com/spring-projects/spring-ai/tree/v2.0.2",
+  "retrieved": "2026-11-01",
+  "files": [
+    {
+      "file": "JsoupDocumentReader.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/document-readers/spring-ai-jsoup-document-reader/src/main/java/org/springframework/ai/reader/jsoup/JsoupDocumentReader.java",
+      "sha256": "ded94582cf5c3f507d0679efbe80fd5f5b8040ec9727a898ad6c5b17de54de45"
+    },
+    {
+      "file": "JsoupDocumentReaderConfig.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/document-readers/spring-ai-jsoup-document-reader/src/main/java/org/springframework/ai/reader/jsoup/config/JsoupDocumentReaderConfig.java",
+      "sha256": "fd824ad075a46122c60bcfacb22e928b27ff65f8d4bb6f8947be8a1e8c1789f0"
+    },
+    {
+      "file": "MarkdownDocumentReader.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/document-readers/spring-ai-markdown-document-reader/src/main/java/org/springframework/ai/reader/markdown/MarkdownDocumentReader.java",
+      "sha256": "9c906a196ec16a662fdbe134e580467a53381aaba6f9715d930391415a0b1073"
+    },
+    {
+      "file": "MarkdownDocumentReaderConfig.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/document-readers/spring-ai-markdown-document-reader/src/main/java/org/springframework/ai/reader/markdown/config/MarkdownDocumentReaderConfig.java",
+      "sha256": "c415637530209c0f2ba87d88d8ea81ccb21c57306836b895e835095ebb140740"
+    },
+    {
+      "file": "Document.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/document/Document.java",
+      "sha256": "e48fe8087047921bc2a5a06b99b6e7b6b4f573e2de8360450fcefdac00405d6d"
+    },
+    {
+      "file": "DocumentReader.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/document/DocumentReader.java",
+      "sha256": "e207962277d6021518a24725a3e0e665daa1ff1715f6a4bd452855c662f0d5c9"
+    },
+    {
+      "file": "DocumentTransformer.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/document/DocumentTransformer.java",
+      "sha256": "8b46646e233ddf72a3d590295db2d707d7313b05e298a9680cdd6f570fd29279"
+    },
+    {
+      "file": "DocumentWriter.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/document/DocumentWriter.java",
+      "sha256": "41218b35aaaf391983f1e70496b87fcbbbf3352caf00229f4f9177013f1e491a"
+    },
+    {
+      "file": "JsonReader.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/reader/JsonReader.java",
+      "sha256": "38bcecffb885334afe35ca8758dd99c759a7335bd7154b0e1da2f8d1d4f95712"
+    },
+    {
+      "file": "TextReader.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/reader/TextReader.java",
+      "sha256": "f353febfa76388275f1cb7b3c6d09b84ebaf8844fe6c72da08dc36947dfa13d7"
+    },
+    {
+      "file": "ContentFormatTransformer.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/transformer/ContentFormatTransformer.java",
+      "sha256": "a31472786ae3db1a51750e8724d7f4a61b4f449ab1d543f868888ee49908c358"
+    },
+    {
+      "file": "TextSplitter.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/transformer/splitter/TextSplitter.java",
+      "sha256": "9f3c83550683f1ad9621ab34531340f3bdc4a3eabff3b31380788055be72afb9"
+    },
+    {
+      "file": "TokenTextSplitter.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/transformer/splitter/TokenTextSplitter.java",
+      "sha256": "4ffa252824896523417b25c36d3173f903cc59751c6a56f4bbb0f7449bbdb2e6"
+    },
+    {
+      "file": "FileDocumentWriter.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/writer/FileDocumentWriter.java",
+      "sha256": "8b64d5376a0c514c2895d51e18eaed09ca35218d7499a3f3f21a7d9d5689a951"
+    },
+    {
+      "file": "KeywordMetadataEnricher.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-model/src/main/java/org/springframework/ai/model/transformer/KeywordMetadataEnricher.java",
+      "sha256": "32d4c46e6a4f0bdefc4147609f41826949674ccaafa673d10868c4c0509865f2"
+    },
+    {
+      "file": "SummaryMetadataEnricher.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-model/src/main/java/org/springframework/ai/model/transformer/SummaryMetadataEnricher.java",
+      "sha256": "ca55e881ee6f78b606322e9d3a56c3f63d92235e7bfb09082f2f45ed9a703de1"
+    },
+    {
+      "file": "VectorStore.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/VectorStore.java",
+      "sha256": "a651f7bd474172fa18b051d8f6809f1e67c986cd04b43fd4423ce892212f27d4"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "version": "2.0.2",
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "VectorStore 包含检索与写入",
+      "result": "PASS"
+    },
+    {
+      "name": "只读接口只有检索",
+      "result": "PASS"
+    },
+    {
+      "name": "TopK 默认4",
+      "result": "PASS"
+    },
+    {
+      "name": "阈值默认0",
+      "result": "PASS"
+    },
+    {
+      "name": "阈值范围0到1",
+      "result": "PASS"
+    },
+    {
+      "name": "批处理默认8191",
+      "result": "PASS"
+    },
+    {
+      "name": "批处理默认余量10%",
+      "result": "PASS"
+    },
+    {
+      "name": "预算四舍五入",
+      "result": "PASS"
+    },
+    {
+      "name": "默认预算7372",
+      "result": "PASS"
+    },
+    {
+      "name": "超长单文档抛异常",
+      "result": "PASS"
+    },
+    {
+      "name": "格式化默认常量存在",
+      "result": "PASS"
+    },
+    {
+      "name": "默认不包含元数据",
+      "result": "PASS"
+    },
+    {
+      "name": "支持自定义估算器构造",
+      "result": "PASS"
+    },
+    {
+      "name": "Pgvector自动注入策略",
+      "result": "PASS"
+    },
+    {
+      "name": "Pgvector将策略传给embed",
+      "result": "PASS"
+    },
+    {
+      "name": "构建器支持批处理设置",
+      "result": "PASS"
+    },
+    {
+      "name": "Vertex支持autoTruncate",
+      "result": "PASS"
+    },
+    {
+      "name": "ChatModel支持call(String)",
+      "result": "PASS"
+    },
+    {
+      "name": "and需要两个操作数",
+      "result": "PASS"
+    },
+    {
+      "name": "支持空值过滤构建",
+      "result": "PASS"
+    },
+    {
+      "name": "加减符号属于数字常量",
+      "result": "PASS"
+    },
+    {
+      "name": "字符串删除解析后委托表达式删除",
+      "result": "PASS"
+    },
+    {
+      "name": "Pgvector结构初始化默认关闭",
+      "result": "PASS"
+    }
+  ],
+  "boundary": "Static source inspection; Java examples were not compiled or executed, no live embedding or vector database calls."
+}

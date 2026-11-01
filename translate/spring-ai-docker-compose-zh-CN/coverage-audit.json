@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "page": "src/content/docs/frameworks/spring-ai/engineering/docker-compose.mdx",
+  "pageSha256": "43a2cb362e35fd158da2df61cc26e3931d24af1f748c12306cdc09b502ebe02c",
+  "version": "2.0.2",
+  "sourceSections": 1,
+  "preservedSourceAnchors": ["_service_connections"],
+  "sourceCodeBlocks": 2,
+  "preservedCodeBlocks": 2,
+  "addedCodeBlocks": 2,
+  "sourceImages": 0,
+  "targetImages": 0,
+  "sourceServiceConnections": 9,
+  "targetServiceConnections": 9,
+  "sourceImageMatches": 11,
+  "localReferences": [
+    "#pgvector-example",
+    "#_service_connections",
+    "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+    "/frameworks/spring-ai/models/embedding-model/",
+    "/frameworks/spring-ai/rag/vector-stores/#_vectorstore_implementations",
+    "/frameworks/spring-ai/rag/vector-stores/milvus/",
+    "/frameworks/spring-ai/mcp/client/",
+    "/frameworks/spring-ai/rag/vector-stores/pgvector/#_auto_configuration",
+    "/frameworks/spring-ai/models/embedding-model/#%E5%B7%A5%E7%A8%8B%E4%B8%8A%E5%85%88%E8%AE%B0%E4%BD%8F%E4%B8%89%E7%82%B9",
+    "/frameworks/spring-ai/rag/vector-stores/pgvector/#pgvector-properties",
+    "/frameworks/spring-ai/rag/document-ingestion/",
+    "/frameworks/spring-ai/rag/retrieval-and-generation/#_advisors"
+  ],
+  "sourceLinkOverrides": {
+    "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management": "/frameworks/spring-ai/getting-started/quickstart/#使用-bom-管理版本"
+  },
+  "retainedExternalReferences": [
+    "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose",
+    "https://docs.spring.io/spring-ai/reference/api/testcontainers.html",
+    "https://docs.spring.io/spring-ai/reference/api/docker-compose.html"
+  ],
+  "relatedPageChange": {
+    "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/pgvector.mdx",
+    "beforeSha256": "b3b78101598864b8be37cf4eac3ce6e5aef7688818efa4c87c19238fb8a31580",
+    "afterSha256": "842e825ff09b259103364a9171aff48122274d669100218b97f4f6daddc212e2",
+    "replacements": {
+      "https://docs.spring.io/spring-ai/reference/api/docker-compose.html": "/frameworks/spring-ai/engineering/docker-compose/",
+      "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose": "/frameworks/spring-ai/engineering/docker-compose/#service-connection-lifecycle"
+    },
+    "onlyReplacedTwoUrls": true
+  },
+  "boundary": "Source and YAML inspected statically; no Docker, database, cloud or model execution."
+}

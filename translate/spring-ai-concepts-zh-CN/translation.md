@@ -16,7 +16,7 @@ AI 模型从训练数据中学习规律，用于预测或生成内容。不同�
 
 ![模型类型对照：语言、图像、音频及 Embedding 模型的输入与输出](/images/frameworks/spring-ai/spring-ai-model-types-zh.svg)
 
-Spring AI 支持语言、图像、音频及嵌入相关模型。使用预训练模型时，应用开发者可以直接集成已有能力，无需先掌握完整的机器学习或模型训练流程。
+Spring AI 支持语言、图像、音频及嵌入相关模型，类型与接口见[模型概览](/frameworks/spring-ai/models/)。使用预训练模型时，应用开发者可以直接集成已有能力，无需先掌握完整的机器学习或模型训练流程。
 
 ## 提示词：不只是一个字符串
 
@@ -35,7 +35,7 @@ Spring AI 支持语言、图像、音频及嵌入相关模型。使用预训练�
 Tell me a {adjective} joke about {content}.
 ```
 
-Spring AI 使用 [StringTemplate](https://www.stringtemplate.org/) 处理模板，通过 `java.util.Map` 提供模板变量。渲染时将 `adjective` 和 `content` 替换为实际值，生成供模型使用的提示词；这类似 Spring MVC 的视图渲染。
+Spring AI 的[提示词模板](/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词)使用 [StringTemplate](https://www.stringtemplate.org/) 处理模板，通过 `java.util.Map` 提供模板变量。渲染时将 `adjective` 和 `content` 替换为实际值，生成供模型使用的提示词；这类似 Spring MVC 的视图渲染。
 
 ## Embedding：内容的向量表示
 
@@ -68,7 +68,7 @@ Spring AI 使用 [StringTemplate](https://www.stringtemplate.org/) 处理模板�
 
 ![结构化输出转换：在调用模型前补充格式指令，将模型返回的文本转换为结构化结果](/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg)
 
-Spring AI 提供[结构化输出](https://docs.spring.io/spring-ai/reference/api/structured-output.html)能力，便于映射为 Java 对象。应用仍需处理解析失败和字段校验。
+Spring AI 提供[结构化输出](/frameworks/spring-ai/core/structured-output/)能力，便于映射为 Java 对象。应用仍需处理解析失败和字段校验。
 
 ## 把企业数据和 API 接入模型
 
@@ -95,7 +95,7 @@ Spring AI 提供[结构化输出](https://docs.spring.io/spring-ai/reference/api
 
 ![Spring AI RAG 架构：离线读取和切分文档写入向量库，运行时检索片段并补充到提示词中生成回答](/images/frameworks/spring-ai/spring-ai-rag-zh.svg)
 
-Spring AI 的 [ETL Pipeline](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html) 负责文档处理；[ChatClient 的 RAG 能力](https://docs.spring.io/spring-ai/reference/api/chatclient.html#_retrieval_augmented_generation)可通过 `QuestionAnswerAdvisor` 等方式接入检索上下文。
+Spring AI 的 [ETL Pipeline](/frameworks/spring-ai/rag/document-ingestion/) 负责文档处理；[ChatClient 的 RAG 能力](/frameworks/spring-ai/core/chat-client/#检索增强生成)可通过 `QuestionAnswerAdvisor` 等方式接入检索上下文。
 
 ### 工具调用：由应用执行实际操作
 
@@ -114,7 +114,7 @@ Spring AI 的 [ETL Pipeline](https://docs.spring.io/spring-ai/reference/api/etl-
 
 ![工具调用流程：请求携带工具定义，模型按需提出调用，Spring AI 分派执行并回传结果，模型生成回答](/images/frameworks/spring-ai/spring-ai-tool-calling-zh.svg)
 
-Spring AI 负责协调工具调用对话，具体用法见[工具调用文档](https://docs.spring.io/spring-ai/reference/api/tools.html)。
+Spring AI 负责协调工具调用对话，具体用法见[工具调用文档](/frameworks/spring-ai/tools/tool-calling/)。
 
 ## 评估：回答是否符合问题和依据
 
@@ -126,6 +126,6 @@ Spring AI 负责协调工具调用对话，具体用法见[工具调用文档](h
 
 预训练模型也可以辅助评估：将用户问题、模型回答和参考资料提交给模型，判断回答是否与资料一致。向量数据库中的相关内容也可作为补充依据，帮助判断回答的相关性。
 
-Spring AI 提供 `Evaluator` API，支持基础评估策略，详见[响应评估与测试](https://docs.spring.io/spring-ai/reference/api/testing.html)。
+Spring AI 提供 `Evaluator` API，支持基础评估策略，详见[响应评估与测试](/frameworks/spring-ai/engineering/evaluation/)。
 
 来源：[Spring AI Concepts](https://docs.spring.io/spring-ai/reference/concepts.html)。文档版本：2.0.2；核验日期：2026-10-25。本文为简明中文译述。

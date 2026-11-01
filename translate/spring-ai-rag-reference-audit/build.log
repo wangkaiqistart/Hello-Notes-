@@ -1,0 +1,123 @@
+
+> hello-notes@0.1.0 build
+> astro build
+
+14:56:41 [content] Syncing content
+14:56:41 [content] Synced content
+14:56:41 [types] Generated 641ms
+14:56:41 [build] output: "static"
+14:56:41 [build] mode: "static"
+14:56:41 [build] directory: /Volumes/Data/my_project/my-knowledge-base/dist/
+14:56:41 [build] Collecting build info...
+14:56:41 [build] ✓ Completed in 879ms.
+14:56:41 [build] Building static entrypoints...
+14:56:46 [vite] ✓ built in 4.83s
+14:56:49 [vite] ✓ built in 2.63s
+14:56:49 [build] Rearranging server assets...
+
+ generating static routes 
+14:56:49 [WARN] [content] The collection "i18n" does not exist or is empty. Please check your content config file for errors.
+14:56:49 [WARN] [build] Could not render `/404` from route `/[...slug]` as it conflicts with higher priority route `/404`.
+14:56:49   ├─ /404.html (+10ms) 
+14:56:49   ├─ /frameworks/spring-ai/core/advisors-recursive/index.html (+1ms) 
+14:56:49   ├─ /home-search.json (+2ms) 
+14:56:49   ├─ /index.html (+2ms) 
+14:56:49   ├─ /agent/agent-practice/index.html (+135ms) 
+14:56:49   ├─ /agent/agent-practice/agent-openclaw-concepts/index.html (+6ms) 
+14:56:49   ├─ /agent/development-patterns/index.html (+4ms) 
+14:56:49   ├─ /agent/fundamentals/agent-and-multi-agent/index.html (+4ms) 
+14:56:49   ├─ /agent/harness/index.html (+4ms) 
+14:56:49   ├─ /agent/hermes/index.html (+5ms) 
+14:56:49   ├─ /agent/hermes/comparison/index.html (+6ms) 
+14:56:49   ├─ /agent/hermes/openclaw-comparison/index.html (+4ms) 
+14:56:49   ├─ /agent/hermes/practical-guide/index.html (+6ms) 
+14:56:49   ├─ /agent/loop-engineering/index.html (+6ms) 
+14:56:49   ├─ /agent/loop-engineering/agent-loop/index.html (+3ms) 
+14:56:49   ├─ /agent/loop-engineering/contract-case/index.html (+2ms) 
+14:56:49   ├─ /agent/loop-engineering/design-risks/index.html (+3ms) 
+14:56:49   ├─ /agent/loop-engineering/primitives/index.html (+4ms) 
+14:56:49   ├─ /agent/loop-engineering/refund-case/index.html (+3ms) 
+14:56:49   ├─ /agent/memory/short-long-term-memory/index.html (+4ms) 
+14:56:49   ├─ /agent/skills/basics/index.html (+9ms) 
+14:56:49   ├─ /agent/skills/mini-openclaw/index.html (+4ms) 
+14:56:49   ├─ /ai-programming/index.html (+2ms) 
+14:56:49   ├─ /ai-programming/cognition/essence-and-value/index.html (+2ms) 
+14:56:49   ├─ /ai-programming/cognition/human-ai-workflow/index.html (+2ms) 
+14:56:49   ├─ /ai-programming/cognition/tool-landscape/index.html (+2ms) 
+14:56:49   ├─ /ai-programming/cognition/trend-snapshot-2026/index.html (+2ms) 
+14:56:49   ├─ /ai-programming/methodology/sdd-and-harness/index.html (+2ms) 
+14:56:49   ├─ /ai-programming/methodology/skills-and-superpowers/index.html (+1ms) 
+14:56:49   ├─ /ai-programming/methodology/spec-kit-and-openspec/index.html (+10ms) 
+14:56:49   ├─ /basics/embedding/embedding-basics/index.html (+3ms) 
+14:56:49   ├─ /basics/llm-theory/llm-application-workflow/index.html (+2ms) 
+14:56:49   ├─ /basics/llm-theory/what-is-llm/index.html (+2ms) 
+14:56:49   ├─ /basics/model-access/llm-api-basics/index.html (+3ms) 
+14:56:49   ├─ /basics/prompt-engineering/prompt-basics/index.html (+2ms) 
+14:56:49   ├─ /basics/python-foundation/index.html (+3ms) 
+14:56:49   ├─ /basics/python-foundation/advanced-syntax-and-validation/index.html (+2ms) 
+14:56:49   ├─ /basics/python-foundation/code-organization-and-utils/index.html (+3ms) 
+14:56:49   ├─ /basics/python-foundation/data-types/index.html (+5ms) 
+14:56:49   ├─ /basics/python-foundation/environment-and-deps/index.html (+7ms) 
+14:56:49   ├─ /basics/python-foundation/fastapi-basics/index.html (+5ms) 
+14:56:49   ├─ /basics/python-foundation/fastapi-env-and-logging/index.html (+17ms) 
+14:56:49   ├─ /basics/python-foundation/fastapi-error-handling/index.html (+5ms) 
+14:56:49   ├─ /basics/python-foundation/fastapi-health-and-smoke-test/index.html (+3ms) 
+14:56:49   ├─ /basics/python-foundation/fastapi-layered-architecture/index.html (+3ms) 
+14:56:49   ├─ /basics/python-foundation/fastapi-mysql-orm/index.html (+3ms) 
+14:56:49   ├─ /basics/python-foundation/file-processing/index.html (+8ms) 
+14:56:49   ├─ /basics/python-foundation/syntax-basics/index.html (+14ms) 
+14:56:49   ├─ /frameworks/deepagents/index.html (+3ms) 
+14:56:49   ├─ /frameworks/deepagents/deployment/index.html (+2ms) 
+14:56:49   ├─ /frameworks/deepagents/deployment/going-to-production/index.html (+2ms) 
+14:56:49   ├─ /frameworks/deepagents/getting-started/index.html (+2ms) 
+14:56:49   ├─ /frameworks/deepagents/getting-started/customization/index.html (+4ms) 
+14:56:49   ├─ /frameworks/deepagents/getting-started/models/index.html (+3ms) 
+14:56:49   ├─ /frameworks/deepagents/getting-started/quickstart/index.html (+4ms) 
+14:56:49   ├─ /frameworks/langchain/custom-embedding-wrapper/index.html (+4ms) 
+14:56:49   ├─ /frameworks/langchain/langchain-basics/index.html (+3ms) 
+14:56:49   ├─ /frameworks/spring-ai/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/concepts/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/core/advisors/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/core/chat-client/index.html (+3ms) 
+14:56:49   ├─ /frameworks/spring-ai/core/chat-memory/index.html (+3ms) 
+14:56:49   ├─ /frameworks/spring-ai/core/chat-response-metadata/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/core/multimodality/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/core/prompts/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/core/structured-output/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/engineering/evaluation/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/getting-started/quickstart/index.html (+4ms) 
+14:56:49   ├─ /frameworks/spring-ai/mcp/client/index.html (+4ms) 
+14:56:49   ├─ /frameworks/spring-ai/mcp/overview/index.html (+5ms) 
+14:56:49   ├─ /frameworks/spring-ai/mcp/server/index.html (+3ms) 
+14:56:49   ├─ /frameworks/spring-ai/models/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/models/audio-model/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/models/chat-model/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/models/embedding-model/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/models/image-model/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/models/moderation-model/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/rag/document-ingestion/index.html (+9ms) 
+14:56:49   ├─ /frameworks/spring-ai/rag/retrieval-and-generation/index.html (+4ms) 
+14:56:49   ├─ /frameworks/spring-ai/rag/vector-stores/index.html (+5ms) 
+14:56:49   ├─ /frameworks/spring-ai/rag/vector-stores/elasticsearch/index.html (+3ms) 
+14:56:49   ├─ /frameworks/spring-ai/rag/vector-stores/milvus/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/rag/vector-stores/pgvector/index.html (+2ms) 
+14:56:49   ├─ /frameworks/spring-ai/rag/vector-stores/redis/index.html (+6ms) 
+14:56:49   ├─ /frameworks/spring-ai/rag/vector-stores/s3-vector-store/index.html (+3ms) 
+14:56:49   ├─ /frameworks/spring-ai/tools/chatmodel-tool-calling/index.html (+3ms) 
+14:56:49   ├─ /frameworks/spring-ai/tools/tool-calling/index.html (+13ms) 
+14:56:49   ├─ /frameworks/spring-ai/tools/tool-calling-advisor/index.html (+3ms) 
+14:56:49   ├─ /frameworks/spring-ai/tools/tool-search-tool/index.html (+3ms) 
+14:56:49   ├─ /projects/agent-os/index.html (+2ms) 
+14:56:49   ├─ /projects/agent-os/design-method/index.html (+2ms) 
+14:56:49   ├─ /rag/document-parsing/document-processing-and-chunking/index.html (+3ms) 
+14:56:49   ├─ /rag/fundamentals/what-is-rag/index.html (+2ms) 
+14:56:49   ├─ /rag/vector-db/chroma-vector-store/index.html (+12ms) 
+14:56:49 ✓ Completed in 533ms.
+
+14:56:49 [build] ✓ Completed in 8.09s.
+14:56:49 [starlight:pagefind] Building search index with Pagefind...
+14:56:50 [starlight:pagefind] Found 93 HTML files.
+14:56:51 [starlight:pagefind] Finished building search index in 1.35s.
+14:56:51 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+14:56:51 [build] 92 page(s) built in 10.80s
+14:56:51 [build] Complete!

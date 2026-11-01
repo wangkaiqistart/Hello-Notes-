@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "scope": "Only RAG and ETL document references and synchronized translation records. Local document citations must stay under /frameworks/spring-ai/; same-page anchors and static image links are allowed. No source code, source anchors, diagrams, or navigation changed.",
+  "page": {
+    "page": "src/content/docs/frameworks/spring-ai/rag/retrieval-and-generation.mdx",
+    "slug": "rag",
+    "codeBlocksPreserved": 21,
+    "anchorsPreserved": 26,
+    "figuresPreserved": 0,
+    "localReferences": [
+      "/frameworks/spring-ai/core/advisors/#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B",
+      "/frameworks/spring-ai/concepts/#rag%E5%85%88%E6%A3%80%E7%B4%A2%E5%86%8D%E7%94%9F%E6%88%90",
+      "/frameworks/spring-ai/rag/document-ingestion/",
+      "/frameworks/spring-ai/models/embedding-model/",
+      "/frameworks/spring-ai/core/chat-client/#%E5%88%9B%E5%BB%BA-chatclient",
+      "/frameworks/spring-ai/rag/vector-stores/#api-overview",
+      "/frameworks/spring-ai/engineering/evaluation/#_relevancy_evaluator",
+      "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+      "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+      "/frameworks/spring-ai/core/chat-client/#%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%A8%A1%E6%9D%BF",
+      "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+      "#modules",
+      "#_vectorstoredocumentretriever"
+    ],
+    "externalReferences": [
+      "https://arxiv.org/abs/2407.21059",
+      "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html#reranking",
+      "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html"
+    ],
+    "pageSha256": "c6992fd7b6d3186b945998cc0815fbd0465d9383e17e868447ff97ca38e6c474"
+  },
+  "changes": [
+    {
+      "before": "示例假设 `ChatModel`、`ChatClient` 或 `ChatClient.Builder` 已配置，并且 `VectorStore` 中已有文档。代码中的相似度阈值与 Top-K 都是示例值，应按数据和模型评估；添加 Advisor 不会自动导入资料，也不会自动生成可核验的来源引用。",
+      "after": "示例假设 `ChatModel`、[`ChatClient` 或 `ChatClient.Builder`](/frameworks/spring-ai/core/chat-client/#创建-chatclient) 已配置，并且 [`VectorStore`](/frameworks/spring-ai/rag/vector-stores/#api-overview) 中已有文档。代码中的相似度阈值与 Top-K 都是示例值，应按数据和模型进行[评估测试](/frameworks/spring-ai/engineering/evaluation/#_relevancy_evaluator)；添加 Advisor 不会自动导入资料，也不会自动生成可核验的来源引用。"
+    },
+    {
+      "before": "这里会对向量数据库中的全部文档执行相似度检索。若要限制检索范围，可以在 `SearchRequest` 中使用类似 SQL 的过滤表达式；同一表达式可跨 `VectorStore` 实现使用。",
+      "after": "这里会对向量数据库中的全部文档执行相似度检索。若要限制检索范围，可以在 [`SearchRequest`](/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder) 中使用类似 SQL 的[元数据过滤表达式](/frameworks/spring-ai/rag/vector-stores/#metadata-filters)；同一表达式可跨 `VectorStore` 实现使用。"
+    }
+  ],
+  "retainedExternalReferences": [
+    {
+      "url": "https://arxiv.org/abs/2407.21059",
+      "reason": "模块化 RAG 的原始论文出处；Spring AI 模块没有全文或等价说明。"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html#reranking",
+      "reason": "Spring AI 模块未完整介绍 JinferDocumentPostProcessor 的重排序接入；结构化输出、多模态等 jinfer 引用不是等价内容。"
+    }
+  ],
+  "provenanceLinks": [
+    "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html"
+  ],
+  "browser": {
+    "record": "2026-11-01-spring-ai-only-page-validation.json",
+    "result": "PASS",
+    "views": 2,
+    "combinedUniqueLocalTargets": 132
+  },
+  "check": {
+    "command": "npm run check",
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0
+  },
+  "build": {
+    "command": "npm run build",
+    "result": "PASS",
+    "pages": 92
+  },
+  "boundary": "No model, Java, or database execution. Retained external URLs were matched by topic and left unchanged; this pass verified local targets and fragments in the browser."
+}

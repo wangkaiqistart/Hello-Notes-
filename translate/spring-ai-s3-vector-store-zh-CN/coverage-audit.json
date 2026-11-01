@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/s3-vector-store.mdx",
+  "pageSha256": "6709fd76bacd3054d4b28081cef274cd4d1ad8858856fda6612a12800850228d",
+  "sourceSections": 7,
+  "targetSourceSections": 7,
+  "sourceCodeBlocks": 13,
+  "targetCodeBlocks": 13,
+  "sourceImages": 0,
+  "targetImages": 0,
+  "sourceLinksCovered": 10,
+  "sourceLinkOverrides": {
+    "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations": "/frameworks/spring-ai/models/embedding-model/",
+    "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management": "/frameworks/spring-ai/getting-started/quickstart/#使用-bom-管理版本",
+    "https://docs.spring.io/spring-ai/reference/getting-started.html#artifact-repositories": "/frameworks/spring-ai/getting-started/quickstart/#配置依赖仓库",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#_metadata_filters": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#metadata-filters": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/s3-vector-store.html#s3-properties": "#s3-properties"
+  },
+  "sourceConfigurationParameters": [
+    "spring.ai.vectorstore.s3.index-name",
+    "spring.ai.vectorstore.s3.vector-bucket-name"
+  ],
+  "allParameterKeysPreserved": true,
+  "latestRagReferenceAudit": "../spring-ai-rag-reference-audit/audit.json"
+}

@@ -1,0 +1,148 @@
+{
+  "date": "2026-11-01",
+  "version": "2.0.2",
+  "type": "static source assertions, not Java compilation or runtime testing",
+  "result": "PASS",
+  "checks": [
+    {
+      "file": "api/PromptTemplate.java",
+      "assertion": "PromptTemplate 默认渲染器",
+      "snippet": "DEFAULT_TEMPLATE_RENDERER = StTemplateRenderer.builder().build()",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/QuestionAnswerAdvisor.java",
+      "assertion": "2.0.2 无旧版 Builder 方法",
+      "snippet": "userTextAdvise(",
+      "expectPresent": false,
+      "result": "PASS"
+    },
+    {
+      "file": "api/VectorStoreChatMemoryAdvisor.java",
+      "assertion": "依赖模块仍包含向量记忆 Advisor",
+      "snippet": "class VectorStoreChatMemoryAdvisor",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/QuestionAnswerAdvisor.java",
+      "assertion": "记录检索文档用于响应元数据",
+      "snippet": "context.put(RETRIEVED_DOCUMENTS, documents)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/QuestionAnswerAdvisor.java",
+      "assertion": "请求过滤覆盖 SearchRequest 默认值",
+      "snippet": "searchRequestBuilder.filterExpression(filterExpr)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/QuestionAnswerAdvisor.java",
+      "assertion": "自定义模板上下文占位符",
+      "snippet": "question_answer_context",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/RetrievalAugmentationAdvisor.java",
+      "assertion": "查询转换构建入口",
+      "snippet": "public Builder queryTransformers(QueryTransformer... queryTransformers)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/RetrievalAugmentationAdvisor.java",
+      "assertion": "查询扩展构建入口",
+      "snippet": "public Builder queryExpander(QueryExpander queryExpander)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/RetrievalAugmentationAdvisor.java",
+      "assertion": "文档后处理构建入口",
+      "snippet": "public Builder documentPostProcessors(DocumentPostProcessor... documentPostProcessors)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/RetrievalAugmentationAdvisor.java",
+      "assertion": "文档检索器必填",
+      "snippet": "documentRetriever cannot be null",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/RetrievalAugmentationAdvisor.java",
+      "assertion": "默认上下文增强器",
+      "snippet": "ContextualQueryAugmenter.builder().build()",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/ContextualQueryAugmenter.java",
+      "assertion": "默认不允许空上下文",
+      "snippet": "DEFAULT_ALLOW_EMPTY_CONTEXT = false",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/ContextualQueryAugmenter.java",
+      "assertion": "空上下文使用提示词而非停止调用",
+      "snippet": "return new Query(this.emptyContextPromptTemplate.render())",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/ContextualQueryAugmenter.java",
+      "assertion": "显式允许空上下文分支",
+      "snippet": "if (this.allowEmptyContext)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/VectorStoreDocumentRetriever.java",
+      "assertion": "读取请求级过滤",
+      "snippet": "var contextFilterExpression = query.context().get(FILTER_EXPRESSION)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/VectorStoreDocumentRetriever.java",
+      "assertion": "无请求过滤才使用 Supplier",
+      "snippet": "return this.filterExpression.get()",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/VectorStoreDocumentRetriever.java",
+      "assertion": "支持 Filter.Expression 对象",
+      "snippet": "contextFilterExpression instanceof Filter.Expression",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/ConcatenationDocumentJoiner.java",
+      "assertion": "按 ID 去重，保留先遇到的文档",
+      "snippet": "Collectors.toMap(Document::getId, Function.identity(), (existing, duplicate) -> existing)",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/ConcatenationDocumentJoiner.java",
+      "assertion": "空评分按 0 处理",
+      "snippet": "doc.getScore() != null ? doc.getScore() : 0.0",
+      "expectPresent": true,
+      "result": "PASS"
+    },
+    {
+      "file": "api/ConcatenationDocumentJoiner.java",
+      "assertion": "按分数降序排列",
+      "snippet": ".reversed()",
+      "expectPresent": true,
+      "result": "PASS"
+    }
+  ]
+}

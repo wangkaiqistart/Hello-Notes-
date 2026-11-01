@@ -1,0 +1,461 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "base": "http://127.0.0.1:4322",
+  "route": "/frameworks/spring-ai/rag/vector-stores/redis/",
+  "pages": [
+    {
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：Redis 向量存储",
+      "viewport": 1440,
+      "width": 1440,
+      "anchors": [
+        "_prerequisites",
+        "一准备工作",
+        "_auto_configuration",
+        "二自动配置重点掌握",
+        "redisvector-properties",
+        "配置属性",
+        "_metadata_filtering",
+        "三元数据过滤重点掌握",
+        "_manual_configuration",
+        "四手动配置",
+        "_accessing_the_native_client",
+        "五访问原生客户端",
+        "_distance_metrics",
+        "六距离度量",
+        "_hnsw_algorithm_configuration",
+        "七hnsw-算法配置",
+        "_text_search",
+        "八文本检索",
+        "_text_scoring_algorithms",
+        "文本评分算法",
+        "_range_search",
+        "九范围检索",
+        "_semantic_caching",
+        "十语义缓存进阶参考",
+        "_why_semantic_caching",
+        "为什么使用语义缓存",
+        "_auto_configuration_2",
+        "自动配置",
+        "semantic-cache-properties",
+        "配置属性-1",
+        "_using_the_semanticcacheadvisor",
+        "使用-semanticcacheadvisor",
+        "_direct_cache_usage",
+        "直接使用缓存",
+        "_manual_configuration_2",
+        "手动配置",
+        "_cache_isolation_with_namespaces",
+        "使用命名空间隔离缓存",
+        "_system_prompt_isolation",
+        "按系统提示词隔离",
+        "_context_aware_cache_api",
+        "带上下文的缓存-api",
+        "_tuning_the_similarity_threshold",
+        "调整相似度阈值",
+        "_ttl_and_cache_expiration",
+        "ttl-与缓存过期",
+        "_how_it_works",
+        "工作流程"
+      ],
+      "links": [
+        {
+          "href": "https://redis.io",
+          "text": "Redis"
+        },
+        {
+          "href": "https://redis.io/docs/interact/search-and-query/",
+          "text": "Redis Search and Query"
+        },
+        {
+          "href": "#一准备工作",
+          "text": "Section titled “一、准备工作”"
+        },
+        {
+          "href": "https://app.redislabs.com/#/",
+          "text": "Redis Cloud"
+        },
+        {
+          "href": "https://hub.docker.com/r/redis/redis-stack",
+          "text": "Docker 镜像"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "Embedding 模型"
+        },
+        {
+          "href": "#二自动配置重点掌握",
+          "text": "Section titled “二、自动配置（重点掌握）”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "text": "升级说明"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "依赖管理"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "text": "Artifact Repositories"
+        },
+        {
+          "href": "#redisvector-properties",
+          "text": "配置属性"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "EmbeddingModel"
+        },
+        {
+          "href": "#配置属性",
+          "text": "Section titled “配置属性”"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis/src/main/java/org/springframework/ai/vectorstore/redis/autoconfigure/RedisVectorStoreProperties.java",
+          "text": "RedisVectorStoreProperties"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis/src/main/java/org/springframework/ai/vectorstore/redis/autoconfigure/RedisVectorStoreAutoConfiguration.java",
+          "text": "RedisVectorStoreAutoConfiguration"
+        },
+        {
+          "href": "#三元数据过滤重点掌握",
+          "text": "Section titled “三、元数据过滤（重点掌握）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "text": "元数据过滤"
+        },
+        {
+          "href": "https://redis.io/docs/interact/search-and-query/query/",
+          "text": "Redis 查询语法"
+        },
+        {
+          "href": "#四手动配置",
+          "text": "Section titled “四、手动配置”"
+        },
+        {
+          "href": "#五访问原生客户端",
+          "text": "Section titled “五、访问原生客户端”"
+        },
+        {
+          "href": "#六距离度量",
+          "text": "Section titled “六、距离度量”"
+        },
+        {
+          "href": "#七hnsw-算法配置",
+          "text": "Section titled “七、HNSW 算法配置”"
+        },
+        {
+          "href": "#八文本检索",
+          "text": "Section titled “八、文本检索”"
+        },
+        {
+          "href": "#文本评分算法",
+          "text": "Section titled “文本评分算法”"
+        },
+        {
+          "href": "#九范围检索",
+          "text": "Section titled “九、范围检索”"
+        },
+        {
+          "href": "#十语义缓存进阶参考",
+          "text": "Section titled “十、语义缓存（进阶参考）”"
+        },
+        {
+          "href": "#为什么使用语义缓存",
+          "text": "Section titled “为什么使用语义缓存”"
+        },
+        {
+          "href": "#自动配置",
+          "text": "Section titled “自动配置”"
+        },
+        {
+          "href": "#配置属性-1",
+          "text": "Section titled “配置属性”"
+        },
+        {
+          "href": "#使用-semanticcacheadvisor",
+          "text": "Section titled “使用 SemanticCacheAdvisor”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "text": "ChatClient"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/",
+          "text": "Advisor 机制"
+        },
+        {
+          "href": "#直接使用缓存",
+          "text": "Section titled “直接使用缓存”"
+        },
+        {
+          "href": "#手动配置",
+          "text": "Section titled “手动配置”"
+        },
+        {
+          "href": "#使用命名空间隔离缓存",
+          "text": "Section titled “使用命名空间隔离缓存”"
+        },
+        {
+          "href": "#按系统提示词隔离",
+          "text": "Section titled “按系统提示词隔离”"
+        },
+        {
+          "href": "#带上下文的缓存-api",
+          "text": "Section titled “带上下文的缓存 API”"
+        },
+        {
+          "href": "#调整相似度阈值",
+          "text": "Section titled “调整相似度阈值”"
+        },
+        {
+          "href": "#ttl-与缓存过期",
+          "text": "Section titled “TTL 与缓存过期”"
+        },
+        {
+          "href": "#工作流程",
+          "text": "Section titled “工作流程”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/redis.html",
+          "text": "Redis"
+        }
+      ],
+      "images": 0,
+      "errors": [],
+      "localTargets": 32
+    },
+    {
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：Redis 向量存储",
+      "viewport": 390,
+      "width": 390,
+      "anchors": [
+        "_prerequisites",
+        "一准备工作",
+        "_auto_configuration",
+        "二自动配置重点掌握",
+        "redisvector-properties",
+        "配置属性",
+        "_metadata_filtering",
+        "三元数据过滤重点掌握",
+        "_manual_configuration",
+        "四手动配置",
+        "_accessing_the_native_client",
+        "五访问原生客户端",
+        "_distance_metrics",
+        "六距离度量",
+        "_hnsw_algorithm_configuration",
+        "七hnsw-算法配置",
+        "_text_search",
+        "八文本检索",
+        "_text_scoring_algorithms",
+        "文本评分算法",
+        "_range_search",
+        "九范围检索",
+        "_semantic_caching",
+        "十语义缓存进阶参考",
+        "_why_semantic_caching",
+        "为什么使用语义缓存",
+        "_auto_configuration_2",
+        "自动配置",
+        "semantic-cache-properties",
+        "配置属性-1",
+        "_using_the_semanticcacheadvisor",
+        "使用-semanticcacheadvisor",
+        "_direct_cache_usage",
+        "直接使用缓存",
+        "_manual_configuration_2",
+        "手动配置",
+        "_cache_isolation_with_namespaces",
+        "使用命名空间隔离缓存",
+        "_system_prompt_isolation",
+        "按系统提示词隔离",
+        "_context_aware_cache_api",
+        "带上下文的缓存-api",
+        "_tuning_the_similarity_threshold",
+        "调整相似度阈值",
+        "_ttl_and_cache_expiration",
+        "ttl-与缓存过期",
+        "_how_it_works",
+        "工作流程"
+      ],
+      "links": [
+        {
+          "href": "https://redis.io",
+          "text": "Redis"
+        },
+        {
+          "href": "https://redis.io/docs/interact/search-and-query/",
+          "text": "Redis Search and Query"
+        },
+        {
+          "href": "#一准备工作",
+          "text": "Section titled “一、准备工作”"
+        },
+        {
+          "href": "https://app.redislabs.com/#/",
+          "text": "Redis Cloud"
+        },
+        {
+          "href": "https://hub.docker.com/r/redis/redis-stack",
+          "text": "Docker 镜像"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "Embedding 模型"
+        },
+        {
+          "href": "#二自动配置重点掌握",
+          "text": "Section titled “二、自动配置（重点掌握）”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "text": "升级说明"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "依赖管理"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "text": "Artifact Repositories"
+        },
+        {
+          "href": "#redisvector-properties",
+          "text": "配置属性"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "EmbeddingModel"
+        },
+        {
+          "href": "#配置属性",
+          "text": "Section titled “配置属性”"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis/src/main/java/org/springframework/ai/vectorstore/redis/autoconfigure/RedisVectorStoreProperties.java",
+          "text": "RedisVectorStoreProperties"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis/src/main/java/org/springframework/ai/vectorstore/redis/autoconfigure/RedisVectorStoreAutoConfiguration.java",
+          "text": "RedisVectorStoreAutoConfiguration"
+        },
+        {
+          "href": "#三元数据过滤重点掌握",
+          "text": "Section titled “三、元数据过滤（重点掌握）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "text": "元数据过滤"
+        },
+        {
+          "href": "https://redis.io/docs/interact/search-and-query/query/",
+          "text": "Redis 查询语法"
+        },
+        {
+          "href": "#四手动配置",
+          "text": "Section titled “四、手动配置”"
+        },
+        {
+          "href": "#五访问原生客户端",
+          "text": "Section titled “五、访问原生客户端”"
+        },
+        {
+          "href": "#六距离度量",
+          "text": "Section titled “六、距离度量”"
+        },
+        {
+          "href": "#七hnsw-算法配置",
+          "text": "Section titled “七、HNSW 算法配置”"
+        },
+        {
+          "href": "#八文本检索",
+          "text": "Section titled “八、文本检索”"
+        },
+        {
+          "href": "#文本评分算法",
+          "text": "Section titled “文本评分算法”"
+        },
+        {
+          "href": "#九范围检索",
+          "text": "Section titled “九、范围检索”"
+        },
+        {
+          "href": "#十语义缓存进阶参考",
+          "text": "Section titled “十、语义缓存（进阶参考）”"
+        },
+        {
+          "href": "#为什么使用语义缓存",
+          "text": "Section titled “为什么使用语义缓存”"
+        },
+        {
+          "href": "#自动配置",
+          "text": "Section titled “自动配置”"
+        },
+        {
+          "href": "#配置属性-1",
+          "text": "Section titled “配置属性”"
+        },
+        {
+          "href": "#使用-semanticcacheadvisor",
+          "text": "Section titled “使用 SemanticCacheAdvisor”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "text": "ChatClient"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/",
+          "text": "Advisor 机制"
+        },
+        {
+          "href": "#直接使用缓存",
+          "text": "Section titled “直接使用缓存”"
+        },
+        {
+          "href": "#手动配置",
+          "text": "Section titled “手动配置”"
+        },
+        {
+          "href": "#使用命名空间隔离缓存",
+          "text": "Section titled “使用命名空间隔离缓存”"
+        },
+        {
+          "href": "#按系统提示词隔离",
+          "text": "Section titled “按系统提示词隔离”"
+        },
+        {
+          "href": "#带上下文的缓存-api",
+          "text": "Section titled “带上下文的缓存 API”"
+        },
+        {
+          "href": "#调整相似度阈值",
+          "text": "Section titled “调整相似度阈值”"
+        },
+        {
+          "href": "#ttl-与缓存过期",
+          "text": "Section titled “TTL 与缓存过期”"
+        },
+        {
+          "href": "#工作流程",
+          "text": "Section titled “工作流程”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/redis.html",
+          "text": "Redis"
+        }
+      ],
+      "images": 0,
+      "errors": [],
+      "localTargets": 32
+    }
+  ],
+  "localTargets": 31
+}

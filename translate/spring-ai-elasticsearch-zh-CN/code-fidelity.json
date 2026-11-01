@@ -1,0 +1,130 @@
+{
+  "result": "PASS",
+  "codeBlocks": 15,
+  "correctedBlocks": 3,
+  "blocks": [
+    {
+      "index": 1,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "67ca1453ae883974eff1058fd161205927958021a26a4b610a3f0d6602908c14",
+      "targetSha256": "67ca1453ae883974eff1058fd161205927958021a26a4b610a3f0d6602908c14"
+    },
+    {
+      "index": 2,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "a523bb2e1c54152fa353fc773964d3b431cd62e271fb220dd09ee741c1addca4",
+      "targetSha256": "a523bb2e1c54152fa353fc773964d3b431cd62e271fb220dd09ee741c1addca4"
+    },
+    {
+      "index": 3,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "b6abdff97e7ae4342a1c3206eefc789ef7393b327e1587eb0136e1ff71d9926e",
+      "targetSha256": "b6abdff97e7ae4342a1c3206eefc789ef7393b327e1587eb0136e1ff71d9926e"
+    },
+    {
+      "index": 4,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "07ab5bbdc226d92f4d9ba896dd353fce92dc82a7853fce990dc12ac6c3359dca",
+      "targetSha256": "07ab5bbdc226d92f4d9ba896dd353fce92dc82a7853fce990dc12ac6c3359dca"
+    },
+    {
+      "index": 5,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "74b30ae563b06b2022b315fdf1b690857f18a22b7aadc6d64fc62d0f847a18c9",
+      "targetSha256": "74b30ae563b06b2022b315fdf1b690857f18a22b7aadc6d64fc62d0f847a18c9"
+    },
+    {
+      "index": 6,
+      "language": "yaml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "5f75491463d9df16ab0401dd00dc8023d1fddb7823ec05028abbf45c3ffd8e4f",
+      "targetSha256": "5f75491463d9df16ab0401dd00dc8023d1fddb7823ec05028abbf45c3ffd8e4f"
+    },
+    {
+      "index": 7,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "564c0fc4ff025e18a14b08031444a41ff7c4e7dc3adac932001ddbfe2ea248a5",
+      "targetSha256": "564c0fc4ff025e18a14b08031444a41ff7c4e7dc3adac932001ddbfe2ea248a5"
+    },
+    {
+      "index": 8,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "925a77dd0d643a7cc723fbb684efe0c6903f7f4c73055bcc1391bae0732591fe",
+      "targetSha256": "925a77dd0d643a7cc723fbb684efe0c6903f7f4c73055bcc1391bae0732591fe"
+    },
+    {
+      "index": 9,
+      "language": "sql",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "0cebe6aa1f9ca7fab2c3effd115164eba2a2c9fc5fde20bca037fdee6c8feb7c",
+      "targetSha256": "0cebe6aa1f9ca7fab2c3effd115164eba2a2c9fc5fde20bca037fdee6c8feb7c"
+    },
+    {
+      "index": 10,
+      "language": "text",
+      "status": "corrected",
+      "reason": "按转换器修正IN作用域和字符串引号。",
+      "sourceSha256": "71611d951fdcf4ddf40dca09c26081da9e25b47b427bd7d695c82d17b54312b4",
+      "targetSha256": "9758d97c196bd43566f71aedb4e37260dd024ec3619fcbb4cdb52353041dab74",
+      "diff": "--- source\n+++ translation\n@@ -1 +1 @@\n-(metadata.author:john OR jill) AND metadata.article_type:blog+metadata.author:(\"john\" OR \"jill\") AND metadata.article_type:\"blog\""
+    },
+    {
+      "index": 11,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "1fa50a489f1dfd5c61d91add0154de5a4fd43cf29c3547aadaf78f21dd7d45c9",
+      "targetSha256": "1fa50a489f1dfd5c61d91add0154de5a4fd43cf29c3547aadaf78f21dd7d45c9"
+    },
+    {
+      "index": 12,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "0e9fc75db826695f479ab66f97b41d6a9806199033d37a9cc2eddb02c1152a1c",
+      "targetSha256": "0e9fc75db826695f479ab66f97b41d6a9806199033d37a9cc2eddb02c1152a1c"
+    },
+    {
+      "index": 13,
+      "language": "java",
+      "status": "corrected",
+      "reason": "按Apache HttpComponents5修正HttpHost构造顺序。",
+      "sourceSha256": "20e470dfd2d8a3abbdb03190ff6f447446ef6dc29cfd700e5ea3ee7f9910529d",
+      "targetSha256": "da559dfda229476e88469e8eb6e7ce73c3c61adb3eda0751c2de3509cec67fd5",
+      "diff": "--- source\n+++ translation\n@@ -1,6 +1,6 @@\n @Bean\n public Rest5Client restClient() {\n-    return Rest5Client.builder(new HttpHost(\"<host>\", 9200, \"http\"))\n+    return Rest5Client.builder(new HttpHost(\"http\", \"<host>\", 9200))\n         .setDefaultHeaders(new Header[]{\n             new BasicHeader(\"Authorization\", \"Basic <encoded username and password>\")\n         })\n"
+    },
+    {
+      "index": 14,
+      "language": "java",
+      "status": "corrected",
+      "reason": "修正小写相似度枚举、维度注释与Embedding模型构造。",
+      "sourceSha256": "6c6a103fe99ac5916aac18d9c4643b53398a694c2fe644edc5d2f4ebebdf5f25",
+      "targetSha256": "dca337e4cbdc50f71b4aca4c16aef57b16d0401ebc324a486dd3da5b99969c9b",
+      "diff": "--- source\n+++ translation\n@@ -2,8 +2,8 @@\n public VectorStore vectorStore(Rest5Client restClient, EmbeddingModel embeddingModel) {\n     ElasticsearchVectorStoreOptions options = new ElasticsearchVectorStoreOptions();\n     options.setIndexName(\"custom-index\");    // Optional: defaults to \"spring-ai-document-index\"\n-    options.setSimilarity(COSINE);           // Optional: defaults to COSINE\n-    options.setDimensions(1536);             // Optional: defaults to model dimensions or 1536\n+    options.setSimilarity(SimilarityFunction.cosine); // Default: cosine\n+    options.setDimensions(1536);             // Optional: defaults to 1536; must match the embedding model\n \n     return ElasticsearchVectorStore.builder(restClient, embeddingModel)\n         .options(options)                     // Optional: use custom options\n@@ -15,5 +15,6 @@\n // This can be any EmbeddingModel implementation\n @Bean\n public EmbeddingModel embeddingModel() {\n-    return new OpenAiEmbeddingModel(OpenAiEmbeddingOptions.builder().apiKey(System.getenv(\"OPENAI_API_KEY\")).build());\n+    // Reads OPENAI_API_KEY through the default OpenAI client setup\n+    return OpenAiEmbeddingModel.builder().build();\n }"
+    },
+    {
+      "index": 15,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "3fefa11dc9ca5ba9113b6cb0ee048c0d1916c2e444e45274779089cb467cf75d",
+      "targetSha256": "3fefa11dc9ca5ba9113b6cb0ee048c0d1916c2e444e45274779089cb467cf75d"
+    }
+  ]
+}

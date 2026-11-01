@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-01",
+  "version": "2.0.2",
+  "result": "PASS",
+  "page": "src/content/docs/frameworks/spring-ai/engineering/evaluation.mdx",
+  "pageSha256": "d905a65dba497dcf51568109767dc45838426405bce4345b38f1b18e9d5ec1e6",
+  "sourceSections": 6,
+  "targetSourceSections": 6,
+  "anchors": [
+    "_relevancy_evaluator",
+    "_usage_in_integration_tests",
+    "_custom_template",
+    "_factcheckingevaluator",
+    "_usage",
+    "_example"
+  ],
+  "sourceCodeBlocks": 7,
+  "targetCodeBlocks": 9,
+  "sourceImages": 0,
+  "targetImages": 0,
+  "codeFidelity": "code-fidelity.json",
+  "apiChecks": "api-contract-checks.json",
+  "internalLinkReplacement": {
+    "source": "https://www.stringtemplate.org/",
+    "target": "/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词",
+    "reason": "当前语境是 Spring AI PromptTemplate 与默认渲染器；本地章节覆盖，不宣称覆盖 StringTemplate 完整语法。"
+  },
+  "retainedExternalReasons": {
+    "GitHub integration tests": "本地没有等价的 Spring AI 测试源码页面，引用固定版本。",
+    "source": "保留原始文档出处。"
+  }
+}

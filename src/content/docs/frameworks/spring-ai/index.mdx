@@ -39,18 +39,18 @@ Spring AI 用于简化 AI 应用开发，核心是**将企业数据和业务 API
 
 | 能力                                                                                | 作用                                                                                                           |
 | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| 模型接入                                                                            | 为聊天、文生图和嵌入（Embedding）模型提供跨提供方统一 API；支持同步或流式调用，也能使用模型特有功能。          |
-| [结构化输出](https://docs.spring.io/spring-ai/reference/api/structured-output.html) | 将模型输出映射为 Java 对象（POJO），便于程序继续处理。                                                         |
-| [向量数据库](https://docs.spring.io/spring-ai/reference/api/vectordbs.html)         | 提供可跨提供方复用的向量存储 API 和类似 SQL 的元数据过滤语法，支持 PGvector、Redis、Elasticsearch、Milvus 等。 |
-| [工具调用](https://docs.spring.io/spring-ai/reference/api/tools.html)               | 模型请求调用工具或函数，由应用侧执行，以获取实时信息或完成操作。                                               |
-| [MCP](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html)         | 通过模型上下文协议（Model Context Protocol）接入 MCP 服务器，或将 Spring 服务暴露给 AI 应用使用。              |
-| [文档处理](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html)        | 通过 ETL（提取、转换、加载）流程完成文档读取、转换和写入，为检索准备数据。                                     |
-| [ChatClient](https://docs.spring.io/spring-ai/reference/api/chatclient.html)        | 通过链式 API 调用聊天模型，用法类似 `WebClient` 和 `RestClient`。                                              |
-| [Advisors](https://docs.spring.io/spring-ai/reference/api/advisors.html)            | 封装常见生成式 AI 应用模式，转换发送给模型及模型返回的数据，便于在不同模型和场景间复用。                       |
-| 对话记忆与 RAG                                                                      | 对话记忆为多轮对话提供历史上下文；检索增强生成（RAG）通过检索补充文档知识，支持文档问答。                      |
+| [模型接入](/frameworks/spring-ai/models/)                                                                            | 为聊天、文生图和嵌入（Embedding）模型提供跨提供方统一 API；支持同步或流式调用，也能使用模型特有功能。          |
+| [结构化输出](/frameworks/spring-ai/core/structured-output/) | 将模型输出映射为 Java 对象（POJO），便于程序继续处理。                                                         |
+| [向量数据库](/frameworks/spring-ai/rag/vector-stores/)         | 提供可跨提供方复用的向量存储 API 和类似 SQL 的元数据过滤语法，支持 PGvector、Redis、Elasticsearch、Milvus 等。 |
+| [工具调用](/frameworks/spring-ai/tools/tool-calling/)               | 模型请求调用工具或函数，由应用侧执行，以获取实时信息或完成操作。                                               |
+| [MCP](/frameworks/spring-ai/mcp/overview/)         | 通过模型上下文协议（Model Context Protocol）接入 MCP 服务器，或将 Spring 服务暴露给 AI 应用使用。              |
+| [文档处理](/frameworks/spring-ai/rag/document-ingestion/)        | 通过 ETL（提取、转换、加载）流程完成文档读取、转换和写入，为检索准备数据。                                     |
+| [ChatClient](/frameworks/spring-ai/core/chat-client/)        | 通过链式 API 调用聊天模型，用法类似 `WebClient` 和 `RestClient`。                                              |
+| [Advisors](/frameworks/spring-ai/core/advisors/)            | 封装常见生成式 AI 应用模式，转换发送给模型及模型返回的数据，便于在不同模型和场景间复用。                       |
+| [对话记忆](/frameworks/spring-ai/core/chat-memory/)与 [RAG](/frameworks/spring-ai/rag/retrieval-and-generation/)                                                                      | 对话记忆为多轮对话提供历史上下文；检索增强生成（RAG）通过检索补充文档知识，支持文档问答。                      |
 | [可观测性](https://docs.spring.io/spring-ai/reference/observability/index.html)     | 观察 AI 相关操作的运行情况。                                                                                   |
-| [模型评估](https://docs.spring.io/spring-ai/reference/api/testing.html)             | 评估生成内容，帮助发现和防范幻觉回答。                                                                         |
-| Spring Boot 集成                                                                    | 为模型和向量存储提供自动配置与 Starter。                                                                       |
+| [模型评估](/frameworks/spring-ai/engineering/evaluation/)             | 评估生成内容，帮助发现和防范幻觉回答。                                                                         |
+| [Spring Boot 集成](/frameworks/spring-ai/getting-started/quickstart/)                                                                    | 为模型和向量存储提供自动配置与 Starter。                                                                       |
 
 还支持语音转写、语音合成和内容审核。[模型提供方](https://docs.spring.io/spring-ai/reference/api/index.html)包括 Anthropic、OpenAI、Microsoft、Amazon、Google 和 Ollama 等。具体模型能力与调用方式，以各提供方章节为准。
 

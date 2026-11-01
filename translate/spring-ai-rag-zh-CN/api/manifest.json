@@ -1,0 +1,67 @@
+{
+  "version": "2.0.2",
+  "source": "https://github.com/spring-projects/spring-ai/tree/v2.0.2",
+  "retrieved": "2026-11-01",
+  "files": [
+    {
+      "file": "QuestionAnswerAdvisor.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/advisors/spring-ai-vector-store-advisor/src/main/java/org/springframework/ai/chat/client/advisor/vectorstore/QuestionAnswerAdvisor.java",
+      "sha256": "dbd963cafd4023ef3a531c3cad48b8df6ceb94b65c798806d50154d85cd49939"
+    },
+    {
+      "file": "VectorStoreChatMemoryAdvisor.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/advisors/spring-ai-vector-store-advisor/src/main/java/org/springframework/ai/chat/client/advisor/vectorstore/VectorStoreChatMemoryAdvisor.java",
+      "sha256": "ed27d5a9ac6380b6bb4513a634f6e731eb95d9976b786912eea8f52045714b41"
+    },
+    {
+      "file": "PromptTemplate.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-model/src/main/java/org/springframework/ai/chat/prompt/PromptTemplate.java",
+      "sha256": "83bc4794cd0e4e133dd7c13e6d79cfaaec16bfff5774e4bd875b8965aef08db7"
+    },
+    {
+      "file": "RetrievalAugmentationAdvisor.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-rag/src/main/java/org/springframework/ai/rag/advisor/RetrievalAugmentationAdvisor.java",
+      "sha256": "796eaa7a7c05e6ad48637e6ed1692fd490b9a1a27c91a1da310ea0fa783afd1c"
+    },
+    {
+      "file": "ContextualQueryAugmenter.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-rag/src/main/java/org/springframework/ai/rag/generation/augmentation/ContextualQueryAugmenter.java",
+      "sha256": "1044a328b1f54da560b1a52305077f14fa87451144ae0020ad0f1d67193d8887"
+    },
+    {
+      "file": "MultiQueryExpander.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-rag/src/main/java/org/springframework/ai/rag/preretrieval/query/expansion/MultiQueryExpander.java",
+      "sha256": "6e768cfac9c0ebf5e38f11a60b93321ecdc21c2814c074766a200d605ecbf100"
+    },
+    {
+      "file": "CompressionQueryTransformer.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-rag/src/main/java/org/springframework/ai/rag/preretrieval/query/transformation/CompressionQueryTransformer.java",
+      "sha256": "861dd755e185020d744a2e3640d1eef70f88df7fb82232925b3b9017f92045de"
+    },
+    {
+      "file": "RewriteQueryTransformer.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-rag/src/main/java/org/springframework/ai/rag/preretrieval/query/transformation/RewriteQueryTransformer.java",
+      "sha256": "a81adadf7d15f4f430cf69d25d34928e52dee9a3c399f8260bdce7f407561e60"
+    },
+    {
+      "file": "TranslationQueryTransformer.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-rag/src/main/java/org/springframework/ai/rag/preretrieval/query/transformation/TranslationQueryTransformer.java",
+      "sha256": "bfb2795e9ec3c62ea06d1fecb2e40fab3a01a78c4ced44293bf79089016e06b8"
+    },
+    {
+      "file": "ConcatenationDocumentJoiner.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-rag/src/main/java/org/springframework/ai/rag/retrieval/join/ConcatenationDocumentJoiner.java",
+      "sha256": "0c67311e844f3daa5c1c9e78736c6f474e35f664a8f6bcc6cb8e7a4569e437f9"
+    },
+    {
+      "file": "VectorStoreDocumentRetriever.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-rag/src/main/java/org/springframework/ai/rag/retrieval/search/VectorStoreDocumentRetriever.java",
+      "sha256": "092d7d620c2895fbb4b9e06bb046a397a24e9b90d4be2d26e433d5ea526120e6"
+    },
+    {
+      "file": "StTemplateRenderer.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-template-st/src/main/java/org/springframework/ai/template/st/StTemplateRenderer.java",
+      "sha256": "3b8a87db44ee88c847a8602730f292f34d496fd588c135d6426148b985df089c"
+    }
+  ]
+}

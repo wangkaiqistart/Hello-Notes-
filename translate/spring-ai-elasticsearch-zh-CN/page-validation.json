@@ -1,0 +1,237 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "base": "http://127.0.0.1:4322",
+  "route": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+  "pages": [
+    {
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：Elasticsearch 向量存储",
+      "viewport": 1440,
+      "width": 1440,
+      "anchors": [
+        "_prerequisites",
+        "一准备工作",
+        "_auto_configuration",
+        "二自动配置重点掌握",
+        "elasticsearchvector-properties",
+        "配置属性",
+        "_metadata_filtering",
+        "三元数据过滤重点掌握",
+        "_manual_configuration",
+        "四手动配置参考",
+        "_accessing_the_native_client",
+        "五访问原生客户端"
+      ],
+      "links": [
+        {
+          "href": "https://www.elastic.co/elasticsearch",
+          "text": "Elasticsearch"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/",
+          "text": "向量存储总览"
+        },
+        {
+          "href": "#一准备工作",
+          "text": "Section titled “一、准备工作”"
+        },
+        {
+          "href": "https://hub.docker.com/_/elasticsearch/",
+          "text": "Docker"
+        },
+        {
+          "href": "https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#elasticsearch-install-packages",
+          "text": "自行部署 Elasticsearch"
+        },
+        {
+          "href": "https://www.elastic.co/cloud/elasticsearch-service/signup?page=docs&placement=docs-body",
+          "text": "Elastic Cloud"
+        },
+        {
+          "href": "#二自动配置重点掌握",
+          "text": "Section titled “二、自动配置（重点掌握）”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "text": "升级说明"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "依赖管理"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "text": "制品仓库"
+        },
+        {
+          "href": "#elasticsearchvector-properties",
+          "text": "配置属性"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "EmbeddingModel"
+        },
+        {
+          "href": "#配置属性",
+          "text": "Section titled “配置属性”"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-boot/blob/v4.1.2/module/spring-boot-elasticsearch/src/main/java/org/springframework/boot/elasticsearch/autoconfigure/ElasticsearchProperties.java",
+          "text": "Spring Boot 4.1.2 属性类"
+        },
+        {
+          "href": "https://www.elastic.co/guide/en/elasticsearch/reference/master/dense-vector.html#dense-vector-params",
+          "text": "Elasticsearch dense_vector 文档"
+        },
+        {
+          "href": "#三元数据过滤重点掌握",
+          "text": "Section titled “三、元数据过滤（重点掌握）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "text": "元数据过滤表达式"
+        },
+        {
+          "href": "https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html",
+          "text": "Query string query"
+        },
+        {
+          "href": "#四手动配置参考",
+          "text": "Section titled “四、手动配置（参考）”"
+        },
+        {
+          "href": "https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/java-rest-low-usage-initialization.html",
+          "text": "Elasticsearch 客户端文档"
+        },
+        {
+          "href": "#五访问原生客户端",
+          "text": "Section titled “五、访问原生客户端”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/elasticsearch.html",
+          "text": "Elasticsearch"
+        }
+      ],
+      "images": 0,
+      "errors": [],
+      "localTargets": 12
+    },
+    {
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：Elasticsearch 向量存储",
+      "viewport": 390,
+      "width": 390,
+      "anchors": [
+        "_prerequisites",
+        "一准备工作",
+        "_auto_configuration",
+        "二自动配置重点掌握",
+        "elasticsearchvector-properties",
+        "配置属性",
+        "_metadata_filtering",
+        "三元数据过滤重点掌握",
+        "_manual_configuration",
+        "四手动配置参考",
+        "_accessing_the_native_client",
+        "五访问原生客户端"
+      ],
+      "links": [
+        {
+          "href": "https://www.elastic.co/elasticsearch",
+          "text": "Elasticsearch"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/",
+          "text": "向量存储总览"
+        },
+        {
+          "href": "#一准备工作",
+          "text": "Section titled “一、准备工作”"
+        },
+        {
+          "href": "https://hub.docker.com/_/elasticsearch/",
+          "text": "Docker"
+        },
+        {
+          "href": "https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#elasticsearch-install-packages",
+          "text": "自行部署 Elasticsearch"
+        },
+        {
+          "href": "https://www.elastic.co/cloud/elasticsearch-service/signup?page=docs&placement=docs-body",
+          "text": "Elastic Cloud"
+        },
+        {
+          "href": "#二自动配置重点掌握",
+          "text": "Section titled “二、自动配置（重点掌握）”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "text": "升级说明"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "依赖管理"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "text": "制品仓库"
+        },
+        {
+          "href": "#elasticsearchvector-properties",
+          "text": "配置属性"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "EmbeddingModel"
+        },
+        {
+          "href": "#配置属性",
+          "text": "Section titled “配置属性”"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-boot/blob/v4.1.2/module/spring-boot-elasticsearch/src/main/java/org/springframework/boot/elasticsearch/autoconfigure/ElasticsearchProperties.java",
+          "text": "Spring Boot 4.1.2 属性类"
+        },
+        {
+          "href": "https://www.elastic.co/guide/en/elasticsearch/reference/master/dense-vector.html#dense-vector-params",
+          "text": "Elasticsearch dense_vector 文档"
+        },
+        {
+          "href": "#三元数据过滤重点掌握",
+          "text": "Section titled “三、元数据过滤（重点掌握）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "text": "元数据过滤表达式"
+        },
+        {
+          "href": "https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html",
+          "text": "Query string query"
+        },
+        {
+          "href": "#四手动配置参考",
+          "text": "Section titled “四、手动配置（参考）”"
+        },
+        {
+          "href": "https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/java-rest-low-usage-initialization.html",
+          "text": "Elasticsearch 客户端文档"
+        },
+        {
+          "href": "#五访问原生客户端",
+          "text": "Section titled “五、访问原生客户端”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/elasticsearch.html",
+          "text": "Elasticsearch"
+        }
+      ],
+      "images": 0,
+      "errors": [],
+      "localTargets": 12
+    }
+  ],
+  "localTargets": 12
+}

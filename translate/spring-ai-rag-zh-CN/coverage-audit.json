@@ -1,0 +1,194 @@
+{
+  "date": "2026-11-01",
+  "sourceUrl": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html",
+  "version": "2.0.2",
+  "result": "PASS",
+  "page": "src/content/docs/frameworks/spring-ai/rag/retrieval-and-generation.mdx",
+  "pageSha256": "c6992fd7b6d3186b945998cc0815fbd0465d9383e17e868447ff97ca38e6c474",
+  "sourceSections": 26,
+  "targetSourceSections": 26,
+  "sourceCodeBlocks": 21,
+  "targetCodeBlocks": 21,
+  "sourceImages": 0,
+  "targetImages": 0,
+  "sourceExternalLinks": 5,
+  "headings": [
+    {
+      "sourceId": "_advisors",
+      "sourceTitle": "Advisors",
+      "targetTitle": "一、RAG Advisor（重点掌握）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_questionansweradvisor",
+      "sourceTitle": "QuestionAnswerAdvisor",
+      "targetTitle": "QuestionAnswerAdvisor",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_dynamic_filter_expressions",
+      "sourceTitle": "Dynamic Filter Expressions",
+      "targetTitle": "动态过滤表达式",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_custom_template",
+      "sourceTitle": "Custom Template",
+      "targetTitle": "自定义模板",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_retrievalaugmentationadvisor",
+      "sourceTitle": "RetrievalAugmentationAdvisor",
+      "targetTitle": "RetrievalAugmentationAdvisor",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_sequential_rag_flows",
+      "sourceTitle": "Sequential RAG Flows",
+      "targetTitle": "顺序式 RAG 流程",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_naive_rag",
+      "sourceTitle": "Naive RAG",
+      "targetTitle": "基础 RAG（Naive RAG）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_advanced_rag",
+      "sourceTitle": "Advanced RAG",
+      "targetTitle": "进阶 RAG（Advanced RAG）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "modules",
+      "sourceTitle": "Modules",
+      "targetTitle": "二、模块参考（按需深入）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_pre_retrieval",
+      "sourceTitle": "Pre-Retrieval",
+      "targetTitle": "检索前处理",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_query_transformation",
+      "sourceTitle": "Query Transformation",
+      "targetTitle": "查询转换",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_compressionquerytransformer",
+      "sourceTitle": "CompressionQueryTransformer",
+      "targetTitle": "CompressionQueryTransformer",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_rewritequerytransformer",
+      "sourceTitle": "RewriteQueryTransformer",
+      "targetTitle": "RewriteQueryTransformer",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_translationquerytransformer",
+      "sourceTitle": "TranslationQueryTransformer",
+      "targetTitle": "TranslationQueryTransformer",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_query_expansion",
+      "sourceTitle": "Query Expansion",
+      "targetTitle": "查询扩展",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_multiqueryexpander",
+      "sourceTitle": "MultiQueryExpander",
+      "targetTitle": "MultiQueryExpander",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_retrieval",
+      "sourceTitle": "Retrieval",
+      "targetTitle": "检索",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_document_search",
+      "sourceTitle": "Document Search",
+      "targetTitle": "文档搜索",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_vectorstoredocumentretriever",
+      "sourceTitle": "VectorStoreDocumentRetriever",
+      "targetTitle": "VectorStoreDocumentRetriever",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_document_join",
+      "sourceTitle": "Document Join",
+      "targetTitle": "文档合并",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_concatenationdocumentjoiner",
+      "sourceTitle": "ConcatenationDocumentJoiner",
+      "targetTitle": "ConcatenationDocumentJoiner",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_post_retrieval",
+      "sourceTitle": "Post-Retrieval",
+      "targetTitle": "检索后处理",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_document_post_processing",
+      "sourceTitle": "Document Post-Processing",
+      "targetTitle": "文档后处理",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_generation",
+      "sourceTitle": "Generation",
+      "targetTitle": "生成",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_query_augmentation",
+      "sourceTitle": "Query Augmentation",
+      "targetTitle": "查询增强",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_contextualqueryaugmenter",
+      "sourceTitle": "ContextualQueryAugmenter",
+      "targetTitle": "ContextualQueryAugmenter",
+      "status": "covered"
+    }
+  ],
+  "codeFidelity": "code-fidelity.json",
+  "scope": "All source sections, code blocks and images retained. Corrections recorded separately; no claim of live model execution.",
+  "sourceLinkOverrides": [
+    {
+      "from": "https://docs.spring.io/spring-ai/reference/concepts.html#concept-rag",
+      "to": "/frameworks/spring-ai/concepts/#rag先检索再生成",
+      "reason": "本地概念页有 Spring AI RAG 的离线入库和运行时问答说明，主题对应。"
+    },
+    {
+      "from": "https://docs.spring.io/spring-ai/reference/api/chatclient.html#_prompt_templates",
+      "to": "/frameworks/spring-ai/core/chat-client/#提示词模板",
+      "reason": "本地章节明确区分 ChatClient 渲染器与 Advisor 内部模板。"
+    },
+    {
+      "from": "https://www.stringtemplate.org/",
+      "to": "/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词",
+      "reason": "当前语境讨论 Spring AI 的 PromptTemplate 渲染器与占位符；同步将链接文本改为 PromptTemplate，避免暗示本站包含 StringTemplate 全语法。"
+    }
+  ],
+  "latestLinkAudit": "2026-11-01-spring-ai-only-links.json",
+  "latestRagReferenceAudit": "../spring-ai-rag-reference-audit/audit.json"
+}

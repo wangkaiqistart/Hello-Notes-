@@ -1,0 +1,275 @@
+{
+  "result": "PASS",
+  "sourceBlocks": 32,
+  "targetBlocks": 32,
+  "preservedBlocks": 22,
+  "correctedBlocks": 10,
+  "blocks": [
+    {
+      "index": 1,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "30c2288145b842e5d35197dcf1d650434fea39303886b9d9b84fd7fb82fa610e",
+      "targetSha256": "30c2288145b842e5d35197dcf1d650434fea39303886b9d9b84fd7fb82fa610e"
+    },
+    {
+      "index": 2,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "beccc1a16389912222997b1380f288a21bd17bbfaefe439e5172d6f1d6241930",
+      "targetSha256": "beccc1a16389912222997b1380f288a21bd17bbfaefe439e5172d6f1d6241930"
+    },
+    {
+      "index": 3,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "a597f48c32ebff99561c1f244afee3a85b1d2b6d4a03cdbd1b670eaeeaa0c47b",
+      "targetSha256": "a597f48c32ebff99561c1f244afee3a85b1d2b6d4a03cdbd1b670eaeeaa0c47b"
+    },
+    {
+      "index": 4,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "ec70ee944284db9b7f321f0b6bad0520518869ded58be99587b64b65031822d1",
+      "targetSha256": "ec70ee944284db9b7f321f0b6bad0520518869ded58be99587b64b65031822d1"
+    },
+    {
+      "index": 5,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "dd3355eb48923198fa8d07b64575a0f7638d55c138c438347d6e689ae71a6870",
+      "targetSha256": "dd3355eb48923198fa8d07b64575a0f7638d55c138c438347d6e689ae71a6870"
+    },
+    {
+      "index": 6,
+      "language": "java",
+      "action": "corrected",
+      "reason": "将 this.customEstimator 改为声明的局部 customEstimator。",
+      "sourceSha256": "3202725ebd91df20aeb3c6a181e36c15468731c319c69c41ffbf4c7a4fcb4542",
+      "targetSha256": "281abab2451a97dfd7b1942e95f0a5e614c412eab8f752a7313ba2f6f913dcac",
+      "diff": "--- source\n+++ translation\n@@ -1,6 +1,6 @@\n TokenCountEstimator customEstimator = new YourCustomTokenCountEstimator();\n TokenCountBatchingStrategy strategy = new TokenCountBatchingStrategy(\n-\t\tthis.customEstimator,\n+\t\tcustomEstimator,\n     8000,  // maxInputTokenCount\n     0.1,   // reservePercentage\n     Document.DEFAULT_CONTENT_FORMATTER,\n"
+    },
+    {
+      "index": 7,
+      "language": "java",
+      "action": "corrected",
+      "reason": "手动 PgVectorStore 构建补上 batchingStrategy。",
+      "sourceSha256": "8a9c8d95219da40055cba13627bfdecac34765c86883ca351795a7c894eebb52",
+      "targetSha256": "ac835b30cbc528d1f66e8feade98839f250bb2f72f1c44ac7c3b76e2921a8245",
+      "diff": "--- source\n+++ translation\n@@ -28,6 +28,7 @@\n     @Bean\n     public VectorStore vectorStore(JdbcTemplate jdbcTemplate, EmbeddingModel embeddingModel, BatchingStrategy batchingStrategy) {\n         return PgVectorStore.builder(jdbcTemplate, embeddingModel)\n+            .batchingStrategy(batchingStrategy)\n             // other properties omitted here\n             .build();\n     }\n"
+    },
+    {
+      "index": 8,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "38818f55b963fc6a165fd97eb4146ba343770d7e1a811ad4e97920528aafb685",
+      "targetSha256": "38818f55b963fc6a165fd97eb4146ba343770d7e1a811ad4e97920528aafb685"
+    },
+    {
+      "index": 9,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "335addc40c7ce12538eff9ceb0a85784d98591bc0f13e49b4946d056838f60a6",
+      "targetSha256": "335addc40c7ce12538eff9ceb0a85784d98591bc0f13e49b4946d056838f60a6"
+    },
+    {
+      "index": 10,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "e1289f9dfa8fe66b4ce263c94b82fd072f2a6d19fd32be016f98c5c286626a93",
+      "targetSha256": "e1289f9dfa8fe66b4ce263c94b82fd072f2a6d19fd32be016f98c5c286626a93"
+    },
+    {
+      "index": 11,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "b7493dd123bc7378b1d5bf96b57a5d91c239420167bf5796e029bb0a0c3c81e8",
+      "targetSha256": "b7493dd123bc7378b1d5bf96b57a5d91c239420167bf5796e029bb0a0c3c81e8"
+    },
+    {
+      "index": 12,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "641df23422967fb550a73617c55854a1353167473d5f65f3cd3c53a835957f62",
+      "targetSha256": "641df23422967fb550a73617c55854a1353167473d5f65f3cd3c53a835957f62"
+    },
+    {
+      "index": 13,
+      "language": "java",
+      "action": "corrected",
+      "reason": "变量 country 使用结构化过滤构建器。",
+      "sourceSha256": "bfab80a3c7e33a7a9fac895fcbd03ec4b95856e16f5a1d48975b25b8c0063bbe",
+      "targetSha256": "5dddd3cfaae6667c8389980b7d2e63d9bf16b0ad977dada7e2c9ebd43ae09585",
+      "diff": "--- source\n+++ translation\n@@ -15,7 +15,7 @@\n         SearchRequest request = SearchRequest.builder()\n             .query(query)\n             .topK(5)\n-            .filterExpression(\"country == '\" + country + \"'\")\n+            .filterExpression(new FilterExpressionBuilder().eq(\"country\", country).build())\n             .build();\n \n         return retriever.similaritySearch(request);\n"
+    },
+    {
+      "index": 14,
+      "language": "java",
+      "action": "corrected",
+      "reason": "getContent/generate 改为 getText/call，并过滤无文本资料。",
+      "sourceSha256": "b41ddf593f677b2b0f988a4e2a318314f972777f86732b6eb84bd3d80119ca41",
+      "targetSha256": "3a699969b073a23760fb84970e13c5cc4d191e68beceaf3b04485c1882da38d0",
+      "diff": "--- source\n+++ translation\n@@ -15,11 +15,12 @@\n \n         // Extract content from documents to use as context\n         String context = relevantDocs.stream()\n-            .map(Document::getContent)\n+            .map(Document::getText)\n+            .filter(org.springframework.util.StringUtils::hasText)\n             .collect(Collectors.joining(\"\\n\\n\"));\n \n         // Generate response using the retrieved context\n         String prompt = \"Context information:\\n\" + context + \"\\n\\nUser query: \" + userQuery;\n-        return chatModel.generate(prompt);\n+        return chatModel.call(prompt);\n     }\n }"
+    },
+    {
+      "index": 15,
+      "language": "java",
+      "action": "corrected",
+      "reason": "this.b 改为局部 b，并用完整 Filter.Expression 类型。",
+      "sourceSha256": "2e7e909febf0cf5a607284bda13a5a2dad4f61d49ed639f739496ff9e3278c30",
+      "targetSha256": "23428cab9d557bc2ea2df2650f1d7385c74e9fba76a03602def6f795298c9437",
+      "diff": "--- source\n+++ translation\n@@ -1,2 +1,2 @@\n FilterExpressionBuilder b = new FilterExpressionBuilder();\n-Expression expression = this.b.eq(\"country\", \"BG\").build();+Filter.Expression expression = b.eq(\"country\", \"BG\").build();"
+    },
+    {
+      "index": 16,
+      "language": "text",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "a123eba3904b54a3b65d6dbc4cf76ad313211eab0cc6574d71d4c8340c61c0d0",
+      "targetSha256": "a123eba3904b54a3b65d6dbc4cf76ad313211eab0cc6574d71d4c8340c61c0d0"
+    },
+    {
+      "index": 17,
+      "language": "text",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "058a604abb9e3da17dce5e705e280dc2b8220109f883a380d2c1741d23d4163a",
+      "targetSha256": "058a604abb9e3da17dce5e705e280dc2b8220109f883a380d2c1741d23d4163a"
+    },
+    {
+      "index": 18,
+      "language": "java",
+      "action": "corrected",
+      "reason": "显式使用 Filter.Expression 类型。",
+      "sourceSha256": "ffb9bd73a68c1a54c40f9423846d8bf6a5c661f6ac5c96b2ad02d606b2d744c9",
+      "targetSha256": "22cbb3d1781fb1bbd352ad29ea15db94f3fb6c37b6cd31e6eb4d77fde4e64357",
+      "diff": "--- source\n+++ translation\n@@ -1 +1 @@\n-Expression exp = b.and(b.eq(\"genre\", \"drama\"), b.gte(\"year\", 2020)).build();+Filter.Expression exp = b.and(b.eq(\"genre\", \"drama\"), b.gte(\"year\", 2020)).build();"
+    },
+    {
+      "index": 19,
+      "language": "text",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "cec2b51772e89cf3ae7fbd05b895f6bb215167efa159e59aa8e13f841be2e300",
+      "targetSha256": "cec2b51772e89cf3ae7fbd05b895f6bb215167efa159e59aa8e13f841be2e300"
+    },
+    {
+      "index": 20,
+      "language": "java",
+      "action": "corrected",
+      "reason": "显式使用 Filter.Expression 类型。",
+      "sourceSha256": "280bcb422d7cb8417acdaa91bb2c6815b300de104bfffa49358287c95e1a5109",
+      "targetSha256": "3c91a8a7a773c32c353f7a281a17ede71c9d07b545d58f722e1be12a45b3388c",
+      "diff": "--- source\n+++ translation\n@@ -1 +1 @@\n-Expression exp = b.and(b.in(\"genre\", \"drama\", \"documentary\"), b.not(b.lt(\"year\", 2020))).build();+Filter.Expression exp = b.and(b.in(\"genre\", \"drama\", \"documentary\"), b.not(b.lt(\"year\", 2020))).build();"
+    },
+    {
+      "index": 21,
+      "language": "text",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "a6669fc8fa63685af29a1cc7036ed78f0098851d65fc21b7d9daf87b0685b18e",
+      "targetSha256": "a6669fc8fa63685af29a1cc7036ed78f0098851d65fc21b7d9daf87b0685b18e"
+    },
+    {
+      "index": 22,
+      "language": "java",
+      "action": "corrected",
+      "reason": "单条件 isNull/isNotNull 直接 build，不使用不存在的单参数 and。",
+      "sourceSha256": "6dc76800d4fb4dbbd22eb7276858cd42996e7bb95aa0479a1b0b81ffda14eafa",
+      "targetSha256": "69ec0defc9098faf796898f0fd2dd6e096cfb1bcaf778d689dc48098aeacb129",
+      "diff": "--- source\n+++ translation\n@@ -1,2 +1,2 @@\n-Expression exp = b.and(b.isNull(\"year\")).build();\n-Expression exp = b.and(b.isNotNull(\"year\")).build();+Filter.Expression missingYear = b.isNull(\"year\").build();\n+Filter.Expression presentYear = b.isNotNull(\"year\").build();"
+    },
+    {
+      "index": 23,
+      "language": "java",
+      "action": "corrected",
+      "reason": "分组 ID 作为结构化过滤值。",
+      "sourceSha256": "d25c157bfadeb36b3026bf62e4e0ba29238933cc4cffc0ff0d21c4d271722f78",
+      "targetSha256": "b1aeca90b614907562a3058dc8c34dfe0eb7f5290fe7c6d57ea6242137f335a9",
+      "diff": "--- source\n+++ translation\n@@ -5,7 +5,7 @@\n // When searching, select documents from that group.\n List<Document> results = vectorStore.similaritySearch(SearchRequest.builder()\n     .query(query)\n-    .filterExpression(\"group == '\" + groupId + \"'\")\n+    .filterExpression(new FilterExpressionBuilder().eq(\"group\", groupId).build())\n     .build());\n \n // When deleting by filter, target the same group.\n"
+    },
+    {
+      "index": 24,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "a96ab51025958469c2c4b1dcebb73a9beccd5a0a7dc9772c82af8a18c6f42a57",
+      "targetSha256": "a96ab51025958469c2c4b1dcebb73a9beccd5a0a7dc9772c82af8a18c6f42a57"
+    },
+    {
+      "index": 25,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "6276eb85cb519d658927798c55cf64eafa0e3a9686e4fc24f9ea581012d1cb01",
+      "targetSha256": "6276eb85cb519d658927798c55cf64eafa0e3a9686e4fc24f9ea581012d1cb01"
+    },
+    {
+      "index": 26,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "687de93aac61eeff45db657571477c0a092544efd47431592bf64921a31b1486",
+      "targetSha256": "687de93aac61eeff45db657571477c0a092544efd47431592bf64921a31b1486"
+    },
+    {
+      "index": 27,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "36e3a5cb9e2efcfb87ab9560b694db545c8354f7d5f79f5dd2c460bd1a93cc6e",
+      "targetSha256": "36e3a5cb9e2efcfb87ab9560b694db545c8354f7d5f79f5dd2c460bd1a93cc6e"
+    },
+    {
+      "index": 28,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "ec911dc9a3aa753d1c7550859bd40efbd7a94bfb78f98b13d683c28d6bc20de5",
+      "targetSha256": "ec911dc9a3aa753d1c7550859bd40efbd7a94bfb78f98b13d683c28d6bc20de5"
+    },
+    {
+      "index": 29,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "0e78f94533e9a8a642972e71a1675012272dede90c5d20fef1cb4f843ee42b5e",
+      "targetSha256": "0e78f94533e9a8a642972e71a1675012272dede90c5d20fef1cb4f843ee42b5e"
+    },
+    {
+      "index": 30,
+      "language": "java",
+      "action": "corrected",
+      "reason": "异常日志不再将后端错误全部归为过滤表达式错误。",
+      "sourceSha256": "02a1bea47d392e5c1a487827b726d817df9a0a6fdd03dab66b46fa575e5323a1",
+      "targetSha256": "50e88ecd6e6261b9f9409271c83d27ade1ce2944be63c5bf64ac6d56819251d8",
+      "diff": "--- source\n+++ translation\n@@ -2,5 +2,5 @@\n     vectorStore.delete(\"country == 'Bulgaria'\");\n }\n catch (Exception  e) {\n-    logger.error(\"Invalid filter expression\", e);\n+    logger.error(\"Failed to delete documents from vector store\", e);\n }"
+    },
+    {
+      "index": 31,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "971935a17ccc12d36a1a1418f1c7f2e04a66ce4315244993e3052e15d87b2b90",
+      "targetSha256": "971935a17ccc12d36a1a1418f1c7f2e04a66ce4315244993e3052e15d87b2b90"
+    },
+    {
+      "index": 32,
+      "language": "java",
+      "action": "preserved",
+      "reason": "Source block preserved verbatim.",
+      "sourceSha256": "7a71b41b20702c39c86706dd705c0c8304ead7e2a205a2dbda4857088e6e5ed5",
+      "targetSha256": "7a71b41b20702c39c86706dd705c0c8304ead7e2a205a2dbda4857088e6e5ed5"
+    }
+  ]
+}

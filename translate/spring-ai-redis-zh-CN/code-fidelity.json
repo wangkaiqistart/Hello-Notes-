@@ -1,0 +1,275 @@
+{
+  "result": "PASS",
+  "codeBlocks": 33,
+  "correctedBlocks": 4,
+  "blocks": [
+    {
+      "index": 1,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "ca747602e0cdecca73d97b346716b78e5e943014d39cdd248ec6bad83fd98655",
+      "targetSha256": "ca747602e0cdecca73d97b346716b78e5e943014d39cdd248ec6bad83fd98655"
+    },
+    {
+      "index": 2,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "d89c1a579708d73e4c599aa9df8bd6e118b17ad73b07c7094e0d3c567da1d892",
+      "targetSha256": "d89c1a579708d73e4c599aa9df8bd6e118b17ad73b07c7094e0d3c567da1d892"
+    },
+    {
+      "index": 3,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "95c48bdf3cddbfc541009ae5ad277b7ed843b80585e248f608b79adbee9160c5",
+      "targetSha256": "95c48bdf3cddbfc541009ae5ad277b7ed843b80585e248f608b79adbee9160c5"
+    },
+    {
+      "index": 4,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "92596776c067f6fafabf18222b40a19dca155d0ddfbf2602928d0cb0edc2b813",
+      "targetSha256": "92596776c067f6fafabf18222b40a19dca155d0ddfbf2602928d0cb0edc2b813"
+    },
+    {
+      "index": 5,
+      "language": "yaml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "62105f149dd2e4b7f7694cd009597499fa00cdfb91089727215bce0538d29523",
+      "targetSha256": "62105f149dd2e4b7f7694cd009597499fa00cdfb91089727215bce0538d29523"
+    },
+    {
+      "index": 6,
+      "language": "properties",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "e9691d9be137e26f061774edb68f2b7e27cdfc15f9d7dd385bd440f37ad3620e",
+      "targetSha256": "e9691d9be137e26f061774edb68f2b7e27cdfc15f9d7dd385bd440f37ad3620e"
+    },
+    {
+      "index": 7,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "52334c88da885d68821b03ed69b99d9ed8a0f79da393833f1c987172726c7456",
+      "targetSha256": "52334c88da885d68821b03ed69b99d9ed8a0f79da393833f1c987172726c7456"
+    },
+    {
+      "index": 8,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "cc03d3d8aa821ebac3ccdb88a9b03a4e9cfe3551f9459d544328e8fcd73c6090",
+      "targetSha256": "cc03d3d8aa821ebac3ccdb88a9b03a4e9cfe3551f9459d544328e8fcd73c6090"
+    },
+    {
+      "index": 9,
+      "language": "sql",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "9b6a1fe10cfdc4d71fc41649143ed7a67eba6ea05e09520e07fcc4ef0f6def09",
+      "targetSha256": "9b6a1fe10cfdc4d71fc41649143ed7a67eba6ea05e09520e07fcc4ef0f6def09"
+    },
+    {
+      "index": 10,
+      "language": "text",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "76c1b74bcc226adc52c280f4d86a0bd8ab405e4855a9ac6eafd62a8a99cf6504",
+      "targetSha256": "76c1b74bcc226adc52c280f4d86a0bd8ab405e4855a9ac6eafd62a8a99cf6504"
+    },
+    {
+      "index": 11,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "56071ddd43d030a1a208632f4adf876dd2965688dd2675ea3a52ef2fde17942f",
+      "targetSha256": "56071ddd43d030a1a208632f4adf876dd2965688dd2675ea3a52ef2fde17942f"
+    },
+    {
+      "index": 12,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "b4a3d85d9cb9cda5392c78256e41d688cea91867510e4686b59ce255aa8c921b",
+      "targetSha256": "b4a3d85d9cb9cda5392c78256e41d688cea91867510e4686b59ce255aa8c921b"
+    },
+    {
+      "index": 13,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "2603928968f38b05d2a4a9d7c77ac3a8475fc8a9a975f0c0420ec7f2055b6f9a",
+      "targetSha256": "2603928968f38b05d2a4a9d7c77ac3a8475fc8a9a975f0c0420ec7f2055b6f9a"
+    },
+    {
+      "index": 14,
+      "language": "java",
+      "status": "corrected",
+      "reason": "修复模型构造，返回具体类型并补充category过滤字段。",
+      "sourceSha256": "9f0d345e5e61e793d4e899edf3c68c621d2edd790400f8579bb20ed58f395509",
+      "targetSha256": "1f316bf956bf05e9522f6bcd214bfe8b36d761f83c40546b7b13d05ea1d1206c",
+      "diff": "--- source\n+++ translation\n@@ -1,5 +1,5 @@\n @Bean\n-public VectorStore vectorStore(RedisClient jedisClient, EmbeddingModel embeddingModel) {\n+public RedisVectorStore vectorStore(RedisClient jedisClient, EmbeddingModel embeddingModel) {\n     return RedisVectorStore.builder(jedisClient, embeddingModel)\n         .indexName(\"custom-index\")                // Optional: defaults to \"spring-ai-index\"\n         .prefix(\"custom-prefix\")                  // Optional: defaults to \"embedding:\"\n@@ -15,6 +15,7 @@\n         .metadataFields(                          // Optional: define metadata fields for filtering\n             MetadataField.tag(\"country\"),\n             MetadataField.numeric(\"year\"),\n+            MetadataField.tag(\"category\"),\n             MetadataField.text(\"description\"))\n         .initializeSchema(true)                   // Optional: defaults to false\n         .batchingStrategy(new TokenCountBatchingStrategy()) // Optional: defaults to TokenCountBatchingStrategy\n@@ -24,5 +25,6 @@\n // This can be any EmbeddingModel implementation\n @Bean\n public EmbeddingModel embeddingModel() {\n-    return new OpenAiEmbeddingModel(OpenAiEmbeddingOptions.builder().apiKey(System.getenv(\"OPENAI_API_KEY\")).build());\n+    // Reads OPENAI_API_KEY through the default OpenAI client setup.\n+    return OpenAiEmbeddingModel.builder().build();\n }"
+    },
+    {
+      "index": 15,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "3c00e2aa75e48c614c41b7cfe26d08e4ac368f6e731dc18988c07a2e397588ae",
+      "targetSha256": "3c00e2aa75e48c614c41b7cfe26d08e4ac368f6e731dc18988c07a2e397588ae"
+    },
+    {
+      "index": 16,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "30a25e23c345cd5f62703937f5f73e00b762d9b0faac73cabb731f5816296982",
+      "targetSha256": "30a25e23c345cd5f62703937f5f73e00b762d9b0faac73cabb731f5816296982"
+    },
+    {
+      "index": 17,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "07085f7660e3d06a8ecf15173b914144687b370c8abaacd6f451d0d56c00397e",
+      "targetSha256": "07085f7660e3d06a8ecf15173b914144687b370c8abaacd6f451d0d56c00397e"
+    },
+    {
+      "index": 18,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "3be56bb25b0d7f9b73c3161a153b89fb89be25c6d571d0d7e481e6156c595017",
+      "targetSha256": "3be56bb25b0d7f9b73c3161a153b89fb89be25c6d571d0d7e481e6156c595017"
+    },
+    {
+      "index": 19,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "1ce4f374c1d2500ed9c228dbca0a59497bf20470fcd6d48bc71b0ff275a690cd",
+      "targetSha256": "1ce4f374c1d2500ed9c228dbca0a59497bf20470fcd6d48bc71b0ff275a690cd"
+    },
+    {
+      "index": 20,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "7ecb3f52cc4f9f6734fc47d161b34309a92325a02f6dbccba4cc4733afd04a46",
+      "targetSha256": "7ecb3f52cc4f9f6734fc47d161b34309a92325a02f6dbccba4cc4733afd04a46"
+    },
+    {
+      "index": 21,
+      "language": "java",
+      "status": "corrected",
+      "reason": "范围检索第三参数按源码使用Redis原生过滤。",
+      "sourceSha256": "edf1fbadf8d6c282d6a9e56bd13cf51b944192bcdd624eae4f9ed6893b9d81b1",
+      "targetSha256": "80f8b9bc5c811d95b1d3201d85e09bfae887c45e14d49548781190ef292e4ba4",
+      "diff": "--- source\n+++ translation\n@@ -2,5 +2,5 @@\n List<Document> rangeResults = vectorStore.searchByRange(\n     \"AI and machine learning\",  // query\n     0.8,                        // radius (similarity threshold)\n-    \"category == 'AI'\"          // optional filter expression\n+    \"@category:{AI}\"          // optional filter expression\n );"
+    },
+    {
+      "index": 22,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "ae15030d3ab661c68e5bf0cc66230e6f1ca2b82a830e32202910a6f356ef5d32",
+      "targetSha256": "ae15030d3ab661c68e5bf0cc66230e6f1ca2b82a830e32202910a6f356ef5d32"
+    },
+    {
+      "index": 23,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "dbacf241ef42e7e8a55f02031b6c12359a0e9da005f0cf9c097e961dcdff0f7f",
+      "targetSha256": "dbacf241ef42e7e8a55f02031b6c12359a0e9da005f0cf9c097e961dcdff0f7f"
+    },
+    {
+      "index": 24,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "a853836e87028884b48a2341487c7a5732b3c64acdc02edae738ce4df096f5b5",
+      "targetSha256": "a853836e87028884b48a2341487c7a5732b3c64acdc02edae738ce4df096f5b5"
+    },
+    {
+      "index": 25,
+      "language": "yaml",
+      "status": "corrected",
+      "reason": "将无效语义缓存host/port移到Spring Boot Redis连接配置。",
+      "sourceSha256": "101322a561de87ca3012e4492b336871985f56a6a4d960c29db0f917039b1be3",
+      "targetSha256": "cab7cfdadad32ecc18c5c219c8e4654fbb017a30dcadb2a957115eacd5423449",
+      "diff": "--- source\n+++ translation\n@@ -1,11 +1,13 @@\n spring:\n+  data:\n+    redis:\n+      host: localhost\n+      port: 6379\n   ai:\n     vectorstore:\n       redis:\n         semantic-cache:\n           enabled: true\n-          host: localhost\n-          port: 6379\n           similarity-threshold: 0.85\n           index-name: my-app-cache\n-          prefix: \"my-app:semantic-cache:\"+          prefix: 'my-app:semantic-cache:'"
+    },
+    {
+      "index": 26,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "272a577767f09940990cb70b88e39e2b216a9aaf2cc8e4c9961733bba2c8e93a",
+      "targetSha256": "272a577767f09940990cb70b88e39e2b216a9aaf2cc8e4c9961733bba2c8e93a"
+    },
+    {
+      "index": 27,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "eda5cd4c2c51aed6435dbaec0f80002821a0e4c1c962e293a46cf269ebcf35d2",
+      "targetSha256": "eda5cd4c2c51aed6435dbaec0f80002821a0e4c1c962e293a46cf269ebcf35d2"
+    },
+    {
+      "index": 28,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "d081b7d294b7ed9cc5ef391b08928d48274b1c89da59bb8e8192030ec2fb6300",
+      "targetSha256": "d081b7d294b7ed9cc5ef391b08928d48274b1c89da59bb8e8192030ec2fb6300"
+    },
+    {
+      "index": 29,
+      "language": "java",
+      "status": "corrected",
+      "reason": "不同用户同时使用独立索引和键前缀。",
+      "sourceSha256": "7ab7d264bcaf727e09d7ce7bf52e8903bda77141d07615dbc381db29497d6753",
+      "targetSha256": "2c06f3eceb8964127fb37f9e02139f24711761372b977d57e84b032268c1a844",
+      "diff": "--- source\n+++ translation\n@@ -3,12 +3,14 @@\n     .jedisClient(jedisClient)\n     .embeddingModel(embeddingModel)\n     .indexName(\"user-1-cache\")\n+    .prefix(\"user-1:semantic-cache:\")\n     .build();\n \n SemanticCache user2Cache = DefaultSemanticCache.builder()\n     .jedisClient(jedisClient)\n     .embeddingModel(embeddingModel)\n     .indexName(\"user-2-cache\")\n+    .prefix(\"user-2:semantic-cache:\")\n     .build();\n \n // Each user gets their own isolated cache space\n"
+    },
+    {
+      "index": 30,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "fa02755c47c1e63d057e5b1fbe54596445cb84ac3cd05917a490f4912d5375b7",
+      "targetSha256": "fa02755c47c1e63d057e5b1fbe54596445cb84ac3cd05917a490f4912d5375b7"
+    },
+    {
+      "index": 31,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "b5cc2fe54521844efd08f1285a6f34850eb0dbe9e0ba4ee2ac685c4e3a3e79b3",
+      "targetSha256": "b5cc2fe54521844efd08f1285a6f34850eb0dbe9e0ba4ee2ac685c4e3a3e79b3"
+    },
+    {
+      "index": 32,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "03934f1a9e777a11acf133470aea56412646e26d6aa743554ed14791ef926fed",
+      "targetSha256": "03934f1a9e777a11acf133470aea56412646e26d6aa743554ed14791ef926fed"
+    },
+    {
+      "index": 33,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "d940a365ee8990047290f964222a780e65a0f33d2643fa4bdd2a9ccce8dd602d",
+      "targetSha256": "d940a365ee8990047290f964222a780e65a0f33d2643fa4bdd2a9ccce8dd602d"
+    }
+  ]
+}

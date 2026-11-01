@@ -10,7 +10,7 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
 
 `ChatClient` 提供与 AI 模型交互的链式 API，同时支持同步调用和流式响应。
 
-请求以 [Prompt](https://docs.spring.io/spring-ai/reference/api/prompt.html#_prompt) 为输入，包含一组消息和调用选项：
+请求以 [Prompt](/frameworks/spring-ai/core/prompts/#prompt消息与请求选项的容器) 为输入，包含一组消息和调用选项：
 
 - **用户消息**：用户输入的问题或任务。
 - **系统消息**：约束模型的行为、背景和回答方式。
@@ -68,7 +68,7 @@ Spring AI 2.0.x 使用 `chat.model`，旧的 `chat.options.model` 已弃用。�
 
 ## 创建 ChatClient
 
-通过 `ChatClient.Builder` 创建客户端。可以注入 Spring Boot 为 [ChatModel](https://docs.spring.io/spring-ai/reference/api/chatmodel.html) 自动配置的 Builder，也可以手动构建。
+通过 `ChatClient.Builder` 创建客户端。可以注入 Spring Boot 为 [ChatModel](/frameworks/spring-ai/models/chat-model/) 自动配置的 Builder，也可以手动构建。
 
 ### 使用自动配置的 ChatClient.Builder
 
@@ -326,7 +326,7 @@ public class MultiModelService {
 
 ### 返回 ChatResponse
 
-[ChatResponse](https://docs.spring.io/spring-ai/reference/api/chatmodel.html#ChatResponse) 包含模型生成结果和响应元数据。一份响应可以包含多个 [Generation](https://docs.spring.io/spring-ai/reference/api/chatmodel.html#Generation)，每个生成结果也可带有元数据。
+[ChatResponse](/frameworks/spring-ai/models/chat-model/#一次请求和响应包含什么) 包含模型生成结果和响应元数据。一份响应可以包含多个 [Generation](/frameworks/spring-ai/models/chat-model/#一次请求和响应包含什么)，每个生成结果也可带有元数据。
 
 元数据中的 Token 用量可用于统计调用成本。托管模型通常按 Token 计费，具体切分和计费规则取决于模型与提供方。
 
@@ -381,7 +381,7 @@ ActorFilms actorFilms = chatClient.prompt()
         .validateSchema());
 ```
 
-支持范围、限制和底层转换器 API，见[结构化输出](https://docs.spring.io/spring-ai/reference/api/structured-output.html)。
+支持范围、限制和底层转换器 API，见[结构化输出](/frameworks/spring-ai/core/structured-output/)。
 
 ### 流式响应
 
@@ -396,7 +396,7 @@ Flux<String> output = chatClient.prompt()
 
 需要同时接收响应元数据时，可使用 `.stream().chatResponse()`，其返回类型为 `Flux<ChatResponse>`。
 
-当前版本的流式 API 尚未提供直接返回 Java 对象的便捷方法。可以先聚合文本，再使用[结构化输出转换器](https://docs.spring.io/spring-ai/reference/api/structured-output/converters.html) 显式转换：
+当前版本的流式 API 尚未提供直接返回 Java 对象的便捷方法。可以先聚合文本，再使用[结构化输出转换器](/frameworks/spring-ai/core/structured-output/#输出转换器) 显式转换：
 
 ```java
 var converter = new BeanOutputConverter<>(new ParameterizedTypeReference<List<ActorFilms>>() {});
@@ -432,7 +432,7 @@ String answer = ChatClient.create(chatModel).prompt()
 
 `ChatClient` 通过 `PromptTemplate` 处理文本，并委托 `TemplateRenderer` 渲染变量。默认实现 `StTemplateRenderer` 基于 Terence Parr 开发的 [StringTemplate](https://www.stringtemplate.org/) 引擎；不需要模板处理时，可使用 `NoOpTemplateRenderer`。
 
-通过 `.templateRenderer()` 设置的渲染器只影响客户端链中的 `.user()`、`.system()` 等文本。`QuestionAnswerAdvisor` 等 Advisor 内部使用的模板有独立的[定制机制](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html#_custom_template)，不受此设置影响，详见 [Advisor 说明](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html#_questionansweradvisor)。
+通过 `.templateRenderer()` 设置的渲染器只影响客户端链中的 `.user()`、`.system()` 等文本。`QuestionAnswerAdvisor` 等 Advisor 内部使用的模板有独立的[定制机制](/frameworks/spring-ai/rag/retrieval-and-generation/#_custom_template)，不受此设置影响，详见 [Advisor 说明](/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor)。
 
 可以实现 `TemplateRenderer` 以使用其他模板引擎，也可以调整 `StTemplateRenderer`。默认占位符使用 `{}`；提示词包含 JSON 时，可改用其他分隔符以避免冲突，例如 `<` 与 `>`：
 
@@ -711,7 +711,7 @@ http localhost:8080/ai voice=='Robert DeNiro'
 - `advisors(Advisor... advisor)`、`advisors(List<Advisor> advisors)`
 - `advisors(Consumer<AdvisorSpec> advisorSpecConsumer)`
 
-这里的增量配置由 `ChatClient` 处理。直接调用 `ChatModel.call()` 或 `ChatModel.stream()` 时，`Prompt` 中非空的选项会作为完整配置使用；选项为 `null` 时才使用模型默认值，详见 [ChatModel](https://docs.spring.io/spring-ai/reference/api/chatmodel.html)。
+这里的增量配置由 `ChatClient` 处理。直接调用 `ChatModel.call()` 或 `ChatModel.stream()` 时，`Prompt` 中非空的选项会作为完整配置使用；选项为 `null` 时才使用模型默认值，详见 [ChatModel](/frameworks/spring-ai/models/chat-model/)。
 
 下图展示默认配置与单次请求配置的合并，以及合并后的请求通过 Advisor 链交给模型的过程。
 
@@ -765,13 +765,13 @@ ChatClient.builder(chatModel)
     .content();
 ```
 
-上述组合由 `MessageChatMemoryAdvisor` 补充对话历史，`QuestionAnswerAdvisor` 执行检索增强。若希望先补充历史、再检索，应让记忆 Advisor 的 `order` 小于检索 Advisor。进一步用法见 [Question Answer Advisor](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html#_questionansweradvisor)。
+上述组合由 `MessageChatMemoryAdvisor` 补充对话历史，`QuestionAnswerAdvisor` 执行检索增强。若希望先补充历史、再检索，应让记忆 Advisor 的 `order` 小于检索 Advisor。进一步用法见 [Question Answer Advisor](/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor)。
 
 **每次使用记忆 Advisor，都必须通过 `.param()` 提供 `ChatMemory.CONVERSATION_ID`；缺失时会抛出 `IllegalArgumentException`。**
 
 ### 检索增强生成
 
-完整流程见 [RAG](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html) 文档。
+完整流程见 [RAG](/frameworks/spring-ai/rag/retrieval-and-generation/) 文档。
 
 ### 日志
 
@@ -838,7 +838,7 @@ String response = ChatClient.builder(chatModel)
 spring.ai.chat.client.tool-calling.enabled=false
 ```
 
-工具定义仍会发送给模型，但模型返回的工具调用不会自动执行。此时可使用[用户控制的工具执行](https://docs.spring.io/spring-ai/reference/api/tools.html#user-controlled-tool-execution)自行驱动调用循环。
+工具定义仍会发送给模型，但模型返回的工具调用不会自动执行。此时可使用[用户控制的工具执行](/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution)自行驱动调用循环。
 
 **单次调用禁用**：使用 `AdvisorParams.toolCallingAdvisorAutoRegister(false)`：
 
@@ -877,7 +877,7 @@ spring.ai.chat.client.tool-calling.advisor-order=0
 
 需要在工具循环内反复执行的 Advisor，其 `order` 应大于工具 Advisor；每次用户请求只执行一次的 Advisor，其 `order` 应小于工具 Advisor。默认值由 `ToolCallingAdvisor.DEFAULT_ORDER` 定义。
 
-**自行控制工具执行**：若要观察每轮工具调用，例如向界面发送中间结果，可在单次请求中使用 `AdvisorParams.toolCallingAdvisorAutoRegister(false)` 关闭自动注册，再自行驱动循环。完整示例见[使用 ChatClient 控制工具执行](https://docs.spring.io/spring-ai/reference/api/tools.html#user-controlled-tool-execution)。
+**自行控制工具执行**：若要观察每轮工具调用，例如向界面发送中间结果，可在单次请求中使用 `AdvisorParams.toolCallingAdvisorAutoRegister(false)` 关闭自动注册，再自行驱动循环。完整示例见[使用 ChatClient 控制工具执行](/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution)。
 
 **提供自定义 Builder Bean**：需要指定 `ToolCallingManager` 等组件时，可声明 `ToolCallingAdvisor.Builder<?>` Bean。自动配置使用 `@ConditionalOnMissingBean`，因此会优先使用自定义 Bean：
 
@@ -913,7 +913,7 @@ chatClient.prompt("What day is tomorrow?")
 
 #### ToolAdvisor 标记接口
 
-`ToolAdvisor` 表明处理链已经具备工具执行能力。自定义 Advisor 实现该接口后，`ChatClient` 不会再自动添加第二个 `ToolCallingAdvisor`。详见[扩展工具调用循环](https://docs.spring.io/spring-ai/reference/api/tools.html#extending-the-loop)。
+`ToolAdvisor` 表明处理链已经具备工具执行能力。自定义 Advisor 实现该接口后，`ChatClient` 不会再自动添加第二个 `ToolCallingAdvisor`。详见[扩展工具调用循环](/frameworks/spring-ai/tools/tool-calling/#extending-the-loop)。
 
 ## 对话记忆
 
@@ -930,7 +930,7 @@ chatClient.prompt("What day is tomorrow?")
 - `MongoChatMemoryRepository`
 - `RedisChatMemoryRepository`
 
-所有记忆 Advisor 都要求每次调用显式提供会话 ID：`.advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))`。**没有默认会话 ID**，缺失时会抛出 `IllegalArgumentException`。完整配置见[对话记忆](https://docs.spring.io/spring-ai/reference/api/chat-memory.html)文档。
+所有记忆 Advisor 都要求每次调用显式提供会话 ID：`.advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))`。**没有默认会话 ID**，缺失时会抛出 `IllegalArgumentException`。完整配置见[对话记忆](/frameworks/spring-ai/core/chat-memory/)文档。
 
 ### MemoryAdvisor 标记接口
 

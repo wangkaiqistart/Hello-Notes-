@@ -1,0 +1,65 @@
+{
+  "version": "2.0.2",
+  "files": [
+    {
+      "file": "DefaultSemanticCache.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-redis-semantic-cache/src/main/java/org/springframework/ai/vectorstore/redis/cache/semantic/DefaultSemanticCache.java",
+      "sha256": "e4c49d2083cc4243239364e885505e07d7f40af9be7a68780a047c3fec6a5823"
+    },
+    {
+      "file": "OpenAiEmbeddingAutoConfiguration.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/models/spring-ai-autoconfigure-model-openai/src/main/java/org/springframework/ai/model/openai/autoconfigure/OpenAiEmbeddingAutoConfiguration.java",
+      "sha256": "617e0c2696fce25c2d5cf6554fa866681cfe2cd797f4006fa75be6fa8da447eb"
+    },
+    {
+      "file": "OpenAiEmbeddingModel.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-openai/src/main/java/org/springframework/ai/openai/OpenAiEmbeddingModel.java",
+      "sha256": "6ccc2885bf731d35e4574955740c50bdda4dc280b23a8ee33bab12cfe882d132"
+    },
+    {
+      "file": "OpenAiSetup.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-openai/src/main/java/org/springframework/ai/openai/setup/OpenAiSetup.java",
+      "sha256": "673ec1c11c734b2e41134c88bf69f2f09584d85b715a006ef83d828fcaae577e"
+    },
+    {
+      "file": "RedisSemanticCacheAutoConfiguration.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis-semantic-cache/src/main/java/org/springframework/ai/vectorstore/redis/cache/semantic/autoconfigure/RedisSemanticCacheAutoConfiguration.java",
+      "sha256": "9ac47ab72a0b2e433fd568d53a519dbbf9b93f0b8f572cc504f49dbd917a6d96"
+    },
+    {
+      "file": "RedisSemanticCacheProperties.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis-semantic-cache/src/main/java/org/springframework/ai/vectorstore/redis/cache/semantic/autoconfigure/RedisSemanticCacheProperties.java",
+      "sha256": "218425c2aac473ae8bb079282aa0e2ef3ecab706fedd00c32a719cde8b6b1033"
+    },
+    {
+      "file": "RedisVectorStore.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-redis-store/src/main/java/org/springframework/ai/vectorstore/redis/RedisVectorStore.java",
+      "sha256": "8784ef4af05ee95b62bc1e58abfea72efaa91f544a1f91e595aa3c23fcddc964"
+    },
+    {
+      "file": "RedisVectorStoreAutoConfiguration.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis/src/main/java/org/springframework/ai/vectorstore/redis/autoconfigure/RedisVectorStoreAutoConfiguration.java",
+      "sha256": "a3850b72068922aa0661b834b07dbea2361bea50c2500333310965f2c58393b0"
+    },
+    {
+      "file": "RedisVectorStoreHelper.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-redis-semantic-cache/src/main/java/org/springframework/ai/vectorstore/redis/cache/semantic/RedisVectorStoreHelper.java",
+      "sha256": "007ecaae9e949348e1d3921e8fd0f8925ee9120bc310b42d87a892a850d23823"
+    },
+    {
+      "file": "RedisVectorStoreProperties.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-redis/src/main/java/org/springframework/ai/vectorstore/redis/autoconfigure/RedisVectorStoreProperties.java",
+      "sha256": "0527814aa9d7e31bfb001421905c7a565b5c765c3339b508700ba2b294682ad4"
+    },
+    {
+      "file": "SemanticCache.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-redis-semantic-cache/src/main/java/org/springframework/ai/chat/cache/semantic/SemanticCache.java",
+      "sha256": "6520a7d78cf437f2eb0a35d0e10988bdd5073a6ec67db4261b8fe0bf427277f1"
+    },
+    {
+      "file": "SemanticCacheAdvisor.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-redis-semantic-cache/src/main/java/org/springframework/ai/chat/cache/semantic/SemanticCacheAdvisor.java",
+      "sha256": "b33cc84cc55142f571e763bc9ba37071122d6e299ee2e46d7c431d42965e4ad9"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "version": "2.0.2",
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "EvaluationRequest 文档列表",
+      "result": "PASS"
+    },
+    {
+      "name": "上下文只取 dataList",
+      "result": "PASS"
+    },
+    {
+      "name": "上下文提取文本",
+      "result": "PASS"
+    },
+    {
+      "name": "Relevancy 只接受 yes",
+      "result": "PASS"
+    },
+    {
+      "name": "Relevancy 二值分数",
+      "result": "PASS"
+    },
+    {
+      "name": "FactChecking 通用构建器",
+      "result": "PASS"
+    },
+    {
+      "name": "FactChecking Bespoke 工厂",
+      "result": "PASS"
+    },
+    {
+      "name": "FactChecking 默认 score=0",
+      "result": "PASS"
+    },
+    {
+      "name": "Ollama API builder",
+      "result": "PASS"
+    },
+    {
+      "name": "Ollama 模型 builder",
+      "result": "PASS"
+    },
+    {
+      "name": "默认 StTemplateRenderer",
+      "result": "PASS"
+    },
+    {
+      "name": "RAG 文档上下文输出",
+      "result": "PASS"
+    }
+  ],
+  "boundary": "Static source checks only; Java examples were not compiled or executed, no live model or vector store calls."
+}

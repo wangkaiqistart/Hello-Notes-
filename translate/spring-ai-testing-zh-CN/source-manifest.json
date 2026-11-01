@@ -1,0 +1,82 @@
+{
+  "sourceUrl": "https://docs.spring.io/spring-ai/reference/api/testing.html",
+  "requestedAnchor": "_relevancy_evaluator",
+  "date": "2026-11-01",
+  "version": "2.0.2",
+  "sourceSha256": "9e67deced881ad49e549399e7c7d3deed96591f72cffd44e3d0cd5c66c99d187",
+  "words": 828,
+  "headings": [
+    {
+      "id": "_relevancy_evaluator",
+      "title": "Relevancy Evaluator"
+    },
+    {
+      "id": "_usage_in_integration_tests",
+      "title": "Usage in Integration Tests"
+    },
+    {
+      "id": "_custom_template",
+      "title": "Custom Template"
+    },
+    {
+      "id": "_factcheckingevaluator",
+      "title": "FactCheckingEvaluator"
+    },
+    {
+      "id": "_usage",
+      "title": "Usage"
+    },
+    {
+      "id": "_example",
+      "title": "Example"
+    }
+  ],
+  "codeBlocks": [
+    {
+      "language": "java",
+      "content": "@FunctionalInterface\npublic interface Evaluator {\n    EvaluationResponse evaluate(EvaluationRequest evaluationRequest);\n}",
+      "sha256": "4a5b432292e3df97ae55c42a41d699ebf1fe6ffb46fa79d1428349f030ffb65e"
+    },
+    {
+      "language": "java",
+      "content": "public class EvaluationRequest {\n\n\tprivate final String userText;\n\n\tprivate final List<Content> dataList;\n\n\tprivate final String responseContent;\n\n\tpublic EvaluationRequest(String userText, List<Content> dataList, String responseContent) {\n\t\tthis.userText = userText;\n\t\tthis.dataList = dataList;\n\t\tthis.responseContent = responseContent;\n\t}\n\n  ...\n}",
+      "sha256": "f13ad1a1172ce301bdada0b0a58f05e8283d7af050d9570497e679bc8d8b2314"
+    },
+    {
+      "language": "text",
+      "content": "Your task is to evaluate if the response for the query\nis in line with the context information provided.\n\nYou have two options to answer. Either YES or NO.\n\nAnswer YES, if the response for the query\nis in line with context information otherwise NO.\n\nQuery:\n{query}\n\nResponse:\n{response}\n\nContext:\n{context}\n\nAnswer:",
+      "sha256": "b8e37a4885fdcc1917d62c0026e053e736f7b1dae6ce8bfc8d5a0440773428d2"
+    },
+    {
+      "language": "java",
+      "content": "@Test\nvoid evaluateRelevancy() {\n    String question = \"Where does the adventure of Anacletus and Birba take place?\";\n\n    RetrievalAugmentationAdvisor ragAdvisor = RetrievalAugmentationAdvisor.builder()\n        .documentRetriever(VectorStoreDocumentRetriever.builder()\n            .vectorStore(pgVectorStore)\n            .build())\n        .build();\n\n    ChatResponse chatResponse = ChatClient.builder(chatModel).build()\n        .prompt(question)\n        .advisors(ragAdvisor)\n        .call()\n        .chatResponse();\n\n    EvaluationRequest evaluationRequest = new EvaluationRequest(\n        // The original user question\n        question,\n        // The retrieved context from the RAG flow\n        chatResponse.getMetadata().get(RetrievalAugmentationAdvisor.DOCUMENT_CONTEXT),\n        // The AI model's response\n        chatResponse.getResult().getOutput().getText()\n    );\n\n    RelevancyEvaluator evaluator = new RelevancyEvaluator(ChatClient.builder(chatModel));\n\n    EvaluationResponse evaluationResponse = evaluator.evaluate(evaluationRequest);\n\n    assertThat(evaluationResponse.isPass()).isTrue();\n}",
+      "sha256": "58f25ae3c9fc0bf9de42e3a4e157479b0c0774ca9fd9f26864bb0928946bf7df"
+    },
+    {
+      "language": "java",
+      "content": "public FactCheckingEvaluator(ChatClient.Builder chatClientBuilder) {\n  this.chatClientBuilder = chatClientBuilder;\n}",
+      "sha256": "f5f540aa0bab62c70dc67d42149556bdec88c5149f8c4991aecac27c63ccfb48"
+    },
+    {
+      "language": "text",
+      "content": "Document: {document}\nClaim: {claim}",
+      "sha256": "b489b43fb3a950fceb92b9e2e92893b86770b3d6b4bfa9fd27dc874a9d80a704"
+    },
+    {
+      "language": "java",
+      "content": "@Test\nvoid testFactChecking() {\n  // Set up the Ollama API\n  OllamaApi ollamaApi = new OllamaApi(\"http://localhost:11434\");\n\n  ChatModel chatModel = new OllamaChatModel(ollamaApi,\n\t\t\t\tOllamaChatOptions.builder().model(BESPOKE_MINICHECK).numPredict(2).temperature(0.0d).build())\n\n\n  // Create the FactCheckingEvaluator\n  var factCheckingEvaluator = new FactCheckingEvaluator(ChatClient.builder(chatModel));\n\n  // Example context and claim\n  String context = \"The Earth is the third planet from the Sun and the only astronomical object known to harbor life.\";\n  String claim = \"The Earth is the fourth planet from the Sun.\";\n\n  // Create an EvaluationRequest\n  EvaluationRequest evaluationRequest = new EvaluationRequest(context, Collections.emptyList(), claim);\n\n  // Perform the evaluation\n  EvaluationResponse evaluationResponse = factCheckingEvaluator.evaluate(evaluationRequest);\n\n  assertFalse(evaluationResponse.isPass(), \"The claim should not be supported by the context\");\n\n}",
+      "sha256": "25fdedba5da8e6ee12a97cb81292a5f1a2320a29beea424715844e8328fc4250"
+    }
+  ],
+  "images": [],
+  "links": [
+    "../index.html",
+    "testing.html",
+    "#_custom_template",
+    "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-integration-tests/src/test/java/org/springframework/ai/integration/tests/client/advisor/QuestionAnswerAdvisorIT.java",
+    "https://github.com/spring-projects/spring-ai/blob/main/spring-ai-integration-tests/src/test/java/org/springframework/ai/integration/tests/client/advisor/RetrievalAugmentationAdvisorIT.java",
+    "https://www.stringtemplate.org/",
+    "etl-pipeline.html",
+    "vectordbs.html"
+  ]
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "file": "spring-ai-compose-pom.xml",
+    "url": "https://raw.githubusercontent.com/spring-projects/spring-ai/v2.0.2/spring-ai-spring-boot-docker-compose/pom.xml",
+    "result": "PASS",
+    "error": "",
+    "sha256": "2311dfd70eb2c8aaebe8addd05e424d9d56a37023ede2929679ee0846b1c4e62"
+  },
+  {
+    "file": "MilvusDockerComposeConnectionDetailsFactory.java",
+    "url": "https://raw.githubusercontent.com/spring-projects/spring-ai/v2.0.2/spring-ai-spring-boot-docker-compose/src/main/java/org/springframework/ai/docker/compose/service/connection/milvus/MilvusDockerComposeConnectionDetailsFactory.java",
+    "result": "PASS",
+    "error": "",
+    "sha256": "bb6a4255b5b7477116bb741c37508bb08f51a67685eb50c5664cabf1f6a152dd"
+  },
+  {
+    "file": "PostgresJdbcDockerComposeConnectionDetailsFactory.java",
+    "url": "https://raw.githubusercontent.com/spring-projects/spring-boot/v4.1.2/module/spring-boot-jdbc/src/main/java/org/springframework/boot/jdbc/docker/compose/PostgresJdbcDockerComposeConnectionDetailsFactory.java",
+    "result": "PASS",
+    "error": "",
+    "sha256": "df793ba9a2e8862f0ac9a100cb4a6e171cbc356bedc611b0493d77f876c17de7"
+  },
+  {
+    "file": "DockerComposeProperties.java",
+    "url": "https://raw.githubusercontent.com/spring-projects/spring-boot/v4.1.2/core/spring-boot-docker-compose/src/main/java/org/springframework/boot/docker/compose/lifecycle/DockerComposeProperties.java",
+    "result": "PASS",
+    "error": "",
+    "sha256": "e0d5b506a0634bf93a67383d6776807739a83ce6991b77a82678a1281110d6c3"
+  },
+  {
+    "file": "boot-dev-services.adoc",
+    "url": "https://raw.githubusercontent.com/spring-projects/spring-boot/v4.1.2/documentation/spring-boot-docs/src/docs/antora/modules/reference/pages/features/dev-services.adoc",
+    "result": "PASS",
+    "error": "",
+    "sha256": "00fa2279ea32bde822d48fd965eae4699b8014b08cb110c8e99ec24feb192d66"
+  }
+]

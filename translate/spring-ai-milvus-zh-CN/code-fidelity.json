@@ -1,0 +1,129 @@
+{
+  "result": "PASS",
+  "codeBlocks": 15,
+  "correctedBlocks": 2,
+  "blocks": [
+    {
+      "index": 1,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "b268bfc17f9e85d5b0c1d4f55abfe0de7e466cac060b20fa5fd4d176d0c20a10",
+      "targetSha256": "b268bfc17f9e85d5b0c1d4f55abfe0de7e466cac060b20fa5fd4d176d0c20a10"
+    },
+    {
+      "index": 2,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "c2c0afdb46b320ad3551bb660883bb7da839ccf882c997fd27d89f9db7e1b6c1",
+      "targetSha256": "c2c0afdb46b320ad3551bb660883bb7da839ccf882c997fd27d89f9db7e1b6c1"
+    },
+    {
+      "index": 3,
+      "language": "yaml",
+      "status": "corrected",
+      "reason": "修复YAML缩进，统一属性风格并开启本地首次初始化。",
+      "sourceSha256": "f346638945a03e790a993acd1f09b87780fd049cc95144d1aa9ff4a9789d4336",
+      "targetSha256": "9320a8c88936ba242cb4ffa041ce77e121050de84acd598b7bf94831f1fce76c",
+      "diff": "--- source\n+++ translation\n@@ -1,14 +1,15 @@\n spring:\n-\tai:\n-\t\tvectorstore:\n-\t\t\tmilvus:\n-\t\t\t\tclient:\n-\t\t\t\t\thost: \"localhost\"\n-\t\t\t\t\tport: 19530\n-\t\t\t\t\tusername: \"root\"\n-\t\t\t\t\tpassword: \"milvus\"\n-\t\t\t\tdatabaseName: \"default\"\n-\t\t\t\tcollectionName: \"vector_store\"\n-\t\t\t\tembeddingDimension: 1536\n-\t\t\t\tindexType: IVF_FLAT\n-\t\t\t\tmetricType: COSINE+  ai:\n+    vectorstore:\n+      milvus:\n+        initialize-schema: true # 本地首次创建；已有结构可设为 false\n+        client:\n+          host: localhost\n+          port: 19530\n+          username: root\n+          password: milvus\n+        database-name: default\n+        collection-name: vector_store\n+        embedding-dimension: 1536\n+        index-type: IVF_FLAT\n+        metric-type: COSINE"
+    },
+    {
+      "index": 4,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "72f8210b8f13ddc1fdfb7602c144fdd7ba05807bbb3a8e91e622ebd078deabae",
+      "targetSha256": "72f8210b8f13ddc1fdfb7602c144fdd7ba05807bbb3a8e91e622ebd078deabae"
+    },
+    {
+      "index": 5,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "3748af82014e331b3d8cd95364e951e38f76d19ec695a356e6755b376b6dbb8d",
+      "targetSha256": "3748af82014e331b3d8cd95364e951e38f76d19ec695a356e6755b376b6dbb8d"
+    },
+    {
+      "index": 6,
+      "language": "java",
+      "status": "corrected",
+      "reason": "移除未定义测试容器对象，改用Milvus连接参数，避免混用MinIO凭据。",
+      "sourceSha256": "6333cc1e412df76e70c5bc941876307f3ed3da767bd3d44aa6d5b6578421f98c",
+      "targetSha256": "55daf24280ca4858634cafc42e9bca0f10763eace6f628a6efe3841dcf105fee",
+      "diff": "--- source\n+++ translation\n@@ -1,19 +1,24 @@\n-\t@Bean\n-\tpublic VectorStore vectorStore(MilvusServiceClient milvusClient, EmbeddingModel embeddingModel) {\n-\t\treturn MilvusVectorStore.builder(milvusClient, embeddingModel)\n-\t\t\t\t.collectionName(\"test_vector_store\")\n-\t\t\t\t.databaseName(\"default\")\n-\t\t\t\t.indexType(IndexType.IVF_FLAT)\n-\t\t\t\t.metricType(MetricType.COSINE)\n-\t\t\t\t.batchingStrategy(new TokenCountBatchingStrategy())\n-\t\t\t\t.initializeSchema(true)\n-\t\t\t\t.build();\n-\t}\n+@Bean\n+public VectorStore vectorStore(MilvusServiceClient milvusClient, EmbeddingModel embeddingModel) {\n+    return MilvusVectorStore.builder(milvusClient, embeddingModel)\n+        .collectionName(\"test_vector_store\")\n+        .databaseName(\"default\")\n+        .indexType(IndexType.IVF_FLAT)\n+        .metricType(MetricType.COSINE)\n+        .batchingStrategy(new TokenCountBatchingStrategy())\n+        .initializeSchema(true)\n+        .build();\n+}\n \n-\t@Bean\n-\tpublic MilvusServiceClient milvusClient() {\n-\t\treturn new MilvusServiceClient(ConnectParam.newBuilder()\n-\t\t\t.withAuthorization(\"minioadmin\", \"minioadmin\")\n-\t\t\t.withUri(milvusContainer.getEndpoint())\n-\t\t\t.build());\n-\t}+@Bean\n+public MilvusServiceClient milvusClient(\n+        @Value(\"${spring.ai.vectorstore.milvus.client.host:localhost}\") String host,\n+        @Value(\"${spring.ai.vectorstore.milvus.client.port:19530}\") int port,\n+        @Value(\"${spring.ai.vectorstore.milvus.client.username:root}\") String username,\n+        @Value(\"${spring.ai.vectorstore.milvus.client.password:milvus}\") String password) {\n+    return new MilvusServiceClient(ConnectParam.newBuilder()\n+        .withHost(host)\n+        .withPort(port)\n+        .withAuthorization(username, password)\n+        .build());\n+}"
+    },
+    {
+      "index": 7,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "d21e9d88d947ca6a4f6ba0be89299057a87f4cdb49ab49c2e3d68e1214dc6351",
+      "targetSha256": "d21e9d88d947ca6a4f6ba0be89299057a87f4cdb49ab49c2e3d68e1214dc6351"
+    },
+    {
+      "index": 8,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "9cc4b8ebcec61c7881b23c80e67ae2d8eb5cd29d7fb15dbb5dcd703be7a1b177",
+      "targetSha256": "9cc4b8ebcec61c7881b23c80e67ae2d8eb5cd29d7fb15dbb5dcd703be7a1b177"
+    },
+    {
+      "index": 9,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "d4f67139de106302b46ac5c3e885a31c3ac6239e52f9294540bc7ea0d4b7c2f3",
+      "targetSha256": "d4f67139de106302b46ac5c3e885a31c3ac6239e52f9294540bc7ea0d4b7c2f3"
+    },
+    {
+      "index": 10,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "3bb4916545b0e33fe23f17d54b353b1f245cb97e2ddedaddbb9dee76a2330b3c",
+      "targetSha256": "3bb4916545b0e33fe23f17d54b353b1f245cb97e2ddedaddbb9dee76a2330b3c"
+    },
+    {
+      "index": 11,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "4cb0931bdd7f0deeba545ca4d4e5d9c8d4a8bfb2e8d282a8f6880390fcf70995",
+      "targetSha256": "4cb0931bdd7f0deeba545ca4d4e5d9c8d4a8bfb2e8d282a8f6880390fcf70995"
+    },
+    {
+      "index": 12,
+      "language": "bash",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "a3152af705bc3bbd6ab9ecb895fd3536543b023ebcea457912d262b882f2d2a8",
+      "targetSha256": "a3152af705bc3bbd6ab9ecb895fd3536543b023ebcea457912d262b882f2d2a8"
+    },
+    {
+      "index": 13,
+      "language": "bash",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "027acc5d0c478214593d174f1a9732d80c2a98747de41084306393b4a1b48262",
+      "targetSha256": "027acc5d0c478214593d174f1a9732d80c2a98747de41084306393b4a1b48262"
+    },
+    {
+      "index": 14,
+      "language": "bash",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "7c5349954c1ec178592d190c339e4d8d1e528c66ffc68ee10e57ccfb1f250d17",
+      "targetSha256": "7c5349954c1ec178592d190c339e4d8d1e528c66ffc68ee10e57ccfb1f250d17"
+    },
+    {
+      "index": 15,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "f31a0cf4401a53263a6289d14bc5ad9ed58455e4076f73ec16d25d2f8b250be3",
+      "targetSha256": "f31a0cf4401a53263a6289d14bc5ad9ed58455e4076f73ec16d25d2f8b250be3"
+    }
+  ]
+}

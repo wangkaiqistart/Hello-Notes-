@@ -1,0 +1,73 @@
+{
+  "result": "PASS",
+  "sourceBlocks": 7,
+  "targetBlocks": 9,
+  "addedBlocks": [
+    {
+      "targetIndex": 5,
+      "purpose": "自定义相关性模板示例"
+    },
+    {
+      "targetIndex": 7,
+      "purpose": "当前通用事实核查默认提示词"
+    }
+  ],
+  "mapping": [
+    {
+      "sourceIndex": 1,
+      "targetIndex": 1,
+      "action": "preserved",
+      "note": "Evaluator 核心方法不变",
+      "sourceSha256": "4a5b432292e3df97ae55c42a41d699ebf1fe6ffb46fa79d1428349f030ffb65e",
+      "targetSha256": "4a5b432292e3df97ae55c42a41d699ebf1fe6ffb46fa79d1428349f030ffb65e"
+    },
+    {
+      "sourceIndex": 2,
+      "targetIndex": 2,
+      "action": "corrected",
+      "note": "List<Content> 改为 List<Document>；省略占位符改成实际简化类定义",
+      "sourceSha256": "f13ad1a1172ce301bdada0b0a58f05e8283d7af050d9570497e679bc8d8b2314",
+      "targetSha256": "4db9dad666f9c45c32220e1a49431c196303d339e4b9701d9c46ca06fe0d2957"
+    },
+    {
+      "sourceIndex": 3,
+      "targetIndex": 3,
+      "action": "preserved",
+      "note": "默认相关性提示词逐字保留",
+      "sourceSha256": "b8e37a4885fdcc1917d62c0026e053e736f7b1dae6ce8bfc8d5a0440773428d2",
+      "targetSha256": "b8e37a4885fdcc1917d62c0026e053e736f7b1dae6ce8bfc8d5a0440773428d2"
+    },
+    {
+      "sourceIndex": 4,
+      "targetIndex": 4,
+      "action": "adapted",
+      "note": "中文注释，先取文档并增加非空断言；调用和评估链路保留",
+      "sourceSha256": "58f25ae3c9fc0bf9de42e3a4e157479b0c0774ca9fd9f26864bb0928946bf7df",
+      "targetSha256": "f15a16c65da09bee79a46a07509dd8b06f4593f01201b456421f4b3f46463636"
+    },
+    {
+      "sourceIndex": 5,
+      "targetIndex": 6,
+      "action": "corrected",
+      "note": "旧公开单参构造器改为当前通用 builder",
+      "sourceSha256": "f5f540aa0bab62c70dc67d42149556bdec88c5149f8c4991aecac27c63ccfb48",
+      "targetSha256": "ad276626c7065db2eeaa055ef7634630e6cb60c39a247c48f0b2fffda5bb1672"
+    },
+    {
+      "sourceIndex": 6,
+      "targetIndex": 8,
+      "action": "preserved",
+      "note": "Bespoke 文档/陈述模板逐字保留",
+      "sourceSha256": "b489b43fb3a950fceb92b9e2e92893b86770b3d6b4bfa9fd27dc874a9d80a704",
+      "targetSha256": "b489b43fb3a950fceb92b9e2e92893b86770b3d6b4bfa9fd27dc874a9d80a704"
+    },
+    {
+      "sourceIndex": 7,
+      "targetIndex": 9,
+      "action": "corrected",
+      "note": "Ollama builder、明确模型名、Bespoke 工厂及 Document 上下文",
+      "sourceSha256": "25fdedba5da8e6ee12a97cb81292a5f1a2320a29beea424715844e8328fc4250",
+      "targetSha256": "81c7bedd7e96898f9a9bf35f283dde2e6e91c21b05841bd9183f8d118dffb605"
+    }
+  ]
+}

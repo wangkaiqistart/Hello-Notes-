@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/redis.mdx",
+  "pageSha256": "39a047bad4ef71517ca8bda1a14d7b007fe9e734bdcd8db92d557f16da885bd8",
+  "sourceSections": 24,
+  "targetSourceSections": 24,
+  "sourceCodeBlocks": 33,
+  "targetCodeBlocks": 33,
+  "sourceImages": 0,
+  "targetImages": 0,
+  "sourceLinksCovered": 12,
+  "sourceLinkOverrides": {
+    "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations": "/frameworks/spring-ai/models/embedding-model/",
+    "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management": "/frameworks/spring-ai/getting-started/quickstart/#使用-bom-管理版本",
+    "https://docs.spring.io/spring-ai/reference/getting-started.html#artifact-repositories": "/frameworks/spring-ai/getting-started/quickstart/#配置依赖仓库",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#_metadata_filters": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#metadata-filters": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/redis.html#redisvector-properties": "#redisvector-properties"
+  },
+  "sourceConfigurationParameters": [
+    "spring.ai.vectorstore.redis.initialize-schema",
+    "spring.ai.vectorstore.redis.index-name",
+    "spring.ai.vectorstore.redis.prefix",
+    "spring.ai.vectorstore.redis.distance-metric",
+    "spring.ai.vectorstore.redis.vector-algorithm",
+    "spring.ai.vectorstore.redis.hnsw-m",
+    "spring.ai.vectorstore.redis.hnsw-ef-construction",
+    "spring.ai.vectorstore.redis.hnsw-ef-runtime",
+    "spring.ai.vectorstore.redis.default-range-threshold",
+    "spring.ai.vectorstore.redis.text-scorer",
+    "spring.ai.vectorstore.redis.semantic-cache.enabled",
+    "spring.ai.vectorstore.redis.semantic-cache.host",
+    "spring.ai.vectorstore.redis.semantic-cache.port",
+    "spring.ai.vectorstore.redis.semantic-cache.similarity-threshold",
+    "spring.ai.vectorstore.redis.semantic-cache.index-name",
+    "spring.ai.vectorstore.redis.semantic-cache.prefix"
+  ],
+  "allParameterKeysPreserved": true,
+  "latestRagReferenceAudit": "../spring-ai-rag-reference-audit/audit.json"
+}

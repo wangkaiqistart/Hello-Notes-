@@ -35,7 +35,7 @@ String response = chatClient.prompt()
 
 建议在构建客户端时通过 `defaultAdvisors()` 注册默认 Advisor，在单次调用中传入会话 ID 等运行时参数。示例中的 `...` 代表需要自行初始化的组件。
 
-Advisor 也参与[可观测性](https://docs.spring.io/spring-ai/reference/observability/index.html)，可以查看执行指标和追踪。具体应用见[问答 Advisor](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html#_questionansweradvisor)与[对话记忆](https://docs.spring.io/spring-ai/reference/api/chat-memory.html)。
+Advisor 也参与[可观测性](https://docs.spring.io/spring-ai/reference/observability/index.html)，可以查看执行指标和追踪。具体应用见[问答 Advisor](/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor)与[对话记忆](/frameworks/spring-ai/core/chat-memory/)。
 
 ## 核心组件与执行流程
 
@@ -425,12 +425,12 @@ var chatClient = ChatClient.builder(chatModel)
 
 当前版本中，除非明确禁用，工具 Advisor 即使没有静态工具也会自动注册，以支持运行时动态加入工具。
 
-自动注册和禁用方式见 [ChatClient：工具调用](/frameworks/spring-ai/core/chat-client/#工具调用)。构建器、扩展钩子、记忆 Advisor 顺序、用户控制执行及自定义子类，见 [ToolCallingAdvisor](https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html)。
+自动注册和禁用方式见 [ChatClient：工具调用](/frameworks/spring-ai/core/chat-client/#工具调用)。构建器、扩展钩子、记忆 Advisor 顺序、用户控制执行及自定义子类，见 [ToolCallingAdvisor](/frameworks/spring-ai/tools/tool-calling-advisor/)。
 
 更多资料：
 
-- [工具调用循环](https://docs.spring.io/spring-ai/reference/api/tools.html#the-tool-calling-loop)：了解它在整体工具调用架构中的位置。
-- [Tool Search Tool](https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html)：通过扩展钩子实现按需暴露工具的子类示例。
+- [工具调用循环](/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop)：了解它在整体工具调用架构中的位置。
+- [Tool Search Tool](/frameworks/spring-ai/tools/tool-search-tool/)：通过扩展钩子实现按需暴露工具的子类示例。
 - [多步流程的累计用量](/frameworks/spring-ai/core/chat-response-metadata/#多步流程的累计用量)：理解循环的 Token 统计。
 
 ### StructuredOutputValidationAdvisor：结构校验循环

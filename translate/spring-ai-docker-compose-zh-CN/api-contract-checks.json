@@ -1,0 +1,85 @@
+{
+  "result": "PASS",
+  "springAiVersion": "2.0.2",
+  "springBootVersion": "4.1.2",
+  "checks": [
+    {
+      "check": "AI module includes Boot Compose dependency",
+      "file": "spring-ai-compose-pom.xml",
+      "evidence": "<artifactId>spring-boot-docker-compose</artifactId>",
+      "result": "PASS"
+    },
+    {
+      "check": "Milvus image name matching",
+      "file": "MilvusDockerComposeConnectionDetailsFactory.java",
+      "evidence": "super(\"milvusdb/milvus\")",
+      "result": "PASS"
+    },
+    {
+      "check": "Milvus mapped port discovery",
+      "file": "MilvusDockerComposeConnectionDetailsFactory.java",
+      "evidence": "service.ports().get(MILVUS_GRPC_PORT)",
+      "result": "PASS"
+    },
+    {
+      "check": "Postgres factory matches postgres",
+      "file": "PostgresJdbcDockerComposeConnectionDetailsFactory.java",
+      "evidence": "super(\"postgres\")",
+      "result": "PASS"
+    },
+    {
+      "check": "Postgres JDBC maps connection information",
+      "file": "PostgresJdbcDockerComposeConnectionDetailsFactory.java",
+      "evidence": "jdbcUrlBuilder.build(service, this.environment.getDatabase())",
+      "result": "PASS"
+    },
+    {
+      "check": "Compose enabled by default",
+      "file": "DockerComposeProperties.java",
+      "evidence": "private boolean enabled = true",
+      "result": "PASS"
+    },
+    {
+      "check": "Default lifecycle start-and-stop",
+      "file": "DockerComposeProperties.java",
+      "evidence": "LifecycleManagement.START_AND_STOP",
+      "result": "PASS"
+    },
+    {
+      "check": "Compose CLI minimum version",
+      "file": "boot-dev-services.adoc",
+      "evidence": "minimum supported Docker Compose version is 2.2.0",
+      "result": "PASS"
+    },
+    {
+      "check": "Connection details precedence",
+      "file": "boot-dev-services.adoc",
+      "evidence": "connection details take precedence over any connection-related configuration properties",
+      "result": "PASS"
+    },
+    {
+      "check": "Discover mapped host port",
+      "file": "boot-dev-services.adoc",
+      "evidence": "always discover and use the locally mapped port",
+      "result": "PASS"
+    },
+    {
+      "check": "Custom image connection label",
+      "file": "boot-dev-services.adoc",
+      "evidence": "org.springframework.boot.service-connection",
+      "result": "PASS"
+    },
+    {
+      "check": "Already running service is not stopped",
+      "file": "boot-dev-services.adoc",
+      "evidence": "it will not call `docker compose stop`",
+      "result": "PASS"
+    },
+    {
+      "check": "Start-only lifecycle option",
+      "file": "boot-dev-services.adoc",
+      "evidence": "`start-only` - Start Docker Compose when the application starts and leave it running",
+      "result": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,293 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "base": "http://127.0.0.1:4322",
+  "route": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+  "pages": [
+    {
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：Milvus 向量存储",
+      "viewport": 1440,
+      "width": 1440,
+      "anchors": [
+        "_prerequisites",
+        "一准备工作",
+        "_dependencies",
+        "二依赖与自动配置重点掌握",
+        "_manual_configuration",
+        "手动创建",
+        "_metadata_filtering",
+        "三元数据过滤重点掌握",
+        "_using_milvussearchrequest",
+        "四使用-milvussearchrequest",
+        "_importance_of_nativeexpression_and_searchparamsjson_in_milvussearchrequest",
+        "五nativeexpression-与-searchparamsjson重点掌握",
+        "milvus-properties",
+        "六配置参考",
+        "_starting_milvus_store",
+        "七启动-milvus",
+        "_troubleshooting",
+        "八排查资源问题",
+        "_accessing_the_native_client",
+        "九访问原生客户端"
+      ],
+      "links": [
+        {
+          "href": "https://milvus.io/",
+          "text": "Milvus"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/",
+          "text": "向量存储总览"
+        },
+        {
+          "href": "#一准备工作",
+          "text": "Section titled “一、准备工作”"
+        },
+        {
+          "href": "https://milvus.io/docs/install_standalone-docker.md",
+          "text": "Milvus Standalone"
+        },
+        {
+          "href": "https://milvus.io/docs/install_cluster-milvusoperator.md",
+          "text": "Milvus Cluster"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "EmbeddingModel"
+        },
+        {
+          "href": "#二依赖与自动配置重点掌握",
+          "text": "Section titled “二、依赖与自动配置（重点掌握）”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "text": "升级说明"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "依赖管理"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "text": "制品仓库"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "Embedding 模型"
+        },
+        {
+          "href": "#milvus-properties",
+          "text": "配置参考"
+        },
+        {
+          "href": "#手动创建",
+          "text": "Section titled “手动创建”"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "Spring AI BOM"
+        },
+        {
+          "href": "#三元数据过滤重点掌握",
+          "text": "Section titled “三、元数据过滤（重点掌握）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "text": "元数据过滤表达式"
+        },
+        {
+          "href": "#四使用-milvussearchrequest",
+          "text": "Section titled “四、使用 MilvusSearchRequest”"
+        },
+        {
+          "href": "#五nativeexpression-与-searchparamsjson重点掌握",
+          "text": "Section titled “五、nativeExpression 与 searchParamsJson（重点掌握）”"
+        },
+        {
+          "href": "https://milvus.io/docs/boolean.md",
+          "text": "Milvus Filtering"
+        },
+        {
+          "href": "https://milvus.io/docs/index.md?tab=floating",
+          "text": "Milvus Vector Index"
+        },
+        {
+          "href": "#六配置参考",
+          "text": "Section titled “六、配置参考”"
+        },
+        {
+          "href": "#七启动-milvus",
+          "text": "Section titled “七、启动 Milvus”"
+        },
+        {
+          "href": "http://localhost:19530",
+          "text": "http://localhost:19530"
+        },
+        {
+          "href": "http://localhost:9001",
+          "text": "http://localhost:9001"
+        },
+        {
+          "href": "#八排查资源问题",
+          "text": "Section titled “八、排查资源问题”"
+        },
+        {
+          "href": "#九访问原生客户端",
+          "text": "Section titled “九、访问原生客户端”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/milvus.html",
+          "text": "Milvus"
+        }
+      ],
+      "images": 0,
+      "errors": [],
+      "localTargets": 18
+    },
+    {
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：Milvus 向量存储",
+      "viewport": 390,
+      "width": 390,
+      "anchors": [
+        "_prerequisites",
+        "一准备工作",
+        "_dependencies",
+        "二依赖与自动配置重点掌握",
+        "_manual_configuration",
+        "手动创建",
+        "_metadata_filtering",
+        "三元数据过滤重点掌握",
+        "_using_milvussearchrequest",
+        "四使用-milvussearchrequest",
+        "_importance_of_nativeexpression_and_searchparamsjson_in_milvussearchrequest",
+        "五nativeexpression-与-searchparamsjson重点掌握",
+        "milvus-properties",
+        "六配置参考",
+        "_starting_milvus_store",
+        "七启动-milvus",
+        "_troubleshooting",
+        "八排查资源问题",
+        "_accessing_the_native_client",
+        "九访问原生客户端"
+      ],
+      "links": [
+        {
+          "href": "https://milvus.io/",
+          "text": "Milvus"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/",
+          "text": "向量存储总览"
+        },
+        {
+          "href": "#一准备工作",
+          "text": "Section titled “一、准备工作”"
+        },
+        {
+          "href": "https://milvus.io/docs/install_standalone-docker.md",
+          "text": "Milvus Standalone"
+        },
+        {
+          "href": "https://milvus.io/docs/install_cluster-milvusoperator.md",
+          "text": "Milvus Cluster"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "EmbeddingModel"
+        },
+        {
+          "href": "#二依赖与自动配置重点掌握",
+          "text": "Section titled “二、依赖与自动配置（重点掌握）”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "text": "升级说明"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "依赖管理"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "text": "制品仓库"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "Embedding 模型"
+        },
+        {
+          "href": "#milvus-properties",
+          "text": "配置参考"
+        },
+        {
+          "href": "#手动创建",
+          "text": "Section titled “手动创建”"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "Spring AI BOM"
+        },
+        {
+          "href": "#三元数据过滤重点掌握",
+          "text": "Section titled “三、元数据过滤（重点掌握）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "text": "元数据过滤表达式"
+        },
+        {
+          "href": "#四使用-milvussearchrequest",
+          "text": "Section titled “四、使用 MilvusSearchRequest”"
+        },
+        {
+          "href": "#五nativeexpression-与-searchparamsjson重点掌握",
+          "text": "Section titled “五、nativeExpression 与 searchParamsJson（重点掌握）”"
+        },
+        {
+          "href": "https://milvus.io/docs/boolean.md",
+          "text": "Milvus Filtering"
+        },
+        {
+          "href": "https://milvus.io/docs/index.md?tab=floating",
+          "text": "Milvus Vector Index"
+        },
+        {
+          "href": "#六配置参考",
+          "text": "Section titled “六、配置参考”"
+        },
+        {
+          "href": "#七启动-milvus",
+          "text": "Section titled “七、启动 Milvus”"
+        },
+        {
+          "href": "http://localhost:19530",
+          "text": "http://localhost:19530"
+        },
+        {
+          "href": "http://localhost:9001",
+          "text": "http://localhost:9001"
+        },
+        {
+          "href": "#八排查资源问题",
+          "text": "Section titled “八、排查资源问题”"
+        },
+        {
+          "href": "#九访问原生客户端",
+          "text": "Section titled “九、访问原生客户端”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/milvus.html",
+          "text": "Milvus"
+        }
+      ],
+      "images": 0,
+      "errors": [],
+      "localTargets": 18
+    }
+  ],
+  "localTargets": 16
+}

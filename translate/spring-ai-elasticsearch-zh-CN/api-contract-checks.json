@@ -1,0 +1,127 @@
+{
+  "version": "2.0.2",
+  "result": "PASS",
+  "checks": [
+    {
+      "check": "索引默认名称",
+      "file": "ElasticsearchVectorStoreOptions.java",
+      "evidence": "indexName = \"spring-ai-document-index\"",
+      "result": "PASS"
+    },
+    {
+      "check": "维度默认1536",
+      "file": "ElasticsearchVectorStoreOptions.java",
+      "evidence": "dimensions = 1536",
+      "result": "PASS"
+    },
+    {
+      "check": "余弦枚举为小写",
+      "file": "ElasticsearchVectorStoreOptions.java",
+      "evidence": "SimilarityFunction.cosine",
+      "result": "PASS"
+    },
+    {
+      "check": "自动配置内部创建Options",
+      "file": "ElasticsearchVectorStoreAutoConfiguration.java",
+      "evidence": "new ElasticsearchVectorStoreOptions()",
+      "result": "PASS"
+    },
+    {
+      "check": "自动配置传入Options",
+      "file": "ElasticsearchVectorStoreAutoConfiguration.java",
+      "evidence": ".options(elasticsearchVectorStoreOptions)",
+      "result": "PASS"
+    },
+    {
+      "check": "默认不建索引",
+      "file": "ElasticsearchVectorStore.java",
+      "evidence": "private boolean initializeSchema = false",
+      "result": "PASS"
+    },
+    {
+      "check": "已有索引直接使用",
+      "file": "ElasticsearchVectorStore.java",
+      "evidence": "if (indexExists()) {\n\t\t\treturn;",
+      "result": "PASS"
+    },
+    {
+      "check": "映射使用配置维度",
+      "file": "ElasticsearchVectorStore.java",
+      "evidence": ".dims(this.options.getDimensions())",
+      "result": "PASS"
+    },
+    {
+      "check": "映射使用配置字段",
+      "file": "ElasticsearchVectorStore.java",
+      "evidence": "map.properties(this.options.getEmbeddingFieldName()",
+      "result": "PASS"
+    },
+    {
+      "check": "Rest5Client接入",
+      "file": "ElasticsearchVectorStore.java",
+      "evidence": "co.elastic.clients.transport.rest5_client.low_level.Rest5Client",
+      "result": "PASS"
+    },
+    {
+      "check": "原生客户端返回",
+      "file": "ElasticsearchVectorStore.java",
+      "evidence": "T client = (T) this.elasticsearchClient",
+      "result": "PASS"
+    },
+    {
+      "check": "元数据过滤QueryString",
+      "file": "ElasticsearchVectorStore.java",
+      "evidence": "qs.query(getElasticsearchQueryString(searchRequest.getFilterExpression()))",
+      "result": "PASS"
+    },
+    {
+      "check": "IN列表有字段作用域",
+      "file": "ElasticsearchAiSearchFilterExpressionConverter.java",
+      "evidence": "context.append(\"(\")",
+      "result": "PASS"
+    },
+    {
+      "check": "字符串值加引号",
+      "file": "ElasticsearchAiSearchFilterExpressionConverter.java",
+      "evidence": "context.append(\"\\\"\")",
+      "result": "PASS"
+    },
+    {
+      "check": "语法允许引用字段名",
+      "file": "Filters.g4",
+      "evidence": "# QuotedIdentifier",
+      "result": "PASS"
+    },
+    {
+      "check": "Boot连接keepAlive默认true",
+      "file": "BootElasticsearchProperties.java",
+      "evidence": "socketKeepAlive = true",
+      "result": "PASS"
+    },
+    {
+      "check": "Boot保留Restclient属性",
+      "file": "BootElasticsearchProperties.java",
+      "evidence": "private final Restclient restclient = new Restclient()",
+      "result": "PASS"
+    },
+    {
+      "check": "BootSniffer默认关闭",
+      "file": "BootElasticsearchProperties.java",
+      "evidence": "private boolean enabled;",
+      "result": "PASS"
+    },
+    {
+      "check": "Apache5构造顺序",
+      "file": "BootElasticsearchRestClientConfigurations.java",
+      "evidence": "new HttpHost(node.protocol().getScheme(), node.hostname(), node.port())",
+      "result": "PASS"
+    },
+    {
+      "check": "手动模型builder支持",
+      "file": "OpenAiEmbeddingModel.java",
+      "evidence": "public static Builder builder()",
+      "result": "PASS"
+    }
+  ],
+  "boundary": "Static source inspection only; Java examples not compiled or executed; no database or model calls."
+}

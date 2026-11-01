@@ -1,0 +1,254 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "base": "http://127.0.0.1:4322",
+  "pages": [
+    {
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：评估测试",
+      "viewport": 1440,
+      "width": 1440,
+      "anchors": [
+        "一评估接口与输入重点掌握",
+        "_relevancy_evaluator",
+        "二relevancyevaluator相关性评估重点掌握",
+        "_usage_in_integration_tests",
+        "三接入-rag-集成测试",
+        "_custom_template",
+        "自定义模板",
+        "_factcheckingevaluator",
+        "四factcheckingevaluator事实核查按需深入",
+        "_usage",
+        "使用方式与提示词",
+        "_example",
+        "示例ollama-与-bespoke-minicheck",
+        "五放进回归测试时关注什么"
+      ],
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "text": "RAG"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/",
+          "text": "ETL 管道"
+        },
+        {
+          "href": "#一评估接口与输入重点掌握",
+          "text": "Section titled “一、评估接口与输入（重点掌握）”"
+        },
+        {
+          "href": "#二relevancyevaluator相关性评估重点掌握",
+          "text": "Section titled “二、RelevancyEvaluator：相关性评估（重点掌握）”"
+        },
+        {
+          "href": "#_custom_template",
+          "text": "自定义模板"
+        },
+        {
+          "href": "#三接入-rag-集成测试",
+          "text": "Section titled “三、接入 RAG 集成测试”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/#retrievalaugmentationadvisor",
+          "text": "RetrievalAugmentationAdvisor"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "text": "ChatClient API"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-integration-tests/src/test/java/org/springframework/ai/integration/tests/client/advisor/QuestionAnswerAdvisorIT.java",
+          "text": "QuestionAnswerAdvisor 集成测试"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-integration-tests/src/test/java/org/springframework/ai/integration/tests/client/advisor/RetrievalAugmentationAdvisorIT.java",
+          "text": "RetrievalAugmentationAdvisor 集成测试"
+        },
+        {
+          "href": "#自定义模板",
+          "text": "Section titled “自定义模板”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+          "text": "PromptTemplate"
+        },
+        {
+          "href": "#四factcheckingevaluator事实核查按需深入",
+          "text": "Section titled “四、FactCheckingEvaluator：事实核查（按需深入）”"
+        },
+        {
+          "href": "#使用方式与提示词",
+          "text": "Section titled “使用方式与提示词”"
+        },
+        {
+          "href": "#示例ollama-与-bespoke-minicheck",
+          "text": "Section titled “示例：Ollama 与 Bespoke MiniCheck”"
+        },
+        {
+          "href": "#五放进回归测试时关注什么",
+          "text": "Section titled “五、放进回归测试时关注什么”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/testing.html#_relevancy_evaluator",
+          "text": "Evaluation Testing"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：评估测试",
+      "viewport": 390,
+      "width": 390,
+      "anchors": [
+        "一评估接口与输入重点掌握",
+        "_relevancy_evaluator",
+        "二relevancyevaluator相关性评估重点掌握",
+        "_usage_in_integration_tests",
+        "三接入-rag-集成测试",
+        "_custom_template",
+        "自定义模板",
+        "_factcheckingevaluator",
+        "四factcheckingevaluator事实核查按需深入",
+        "_usage",
+        "使用方式与提示词",
+        "_example",
+        "示例ollama-与-bespoke-minicheck",
+        "五放进回归测试时关注什么"
+      ],
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "text": "RAG"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/",
+          "text": "ETL 管道"
+        },
+        {
+          "href": "#一评估接口与输入重点掌握",
+          "text": "Section titled “一、评估接口与输入（重点掌握）”"
+        },
+        {
+          "href": "#二relevancyevaluator相关性评估重点掌握",
+          "text": "Section titled “二、RelevancyEvaluator：相关性评估（重点掌握）”"
+        },
+        {
+          "href": "#_custom_template",
+          "text": "自定义模板"
+        },
+        {
+          "href": "#三接入-rag-集成测试",
+          "text": "Section titled “三、接入 RAG 集成测试”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/#retrievalaugmentationadvisor",
+          "text": "RetrievalAugmentationAdvisor"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "text": "ChatClient API"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-integration-tests/src/test/java/org/springframework/ai/integration/tests/client/advisor/QuestionAnswerAdvisorIT.java",
+          "text": "QuestionAnswerAdvisor 集成测试"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-integration-tests/src/test/java/org/springframework/ai/integration/tests/client/advisor/RetrievalAugmentationAdvisorIT.java",
+          "text": "RetrievalAugmentationAdvisor 集成测试"
+        },
+        {
+          "href": "#自定义模板",
+          "text": "Section titled “自定义模板”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+          "text": "PromptTemplate"
+        },
+        {
+          "href": "#四factcheckingevaluator事实核查按需深入",
+          "text": "Section titled “四、FactCheckingEvaluator：事实核查（按需深入）”"
+        },
+        {
+          "href": "#使用方式与提示词",
+          "text": "Section titled “使用方式与提示词”"
+        },
+        {
+          "href": "#示例ollama-与-bespoke-minicheck",
+          "text": "Section titled “示例：Ollama 与 Bespoke MiniCheck”"
+        },
+        {
+          "href": "#五放进回归测试时关注什么",
+          "text": "Section titled “五、放进回归测试时关注什么”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/testing.html#_relevancy_evaluator",
+          "text": "Evaluation Testing"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "localTargets": 14,
+  "targets": [
+    {
+      "path": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/document-ingestion/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/engineering/evaluation/#一评估接口与输入重点掌握",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/engineering/evaluation/#二relevancyevaluator相关性评估重点掌握",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/engineering/evaluation/#_custom_template",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/engineering/evaluation/#三接入-rag-集成测试",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#retrievalaugmentationadvisor",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/engineering/evaluation/#自定义模板",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/engineering/evaluation/#四factcheckingevaluator事实核查按需深入",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/engineering/evaluation/#使用方式与提示词",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/engineering/evaluation/#示例ollama-与-bespoke-minicheck",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/engineering/evaluation/#五放进回归测试时关注什么",
+      "status": 200
+    }
+  ]
+}

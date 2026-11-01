@@ -1,0 +1,133 @@
+{
+  "date": "2026-11-01",
+  "result": "USER_SELECTED_SCOPE_COMPLETED",
+  "sourceUrl": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+  "implementationPages": 21,
+  "overviewStatus": "translated",
+  "nextPage": null,
+  "optionalNext": null,
+  "reason": "用户增加S3 Vector Store和Elasticsearch，当前范围共五种，其他后端仅保留查询入口。",
+  "conceptAppendix": {
+    "source": "https://docs.spring.io/spring-ai/reference/api/vectordbs/understand-vectordbs.html",
+    "decision": "仅复用 Spring AI 模块内的核心概念、EmbeddingModel 和 Redis 距离度量说明；完整几何推导保留原文，不另行翻译。",
+    "localReferences": [
+      "/frameworks/spring-ai/concepts/#embedding内容的向量表示",
+      "/frameworks/spring-ai/models/embedding-model/",
+      "/frameworks/spring-ai/rag/vector-stores/redis/#_distance_metrics"
+    ]
+  },
+  "pages": [
+    {
+      "title": "Azure AI Service",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Azure Cosmos DB",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure-cosmos-db.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Amazon Bedrock Knowledge Base",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/bedrock-knowledge-base.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Apache Cassandra Vector Store",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/apache-cassandra.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Chroma",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/chroma.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Couchbase",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/couchbase.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Elasticsearch",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/elasticsearch.html",
+      "decision": "已完整翻译，纳入学习顺序",
+      "localRoute": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/"
+    },
+    {
+      "title": "GemFire",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/gemfire.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "MariaDB Vector Store",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mariadb.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Milvus",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/milvus.html",
+      "decision": "已完整翻译，纳入学习顺序",
+      "localRoute": "/frameworks/spring-ai/rag/vector-stores/milvus/"
+    },
+    {
+      "title": "MongoDB Atlas",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mongodb.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Neo4j",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/neo4j.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "OpenSearch",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/opensearch.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Oracle",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/oracle.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "PGvector",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html",
+      "decision": "已完整翻译，纳入学习顺序",
+      "localRoute": "/frameworks/spring-ai/rag/vector-stores/pgvector/"
+    },
+    {
+      "title": "Pinecone",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pinecone.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Qdrant",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/qdrant.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Redis",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/redis.html",
+      "decision": "已完整翻译，纳入学习顺序",
+      "localRoute": "/frameworks/spring-ai/rag/vector-stores/redis/"
+    },
+    {
+      "title": "Typesense",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/typesense.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "Weaviate",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/weaviate.html",
+      "decision": "不列入当前学习任务，不安排翻译，仅保留查询入口"
+    },
+    {
+      "title": "S3 Vector Store",
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/s3-vector-store.html",
+      "decision": "已完整翻译，纳入学习顺序",
+      "localRoute": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/"
+    }
+  ],
+  "selectedBackends": ["pgvector", "milvus", "redis", "s3-vector-store", "elasticsearch"],
+  "readingOrder": ["pgvector", "milvus", "redis", "s3-vector-store", "elasticsearch"]
+}

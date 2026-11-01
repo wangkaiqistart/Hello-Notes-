@@ -10,7 +10,7 @@ sidebar:
 
 提示词模板类似 Spring MVC 的视图模板：先定义包含占位符的文本，再用用户请求或应用数据填入变量。也可以类比带占位符的 SQL。
 
-如果借用数据库访问 API 作类比，`ChatModel` 类似底层 JDBC，`ChatClient` 类似构建在其上的 `JdbcClient`。`ChatClient` 还可通过 `Advisor` 引入历史对话、参考文档和智能体行为。
+如果借用数据库访问 API 作类比，[`ChatModel`](/frameworks/spring-ai/models/chat-model/) 类似底层 JDBC，[`ChatClient`](/frameworks/spring-ai/core/chat-client/) 类似构建在其上的 `JdbcClient`。`ChatClient` 还可通过 [`Advisor`](/frameworks/spring-ai/core/advisors/) 引入历史对话、参考文档和智能体行为。
 
 早期提示词通常只是字符串，之后逐步发展为带有角色标记的文本，再到按系统、用户、助手等角色组织的消息列表。
 
@@ -59,7 +59,7 @@ public interface Message extends Content {
 }
 ```
 
-多模态消息还实现 `MediaContent`，提供图片、音频等 `Media` 对象：
+[多模态消息](/frameworks/spring-ai/core/multimodality/)还实现 `MediaContent`，提供图片、音频等 `Media` 对象：
 
 ```java
 public interface MediaContent extends Content {
@@ -338,7 +338,7 @@ SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(systemResou
 | 费用       | 模型服务常按输入和输出 Token 计费；精简无关上下文有助于控制成本。            |
 | 模型限制   | 上下文窗口限制一次请求可容纳的信息量，输出长度也可能有独立上限。             |
 | 上下文取舍 | 超出上限时需要减少内容；例如询问《哈姆雷特》，通常不必附上莎士比亚全部作品。 |
-| 响应元数据 | 关注响应中的 Token 用量信息，用于统计与成本管理。                            |
+| 响应元数据 | 关注响应中的 [Token 用量](/frameworks/spring-ai/core/chat-response-metadata/#usagetoken-用量)信息，用于统计与成本管理。                            |
 
 原文列举了早期模型的 Token 容量，这些数字不作为当前规格保留；具体上下文窗口与输出上限，应查询所选模型的版本说明。
 

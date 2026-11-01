@@ -1,0 +1,419 @@
+{
+  "date": "2026-11-01",
+  "version": "2.0.2",
+  "validation": "Static source comparison only; snippets not compiled or run.",
+  "sourceBlocks": 41,
+  "targetBlocks": 41,
+  "blocks": [
+    {
+      "sourceBlock": 1,
+      "targetBlock": 1,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "934994090190ae6bb91fe6fa33e490a7930f41b146d8f2aa7ccc7d7460cef677",
+      "targetSha256": "0e36dc19e6f4df1e1ddf47db0cb51a4b91d8a4f0b14d4f166f0d02158868b549",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 2,
+      "targetBlock": 2,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "6bd450b065f18db36e11be82aab00a700297c188d1a73d11228de79cc46bf0bd",
+      "targetSha256": "6fb7e8debaf71ba101e488086427bcf99382fc01afe3014821806ef1505139d2",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 3,
+      "targetBlock": 3,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "e0a7a98d9454a57b68f41e66377df5e3a3c044f0d4dde9a76c8ea90b65f7acf7",
+      "targetSha256": "385b081228e688c92af254b494fcf9eb0b2a20aff53b34a48fc87157a3f2b4f2",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 4,
+      "targetBlock": 4,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "ce8ce47e0e56335374ad8c854d425d46e0b2138a548f1ecca304c76f96980d27",
+      "targetSha256": "3ecbe77c3168f90a0fa493fb3dfbb6174d5a923f6a9ad050b0b476ef3aaa8a41",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 5,
+      "targetBlock": 5,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "0f11c6e8a0fda5f9c062010f9a8c6891461c1644beb395621f57593a1c1315be",
+      "targetSha256": "03bd858bdc59adaa20adc337c3d49f5ea0fa43101581d9b1f1c52318a69f7f99",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 6,
+      "targetBlock": 6,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "02f0d70c65de5491fbffa55d90e2464f67d3f36428654c6b7db2b1ca8002d2ac",
+      "targetSha256": "832f48dbd64bad98ecc6f1a75045be7f2db760371e4960ba0d9ee11bb9f9e117",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 7,
+      "targetBlock": 7,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "db0acae9fa69cea94dc69ba15e34b12073749d63a566bffa4e54d1d87024c21e",
+      "targetSha256": "156ee301852252d73e9f606f5681eb36c741a3b649dd0aa84b2b65facce03fe8",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 8,
+      "targetBlock": 8,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "bbedb8432895d41cbdc716bbbe8695b53bdbd99a286bd6f0e9beae24939a045b",
+      "targetSha256": "1ecc312da8e5c86761ab85eda1e853ed23d5c580059593373630ebe9f04506ea",
+      "status": "documented-correction",
+      "note": "JSON Pointer 示例使用局部 jsonReader，修正错误的 this.jsonReader。"
+    },
+    {
+      "sourceBlock": 9,
+      "targetBlock": 9,
+      "sourceLanguage": "json",
+      "targetLanguage": "json",
+      "sourceSha256": "3bae720a84a920dece357da4f9cdcae1726ec881f6939f9013d20bd9de591ddf",
+      "targetSha256": "52960628535af34362feddf2acbd78185ced2a25a2060254caf2e8a6baffbe16",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 10,
+      "targetBlock": 10,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "7c51087af10b6150ce74209ef38ef34ba618ad917ab8baa0a51d756a702d71de",
+      "targetSha256": "c29df32ef4ffb1f07d37af2a376dd3d5de0c6f30300d33d1ae3091d728c4784a",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 11,
+      "targetBlock": 11,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "5de9aae15bcf6d42b5e627ceb7666bc54c3932b89d1996c30988476c2e27dd34",
+      "targetSha256": "998919bfa168cf7e5139189ad71b5c8442dd92c95c2fae3028d849902d4224a7",
+      "status": "documented-correction",
+      "note": "切分示例使用局部 documents，修正错误的 this.documents。"
+    },
+    {
+      "sourceBlock": 12,
+      "targetBlock": 12,
+      "sourceLanguage": "xml",
+      "targetLanguage": "xml",
+      "sourceSha256": "2a296bbeaa68de1256447be98d4add413f537cc51b7f7efa01dedc9a3812fd51",
+      "targetSha256": "252f5fa98f87e9feb536ef3fbc7649cb092cee75c8fbee7e74cc4261ef310659",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 13,
+      "targetBlock": 13,
+      "sourceLanguage": "groovy",
+      "targetLanguage": "groovy",
+      "sourceSha256": "cba14ad57b90c71130c6bf2b34df23207eb296a74245d0233054bb21a2cac0fb",
+      "targetSha256": "b23eafe899fbb0b1b3c891925b929653a8d2beb6a0d3bc634953af0414bb8c19",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 14,
+      "targetBlock": 14,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "0cd19c75e9aee4519e7b7f807df02c740fcfea2bfafd9979c33574c60a40e944",
+      "targetSha256": "d4af14eef6bf1a01a74c021f89514097805824c818342835fd6377e40f950f97",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 15,
+      "targetBlock": 15,
+      "sourceLanguage": "html",
+      "targetLanguage": "html",
+      "sourceSha256": "405b5720143704576207553ab5f0bacb7f5df7329983865b6864ebc7e5730111",
+      "targetSha256": "24a97aedc83255b74a3aed624b95765f81a8b17b066ddb83208e9182839e6cb9",
+      "status": "documented-correction",
+      "note": "Prettier 将 HTML 空元素改为自闭合写法，语义及数据不变。"
+    },
+    {
+      "sourceBlock": 16,
+      "targetBlock": 16,
+      "sourceLanguage": "xml",
+      "targetLanguage": "xml",
+      "sourceSha256": "1c893f7bb119880088626be80d806dcd2f9c8f0d491271f041e64579da6336d4",
+      "targetSha256": "3d1d6c69c3c7407f914a41e6142d3303418c279881a9aedac0365d63039f8473",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 17,
+      "targetBlock": 17,
+      "sourceLanguage": "groovy",
+      "targetLanguage": "groovy",
+      "sourceSha256": "c198036fbb6bf6831fd9bf9cf5bf1fc9ab628fae4918e8fec21790fc7f9c304e",
+      "targetSha256": "5f1b6cdda5b676505830828893aeed8fa4c83392b9941b51c1ee0f30dc6bd093",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 18,
+      "targetBlock": 18,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "e112876d314dab2bf1653d219f19ae4842acadf02388ca673e6c9787c5bcdc43",
+      "targetSha256": "4153f23d82fd505d6208a3730e78ed70eef1819de2d717fda49143da990a57f9",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 19,
+      "targetBlock": 19,
+      "sourceLanguage": "markdown",
+      "targetLanguage": "markdown",
+      "sourceSha256": "6edef4430ad920bef32841613933802cafc07b5fa6e03139aa253a32e729b807",
+      "targetSha256": "16b41fd822d34269809c876727dd024f94c398327b4fb64776eac693961a8de4",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 20,
+      "targetBlock": 20,
+      "sourceLanguage": "xml",
+      "targetLanguage": "xml",
+      "sourceSha256": "4d557d7bb9ce4831df08c654bafa7403cf445864e8994c3f3a9b3979a209fbde",
+      "targetSha256": "f5fa339eadccb4ecb9fdcd463d8e5ab32e575ebc98ec2b1c48dc35fa8350fe93",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 21,
+      "targetBlock": 21,
+      "sourceLanguage": "groovy",
+      "targetLanguage": "groovy",
+      "sourceSha256": "0a26dc6576e5ea767a3a7c49a0bb12edf752b027a165624a103fed00fb7ac74d",
+      "targetSha256": "ee88126551840400b0de215ebe3707c4bc9d1e0c2f2c338e81c9be5761bc3726",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 22,
+      "targetBlock": 22,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "0f46eb9715742df18fde7641d7fa7534b10aa4dc2ac379cd0c7ffdd2572adfc5",
+      "targetSha256": "04132fd6ed303b6d2afc2a653b82395847865a6796dade157f9c4d013da18853",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 23,
+      "targetBlock": 23,
+      "sourceLanguage": "xml",
+      "targetLanguage": "xml",
+      "sourceSha256": "4d557d7bb9ce4831df08c654bafa7403cf445864e8994c3f3a9b3979a209fbde",
+      "targetSha256": "f5fa339eadccb4ecb9fdcd463d8e5ab32e575ebc98ec2b1c48dc35fa8350fe93",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 24,
+      "targetBlock": 24,
+      "sourceLanguage": "groovy",
+      "targetLanguage": "groovy",
+      "sourceSha256": "0a26dc6576e5ea767a3a7c49a0bb12edf752b027a165624a103fed00fb7ac74d",
+      "targetSha256": "ee88126551840400b0de215ebe3707c4bc9d1e0c2f2c338e81c9be5761bc3726",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 25,
+      "targetBlock": 25,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "c3464a5ab2feb0843f72a290c3da541a7d7f5750dd727118a6eed6d48a5820b0",
+      "targetSha256": "579e10d8a7994a19227e024152456ae448d97f9fed0fe79b6139655d024a7da4",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 26,
+      "targetBlock": 26,
+      "sourceLanguage": "xml",
+      "targetLanguage": "xml",
+      "sourceSha256": "1188bc302d9be33b09623c20ea0d55a8997d79dccc0ce05a528261221385ad67",
+      "targetSha256": "7c0687e29ebf2a026c7b03a98b34c60c7e501767441069e9ff569cdbf5bbd30c",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 27,
+      "targetBlock": 27,
+      "sourceLanguage": "groovy",
+      "targetLanguage": "groovy",
+      "sourceSha256": "fa30174270d2b024e09b238cd449935cad74529acec6e9192520ab7d0413c572",
+      "targetSha256": "acb98168cf00e6d884ec8e0dc4acfd14cafa73d5701d3873982475eba4d6ebff",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 28,
+      "targetBlock": 28,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "5d2bcadd96dc37eda27dc35bd79c1bfada13be86cee35da13ca623b13ceb4fc0",
+      "targetSha256": "f7d87e31fe045b6994c2928b7fa07b7918577ed6dd6c56e68fe0aa333d9d006d",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 29,
+      "targetBlock": 29,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "a37c48af82635dbc4fb9f1dccba3594538d079a846ec783af2a990053179404c",
+      "targetSha256": "961f1cdbca517ffe26019ed8c757ac1a82c69415eadf0a689eabb2745ac070bb",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 30,
+      "targetBlock": 30,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "7227852e3918296a5d651f0d8f0230dacb7426b88842ba2fafeb0b9a8bc86f1b",
+      "targetSha256": "8f5320aee05b79692c13d46be9560ee6bebfeedb443fbf6711942f93943eed40",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 31,
+      "targetBlock": 31,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "f676cf7745a0f6341c0d6e663d86adb8e32372f548faaa334ff15ab6754f6454",
+      "targetSha256": "be70da6b64479badcafa6ede3fb62dbe895e7268d5719a6619018630c6950f3f",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 32,
+      "targetBlock": 32,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "411616f3bd45522ba240b2fddb55386a355458de86a1d293a09a586e92ba99d4",
+      "targetSha256": "31c551266ddb62bce9b127f502b23f5b20810aaed37fb30b758f3189acfa54c5",
+      "status": "documented-correction",
+      "note": "将 Document.getContent() 改为 2.0.2 的 getText()。"
+    },
+    {
+      "sourceBlock": 33,
+      "targetBlock": 33,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "8d7a791c346e913845807e4b1b51e7137063557874ef97ddfa100cd3735eedb6",
+      "targetSha256": "48affb5d054d1994529c441d6f386a8db0ec179cdb31c035a851fc3dbdebee55",
+      "status": "documented-correction",
+      "note": "两种模板配置改用不同局部变量名，避免同一作用域重复声明；用具体 PromptTemplate 代替未定义的模板占位符。"
+    },
+    {
+      "sourceBlock": 34,
+      "targetBlock": 34,
+      "sourceLanguage": "java",
+      "targetLanguage": "text",
+      "sourceSha256": "39dbb620a048de61d335529d59c6ad9274628818d52c220d007a05c34c085f7e",
+      "targetSha256": "96d8d5df7d3fe3f09c8f9d371037e47e4854016d0a241c8a5d0e2aed1e85ec31",
+      "status": "documented-correction",
+      "note": "默认模板去掉来源展示多出的反斜杠，并将代码语言从 java 改为 text。"
+    },
+    {
+      "sourceBlock": 35,
+      "targetBlock": 35,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "aa3a17da4a41d7ddc8bef3e8b5905c7a04eff939ed7a95c9b9cf688a03fe2888",
+      "targetSha256": "902fe8286bae1628f840df5a7f2b381419cb8f6c45a83846a7d125a3578d4cc0",
+      "status": "documented-correction",
+      "note": "修正重复局部变量及 this 字段误用，将未完成的 ChatModel 初始化占位改为“已配置模型”的注释。"
+    },
+    {
+      "sourceBlock": 36,
+      "targetBlock": 36,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "c1e2e1e5aaff837613a90084a1383abb07d4676191c3455ccff2ac76cdcad225",
+      "targetSha256": "4404a0b76175cf9c34ddc96789197019646f8b88ea37c23a849f52aacb575371",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 37,
+      "targetBlock": 37,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "f5ff820b34cb914508e79ed0bb442ef7e3b19787c766d108c1b711c0ba6b9d2d",
+      "targetSha256": "e2f4ee34f2bac0ec5bdf23e868ff3194a2a63b9c7067034959904b6bc012e346",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 38,
+      "targetBlock": 38,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "a334d1b6e7a9953426f6e46cad5d842173d97153c9affaf75dcb4a10e656a610",
+      "targetSha256": "4c7b268ff9167b7d83b20f9dd28be89ce4347641dce9a223db4abf94de17c6cf",
+      "status": "documented-correction",
+      "note": "摘要示例使用局部 doc1/doc2，修正 this 字段误用；ChatModel 假定已配置。"
+    },
+    {
+      "sourceBlock": 39,
+      "targetBlock": 39,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "96403343c9fd157a97bb3dad3a779dff35672ed37e23bafafff2dfb09a9cc6b2",
+      "targetSha256": "2c133eb991d7cd8359b582586619dd6361706a26c2cb2d88a955db47ccfddf61",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 40,
+      "targetBlock": 40,
+      "sourceLanguage": "",
+      "targetLanguage": "",
+      "sourceSha256": "52c9f8278bd0f83a513122a038151deaf214ff49f82a022687d80ec44b537169",
+      "targetSha256": "89d1e7ec1f39eb736c719c3b01c4655c77f81ab0c1861a5b6651350496be7a13",
+      "status": "unchanged-except-whitespace",
+      "note": "源码与译文除空白外一致。"
+    },
+    {
+      "sourceBlock": 41,
+      "targetBlock": 41,
+      "sourceLanguage": "java",
+      "targetLanguage": "java",
+      "sourceSha256": "258c5e3c3fe4ced527bf28228a802cd58cdaffbe23824cdccd4c35bc8e616812",
+      "targetSha256": "a7b693b3763a1429bff42c01266625cd7195ea2d71661f78075f9a773b88dd74",
+      "status": "documented-correction",
+      "note": "将未完成的 documents 初始化占位改为“已有文档列表”的注释。"
+    }
+  ]
+}

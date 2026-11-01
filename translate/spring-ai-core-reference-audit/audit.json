@@ -1,0 +1,1726 @@
+{
+  "date": "2026-11-01",
+  "scope": "总览、核心概念、快速入门、六篇核心 API 及模型分组，共十五篇。仅调整引用和必要的导航说明；不表示重新审计原文完整性。",
+  "result": "PASS",
+  "summary": {
+    "pages": 15,
+    "pagesChanged": 15,
+    "externalToLocal": 41,
+    "codeBlocksPreserved": 138,
+    "imagesPreserved": 22,
+    "localReferences": 130
+  },
+  "pages": [
+    {
+      "name": "index",
+      "slug": "overview",
+      "file": "src/content/docs/frameworks/spring-ai/index.mdx",
+      "route": "/frameworks/spring-ai/",
+      "edits": [
+        {
+          "line": 42,
+          "kind": "context-link",
+          "from": "| 模型接入 ",
+          "to": "| [模型接入](/frameworks/spring-ai/models/) "
+        },
+        {
+          "line": 43,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/structured-output.html",
+          "to": "/frameworks/spring-ai/core/structured-output/"
+        },
+        {
+          "line": 44,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+          "to": "/frameworks/spring-ai/rag/vector-stores/"
+        },
+        {
+          "line": 45,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+          "to": "/frameworks/spring-ai/tools/tool-calling/"
+        },
+        {
+          "line": 46,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html",
+          "to": "/frameworks/spring-ai/mcp/overview/"
+        },
+        {
+          "line": 47,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html",
+          "to": "/frameworks/spring-ai/rag/document-ingestion/"
+        },
+        {
+          "line": 48,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/chatclient.html",
+          "to": "/frameworks/spring-ai/core/chat-client/"
+        },
+        {
+          "line": 49,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/advisors.html",
+          "to": "/frameworks/spring-ai/core/advisors/"
+        },
+        {
+          "line": 50,
+          "kind": "context-link",
+          "from": "| 对话记忆与 RAG ",
+          "to": "| [对话记忆](/frameworks/spring-ai/core/chat-memory/)与 [RAG](/frameworks/spring-ai/rag/retrieval-and-generation/) "
+        },
+        {
+          "line": 52,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/testing.html",
+          "to": "/frameworks/spring-ai/engineering/evaluation/"
+        },
+        {
+          "line": 53,
+          "kind": "context-link",
+          "from": "| Spring Boot 集成 ",
+          "to": "| [Spring Boot 集成](/frameworks/spring-ai/getting-started/quickstart/) "
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "b2c45808957e7691b6d699cdf08e27c00944f79e373060f6b352fd1e8c3f1568",
+      "pageSha256": "e20137416a1b90eb28a29458d89648f1e671f33dd46f727d838d9c3d97ada59e",
+      "codeBlocksPreserved": 0,
+      "headingsPreserved": 4,
+      "imagesPreserved": 2,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/models/",
+          "label": "模型接入"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量数据库"
+        },
+        {
+          "url": "/frameworks/spring-ai/tools/tool-calling/",
+          "label": "工具调用"
+        },
+        {
+          "url": "/frameworks/spring-ai/mcp/overview/",
+          "label": "MCP"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "文档处理"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisors"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG"
+        },
+        {
+          "url": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "模型评估"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/",
+          "label": "Spring Boot 集成"
+        },
+        {
+          "url": "/frameworks/spring-ai/concepts/",
+          "label": "AI 核心概念"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/",
+          "label": "快速入门"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient API"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/observability/index.html",
+          "label": "可观测性",
+          "reason": "Spring AI 模块尚无等价的完整可观测性笔记。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/index.html",
+          "label": "模型提供方",
+          "reason": "完整 API 或实现清单；精选模型笔记不构成等价替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/index.html",
+          "label": "Spring AI Overview",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "concepts",
+      "slug": "concepts",
+      "file": "src/content/docs/frameworks/spring-ai/concepts.mdx",
+      "route": "/frameworks/spring-ai/concepts/",
+      "edits": [
+        {
+          "line": 19,
+          "kind": "context-link",
+          "from": "Spring AI 支持语言、图像、音频及嵌入相关模型。",
+          "to": "Spring AI 支持语言、图像、音频及嵌入相关模型，类型与接口见[模型概览](/frameworks/spring-ai/models/)。"
+        },
+        {
+          "line": 38,
+          "kind": "context-link",
+          "from": "Spring AI 使用 [StringTemplate]",
+          "to": "Spring AI 的[提示词模板](/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词)使用 [StringTemplate]"
+        },
+        {
+          "line": 71,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/structured-output.html",
+          "to": "/frameworks/spring-ai/core/structured-output/"
+        },
+        {
+          "line": 98,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html",
+          "to": "/frameworks/spring-ai/rag/document-ingestion/"
+        },
+        {
+          "line": 98,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/chatclient.html#_retrieval_augmented_generation",
+          "to": "/frameworks/spring-ai/core/chat-client/#检索增强生成"
+        },
+        {
+          "line": 117,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+          "to": "/frameworks/spring-ai/tools/tool-calling/"
+        },
+        {
+          "line": 129,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/testing.html",
+          "to": "/frameworks/spring-ai/engineering/evaluation/"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "9a2916135a80fcf3e5f87d64192d15ed0e13c01ef78e5f5ced73e79dfbe187aa",
+      "pageSha256": "c22fc7e2348f2c9f14176b0c75bcea4d031e2128682a9c8d858ae058cf13f227",
+      "codeBlocksPreserved": 1,
+      "headingsPreserved": 11,
+      "imagesPreserved": 7,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/models/",
+          "label": "模型概览"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+          "label": "提示词模板"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "ETL Pipeline"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/#%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90",
+          "label": "ChatClient 的 RAG 能力"
+        },
+        {
+          "url": "/frameworks/spring-ai/tools/tool-calling/",
+          "label": "工具调用文档"
+        },
+        {
+          "url": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "响应评估与测试"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://www.stringtemplate.org/",
+          "label": "StringTemplate",
+          "reason": "StringTemplate 引擎完整语法未收录；站内只讲 Spring AI 模板用法。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/concepts.html",
+          "label": "Spring AI Concepts",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "getting-started/quickstart",
+      "slug": "getting-started",
+      "file": "src/content/docs/frameworks/spring-ai/getting-started/quickstart.mdx",
+      "route": "/frameworks/spring-ai/getting-started/quickstart/",
+      "edits": [
+        {
+          "line": 167,
+          "kind": "context-link",
+          "from": "导入 BOM 后，还需要添加实际使用的组件依赖。各章节分别说明所需模块和配置：",
+          "to": "导入 BOM 后，还需要添加实际使用的组件依赖。先按下面的站内笔记选择组件；模型笔记中的“提供方入口”或“按需查询”保留了具体实现的文档，所需依赖、认证和配置以对应提供方章节为准："
+        },
+        {
+          "line": 169,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+          "to": "/frameworks/spring-ai/models/chat-model/"
+        },
+        {
+          "line": 170,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+          "to": "/frameworks/spring-ai/models/embedding-model/"
+        },
+        {
+          "line": 171,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/imageclient.html",
+          "to": "/frameworks/spring-ai/models/image-model/"
+        },
+        {
+          "line": 172,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html",
+          "to": "/frameworks/spring-ai/models/audio-model/#语音转文字"
+        },
+        {
+          "line": 173,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html",
+          "to": "/frameworks/spring-ai/models/audio-model/#文字转语音"
+        },
+        {
+          "line": 174,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+          "to": "/frameworks/spring-ai/rag/vector-stores/"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "1af4d1b8c4022ea44f9c5f72c38aacc06d3479bbd4aecc1ea8ddc8b581e35ebd",
+      "pageSha256": "7eaea227c8b5ee5774d2bd2639b2ff27058b1ea0b0e52828b8aff90540a497e4",
+      "codeBlocksPreserved": 8,
+      "headingsPreserved": 9,
+      "imagesPreserved": 0,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/models/chat-model/",
+          "label": "聊天模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "嵌入模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像生成模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/audio-model/#%E8%AF%AD%E9%9F%B3%E8%BD%AC%E6%96%87%E5%AD%97",
+          "label": "语音转写模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/audio-model/#%E6%96%87%E5%AD%97%E8%BD%AC%E8%AF%AD%E9%9F%B3",
+          "label": "语音合成（TTS）模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量数据库"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient API"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://start.spring.io/",
+          "label": "Spring Initializr",
+          "reason": "项目生成工具，站内文档不能替代。"
+        },
+        {
+          "url": "https://github.com/spring-ai-community/awesome-spring-ai",
+          "label": "Awesome Spring AI",
+          "reason": "社区资源与示例索引，Spring AI 模块没有等价目录。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/getting-started.html",
+          "label": "Spring AI Getting Started",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "core/chat-client",
+      "slug": "chat-client",
+      "file": "src/content/docs/frameworks/spring-ai/core/chat-client.mdx",
+      "route": "/frameworks/spring-ai/core/chat-client/",
+      "edits": [
+        {
+          "line": 13,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/prompt.html#_prompt",
+          "to": "/frameworks/spring-ai/core/prompts/#prompt消息与请求选项的容器"
+        },
+        {
+          "line": 71,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+          "to": "/frameworks/spring-ai/models/chat-model/"
+        },
+        {
+          "line": 329,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#ChatResponse",
+          "to": "/frameworks/spring-ai/models/chat-model/#一次请求和响应包含什么"
+        },
+        {
+          "line": 329,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#Generation",
+          "to": "/frameworks/spring-ai/models/chat-model/#一次请求和响应包含什么"
+        },
+        {
+          "line": 384,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/structured-output.html",
+          "to": "/frameworks/spring-ai/core/structured-output/"
+        },
+        {
+          "line": 399,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/structured-output/converters.html",
+          "to": "/frameworks/spring-ai/core/structured-output/#输出转换器"
+        },
+        {
+          "line": 435,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html#_custom_template",
+          "to": "/frameworks/spring-ai/rag/retrieval-and-generation/#_custom_template"
+        },
+        {
+          "line": 435,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html#_questionansweradvisor",
+          "to": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor"
+        },
+        {
+          "line": 714,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+          "to": "/frameworks/spring-ai/models/chat-model/"
+        },
+        {
+          "line": 768,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html#_questionansweradvisor",
+          "to": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor"
+        },
+        {
+          "line": 774,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html",
+          "to": "/frameworks/spring-ai/rag/retrieval-and-generation/"
+        },
+        {
+          "line": 841,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/tools.html#user-controlled-tool-execution",
+          "to": "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution"
+        },
+        {
+          "line": 880,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/tools.html#user-controlled-tool-execution",
+          "to": "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution"
+        },
+        {
+          "line": 916,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/tools.html#extending-the-loop",
+          "to": "/frameworks/spring-ai/tools/tool-calling/#extending-the-loop"
+        },
+        {
+          "line": 933,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html",
+          "to": "/frameworks/spring-ai/core/chat-memory/"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "7e5f5fc86456d7dbaa1cf85f1d3f9308063c31e01f77afd109e2a4fd7cfdec3c",
+      "pageSha256": "eb8dff12a778cd56c372aadca13fa8402c4a645fa906656812cc8fb71316daf7",
+      "codeBlocksPreserved": 42,
+      "headingsPreserved": 40,
+      "imagesPreserved": 1,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/core/prompts/#prompt%E6%B6%88%E6%81%AF%E4%B8%8E%E8%AF%B7%E6%B1%82%E9%80%89%E9%A1%B9%E7%9A%84%E5%AE%B9%E5%99%A8",
+          "label": "Prompt"
+        },
+        {
+          "url": "#%E5%AE%9E%E7%8E%B0%E8%AF%B4%E6%98%8E",
+          "label": "实现说明"
+        },
+        {
+          "url": "/frameworks/spring-ai/getting-started/quickstart/",
+          "label": "快速入门"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/chat-model/",
+          "label": "ChatModel"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/chat-model/#%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E5%8C%85%E5%90%AB%E4%BB%80%E4%B9%88",
+          "label": "ChatResponse"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/chat-model/#%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E5%8C%85%E5%90%AB%E4%BB%80%E4%B9%88",
+          "label": "Generation"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/structured-output/#%E8%BE%93%E5%87%BA%E8%BD%AC%E6%8D%A2%E5%99%A8",
+          "label": "结构化输出转换器"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/#_custom_template",
+          "label": "定制机制"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor",
+          "label": "Advisor 说明"
+        },
+        {
+          "url": "#%E5%8F%AF%E9%9D%A0%E6%80%A7%E9%85%8D%E7%BD%AEentityparamspec",
+          "label": "EntityParamSpec"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/chat-model/",
+          "label": "ChatModel"
+        },
+        {
+          "url": "/images/frameworks/spring-ai/chat-client-options-merging-zh.svg",
+          "label": "ChatClient 配置合并与调用链：模型选项合并为请求，经过 Advisor 调用模型，响应沿相反方向返回"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisors API"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor",
+          "label": "Question Answer Advisor"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG"
+        },
+        {
+          "url": "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "label": "用户控制的工具执行"
+        },
+        {
+          "url": "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "label": "使用 ChatClient 控制工具执行"
+        },
+        {
+          "url": "/frameworks/spring-ai/tools/tool-calling/#extending-the-loop",
+          "label": "扩展工具调用循环"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+          "label": "OpenAI Chat",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/deepseek-chat.html",
+          "label": "DeepSeek",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://www.stringtemplate.org/",
+          "label": "StringTemplate",
+          "reason": "StringTemplate 引擎完整语法未收录；站内只讲 Spring AI 模板用法。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/observability/index.html",
+          "label": "可观测性",
+          "reason": "Spring AI 模块尚无等价的完整可观测性笔记。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chatclient.html",
+          "label": "Spring AI Chat Client API",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "core/advisors",
+      "slug": "advisors-combined",
+      "file": "src/content/docs/frameworks/spring-ai/core/advisors.mdx",
+      "route": "/frameworks/spring-ai/core/advisors/",
+      "edits": [
+        {
+          "line": 38,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html#_questionansweradvisor",
+          "to": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor"
+        },
+        {
+          "line": 38,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html",
+          "to": "/frameworks/spring-ai/core/chat-memory/"
+        },
+        {
+          "line": 428,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/tools/tool-calling-advisor.html",
+          "to": "/frameworks/spring-ai/tools/tool-calling-advisor/"
+        },
+        {
+          "line": 432,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/tools.html#the-tool-calling-loop",
+          "to": "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop"
+        },
+        {
+          "line": 433,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/tools/tool-search-tool.html",
+          "to": "/frameworks/spring-ai/tools/tool-search-tool/"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "0e5a1494632399d71ca259e21da600e16897252639457738085aadfb67e346d1",
+      "pageSha256": "be29ce2f568fb90921adab9c5f17feebcdd1266148eff8e2832bf3faf66550be",
+      "codeBlocksPreserved": 16,
+      "headingsPreserved": 17,
+      "imagesPreserved": 4,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor",
+          "label": "问答 Advisor"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        },
+        {
+          "url": "/images/frameworks/spring-ai/advisors-api-classes-zh.svg",
+          "label": "Advisors API 类型关系：Advisor 继承 Ordered，分为 CallAdvisor 与 StreamAdvisor，由相应 Chain 继续调用下游"
+        },
+        {
+          "url": "/images/frameworks/spring-ai/advisors-flow-zh.svg",
+          "label": "Advisor 六步流程：构建请求、调用前处理、请求模型、模型响应、调用后处理、提取结果"
+        },
+        {
+          "url": "#toolcallingadvisor%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E5%BE%AA%E7%8E%AF",
+          "label": "工具调用循环"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8",
+          "label": "ChatClient：工具调用"
+        },
+        {
+          "url": "/images/frameworks/spring-ai/advisors-non-stream-vs-stream-zh.svg",
+          "label": "非流式和流式 Advisor 对比：同步响应为单个对象，流式响应为 Flux，二者使用各自的处理链"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8",
+          "label": "ChatClient：工具调用"
+        },
+        {
+          "url": "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "label": "ToolCallingAdvisor"
+        },
+        {
+          "url": "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "label": "工具调用循环"
+        },
+        {
+          "url": "/frameworks/spring-ai/tools/tool-search-tool/",
+          "label": "Tool Search Tool"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-response-metadata/#%E5%A4%9A%E6%AD%A5%E6%B5%81%E7%A8%8B%E7%9A%84%E7%B4%AF%E8%AE%A1%E7%94%A8%E9%87%8F",
+          "label": "多步流程的累计用量"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/structured-output/#schema-%E6%A0%A1%E9%AA%8C%E4%B8%8E%E8%87%AA%E5%8A%A8%E7%BA%A0%E6%AD%A3",
+          "label": "Schema 校验与自动纠正"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-response-metadata/#%E5%A4%9A%E6%AD%A5%E6%B5%81%E7%A8%8B%E7%9A%84%E7%B4%AF%E8%AE%A1%E7%94%A8%E9%87%8F",
+          "label": "累计用量的限制"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/observability/index.html",
+          "label": "可观测性",
+          "reason": "Spring AI 模块尚无等价的完整可观测性笔记。"
+        },
+        {
+          "url": "https://arxiv.org/pdf/2309.06275",
+          "label": "Re-Reading Improves Reasoning in Large Language Models",
+          "reason": "论文原始出处，站内未收录全文。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/advisors.html",
+          "label": "Advisors API",
+          "reason": "原文来源，保留溯源入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/advisors-recursive.html",
+          "label": "Recursive Advisors",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "core/prompts",
+      "slug": "prompts",
+      "file": "src/content/docs/frameworks/spring-ai/core/prompts.mdx",
+      "route": "/frameworks/spring-ai/core/prompts/",
+      "edits": [
+        {
+          "line": 13,
+          "kind": "context-link",
+          "from": "`ChatModel` 类似底层 JDBC，`ChatClient` 类似构建在其上的 `JdbcClient`。`ChatClient` 还可通过 `Advisor`",
+          "to": "[`ChatModel`](/frameworks/spring-ai/models/chat-model/) 类似底层 JDBC，[`ChatClient`](/frameworks/spring-ai/core/chat-client/) 类似构建在其上的 `JdbcClient`。`ChatClient` 还可通过 [`Advisor`](/frameworks/spring-ai/core/advisors/)"
+        },
+        {
+          "line": 62,
+          "kind": "context-link",
+          "from": "多模态消息还实现",
+          "to": "[多模态消息](/frameworks/spring-ai/core/multimodality/)还实现"
+        },
+        {
+          "line": 341,
+          "kind": "context-link",
+          "from": "关注响应中的 Token 用量信息，用于统计与成本管理。",
+          "to": "关注响应中的 [Token 用量](/frameworks/spring-ai/core/chat-response-metadata/#usagetoken-用量)信息，用于统计与成本管理。"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "5d41c7a47c21c820917d8ffb38f947d41608d6d5bd96e32d2cd18101dceaf431",
+      "pageSha256": "4440df0bb91dc2d7b08ce41d9e23cb062b3131ba115dcec6d84217864d2d1ecf",
+      "codeBlocksPreserved": 15,
+      "headingsPreserved": 19,
+      "imagesPreserved": 1,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/models/chat-model/",
+          "label": "ChatModel"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisor"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态消息"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-response-metadata/#usagetoken-%E7%94%A8%E9%87%8F",
+          "label": "Token 用量"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-response-metadata/",
+          "label": "聊天响应元数据"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/content/Content.html",
+          "label": "Spring AI 2.0.2 Content API",
+          "reason": "固定版本 API 定义与实现证据，站内概述不能替代。"
+        },
+        {
+          "url": "https://www.stringtemplate.org/",
+          "label": "StringTemplate",
+          "reason": "StringTemplate 引擎完整语法未收录；站内只讲 Spring AI 模板用法。"
+        },
+        {
+          "url": "https://github.com/Azure-Samples/spring-ai-azure-workshop/blob/main/2-README-prompt-templating.md",
+          "label": "PromptTemplates Workshop",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://github.com/Azure-Samples/spring-ai-azure-workshop/blob/main/3-README-prompt-roles.md",
+          "label": "Roles Workshop",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://www.promptingguide.ai/introduction/examples.en#text-summarization",
+          "label": "文本摘要",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://www.promptingguide.ai/introduction/examples.en#question-answering",
+          "label": "问答",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://www.promptingguide.ai/introduction/examples.en#text-classification",
+          "label": "文本分类",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://www.promptingguide.ai/introduction/examples.en#conversation",
+          "label": "对话",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://www.promptingguide.ai/introduction/examples.en#code-generation",
+          "label": "代码生成",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://www.promptingguide.ai/techniques/zeroshot",
+          "label": "零样本（Zero-shot）",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://www.promptingguide.ai/techniques/fewshot",
+          "label": "少样本（Few-shot）",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://www.promptingguide.ai/techniques/cot",
+          "label": "思维链（Chain-of-Thought，CoT）",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://www.promptingguide.ai/techniques/react",
+          "label": "ReAct（Reason + Act）",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://github.com/microsoft/guidance",
+          "label": "Guidance",
+          "reason": "外部提示词技巧或工作坊，Spring AI 模块没有等价的完整材料。"
+        },
+        {
+          "url": "https://platform.openai.com/tokenizer",
+          "label": "OpenAI Tokenizer",
+          "reason": "交互式分词工具，站内静态说明不能替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/prompt.html",
+          "label": "Spring AI Prompts",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "core/chat-response-metadata",
+      "slug": "response-metadata",
+      "file": "src/content/docs/frameworks/spring-ai/core/chat-response-metadata.mdx",
+      "route": "/frameworks/spring-ai/core/chat-response-metadata/",
+      "edits": [
+        {
+          "line": 9,
+          "kind": "context-link",
+          "from": "`ChatResponse` 不仅包含模型回答",
+          "to": "[`ChatResponse`](/frameworks/spring-ai/models/chat-model/#一次请求和响应包含什么) 不仅包含模型回答"
+        },
+        {
+          "line": 183,
+          "kind": "context-link",
+          "from": "[ChatClient API](/frameworks/spring-ai/core/chat-client/)",
+          "to": "[ChatClient API](/frameworks/spring-ai/core/chat-client/#返回-chatresponse)"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "d3427e840543ef7a132da36925aced9b614f35ce26a82af05069ec2f983abcee",
+      "pageSha256": "257f76f127390f60d3d562b3e97d5846187935242ad853d1753028b0bc2d2418",
+      "codeBlocksPreserved": 8,
+      "headingsPreserved": 8,
+      "imagesPreserved": 0,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/models/chat-model/#%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E5%8C%85%E5%90%AB%E4%BB%80%E4%B9%88",
+          "label": "ChatResponse"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/#%E8%BF%94%E5%9B%9E-chatresponse",
+          "label": "ChatClient API"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/structured-output/",
+          "label": "Structured Output（结构化输出）"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://platform.openai.com/docs/guides/rate-limits?context=tier-free",
+          "label": "限流说明",
+          "reason": "提供方价格、配额或响应头规则，需查询实时服务说明。"
+        },
+        {
+          "url": "https://openai.com/pricing#language-models",
+          "label": "套餐",
+          "reason": "提供方价格、配额或响应头规则，需查询实时服务说明。"
+        },
+        {
+          "url": "https://platform.openai.com/docs/guides/rate-limits/rate-limits-in-headers",
+          "label": "OpenAI 等服务",
+          "reason": "提供方价格、配额或响应头规则，需查询实时服务说明。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/usage-handling.html",
+          "label": "Spring AI Chat Response Metadata",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "core/structured-output",
+      "slug": "structured-output-combined",
+      "file": "src/content/docs/frameworks/spring-ai/core/structured-output.mdx",
+      "route": "/frameworks/spring-ai/core/structured-output/",
+      "edits": [
+        {
+          "line": 606,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+          "to": "/frameworks/spring-ai/tools/tool-calling/"
+        },
+        {
+          "line": 608,
+          "kind": "external-to-local",
+          "from": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html",
+          "to": "/frameworks/spring-ai/core/chat-memory/"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "adbaf8dbe203695026c9a6e8d972eac26e361a08bff3e7a9c191c59544ec79e3",
+      "pageSha256": "5f93784ddf147e6591066177f82ad98f5e4b9ea036524665e26721906206ff7a",
+      "codeBlocksPreserved": 30,
+      "headingsPreserved": 28,
+      "imagesPreserved": 5,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "url": "/images/frameworks/spring-ai/structured-output-basic-zh.svg",
+          "label": "结构化输出默认流程：由返回类型生成 Schema，加入系统上下文，模型返回 JSON 后转换为 Java 对象"
+        },
+        {
+          "url": "#schema-%E6%A0%A1%E9%AA%8C%E4%B8%8E%E8%87%AA%E5%8A%A8%E7%BA%A0%E6%AD%A3",
+          "label": "Schema 校验与自动纠正"
+        },
+        {
+          "url": "#%E6%8F%90%E4%BE%9B%E6%96%B9%E5%8E%9F%E7%94%9F%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA",
+          "label": "提供方原生结构化输出"
+        },
+        {
+          "url": "#validateschema%E6%A0%A1%E9%AA%8C%E5%A4%B1%E8%B4%A5%E5%90%8E%E9%87%8D%E8%AF%95",
+          "label": "validateSchema()"
+        },
+        {
+          "url": "/images/frameworks/spring-ai/structured-output-self-correction-zh.svg",
+          "label": "Schema 校验与自动纠正：模型响应通过校验后转换为对象，失败时将错误反馈到下一轮请求"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/advisors/#structuredoutputvalidationadvisor%E7%BB%93%E6%9E%84%E6%A0%A1%E9%AA%8C%E5%BE%AA%E7%8E%AF",
+          "label": "递归 Advisor"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-response-metadata/#%E5%A4%9A%E6%AD%A5%E6%B5%81%E7%A8%8B%E7%9A%84%E7%B4%AF%E8%AE%A1%E7%94%A8%E9%87%8F",
+          "label": "多步流程的累计用量"
+        },
+        {
+          "url": "#%E7%BB%84%E5%90%88%E4%BD%BF%E7%94%A8",
+          "label": "组合使用"
+        },
+        {
+          "url": "#%E5%B7%B2%E7%9F%A5%E9%99%90%E5%88%B6",
+          "label": "已知限制"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-response-metadata/",
+          "label": "聊天响应元数据"
+        },
+        {
+          "url": "#%E7%BB%84%E5%90%88%E4%BD%BF%E7%94%A8",
+          "label": "组合用法"
+        },
+        {
+          "url": "/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg",
+          "label": "输出转换器的前后处理：输入与格式指令合并后调用模型，返回文本再转换为结构化结果"
+        },
+        {
+          "url": "/images/frameworks/spring-ai/structured-output-api-zh.svg",
+          "label": "结构化输出 API 数据流：FormatProvider 提供格式指令，PromptTemplate 构造请求，ChatModel 返回响应后由 Converter 转为目标类型"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+          "label": "提示词模板"
+        },
+        {
+          "url": "/images/frameworks/spring-ai/structured-output-hierarchy-zh.svg",
+          "label": "输出转换器类关系：StructuredOutputConverter 继承格式与转换接口，Map、Bean、List 三种实现分别使用对应的转换能力"
+        },
+        {
+          "url": "/frameworks/spring-ai/tools/tool-calling/",
+          "label": "工具调用"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisors：调用链与递归"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#structured-output",
+          "label": "jinfer Structured Output",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://community.openai.com/t/support-top-level-array-in-json-schema/896048",
+          "label": "OpenAI 社区讨论",
+          "reason": "提供方行为背景讨论，站内说明不能替代原帖。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_structured_outputs",
+          "label": "OpenAI",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html",
+          "label": "Ollama",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#structured-output",
+          "label": "Qxotic jinfer",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://github.com/ggml-org/llama.cpp/blob/master/grammars/README.md",
+          "label": "GBNF 语法",
+          "reason": "GBNF 完整语法参考，站内未收录。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html",
+          "label": "Mistral AI",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/structured-output.html",
+          "label": "Structured Output",
+          "reason": "原文来源，保留溯源入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/structured-output/validation.html",
+          "label": "Schema Validation & Self-Correction",
+          "reason": "原文来源，保留溯源入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/structured-output/native.html",
+          "label": "Provider-Native Structured Output",
+          "reason": "原文来源，保留溯源入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/structured-output/converters.html",
+          "label": "Output Converters",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "core/multimodality",
+      "slug": "multimodality",
+      "file": "src/content/docs/frameworks/spring-ai/core/multimodality.mdx",
+      "route": "/frameworks/spring-ai/core/multimodality/",
+      "edits": [
+        {
+          "line": 45,
+          "kind": "context-link",
+          "from": "生成图片、语音等输出时，按提供方文档选择专用模型 API，或其支持的多模态聊天接口。",
+          "to": "生成图片、语音等输出时，可先查阅[图像模型](/frameworks/spring-ai/models/image-model/)和[音频模型](/frameworks/spring-ai/models/audio-model/)笔记，再按提供方文档选择专用模型 API，或其支持的多模态聊天接口。"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "c6b33d28a453329a5c93012ba000f155f6f085aecccb11ba76c6495db615e9be",
+      "pageSha256": "354c7647e4c7125ce52f958d5f936f54c21869150cf34204e7917feb24357d22",
+      "codeBlocksPreserved": 2,
+      "headingsPreserved": 7,
+      "imagesPreserved": 2,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/core/prompts/",
+          "label": "提示词"
+        },
+        {
+          "url": "/images/frameworks/spring-ai/spring-ai-message-api-zh.svg",
+          "label": "Spring AI 消息 API 类图：UserMessage 与 AssistantMessage 支持 MediaContent，媒体内容由 Media 表达，消息角色由 MessageType 区分"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/audio-model/",
+          "label": "音频模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/",
+          "label": "模型概览"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/chat/messages/AssistantMessage.html",
+          "label": "2.0.2 的 AssistantMessage API",
+          "reason": "固定版本 API 定义与实现证据，站内概述不能替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/anthropic-chat.html#_multi_modal_support",
+          "label": "Claude 多模态支持",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/bedrock-converse.html#_multimodal",
+          "label": "Bedrock Converse 多模态",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html#_multimodal",
+          "label": "Pixtral 等模型",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html#_multimodal",
+          "label": "LLaVA、BakLLaVA、Llama 等模型",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_multimodal",
+          "label": "GPT 多模态",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/google-genai-chat.html#_multimodal",
+          "label": "Gemini 多模态",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#_multimodal",
+          "label": "Gemma 4、LFM2.5-VL、Qwen 3.5 等模型",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/multimodality.html",
+          "label": "Multimodality API",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "models/index",
+      "slug": "models",
+      "file": "src/content/docs/frameworks/spring-ai/models/index.mdx",
+      "route": "/frameworks/spring-ai/models/",
+      "edits": [
+        {
+          "line": 17,
+          "kind": "context-link",
+          "from": "掌握 `ChatModel`；业务侧通常使用 `ChatClient`。",
+          "to": "掌握 `ChatModel`；业务侧通常使用 [`ChatClient`](/frameworks/spring-ai/core/chat-client/)。"
+        },
+        {
+          "line": 49,
+          "kind": "context-link",
+          "from": "进入 RAG 阶段再选择一个 Embedding 模型",
+          "to": "进入 [RAG 阶段](/frameworks/spring-ai/rag/retrieval-and-generation/)再选择一个 Embedding 模型"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "95b1f1d1320b8575959cd1e4b434683075bef2ddf07bfd43a4909aa8854ea368",
+      "pageSha256": "e0634e72416e8515477c4e8a610c299a1e718a89a85ede8cd6b7c5ffdf712731",
+      "codeBlocksPreserved": 0,
+      "headingsPreserved": 5,
+      "imagesPreserved": 0,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/models/chat-model/",
+          "label": "聊天模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/audio-model/",
+          "label": "音频模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/moderation-model/",
+          "label": "审核模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG 阶段"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像模型"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/audio-model/#%E8%AF%AD%E9%9F%B3%E8%BD%AC%E6%96%87%E5%AD%97",
+          "label": "音频模型：语音转文字"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/audio-model/#%E6%96%87%E5%AD%97%E8%BD%AC%E8%AF%AD%E9%9F%B3",
+          "label": "音频模型：文字转语音"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/moderation-model/",
+          "label": "审核模型"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+          "label": "Chat Models Comparison",
+          "reason": "模型能力对比表未完整收录，保留原始查询入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_available_implementations",
+          "label": "Chat Models",
+          "reason": "完整 API 或实现清单；精选模型笔记不构成等价替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations",
+          "label": "Embedding Models",
+          "reason": "完整 API 或实现清单；精选模型笔记不构成等价替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/index.html#_ai_model_api",
+          "label": "Spring AI API：AI Model API",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "models/chat-model",
+      "slug": "chat-model",
+      "file": "src/content/docs/frameworks/spring-ai/models/chat-model.mdx",
+      "route": "/frameworks/spring-ai/models/chat-model/",
+      "edits": [
+        {
+          "line": 48,
+          "kind": "context-link",
+          "from": "[ChatClient 流式调用](/frameworks/spring-ai/core/chat-client/)",
+          "to": "[ChatClient 流式调用](/frameworks/spring-ai/core/chat-client/#流式响应)"
+        },
+        {
+          "line": 71,
+          "kind": "context-link",
+          "from": "[ChatClient 参数配置](/frameworks/spring-ai/core/chat-client/)",
+          "to": "[ChatClient 参数配置](/frameworks/spring-ai/core/chat-client/#默认配置)"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "8cb71059966786b96831a6e4a52d60754276516207a1981cef2b366ab50d1e77",
+      "pageSha256": "c35398ff9df393104aa941bc20bb35dfe4eb6a56cdcb3088dd4f3ba6e6927c01",
+      "codeBlocksPreserved": 3,
+      "headingsPreserved": 6,
+      "imagesPreserved": 0,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient API"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/prompts/",
+          "label": "提示词"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-response-metadata/",
+          "label": "响应元数据"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/#%E6%B5%81%E5%BC%8F%E5%93%8D%E5%BA%94",
+          "label": "ChatClient 流式调用"
+        },
+        {
+          "url": "/frameworks/spring-ai/core/chat-client/#%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE",
+          "label": "ChatClient 参数配置"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+          "label": "Chat Model API 完整文档",
+          "reason": "原文来源，保留溯源入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+          "label": "聊天模型能力对比",
+          "reason": "模型能力对比表未完整收录，保留原始查询入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+          "label": "OpenAI",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/deepseek-chat.html",
+          "label": "DeepSeek",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html",
+          "label": "Ollama",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/anthropic-chat.html",
+          "label": "Anthropic",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chat/google-genai-chat.html",
+          "label": "Google GenAI",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+          "label": "Chat Model API",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "models/embedding-model",
+      "slug": "embedding-model",
+      "file": "src/content/docs/frameworks/spring-ai/models/embedding-model.mdx",
+      "route": "/frameworks/spring-ai/models/embedding-model/",
+      "edits": [
+        {
+          "line": 83,
+          "kind": "context-link",
+          "from": "文档切分、批量入库、Top-K 和过滤条件放到后续 RAG 笔记中实践。",
+          "to": "[文档切分](/frameworks/spring-ai/rag/document-ingestion/#_tokentextsplitter)、[批量入库](/frameworks/spring-ai/rag/vector-stores/#_batching_strategy)、[Top-K](/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder) 和[过滤条件](/frameworks/spring-ai/rag/vector-stores/#metadata-filters)放到后续 [RAG 笔记](/frameworks/spring-ai/rag/retrieval-and-generation/)中实践。"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "aba965dfe690624abdf62099055ee6421155844349db475507f1b58b8a4d53b6",
+      "pageSha256": "e21643b6432cd4c7f005fc704a230a5abfa7b10194d7ffbc8821dd5dc7d72c2c",
+      "codeBlocksPreserved": 3,
+      "headingsPreserved": 6,
+      "imagesPreserved": 0,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/rag/document-ingestion/#_tokentextsplitter",
+          "label": "文档切分"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_batching_strategy",
+          "label": "批量入库"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+          "label": "Top-K"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "label": "过滤条件"
+        },
+        {
+          "url": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG 笔记"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/embedding/EmbeddingModel.html#dimensions()",
+          "label": "dimensions() 的 API 说明",
+          "reason": "固定版本 API 定义与实现证据，站内概述不能替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+          "label": "Embedding Model API 完整文档",
+          "reason": "原文来源，保留溯源入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations",
+          "label": "提供方实现列表",
+          "reason": "完整 API 或实现清单；精选模型笔记不构成等价替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/openai-embeddings.html",
+          "label": "OpenAI",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/ollama-embeddings.html",
+          "label": "Ollama",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/google-genai-embeddings-text.html",
+          "label": "Google GenAI",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/mistralai-embeddings.html",
+          "label": "Mistral AI",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+          "label": "Embeddings Model API",
+          "reason": "原文来源，保留溯源入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/embedding/EmbeddingModel.html",
+          "label": "2.0.2 API",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "models/image-model",
+      "slug": "image-model",
+      "file": "src/content/docs/frameworks/spring-ai/models/image-model.mdx",
+      "route": "/frameworks/spring-ai/models/image-model/",
+      "edits": [
+        {
+          "line": 15,
+          "kind": "context-link",
+          "from": "`ImageModel` 建立在通用模型 API 之上：",
+          "to": "`ImageModel` 建立在[通用模型 API](/frameworks/spring-ai/models/#统一-api-统一了什么) 之上："
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "2f0cbcf4d839d825c8985eecb56022773f5bf29705feaee4ddaa8fe775540b88",
+      "pageSha256": "d7b0a493b1c54807eedd6c10e2f1efa8c8923f20fd80fac7d07780a035850933",
+      "codeBlocksPreserved": 3,
+      "headingsPreserved": 5,
+      "imagesPreserved": 0,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/#%E7%BB%9F%E4%B8%80-api-%E7%BB%9F%E4%B8%80%E4%BA%86%E4%BB%80%E4%B9%88",
+          "label": "通用模型 API"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/audio-model/",
+          "label": "音频模型"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/image/Image.html",
+          "label": "Image API",
+          "reason": "固定版本 API 定义与实现证据，站内概述不能替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/image/ImageOptions.html",
+          "label": "2.0.2 ImageOptions API",
+          "reason": "固定版本 API 定义与实现证据，站内概述不能替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/image/openai-image.html",
+          "label": "OpenAI 图像生成",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/image/stabilityai-image.html",
+          "label": "Stability AI 图像生成",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/image/google-genai-image.html",
+          "label": "Google GenAI 图像生成",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/imageclient.html",
+          "label": "Image Model API",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "models/audio-model",
+      "slug": "audio-model",
+      "file": "src/content/docs/frameworks/spring-ai/models/audio-model.mdx",
+      "route": "/frameworks/spring-ai/models/audio-model/",
+      "edits": [
+        {
+          "line": 101,
+          "kind": "context-link",
+          "from": "业务服务优先依赖 `TranscriptionModel` 或 `TextToSpeechModel` 接口",
+          "to": "业务服务优先依赖 `TranscriptionModel` 或 `TextToSpeechModel` 接口（[统一模型 API](/frameworks/spring-ai/models/#统一-api-统一了什么)）"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "7d73dcfc4ef311f7f6b7adbcd51b31a588470985a5ded7c716fc70e531e77477",
+      "pageSha256": "2c4b7ed4aed8bc68d15434ef81c4abc2b3ff332cc50bc6cda6eeccd5534f2544",
+      "codeBlocksPreserved": 5,
+      "headingsPreserved": 7,
+      "imagesPreserved": 0,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态交互"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/#%E7%BB%9F%E4%B8%80-api-%E7%BB%9F%E4%B8%80%E4%BA%86%E4%BB%80%E4%B9%88",
+          "label": "统一模型 API"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/moderation-model/",
+          "label": "审核模型"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions/openai-transcriptions.html",
+          "label": "OpenAI",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions/jinfer-transcriptions.html",
+          "label": "Qxotic jinfer（JVM 内本地推理）",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/audio/speech/openai-speech.html",
+          "label": "OpenAI",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/audio/speech/elevenlabs-speech.html",
+          "label": "ElevenLabs",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/audio/speech/jinfer-speech.html",
+          "label": "Qxotic jinfer（JVM 内本地推理）",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/audio.html",
+          "label": "Audio Models",
+          "reason": "原文来源，保留溯源入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html",
+          "label": "Transcription API",
+          "reason": "原文来源，保留溯源入口。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html",
+          "label": "Text-To-Speech API",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    },
+    {
+      "name": "models/moderation-model",
+      "slug": "moderation-model",
+      "file": "src/content/docs/frameworks/spring-ai/models/moderation-model.mdx",
+      "route": "/frameworks/spring-ai/models/moderation-model/",
+      "edits": [
+        {
+          "line": 11,
+          "kind": "context-link",
+          "from": "**不用于证明回答真实、业务合法或资料准确**。",
+          "to": "**不用于证明回答真实、业务合法或资料准确**；回答的相关性与依据一致性等评估见[模型评估与测试](/frameworks/spring-ai/engineering/evaluation/)。"
+        }
+      ],
+      "artifacts": {
+        "translation": "synced",
+        "revision": "historical stages retained"
+      },
+      "result": "PASS",
+      "beforeSha256": "fbb8c893eb8a0e7cfe070c1e2d41f953011e80e3d52357ac05bed3827790b043",
+      "pageSha256": "77d9a4ce585d8ea8f67ae97e47239246167861e35d142283fbee628994f45bdd",
+      "codeBlocksPreserved": 2,
+      "headingsPreserved": 6,
+      "imagesPreserved": 0,
+      "sourceAnchorsPreserved": 0,
+      "localDocumentReferences": [
+        {
+          "url": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "模型评估与测试"
+        },
+        {
+          "url": "/frameworks/spring-ai/models/",
+          "label": "模型概览"
+        }
+      ],
+      "retainedExternalReferences": [
+        {
+          "url": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/moderation/ModerationResult.html",
+          "label": "ModerationResult API",
+          "reason": "固定版本 API 定义与实现证据，站内概述不能替代。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html",
+          "label": "OpenAI Moderation",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html",
+          "label": "Mistral AI Moderation",
+          "reason": "提供方专有配置与能力细节；精选模型笔记不覆盖完整接入参数。"
+        },
+        {
+          "url": "https://docs.spring.io/spring-ai/reference/api/moderation.html",
+          "label": "Moderation Models",
+          "reason": "原文来源，保留溯源入口。"
+        }
+      ]
+    }
+  ]
+}

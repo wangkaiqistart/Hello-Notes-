@@ -1,0 +1,96 @@
+{
+  "version": "2.0.2",
+  "date": "2026-11-01",
+  "files": [
+    {
+      "file": "AbstractEmbeddingModel.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-model/src/main/java/org/springframework/ai/embedding/AbstractEmbeddingModel.java",
+      "sha256": "d0cc10bcb87612440d82ebeb439a5f577a253a4bc2587c305cc170448a05ef16"
+    },
+    {
+      "file": "AbstractVectorStoreBuilder.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/AbstractVectorStoreBuilder.java",
+      "sha256": "23264fa763276a5c51d5fe61b1cf346ec4c65ab0a323854f8c57c3447cb55680"
+    },
+    {
+      "file": "BatchingStrategy.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-model/src/main/java/org/springframework/ai/embedding/BatchingStrategy.java",
+      "sha256": "c9c06946dbeb404346c203e7f7c3615998e0830a3ca271b92cc294199046b997"
+    },
+    {
+      "file": "ChatModel.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-model/src/main/java/org/springframework/ai/chat/model/ChatModel.java",
+      "sha256": "19832864e931028bcddf176b1138bf81e0cdf824d5604ade88d4cf56f18f7463"
+    },
+    {
+      "file": "FilterExpressionBuilder.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/filter/FilterExpressionBuilder.java",
+      "sha256": "40759d7d139bb75a6c8c11c9a71410ccb6ea376fc6f5ed5ce27db101043cb6be"
+    },
+    {
+      "file": "FilterExpressionTextParser.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/filter/FilterExpressionTextParser.java",
+      "sha256": "93542ddd31a7f6b647d8b1de38e857e229be19c8ff63d05efebeeb6d3aa9f9ea"
+    },
+    {
+      "file": "Filters.g4",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/antlr4/org/springframework/ai/vectorstore/filter/antlr4/Filters.g4",
+      "sha256": "a6f49d59e9c496391a07c0e62970a331e61080b658afd1bb53a4bd854807c591"
+    },
+    {
+      "file": "JTokkitTokenCountEstimator.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-commons/src/main/java/org/springframework/ai/tokenizer/JTokkitTokenCountEstimator.java",
+      "sha256": "b9d7c4c0b41be49abe2106a28f3618c024124f5abe1435687cd1ffc651469fdb"
+    },
+    {
+      "file": "PgVectorStore.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/vector-stores/spring-ai-pgvector-store/src/main/java/org/springframework/ai/vectorstore/pgvector/PgVectorStore.java",
+      "sha256": "5fb7c74cf74099279c9945615d1b47d941a9bd74e4acaf1d5eaab74662185a09"
+    },
+    {
+      "file": "PgVectorStoreAutoConfiguration.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/vector-stores/spring-ai-autoconfigure-vector-store-pgvector/src/main/java/org/springframework/ai/vectorstore/pgvector/autoconfigure/PgVectorStoreAutoConfiguration.java",
+      "sha256": "e0f38cfa84003d6d68cb7adc63eb5991ce8f85c88436c98236c87746eae8b41d"
+    },
+    {
+      "file": "SearchRequest.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/SearchRequest.java",
+      "sha256": "3583854f626ace38d37800bffd8e8c1216bb99521b841e63ac456e54cafe6948"
+    },
+    {
+      "file": "TokenCountBatchingStrategy.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-model/src/main/java/org/springframework/ai/embedding/TokenCountBatchingStrategy.java",
+      "sha256": "c001f569a8bfa073445ce91f49ca3a25639013ed82a0cd0e69563f8d37f173e8"
+    },
+    {
+      "file": "VectorStore.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/VectorStore.java",
+      "sha256": "a651f7bd474172fa18b051d8f6809f1e67c986cd04b43fd4423ce892212f27d4"
+    },
+    {
+      "file": "VectorStoreRetriever.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/VectorStoreRetriever.java",
+      "sha256": "b2ea32f1fe8ef4babc28a001dbfc49a601d54d64a332f7105bd28b3fc766b589"
+    },
+    {
+      "file": "VertexAiEmbeddingConnectionDetails.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-vertex-ai-embedding/src/main/java/org/springframework/ai/vertexai/embedding/VertexAiEmbeddingConnectionDetails.java",
+      "sha256": "e7baebc8b3251ab56021e880296d0263b598415d9b321ae5fe5b0e308d40fe7e"
+    },
+    {
+      "file": "VertexAiTextEmbeddingAutoConfiguration.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/auto-configurations/models/spring-ai-autoconfigure-model-vertex-ai/src/main/java/org/springframework/ai/model/vertexai/autoconfigure/embedding/VertexAiTextEmbeddingAutoConfiguration.java",
+      "sha256": "26424b484e4e41ca5d195cd8861f5d876ff3ec3ccc54df05c4f852a10f527964"
+    },
+    {
+      "file": "VertexAiTextEmbeddingModel.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-vertex-ai-embedding/src/main/java/org/springframework/ai/vertexai/embedding/text/VertexAiTextEmbeddingModel.java",
+      "sha256": "2db72f4326c12fb1767facfaf0dcca129158af317ba3c6c7ba48206b22bba5cd"
+    },
+    {
+      "file": "VertexAiTextEmbeddingOptions.java",
+      "url": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/models/spring-ai-vertex-ai-embedding/src/main/java/org/springframework/ai/vertexai/embedding/text/VertexAiTextEmbeddingOptions.java",
+      "sha256": "37155003016aaa0b63d784c69af9714902d57c7d83395abece3814c6d68274ef"
+    }
+  ]
+}

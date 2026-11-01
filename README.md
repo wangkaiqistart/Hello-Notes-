@@ -85,9 +85,9 @@ Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro 
 6. [Advisors](https://docs.spring.io/spring-ai/reference/api/advisors.html)：理解请求处理链及上下文处理方式。
 7. [工具调用基础](src/content/docs/frameworks/spring-ai/tools/tool-calling.mdx) → [工具调用 Advisor](src/content/docs/frameworks/spring-ai/tools/tool-calling-advisor.mdx)：理解工具定义、执行循环与记忆配合；[工具搜索](src/content/docs/frameworks/spring-ai/tools/tool-search-tool.mdx)和 [ChatModel 工具调用](src/content/docs/frameworks/spring-ai/tools/chatmodel-tool-calling.mdx)按需深入。
 8. [MCP 概览](src/content/docs/frameworks/spring-ai/mcp/overview.mdx) → [MCP 客户端](src/content/docs/frameworks/spring-ai/mcp/client.mdx) → [MCP 服务端](src/content/docs/frameworks/spring-ai/mcp/server.mdx)：理解协议能力、传输、共享会话和工具接入；注解完整参考与高级配置按需查阅来源链接。
-9. [ETL Pipeline](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html)、[Embeddings](https://docs.spring.io/spring-ai/reference/api/embeddings.html)、[Vector Stores](https://docs.spring.io/spring-ai/reference/api/vectordbs.html)：完成文档读取、切分、向量化与存储。
-10. [RAG](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html)：学习检索增强、Top-K、相似度阈值和元数据过滤。
-11. [Model Evaluation](https://docs.spring.io/spring-ai/reference/api/testing.html)、[Observability](https://docs.spring.io/spring-ai/reference/observability/index.html)：建立评估、耗时和用量记录。
+9. [ETL 管道](src/content/docs/frameworks/spring-ai/rag/document-ingestion.mdx)、[Embedding 模型](src/content/docs/frameworks/spring-ai/models/embedding-model.mdx)、[向量存储总览](src/content/docs/frameworks/spring-ai/rag/vector-stores/index.mdx)：完成文档读取、切分、向量化与存储；后端学习范围为 PGvector → Milvus → Redis → S3 Vector Store → Elasticsearch（ES），其余实现保留查询入口。
+10. [检索增强生成（RAG）](src/content/docs/frameworks/spring-ai/rag/retrieval-and-generation.mdx)：掌握两种 Advisor、Top-K、相似度阈值和元数据过滤，再按需深入查询转换、扩展与后处理。
+11. [评估测试](src/content/docs/frameworks/spring-ai/engineering/evaluation.mdx)、[Observability](https://docs.spring.io/spring-ai/reference/observability/index.html)：检查 RAG 回答的相关性与上下文支持性，建立评估、耗时和用量记录。
 12. [Building Effective Agents](https://docs.spring.io/spring-ai/reference/api/effective-agents.html)：先掌握明确步骤的工作流，再按需求深入复杂 Agent 编排。
 
 ### 每周时间安排
@@ -155,9 +155,15 @@ src/content/docs/
 │       │   ├── audio-model.mdx                 # 语音转写、语音合成、音频流与元数据
 │       │   └── moderation-model.mdx            # 风险标记、分类、评分与业务判断边界
 │       ├── rag/
-│       │   ├── document-ingestion.mdx          # 文档读取、切分、来源元数据、重复导入处理
-│       │   ├── embeddings-and-vector-store.mdx # Embedding 模型、向量维度、存储与检索
-│       │   └── retrieval-and-generation.mdx    # RAG 串联、过滤、参数比较、引用与拒答
+│       │   ├── document-ingestion.mdx          # ETL 管道：文档读取、切分、元数据增强与写入
+│       │   ├── retrieval-and-generation.mdx    # RAG Advisor、过滤、空上下文与模块组合
+│       │   └── vector-stores/
+│       │       ├── index.mdx                   # 统一 API、后端阅读顺序、批处理、过滤与删除
+│       │       ├── pgvector.mdx                # PostgreSQL 扩展、索引、维度与接入配置
+│       │       ├── milvus.mdx                  # 集合与分区、原生表达式、nprobe 与配置
+│       │       ├── redis.mdx                   # 元数据索引、文本/范围检索与语义缓存
+│       │       ├── s3-vector-store.mdx         # AWS 向量桶、索引、过滤删除与接入边界
+│       │       └── elasticsearch.mdx           # dense_vector、距离函数、过滤与 Rest5Client
 │       ├── tools/
 │       │   ├── tool-calling.mdx                # @Tool、参数描述、执行与结果回传、异常处理
 │       │   ├── tool-calling-advisor.mdx        # 执行循环、顺序、钩子扩展与流式观察
@@ -169,7 +175,8 @@ src/content/docs/
 │       │   └── server.mdx                     # 服务端传输、能力注册、注解与安全边界
 │       └── engineering/
 │           ├── workflows.mdx                   # 意图识别、路由、文档问答与业务工具组合
-│           ├── evaluation.mdx                  # 题集设计、判断标准、质量与回归评估方法
+│           ├── evaluation.mdx                  # 相关性与事实核查、RAG 集成测试、自定义评估模板
+│           ├── docker-compose.mdx              # 开发服务、自动连接与 PGvector Compose 示例
 │           └── observability-and-resilience.mdx # 耗时、Token、超时、重试与故障定位
 └── projects/
     └── spring-ai-assistant/
@@ -181,12 +188,12 @@ src/content/docs/
 
 下表中的相对路径以 `src/content/docs/frameworks/spring-ai/` 为起点；项目记录单独标明完整目录。
 
-| 阶段    | 本周笔记                                                                       | 项目记录                                                                                          |
-| ------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| 阶段    | 本周笔记                                                                                                                      | 项目记录                                                                                          |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | 第 1 周 | `index.mdx`、`concepts.mdx`、`getting-started/quickstart.mdx`、`core/` 下 7 篇、`models/index.mdx` 与 `models/chat-model.mdx` | 在 `src/content/docs/projects/spring-ai-assistant/index.mdx` 记录运行方式、聊天接口和会话隔离验证 |
-| 第 2 周 | `tools/tool-calling.mdx`、`tools/tool-calling-advisor.mdx`、`mcp/` 下 3 篇；工具搜索与底层 ChatModel 两篇按需阅读 | 补充订单工具和 MCP 接入过程，记录查无结果、参数缺失和超时案例                                     |
-| 第 3 周 | `models/embedding-model.mdx`、`rag/` 下 3 篇                                                                 | 在项目记录中补充文档入库与问答链路；在 `experiments-and-evaluation.mdx` 记录切分、Top-K、阈值对比 |
-| 第 4 周 | `engineering/` 下 3 篇                                                         | 完善完整架构、演示步骤、约 30 条题集及实际评估结果                                                |
+| 第 2 周 | `tools/tool-calling.mdx`、`tools/tool-calling-advisor.mdx`、`mcp/` 下 3 篇；工具搜索与底层 ChatModel 两篇按需阅读             | 补充订单工具和 MCP 接入过程，记录查无结果、参数缺失和超时案例                                     |
+| 第 3 周 | `models/embedding-model.mdx`、`rag/` 下 3 篇                                                                                  | 在项目记录中补充文档入库与问答链路；在 `experiments-and-evaluation.mdx` 记录切分、Top-K、阈值对比 |
+| 第 4 周 | `engineering/` 下 3 篇                                                                                                        | 完善完整架构、演示步骤、约 30 条题集及实际评估结果                                                |
 
 项目总览和实验记录从第一周开始持续更新，第 4 周汇总。工具调用增加三个进阶页面，MCP 接入由单篇扩展为概览、客户端和服务端三篇，规划由 29 篇调整为 31 篇。译文完成不代表实践验收已完成，进度勾选仍以实际调用和验证为准。每周的笔记是实践结论的整理，不要求每篇等长；未验证的判断应明确标注“待验证”。
 
@@ -223,3 +230,11 @@ Advisors API 与 ChatClient API 在 Spring AI 导航中同级。基础处理链�
 工具调用小节接在对话记忆之后，已完成[基础](src/content/docs/frameworks/spring-ai/tools/tool-calling.mdx)、[Advisor](src/content/docs/frameworks/spring-ai/tools/tool-calling-advisor.mdx)、[工具搜索](src/content/docs/frameworks/spring-ai/tools/tool-search-tool.mdx)与 [ChatModel 底层调用](src/content/docs/frameworks/spring-ai/tools/chatmodel-tool-calling.mdx)四篇。按当前学习安排先完成工具调用与 MCP，再进入 RAG；后两篇进阶内容不增加第二周的必做任务。
 
 MCP 小节已完成[概览](src/content/docs/frameworks/spring-ai/mcp/overview.mdx)、[客户端](src/content/docs/frameworks/spring-ai/mcp/client.mdx)和[服务端](src/content/docs/frameworks/spring-ai/mcp/server.mdx)。先理解协议和传输，再连接已有工具，最后发布自己的工具；完整注解、认证集成和各传输高级配置保留来源入口，按需深入。
+
+RAG 小节已完成[检索增强生成](src/content/docs/frameworks/spring-ai/rag/retrieval-and-generation.mdx)、[ETL 管道](src/content/docs/frameworks/spring-ai/rag/document-ingestion.mdx)和[向量存储总览](src/content/docs/frameworks/spring-ai/rag/vector-stores/index.mdx)，接在 MCP 后面。阅读时先用 RAG 了解查询链路，再用 ETL 与向量存储准备资料；实践时先完成读取、切分和入库，再接入检索与生成。三篇保留完整模块和参数参考，初读重点是 Advisor 选型、过滤与空上下文，以及 Reader → TokenTextSplitter → VectorStore。重复导入、可核验引用和拒答策略需在实践中单独设计，不等同于添加组件后自动具备。
+
+评估测试已完成[译文](src/content/docs/frameworks/spring-ai/engineering/evaluation.mdx)，放在 RAG 后的“工程实践”。先用 RelevancyEvaluator 检查实际检索上下文与回答，再按需使用 FactCheckingEvaluator 核查资料支持性；配合固定题集、非空检索断言与人工核对建立回归检查。
+
+向量存储小节已完成[总览](src/content/docs/frameworks/spring-ai/rag/vector-stores/index.mdx)、[PGvector](src/content/docs/frameworks/spring-ai/rag/vector-stores/pgvector.mdx)、[Milvus](src/content/docs/frameworks/spring-ai/rag/vector-stores/milvus.mdx)、[Redis](src/content/docs/frameworks/spring-ai/rag/vector-stores/redis.mdx)、[S3 Vector Store](src/content/docs/frameworks/spring-ai/rag/vector-stores/s3-vector-store.mdx)和 [Elasticsearch（ES）](src/content/docs/frameworks/spring-ai/rag/vector-stores/elasticsearch.mdx)。当前后端学习范围为这五种，顺序为 PGvector → Milvus → Redis → S3 Vector Store → Elasticsearch（ES）；其余 16 个后端不列入学习任务，也不继续安排翻译，保留总览中的查询入口。五篇均保留完整配置与进阶参考，先用一种后端跑通 RAG，再对照其他实现。Understanding Vectors 复用已有 Embedding/相似度笔记，几何推导保留原文。
+
+Docker Compose 开发服务已完成[笔记](src/content/docs/frameworks/spring-ai/engineering/docker-compose.mdx)，位于“工程实践”。按需在第 3 周准备向量库环境时查阅，理解容器启动、服务连接、向量库初始化和 Embedding 模型配置的职责；PGvector 的对应说明已引用此页。原文完整保留 9 类服务连接和 Maven/Gradle 依赖，补充本地 PGvector 示例。

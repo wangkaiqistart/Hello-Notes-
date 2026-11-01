@@ -98,7 +98,7 @@ Flux<byte[]> audioChunks = textToSpeechModel.stream("Read this sentence aloud.")
 
 ## 选择提供方与组织业务代码
 
-业务服务优先依赖 `TranscriptionModel` 或 `TextToSpeechModel` 接口，由 Spring 配置决定实际实现。同一应用需要多个模型时，显式选择对应 Bean；也可通过 Spring Profiles 切换接入配置。
+业务服务优先依赖 `TranscriptionModel` 或 `TextToSpeechModel` 接口（[统一模型 API](/frameworks/spring-ai/models/#统一-api-统一了什么)），由 Spring 配置决定实际实现。同一应用需要多个模型时，显式选择对应 Bean；也可通过 Spring Profiles 切换接入配置。
 
 尽量使用通用选项，确需专有功能时再引入提供方类型。切换服务后，检查音频格式、音色、语速、元数据与流式行为，尤其不要假定不同提供方的元数据完全一致。
 

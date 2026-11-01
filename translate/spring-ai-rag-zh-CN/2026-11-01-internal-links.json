@@ -1,0 +1,1936 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "scope": "Only RAG and ETL page references and their translation records. Existing uncommitted changes preserved.",
+  "replacements": [
+    {
+      "from": "https://docs.spring.io/spring-ai/reference/concepts.html#concept-rag",
+      "to": "/frameworks/spring-ai/concepts/#rag先检索再生成",
+      "reason": "本地概念页有 Spring AI RAG 的离线入库和运行时问答说明，主题对应。"
+    },
+    {
+      "from": "https://docs.spring.io/spring-ai/reference/api/chatclient.html#_prompt_templates",
+      "to": "/frameworks/spring-ai/core/chat-client/#提示词模板",
+      "reason": "本地章节明确区分 ChatClient 渲染器与 Advisor 内部模板。"
+    },
+    {
+      "from": "https://www.stringtemplate.org/",
+      "to": "/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词",
+      "reason": "当前语境讨论 Spring AI 的 PromptTemplate 渲染器与占位符；同步将链接文本改为 PromptTemplate，避免暗示本站包含 StringTemplate 全语法。"
+    }
+  ],
+  "addedReferences": [
+    {
+      "to": "/frameworks/spring-ai/core/advisors/#核心组件与执行流程",
+      "purpose": "Advisor 请求响应处理链的前置知识。"
+    },
+    {
+      "to": "/frameworks/spring-ai/models/embedding-model/",
+      "purpose": "ETL 写入阶段使用的 Embedding 模型说明。"
+    },
+    {
+      "to": "/rag/document-parsing/document-processing-and-chunking/#分块策略怎么选",
+      "purpose": "分块边界与语义完整性的通用取舍，不把 Python 的参数当作 Spring AI 参数。"
+    },
+    {
+      "to": "/rag/vector-db/chroma-vector-store/",
+      "purpose": "向量存储与相似度检索概念；正文明确该笔记采用 Python 示例。"
+    }
+  ],
+  "retainedExternalReferences": [
+    {
+      "url": "https://arxiv.org/abs/2407.21059",
+      "reason": "知识库没有这篇 Modular RAG 论文的同等内容；论文引用需保留原始出处。"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html#reranking",
+      "reason": "知识库虽提到 jinfer，但没有 JinferDocumentPostProcessor 与重排序接入说明；不能用结构化输出或多模态页面替代。"
+    },
+    {
+      "url": "https://tika.apache.org/3.1.0/formats.html",
+      "reason": "本地只有 TikaDocumentReader 的基本用法，没有 Apache Tika 的完整支持格式列表。"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+      "reason": "本地 Chroma 笔记不等于 Spring AI 全部向量存储实现列表；保留清单入口并增加本地概念参考。"
+    }
+  ],
+  "sourceLinksRetainedForProvenance": [
+    "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html",
+    "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html"
+  ],
+  "validation": {
+    "date": "2026-11-01",
+    "result": "PASS",
+    "pages": [
+      {
+        "file": "retrieval-and-generation",
+        "device": "desktop",
+        "result": "PASS",
+        "title": "Spring AI：检索增强生成（RAG）",
+        "codeBlocks": 21,
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "localLinks": [
+          {
+            "href": "/frameworks/spring-ai/core/advisors/#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B",
+            "label": "Advisor API"
+          },
+          {
+            "href": "/frameworks/spring-ai/concepts/#rag%E5%85%88%E6%A3%80%E7%B4%A2%E5%86%8D%E7%94%9F%E6%88%90",
+            "label": "AI 核心概念：先检索，再生成"
+          },
+          {
+            "href": "/frameworks/spring-ai/rag/document-ingestion/",
+            "label": "ETL 管道"
+          },
+          {
+            "href": "/frameworks/spring-ai/models/embedding-model/",
+            "label": "Embedding 模型"
+          },
+          {
+            "href": "#一rag-advisor重点掌握",
+            "label": "Section titled “一、RAG Advisor（重点掌握）”"
+          },
+          {
+            "href": "#questionansweradvisor",
+            "label": "Section titled “QuestionAnswerAdvisor”"
+          },
+          {
+            "href": "#动态过滤表达式",
+            "label": "Section titled “动态过滤表达式”"
+          },
+          {
+            "href": "#自定义模板",
+            "label": "Section titled “自定义模板”"
+          },
+          {
+            "href": "/frameworks/spring-ai/core/chat-client/#%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%A8%A1%E6%9D%BF",
+            "label": "ChatClient 提示词模板"
+          },
+          {
+            "href": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+            "label": "PromptTemplate"
+          },
+          {
+            "href": "#retrievalaugmentationadvisor",
+            "label": "Section titled “RetrievalAugmentationAdvisor”"
+          },
+          {
+            "href": "#modules",
+            "label": "RAG 模块"
+          },
+          {
+            "href": "#顺序式-rag-流程",
+            "label": "Section titled “顺序式 RAG 流程”"
+          },
+          {
+            "href": "#基础-ragnaive-rag",
+            "label": "Section titled “基础 RAG（Naive RAG）”"
+          },
+          {
+            "href": "#_vectorstoredocumentretriever",
+            "label": "VectorStoreDocumentRetriever"
+          },
+          {
+            "href": "#进阶-ragadvanced-rag",
+            "label": "Section titled “进阶 RAG（Advanced RAG）”"
+          },
+          {
+            "href": "#二模块参考按需深入",
+            "label": "Section titled “二、模块参考（按需深入）”"
+          },
+          {
+            "href": "#检索前处理",
+            "label": "Section titled “检索前处理”"
+          },
+          {
+            "href": "#查询转换",
+            "label": "Section titled “查询转换”"
+          },
+          {
+            "href": "#compressionquerytransformer",
+            "label": "Section titled “CompressionQueryTransformer”"
+          },
+          {
+            "href": "#rewritequerytransformer",
+            "label": "Section titled “RewriteQueryTransformer”"
+          },
+          {
+            "href": "#translationquerytransformer",
+            "label": "Section titled “TranslationQueryTransformer”"
+          },
+          {
+            "href": "#查询扩展",
+            "label": "Section titled “查询扩展”"
+          },
+          {
+            "href": "#multiqueryexpander",
+            "label": "Section titled “MultiQueryExpander”"
+          },
+          {
+            "href": "#检索",
+            "label": "Section titled “检索”"
+          },
+          {
+            "href": "#文档搜索",
+            "label": "Section titled “文档搜索”"
+          },
+          {
+            "href": "#vectorstoredocumentretriever",
+            "label": "Section titled “VectorStoreDocumentRetriever”"
+          },
+          {
+            "href": "#文档合并",
+            "label": "Section titled “文档合并”"
+          },
+          {
+            "href": "#concatenationdocumentjoiner",
+            "label": "Section titled “ConcatenationDocumentJoiner”"
+          },
+          {
+            "href": "#检索后处理",
+            "label": "Section titled “检索后处理”"
+          },
+          {
+            "href": "#文档后处理",
+            "label": "Section titled “文档后处理”"
+          },
+          {
+            "href": "#生成",
+            "label": "Section titled “生成”"
+          },
+          {
+            "href": "#查询增强",
+            "label": "Section titled “查询增强”"
+          },
+          {
+            "href": "#contextualqueryaugmenter",
+            "label": "Section titled “ContextualQueryAugmenter”"
+          }
+        ],
+        "externalLinks": [
+          {
+            "href": "https://arxiv.org/abs/2407.21059",
+            "label": "Modular RAG: Transforming RAG Systems into LEGO-like Reconfigurable Frameworks"
+          },
+          {
+            "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html#reranking",
+            "label": "Qxotic jinfer"
+          },
+          {
+            "href": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html",
+            "label": "Spring AI Retrieval Augmented Generation"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "file": "retrieval-and-generation",
+        "device": "mobile",
+        "result": "PASS",
+        "title": "Spring AI：检索增强生成（RAG）",
+        "codeBlocks": 21,
+        "viewport": 390,
+        "pageWidth": 390,
+        "localLinks": [
+          {
+            "href": "/frameworks/spring-ai/core/advisors/#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B",
+            "label": "Advisor API"
+          },
+          {
+            "href": "/frameworks/spring-ai/concepts/#rag%E5%85%88%E6%A3%80%E7%B4%A2%E5%86%8D%E7%94%9F%E6%88%90",
+            "label": "AI 核心概念：先检索，再生成"
+          },
+          {
+            "href": "/frameworks/spring-ai/rag/document-ingestion/",
+            "label": "ETL 管道"
+          },
+          {
+            "href": "/frameworks/spring-ai/models/embedding-model/",
+            "label": "Embedding 模型"
+          },
+          {
+            "href": "#一rag-advisor重点掌握",
+            "label": "Section titled “一、RAG Advisor（重点掌握）”"
+          },
+          {
+            "href": "#questionansweradvisor",
+            "label": "Section titled “QuestionAnswerAdvisor”"
+          },
+          {
+            "href": "#动态过滤表达式",
+            "label": "Section titled “动态过滤表达式”"
+          },
+          {
+            "href": "#自定义模板",
+            "label": "Section titled “自定义模板”"
+          },
+          {
+            "href": "/frameworks/spring-ai/core/chat-client/#%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%A8%A1%E6%9D%BF",
+            "label": "ChatClient 提示词模板"
+          },
+          {
+            "href": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+            "label": "PromptTemplate"
+          },
+          {
+            "href": "#retrievalaugmentationadvisor",
+            "label": "Section titled “RetrievalAugmentationAdvisor”"
+          },
+          {
+            "href": "#modules",
+            "label": "RAG 模块"
+          },
+          {
+            "href": "#顺序式-rag-流程",
+            "label": "Section titled “顺序式 RAG 流程”"
+          },
+          {
+            "href": "#基础-ragnaive-rag",
+            "label": "Section titled “基础 RAG（Naive RAG）”"
+          },
+          {
+            "href": "#_vectorstoredocumentretriever",
+            "label": "VectorStoreDocumentRetriever"
+          },
+          {
+            "href": "#进阶-ragadvanced-rag",
+            "label": "Section titled “进阶 RAG（Advanced RAG）”"
+          },
+          {
+            "href": "#二模块参考按需深入",
+            "label": "Section titled “二、模块参考（按需深入）”"
+          },
+          {
+            "href": "#检索前处理",
+            "label": "Section titled “检索前处理”"
+          },
+          {
+            "href": "#查询转换",
+            "label": "Section titled “查询转换”"
+          },
+          {
+            "href": "#compressionquerytransformer",
+            "label": "Section titled “CompressionQueryTransformer”"
+          },
+          {
+            "href": "#rewritequerytransformer",
+            "label": "Section titled “RewriteQueryTransformer”"
+          },
+          {
+            "href": "#translationquerytransformer",
+            "label": "Section titled “TranslationQueryTransformer”"
+          },
+          {
+            "href": "#查询扩展",
+            "label": "Section titled “查询扩展”"
+          },
+          {
+            "href": "#multiqueryexpander",
+            "label": "Section titled “MultiQueryExpander”"
+          },
+          {
+            "href": "#检索",
+            "label": "Section titled “检索”"
+          },
+          {
+            "href": "#文档搜索",
+            "label": "Section titled “文档搜索”"
+          },
+          {
+            "href": "#vectorstoredocumentretriever",
+            "label": "Section titled “VectorStoreDocumentRetriever”"
+          },
+          {
+            "href": "#文档合并",
+            "label": "Section titled “文档合并”"
+          },
+          {
+            "href": "#concatenationdocumentjoiner",
+            "label": "Section titled “ConcatenationDocumentJoiner”"
+          },
+          {
+            "href": "#检索后处理",
+            "label": "Section titled “检索后处理”"
+          },
+          {
+            "href": "#文档后处理",
+            "label": "Section titled “文档后处理”"
+          },
+          {
+            "href": "#生成",
+            "label": "Section titled “生成”"
+          },
+          {
+            "href": "#查询增强",
+            "label": "Section titled “查询增强”"
+          },
+          {
+            "href": "#contextualqueryaugmenter",
+            "label": "Section titled “ContextualQueryAugmenter”"
+          }
+        ],
+        "externalLinks": [
+          {
+            "href": "https://arxiv.org/abs/2407.21059",
+            "label": "Modular RAG: Transforming RAG Systems into LEGO-like Reconfigurable Frameworks"
+          },
+          {
+            "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html#reranking",
+            "label": "Qxotic jinfer"
+          },
+          {
+            "href": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html",
+            "label": "Spring AI Retrieval Augmented Generation"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "file": "document-ingestion",
+        "device": "desktop",
+        "result": "PASS",
+        "title": "Spring AI：ETL 管道",
+        "codeBlocks": 41,
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "localLinks": [
+          {
+            "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+            "label": "RAG"
+          },
+          {
+            "href": "/frameworks/spring-ai/models/embedding-model/",
+            "label": "Embedding 模型"
+          },
+          {
+            "href": "#一api-概览重点掌握",
+            "label": "Section titled “一、API 概览（重点掌握）”"
+          },
+          {
+            "href": "/images/spring-ai/etl/document-api.jpg",
+            "label": ""
+          },
+          {
+            "href": "/images/spring-ai/etl/etl-pipeline.jpg",
+            "label": ""
+          },
+          {
+            "href": "#二etl-接口理解职责",
+            "label": "Section titled “二、ETL 接口（理解职责）”"
+          },
+          {
+            "href": "#etl-class-diagram",
+            "label": "ETL 类图"
+          },
+          {
+            "href": "#documentreader",
+            "label": "Section titled “DocumentReader”"
+          },
+          {
+            "href": "#documenttransformer",
+            "label": "Section titled “DocumentTransformer”"
+          },
+          {
+            "href": "#documentwriter",
+            "label": "Section titled “DocumentWriter”"
+          },
+          {
+            "href": "#etl-类图",
+            "label": "Section titled “ETL 类图”"
+          },
+          {
+            "href": "/images/spring-ai/etl/etl-class-diagram.jpg",
+            "label": ""
+          },
+          {
+            "href": "#三文档读取器按格式查阅",
+            "label": "Section titled “三、文档读取器（按格式查阅）”"
+          },
+          {
+            "href": "#json",
+            "label": "Section titled “JSON”"
+          },
+          {
+            "href": "#示例",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#构造器",
+            "label": "Section titled “构造器”"
+          },
+          {
+            "href": "#参数",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#处理流程",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#使用-json-pointer",
+            "label": "Section titled “使用 JSON Pointer”"
+          },
+          {
+            "href": "#getstring-pointer-方法",
+            "label": "Section titled “get(String pointer) 方法”"
+          },
+          {
+            "href": "#参数-1",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#返回值",
+            "label": "Section titled “返回值”"
+          },
+          {
+            "href": "#处理流程-1",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#示例-1",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#json-结构示例",
+            "label": "Section titled “JSON 结构示例”"
+          },
+          {
+            "href": "#注意事项",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#纯文本",
+            "label": "Section titled “纯文本”"
+          },
+          {
+            "href": "#示例-2",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#构造器-1",
+            "label": "Section titled “构造器”"
+          },
+          {
+            "href": "#参数-2",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#配置",
+            "label": "Section titled “配置”"
+          },
+          {
+            "href": "#处理流程-2",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#注意事项-1",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#htmljsoup",
+            "label": "Section titled “HTML（JSoup）”"
+          },
+          {
+            "href": "#依赖",
+            "label": "Section titled “依赖”"
+          },
+          {
+            "href": "#示例-3",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#示例文档my-pagehtml",
+            "label": "Section titled “示例文档：my-page.html”"
+          },
+          {
+            "href": "#markdown",
+            "label": "Section titled “Markdown”"
+          },
+          {
+            "href": "#依赖-1",
+            "label": "Section titled “依赖”"
+          },
+          {
+            "href": "#示例-4",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#示例文档codemd",
+            "label": "Section titled “示例文档：code.md”"
+          },
+          {
+            "href": "#按页读取-pdf",
+            "label": "Section titled “按页读取 PDF”"
+          },
+          {
+            "href": "#依赖-2",
+            "label": "Section titled “依赖”"
+          },
+          {
+            "href": "#示例-5",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#按段落读取-pdf",
+            "label": "Section titled “按段落读取 PDF”"
+          },
+          {
+            "href": "#依赖-3",
+            "label": "Section titled “依赖”"
+          },
+          {
+            "href": "#示例-6",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#tikadocxpptxhtml-等",
+            "label": "Section titled “Tika（DOCX、PPTX、HTML 等）”"
+          },
+          {
+            "href": "#依赖-4",
+            "label": "Section titled “依赖”"
+          },
+          {
+            "href": "#示例-7",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#四转换器切分是重点",
+            "label": "Section titled “四、转换器（切分是重点）”"
+          },
+          {
+            "href": "#textsplitter",
+            "label": "Section titled “TextSplitter”"
+          },
+          {
+            "href": "/rag/document-parsing/document-processing-and-chunking/#%E5%88%86%E5%9D%97%E7%AD%96%E7%95%A5%E6%80%8E%E4%B9%88%E9%80%89",
+            "label": "文档处理与分块：策略怎么选"
+          },
+          {
+            "href": "#tokentextsplitter",
+            "label": "Section titled “TokenTextSplitter”"
+          },
+          {
+            "href": "#用法",
+            "label": "Section titled “用法”"
+          },
+          {
+            "href": "#基本用法",
+            "label": "Section titled “基本用法”"
+          },
+          {
+            "href": "#自定义编码类型",
+            "label": "Section titled “自定义编码类型”"
+          },
+          {
+            "href": "#自定义标点",
+            "label": "Section titled “自定义标点”"
+          },
+          {
+            "href": "#配置-1",
+            "label": "Section titled “配置”"
+          },
+          {
+            "href": "#参数-3",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#处理流程-3",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#示例-8",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#注意事项-2",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#contentformattransformer",
+            "label": "Section titled “ContentFormatTransformer”"
+          },
+          {
+            "href": "#keywordmetadataenricher",
+            "label": "Section titled “KeywordMetadataEnricher”"
+          },
+          {
+            "href": "#用法-1",
+            "label": "Section titled “用法”"
+          },
+          {
+            "href": "#构造器-2",
+            "label": "Section titled “构造器”"
+          },
+          {
+            "href": "#处理流程-4",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#自定义",
+            "label": "Section titled “自定义”"
+          },
+          {
+            "href": "#示例-9",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#注意事项-3",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#summarymetadataenricher",
+            "label": "Section titled “SummaryMetadataEnricher”"
+          },
+          {
+            "href": "#用法-2",
+            "label": "Section titled “用法”"
+          },
+          {
+            "href": "#构造器-3",
+            "label": "Section titled “构造器”"
+          },
+          {
+            "href": "#参数-4",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#处理流程-5",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#自定义-1",
+            "label": "Section titled “自定义”"
+          },
+          {
+            "href": "#示例-10",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#注意事项-4",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#五写入器入库与调试",
+            "label": "Section titled “五、写入器（入库与调试）”"
+          },
+          {
+            "href": "#文件写入",
+            "label": "Section titled “文件写入”"
+          },
+          {
+            "href": "#用法-3",
+            "label": "Section titled “用法”"
+          },
+          {
+            "href": "#构造器-4",
+            "label": "Section titled “构造器”"
+          },
+          {
+            "href": "#参数-5",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#处理流程-6",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#文档标记",
+            "label": "Section titled “文档标记”"
+          },
+          {
+            "href": "#元数据处理",
+            "label": "Section titled “元数据处理”"
+          },
+          {
+            "href": "#示例-11",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#注意事项-5",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#vectorstore",
+            "label": "Section titled “VectorStore”"
+          },
+          {
+            "href": "/rag/vector-db/chroma-vector-store/",
+            "label": "Chroma 向量库与检索"
+          }
+        ],
+        "externalLinks": [
+          {
+            "href": "https://tika.apache.org/3.1.0/formats.html",
+            "label": "Tika 文档"
+          },
+          {
+            "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+            "label": "向量数据库文档"
+          },
+          {
+            "href": "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html",
+            "label": "Spring AI ETL Pipeline"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "file": "document-ingestion",
+        "device": "mobile",
+        "result": "PASS",
+        "title": "Spring AI：ETL 管道",
+        "codeBlocks": 41,
+        "viewport": 390,
+        "pageWidth": 390,
+        "localLinks": [
+          {
+            "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+            "label": "RAG"
+          },
+          {
+            "href": "/frameworks/spring-ai/models/embedding-model/",
+            "label": "Embedding 模型"
+          },
+          {
+            "href": "#一api-概览重点掌握",
+            "label": "Section titled “一、API 概览（重点掌握）”"
+          },
+          {
+            "href": "/images/spring-ai/etl/document-api.jpg",
+            "label": ""
+          },
+          {
+            "href": "/images/spring-ai/etl/etl-pipeline.jpg",
+            "label": ""
+          },
+          {
+            "href": "#二etl-接口理解职责",
+            "label": "Section titled “二、ETL 接口（理解职责）”"
+          },
+          {
+            "href": "#etl-class-diagram",
+            "label": "ETL 类图"
+          },
+          {
+            "href": "#documentreader",
+            "label": "Section titled “DocumentReader”"
+          },
+          {
+            "href": "#documenttransformer",
+            "label": "Section titled “DocumentTransformer”"
+          },
+          {
+            "href": "#documentwriter",
+            "label": "Section titled “DocumentWriter”"
+          },
+          {
+            "href": "#etl-类图",
+            "label": "Section titled “ETL 类图”"
+          },
+          {
+            "href": "/images/spring-ai/etl/etl-class-diagram.jpg",
+            "label": ""
+          },
+          {
+            "href": "#三文档读取器按格式查阅",
+            "label": "Section titled “三、文档读取器（按格式查阅）”"
+          },
+          {
+            "href": "#json",
+            "label": "Section titled “JSON”"
+          },
+          {
+            "href": "#示例",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#构造器",
+            "label": "Section titled “构造器”"
+          },
+          {
+            "href": "#参数",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#处理流程",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#使用-json-pointer",
+            "label": "Section titled “使用 JSON Pointer”"
+          },
+          {
+            "href": "#getstring-pointer-方法",
+            "label": "Section titled “get(String pointer) 方法”"
+          },
+          {
+            "href": "#参数-1",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#返回值",
+            "label": "Section titled “返回值”"
+          },
+          {
+            "href": "#处理流程-1",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#示例-1",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#json-结构示例",
+            "label": "Section titled “JSON 结构示例”"
+          },
+          {
+            "href": "#注意事项",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#纯文本",
+            "label": "Section titled “纯文本”"
+          },
+          {
+            "href": "#示例-2",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#构造器-1",
+            "label": "Section titled “构造器”"
+          },
+          {
+            "href": "#参数-2",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#配置",
+            "label": "Section titled “配置”"
+          },
+          {
+            "href": "#处理流程-2",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#注意事项-1",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#htmljsoup",
+            "label": "Section titled “HTML（JSoup）”"
+          },
+          {
+            "href": "#依赖",
+            "label": "Section titled “依赖”"
+          },
+          {
+            "href": "#示例-3",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#示例文档my-pagehtml",
+            "label": "Section titled “示例文档：my-page.html”"
+          },
+          {
+            "href": "#markdown",
+            "label": "Section titled “Markdown”"
+          },
+          {
+            "href": "#依赖-1",
+            "label": "Section titled “依赖”"
+          },
+          {
+            "href": "#示例-4",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#示例文档codemd",
+            "label": "Section titled “示例文档：code.md”"
+          },
+          {
+            "href": "#按页读取-pdf",
+            "label": "Section titled “按页读取 PDF”"
+          },
+          {
+            "href": "#依赖-2",
+            "label": "Section titled “依赖”"
+          },
+          {
+            "href": "#示例-5",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#按段落读取-pdf",
+            "label": "Section titled “按段落读取 PDF”"
+          },
+          {
+            "href": "#依赖-3",
+            "label": "Section titled “依赖”"
+          },
+          {
+            "href": "#示例-6",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#tikadocxpptxhtml-等",
+            "label": "Section titled “Tika（DOCX、PPTX、HTML 等）”"
+          },
+          {
+            "href": "#依赖-4",
+            "label": "Section titled “依赖”"
+          },
+          {
+            "href": "#示例-7",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#四转换器切分是重点",
+            "label": "Section titled “四、转换器（切分是重点）”"
+          },
+          {
+            "href": "#textsplitter",
+            "label": "Section titled “TextSplitter”"
+          },
+          {
+            "href": "/rag/document-parsing/document-processing-and-chunking/#%E5%88%86%E5%9D%97%E7%AD%96%E7%95%A5%E6%80%8E%E4%B9%88%E9%80%89",
+            "label": "文档处理与分块：策略怎么选"
+          },
+          {
+            "href": "#tokentextsplitter",
+            "label": "Section titled “TokenTextSplitter”"
+          },
+          {
+            "href": "#用法",
+            "label": "Section titled “用法”"
+          },
+          {
+            "href": "#基本用法",
+            "label": "Section titled “基本用法”"
+          },
+          {
+            "href": "#自定义编码类型",
+            "label": "Section titled “自定义编码类型”"
+          },
+          {
+            "href": "#自定义标点",
+            "label": "Section titled “自定义标点”"
+          },
+          {
+            "href": "#配置-1",
+            "label": "Section titled “配置”"
+          },
+          {
+            "href": "#参数-3",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#处理流程-3",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#示例-8",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#注意事项-2",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#contentformattransformer",
+            "label": "Section titled “ContentFormatTransformer”"
+          },
+          {
+            "href": "#keywordmetadataenricher",
+            "label": "Section titled “KeywordMetadataEnricher”"
+          },
+          {
+            "href": "#用法-1",
+            "label": "Section titled “用法”"
+          },
+          {
+            "href": "#构造器-2",
+            "label": "Section titled “构造器”"
+          },
+          {
+            "href": "#处理流程-4",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#自定义",
+            "label": "Section titled “自定义”"
+          },
+          {
+            "href": "#示例-9",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#注意事项-3",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#summarymetadataenricher",
+            "label": "Section titled “SummaryMetadataEnricher”"
+          },
+          {
+            "href": "#用法-2",
+            "label": "Section titled “用法”"
+          },
+          {
+            "href": "#构造器-3",
+            "label": "Section titled “构造器”"
+          },
+          {
+            "href": "#参数-4",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#处理流程-5",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#自定义-1",
+            "label": "Section titled “自定义”"
+          },
+          {
+            "href": "#示例-10",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#注意事项-4",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#五写入器入库与调试",
+            "label": "Section titled “五、写入器（入库与调试）”"
+          },
+          {
+            "href": "#文件写入",
+            "label": "Section titled “文件写入”"
+          },
+          {
+            "href": "#用法-3",
+            "label": "Section titled “用法”"
+          },
+          {
+            "href": "#构造器-4",
+            "label": "Section titled “构造器”"
+          },
+          {
+            "href": "#参数-5",
+            "label": "Section titled “参数”"
+          },
+          {
+            "href": "#处理流程-6",
+            "label": "Section titled “处理流程”"
+          },
+          {
+            "href": "#文档标记",
+            "label": "Section titled “文档标记”"
+          },
+          {
+            "href": "#元数据处理",
+            "label": "Section titled “元数据处理”"
+          },
+          {
+            "href": "#示例-11",
+            "label": "Section titled “示例”"
+          },
+          {
+            "href": "#注意事项-5",
+            "label": "Section titled “注意事项”"
+          },
+          {
+            "href": "#vectorstore",
+            "label": "Section titled “VectorStore”"
+          },
+          {
+            "href": "/rag/vector-db/chroma-vector-store/",
+            "label": "Chroma 向量库与检索"
+          }
+        ],
+        "externalLinks": [
+          {
+            "href": "https://tika.apache.org/3.1.0/formats.html",
+            "label": "Tika 文档"
+          },
+          {
+            "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+            "label": "向量数据库文档"
+          },
+          {
+            "href": "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html",
+            "label": "Spring AI ETL Pipeline"
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "localTargets": 124,
+    "targets": [
+      {
+        "path": "/frameworks/spring-ai/core/advisors/#核心组件与执行流程",
+        "label": "Advisor API",
+        "heading": "核心组件与执行流程",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/concepts/#rag先检索再生成",
+        "label": "AI 核心概念：先检索，再生成",
+        "heading": "RAG：先检索，再生成",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/",
+        "label": "ETL 管道",
+        "heading": null,
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/models/embedding-model/",
+        "label": "Embedding 模型",
+        "heading": null,
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#一rag-advisor重点掌握",
+        "label": "Section titled “一、RAG Advisor（重点掌握）”",
+        "heading": "一、RAG Advisor（重点掌握）",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#questionansweradvisor",
+        "label": "Section titled “QuestionAnswerAdvisor”",
+        "heading": "QuestionAnswerAdvisor",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#动态过滤表达式",
+        "label": "Section titled “动态过滤表达式”",
+        "heading": "动态过滤表达式",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#自定义模板",
+        "label": "Section titled “自定义模板”",
+        "heading": "自定义模板",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/core/chat-client/#提示词模板",
+        "label": "ChatClient 提示词模板",
+        "heading": "提示词模板",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词",
+        "label": "PromptTemplate",
+        "heading": "PromptTemplate：将模板转换为提示词",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#retrievalaugmentationadvisor",
+        "label": "Section titled “RetrievalAugmentationAdvisor”",
+        "heading": "RetrievalAugmentationAdvisor",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#modules",
+        "label": "RAG 模块",
+        "heading": "二、模块参考（按需深入）Section titled “二、模块参考（按需深入）”",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#顺序式-rag-流程",
+        "label": "Section titled “顺序式 RAG 流程”",
+        "heading": "顺序式 RAG 流程",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#基础-ragnaive-rag",
+        "label": "Section titled “基础 RAG（Naive RAG）”",
+        "heading": "基础 RAG（Naive RAG）",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#_vectorstoredocumentretriever",
+        "label": "VectorStoreDocumentRetriever",
+        "heading": "VectorStoreDocumentRetrieverSection titled “VectorStoreDocumentRetriever”",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#进阶-ragadvanced-rag",
+        "label": "Section titled “进阶 RAG（Advanced RAG）”",
+        "heading": "进阶 RAG（Advanced RAG）",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#二模块参考按需深入",
+        "label": "Section titled “二、模块参考（按需深入）”",
+        "heading": "二、模块参考（按需深入）",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#检索前处理",
+        "label": "Section titled “检索前处理”",
+        "heading": "检索前处理",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#查询转换",
+        "label": "Section titled “查询转换”",
+        "heading": "查询转换",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#compressionquerytransformer",
+        "label": "Section titled “CompressionQueryTransformer”",
+        "heading": "CompressionQueryTransformer",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#rewritequerytransformer",
+        "label": "Section titled “RewriteQueryTransformer”",
+        "heading": "RewriteQueryTransformer",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#translationquerytransformer",
+        "label": "Section titled “TranslationQueryTransformer”",
+        "heading": "TranslationQueryTransformer",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#查询扩展",
+        "label": "Section titled “查询扩展”",
+        "heading": "查询扩展",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#multiqueryexpander",
+        "label": "Section titled “MultiQueryExpander”",
+        "heading": "MultiQueryExpander",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#检索",
+        "label": "Section titled “检索”",
+        "heading": "检索",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#文档搜索",
+        "label": "Section titled “文档搜索”",
+        "heading": "文档搜索",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#vectorstoredocumentretriever",
+        "label": "Section titled “VectorStoreDocumentRetriever”",
+        "heading": "VectorStoreDocumentRetriever",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#文档合并",
+        "label": "Section titled “文档合并”",
+        "heading": "文档合并",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#concatenationdocumentjoiner",
+        "label": "Section titled “ConcatenationDocumentJoiner”",
+        "heading": "ConcatenationDocumentJoiner",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#检索后处理",
+        "label": "Section titled “检索后处理”",
+        "heading": "检索后处理",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#文档后处理",
+        "label": "Section titled “文档后处理”",
+        "heading": "文档后处理",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#生成",
+        "label": "Section titled “生成”",
+        "heading": "生成",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#查询增强",
+        "label": "Section titled “查询增强”",
+        "heading": "查询增强",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#contextualqueryaugmenter",
+        "label": "Section titled “ContextualQueryAugmenter”",
+        "heading": "ContextualQueryAugmenter",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+        "label": "RAG",
+        "heading": null,
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#一api-概览重点掌握",
+        "label": "Section titled “一、API 概览（重点掌握）”",
+        "heading": "一、API 概览（重点掌握）",
+        "status": 200
+      },
+      {
+        "path": "/images/spring-ai/etl/document-api.jpg",
+        "label": "",
+        "heading": null,
+        "status": 200
+      },
+      {
+        "path": "/images/spring-ai/etl/etl-pipeline.jpg",
+        "label": "",
+        "heading": null,
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#二etl-接口理解职责",
+        "label": "Section titled “二、ETL 接口（理解职责）”",
+        "heading": "二、ETL 接口（理解职责）",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#etl-class-diagram",
+        "label": "ETL 类图",
+        "heading": "ETL 类图Section titled “ETL 类图”",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#documentreader",
+        "label": "Section titled “DocumentReader”",
+        "heading": "DocumentReader",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#documenttransformer",
+        "label": "Section titled “DocumentTransformer”",
+        "heading": "DocumentTransformer",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#documentwriter",
+        "label": "Section titled “DocumentWriter”",
+        "heading": "DocumentWriter",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#etl-类图",
+        "label": "Section titled “ETL 类图”",
+        "heading": "ETL 类图",
+        "status": 200
+      },
+      {
+        "path": "/images/spring-ai/etl/etl-class-diagram.jpg",
+        "label": "",
+        "heading": null,
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#三文档读取器按格式查阅",
+        "label": "Section titled “三、文档读取器（按格式查阅）”",
+        "heading": "三、文档读取器（按格式查阅）",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#json",
+        "label": "Section titled “JSON”",
+        "heading": "JSON",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#构造器",
+        "label": "Section titled “构造器”",
+        "heading": "构造器",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#参数",
+        "label": "Section titled “参数”",
+        "heading": "参数",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#处理流程",
+        "label": "Section titled “处理流程”",
+        "heading": "处理流程",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#使用-json-pointer",
+        "label": "Section titled “使用 JSON Pointer”",
+        "heading": "使用 JSON Pointer",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#getstring-pointer-方法",
+        "label": "Section titled “get(String pointer) 方法”",
+        "heading": "get(String pointer) 方法",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#参数-1",
+        "label": "Section titled “参数”",
+        "heading": "参数",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#返回值",
+        "label": "Section titled “返回值”",
+        "heading": "返回值",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#处理流程-1",
+        "label": "Section titled “处理流程”",
+        "heading": "处理流程",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-1",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#json-结构示例",
+        "label": "Section titled “JSON 结构示例”",
+        "heading": "JSON 结构示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#注意事项",
+        "label": "Section titled “注意事项”",
+        "heading": "注意事项",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#纯文本",
+        "label": "Section titled “纯文本”",
+        "heading": "纯文本",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-2",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#构造器-1",
+        "label": "Section titled “构造器”",
+        "heading": "构造器",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#参数-2",
+        "label": "Section titled “参数”",
+        "heading": "参数",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#配置",
+        "label": "Section titled “配置”",
+        "heading": "配置",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#处理流程-2",
+        "label": "Section titled “处理流程”",
+        "heading": "处理流程",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#注意事项-1",
+        "label": "Section titled “注意事项”",
+        "heading": "注意事项",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#htmljsoup",
+        "label": "Section titled “HTML（JSoup）”",
+        "heading": "HTML（JSoup）",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#依赖",
+        "label": "Section titled “依赖”",
+        "heading": "依赖",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-3",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例文档my-pagehtml",
+        "label": "Section titled “示例文档：my-page.html”",
+        "heading": "示例文档：my-page.html",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#markdown",
+        "label": "Section titled “Markdown”",
+        "heading": "Markdown",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#依赖-1",
+        "label": "Section titled “依赖”",
+        "heading": "依赖",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-4",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例文档codemd",
+        "label": "Section titled “示例文档：code.md”",
+        "heading": "示例文档：code.md",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#按页读取-pdf",
+        "label": "Section titled “按页读取 PDF”",
+        "heading": "按页读取 PDF",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#依赖-2",
+        "label": "Section titled “依赖”",
+        "heading": "依赖",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-5",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#按段落读取-pdf",
+        "label": "Section titled “按段落读取 PDF”",
+        "heading": "按段落读取 PDF",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#依赖-3",
+        "label": "Section titled “依赖”",
+        "heading": "依赖",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-6",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#tikadocxpptxhtml-等",
+        "label": "Section titled “Tika（DOCX、PPTX、HTML 等）”",
+        "heading": "Tika（DOCX、PPTX、HTML 等）",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#依赖-4",
+        "label": "Section titled “依赖”",
+        "heading": "依赖",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-7",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#四转换器切分是重点",
+        "label": "Section titled “四、转换器（切分是重点）”",
+        "heading": "四、转换器（切分是重点）",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#textsplitter",
+        "label": "Section titled “TextSplitter”",
+        "heading": "TextSplitter",
+        "status": 200
+      },
+      {
+        "path": "/rag/document-parsing/document-processing-and-chunking/#分块策略怎么选",
+        "label": "文档处理与分块：策略怎么选",
+        "heading": "分块策略怎么选",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#tokentextsplitter",
+        "label": "Section titled “TokenTextSplitter”",
+        "heading": "TokenTextSplitter",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#用法",
+        "label": "Section titled “用法”",
+        "heading": "用法",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#基本用法",
+        "label": "Section titled “基本用法”",
+        "heading": "基本用法",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#自定义编码类型",
+        "label": "Section titled “自定义编码类型”",
+        "heading": "自定义编码类型",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#自定义标点",
+        "label": "Section titled “自定义标点”",
+        "heading": "自定义标点",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#配置-1",
+        "label": "Section titled “配置”",
+        "heading": "配置",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#参数-3",
+        "label": "Section titled “参数”",
+        "heading": "参数",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#处理流程-3",
+        "label": "Section titled “处理流程”",
+        "heading": "处理流程",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-8",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#注意事项-2",
+        "label": "Section titled “注意事项”",
+        "heading": "注意事项",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#contentformattransformer",
+        "label": "Section titled “ContentFormatTransformer”",
+        "heading": "ContentFormatTransformer",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#keywordmetadataenricher",
+        "label": "Section titled “KeywordMetadataEnricher”",
+        "heading": "KeywordMetadataEnricher",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#用法-1",
+        "label": "Section titled “用法”",
+        "heading": "用法",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#构造器-2",
+        "label": "Section titled “构造器”",
+        "heading": "构造器",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#处理流程-4",
+        "label": "Section titled “处理流程”",
+        "heading": "处理流程",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#自定义",
+        "label": "Section titled “自定义”",
+        "heading": "自定义",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-9",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#注意事项-3",
+        "label": "Section titled “注意事项”",
+        "heading": "注意事项",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#summarymetadataenricher",
+        "label": "Section titled “SummaryMetadataEnricher”",
+        "heading": "SummaryMetadataEnricher",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#用法-2",
+        "label": "Section titled “用法”",
+        "heading": "用法",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#构造器-3",
+        "label": "Section titled “构造器”",
+        "heading": "构造器",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#参数-4",
+        "label": "Section titled “参数”",
+        "heading": "参数",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#处理流程-5",
+        "label": "Section titled “处理流程”",
+        "heading": "处理流程",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#自定义-1",
+        "label": "Section titled “自定义”",
+        "heading": "自定义",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-10",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#注意事项-4",
+        "label": "Section titled “注意事项”",
+        "heading": "注意事项",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#五写入器入库与调试",
+        "label": "Section titled “五、写入器（入库与调试）”",
+        "heading": "五、写入器（入库与调试）",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#文件写入",
+        "label": "Section titled “文件写入”",
+        "heading": "文件写入",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#用法-3",
+        "label": "Section titled “用法”",
+        "heading": "用法",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#构造器-4",
+        "label": "Section titled “构造器”",
+        "heading": "构造器",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#参数-5",
+        "label": "Section titled “参数”",
+        "heading": "参数",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#处理流程-6",
+        "label": "Section titled “处理流程”",
+        "heading": "处理流程",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#文档标记",
+        "label": "Section titled “文档标记”",
+        "heading": "文档标记",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#元数据处理",
+        "label": "Section titled “元数据处理”",
+        "heading": "元数据处理",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#示例-11",
+        "label": "Section titled “示例”",
+        "heading": "示例",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#注意事项-5",
+        "label": "Section titled “注意事项”",
+        "heading": "注意事项",
+        "status": 200
+      },
+      {
+        "path": "/frameworks/spring-ai/rag/document-ingestion/#vectorstore",
+        "label": "Section titled “VectorStore”",
+        "heading": "VectorStore",
+        "status": 200
+      },
+      {
+        "path": "/rag/vector-db/chroma-vector-store/",
+        "label": "Chroma 向量库与检索",
+        "heading": null,
+        "status": 200
+      }
+    ]
+  },
+  "check": {
+    "command": "npm run check",
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0
+  },
+  "build": {
+    "command": "npm run build",
+    "result": "PASS",
+    "pages": 85
+  },
+  "contentPreservation": {
+    "codeBlocks": 62,
+    "sourceAnchors": 109,
+    "codeAndAnchorsByteEqualToBefore": true,
+    "imagesUnchanged": true
+  }
+}

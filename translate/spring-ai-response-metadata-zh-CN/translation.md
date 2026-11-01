@@ -6,7 +6,7 @@ sidebar:
   order: 6
 ---
 
-`ChatResponse` 不仅包含模型回答，还携带提供方返回的调用指标，例如词元（Token）用量和限流额度。Spring AI 用三个类型提供统一访问方式：
+[`ChatResponse`](/frameworks/spring-ai/models/chat-model/#一次请求和响应包含什么) 不仅包含模型回答，还携带提供方返回的调用指标，例如词元（Token）用量和限流额度。Spring AI 用三个类型提供统一访问方式：
 
 | 类型                   | 用途                                                    |
 | ---------------------- | ------------------------------------------------------- |
@@ -180,7 +180,7 @@ ChatResponse response = chatClient.prompt("What is the weather like today?")
 Usage usage = response.getMetadata().getUsage();
 ```
 
-如果仅调用 `.content()`，得到的是回答字符串；需要元数据时，按上例获取 `ChatResponse`。调用方式见 [ChatClient API](/frameworks/spring-ai/core/chat-client/)。
+如果仅调用 `.content()`，得到的是回答字符串；需要元数据时，按上例获取 `ChatResponse`。调用方式见 [ChatClient API](/frameworks/spring-ai/core/chat-client/#返回-chatresponse)。
 
 ## 提示词缓存用量
 

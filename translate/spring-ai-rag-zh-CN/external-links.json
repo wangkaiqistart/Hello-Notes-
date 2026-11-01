@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "records": [
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html",
+      "status": 200,
+      "finalUrl": "https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html",
+      "fragments": [],
+      "missingFragments": [],
+      "result": "PASS"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/concepts.html",
+      "status": 200,
+      "finalUrl": "https://docs.spring.io/spring-ai/reference/concepts.html",
+      "fragments": ["concept-rag"],
+      "missingFragments": [],
+      "result": "PASS"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/chatclient.html",
+      "status": 200,
+      "finalUrl": "https://docs.spring.io/spring-ai/reference/api/chatclient.html",
+      "fragments": ["_prompt_templates"],
+      "missingFragments": [],
+      "result": "PASS"
+    },
+    {
+      "url": "https://www.stringtemplate.org/",
+      "status": 200,
+      "finalUrl": "https://www.stringtemplate.org/",
+      "fragments": [],
+      "missingFragments": [],
+      "result": "PASS"
+    },
+    {
+      "url": "https://arxiv.org/abs/2407.21059",
+      "status": 200,
+      "finalUrl": "https://arxiv.org/abs/2407.21059",
+      "fragments": [],
+      "missingFragments": [],
+      "result": "PASS"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html",
+      "status": 200,
+      "finalUrl": "https://docs.spring.io/spring-ai/reference/api/embeddings/jinfer-embeddings.html",
+      "fragments": ["reranking"],
+      "missingFragments": [],
+      "result": "PASS"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html",
+      "status": 200,
+      "finalUrl": "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html",
+      "fragments": [],
+      "missingFragments": [],
+      "result": "PASS"
+    },
+    {
+      "url": "https://tika.apache.org/3.1.0/formats.html",
+      "status": 200,
+      "finalUrl": "https://tika.apache.org/3.1.0/formats.html",
+      "fragments": [],
+      "missingFragments": [],
+      "result": "PASS"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+      "status": 200,
+      "finalUrl": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+      "fragments": [],
+      "missingFragments": [],
+      "result": "PASS"
+    }
+  ]
+}

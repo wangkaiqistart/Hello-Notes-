@@ -80,7 +80,7 @@ float[] vector = response.getResults().get(0).getOutput();
 2. **向量空间一致**：文档入库和问题查询使用兼容的嵌入模型与配置。维度相同不代表不同模型的向量就能直接比较。
 3. **更换模型需处理旧索引**：模型或影响向量的配置改变后，应评估重新嵌入文档、重建或迁移索引，避免混用新旧向量。
 
-这些是检索工程的实践要求。此阶段先理解“文本如何变成向量”，文档切分、批量入库、Top-K 和过滤条件放到后续 RAG 笔记中实践。
+这些是检索工程的实践要求。此阶段先理解“文本如何变成向量”，[文档切分](/frameworks/spring-ai/rag/document-ingestion/#_tokentextsplitter)、[批量入库](/frameworks/spring-ai/rag/vector-stores/#_batching_strategy)、[Top-K](/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder) 和[过滤条件](/frameworks/spring-ai/rag/vector-stores/#metadata-filters)放到后续 [RAG 笔记](/frameworks/spring-ai/rag/retrieval-and-generation/)中实践。
 
 ## 按需查询
 

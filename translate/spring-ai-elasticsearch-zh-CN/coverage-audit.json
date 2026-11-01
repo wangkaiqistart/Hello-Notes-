@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/elasticsearch.mdx",
+  "pageSha256": "ff052d5a2e57648cce3aae6c03a66981953b0279fe9e92bf3829550118de575d",
+  "sourceSections": 6,
+  "targetSourceSections": 6,
+  "sourceCodeBlocks": 15,
+  "targetCodeBlocks": 15,
+  "sourceImages": 0,
+  "targetImages": 0,
+  "sourceLinksCovered": 13,
+  "sourceLinkOverrides": {
+    "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations": "/frameworks/spring-ai/models/embedding-model/",
+    "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management": "/frameworks/spring-ai/getting-started/quickstart/#使用-bom-管理版本",
+    "https://docs.spring.io/spring-ai/reference/getting-started.html#artifact-repositories": "/frameworks/spring-ai/getting-started/quickstart/#配置依赖仓库",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#_metadata_filters": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#metadata-filters": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/elasticsearch.html#elasticsearchvector-properties": "#elasticsearchvector-properties"
+  },
+  "sourceConfigurationParameters": [
+    "spring.elasticsearch.connection-timeout",
+    "spring.elasticsearch.password",
+    "spring.elasticsearch.username",
+    "spring.elasticsearch.uris",
+    "spring.elasticsearch.path-prefix",
+    "spring.elasticsearch.restclient.sniffer.delay-after-failure",
+    "spring.elasticsearch.restclient.sniffer.interval",
+    "spring.elasticsearch.restclient.ssl.bundle",
+    "spring.elasticsearch.socket-keep-alive",
+    "spring.elasticsearch.socket-timeout",
+    "spring.ai.vectorstore.elasticsearch.initialize-schema",
+    "spring.ai.vectorstore.elasticsearch.index-name",
+    "spring.ai.vectorstore.elasticsearch.dimensions",
+    "spring.ai.vectorstore.elasticsearch.similarity",
+    "spring.ai.vectorstore.elasticsearch.embedding-field-name"
+  ],
+  "allParameterKeysPreserved": true,
+  "latestRagReferenceAudit": "../spring-ai-rag-reference-audit/audit.json"
+}

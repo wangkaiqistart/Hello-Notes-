@@ -1,0 +1,1053 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "base": "http://127.0.0.1:4322",
+  "route": "/frameworks/spring-ai/rag/vector-stores/",
+  "pages": [
+    {
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：向量存储",
+      "viewport": 1440,
+      "width": 1440,
+      "anchors": [
+        "api-overview",
+        "一api-概览重点掌握",
+        "_vectorstoreretriever_interface",
+        "vectorstoreretriever只读检索接口",
+        "_vectorstore_interface",
+        "vectorstore读写接口",
+        "_searchrequest_builder",
+        "searchrequest构建检索请求",
+        "_schema_initialization",
+        "二结构初始化",
+        "_batching_strategy",
+        "三批处理策略按需深入",
+        "_default_implementation",
+        "默认实现tokencountbatchingstrategy",
+        "_working_with_auto_truncation",
+        "配合自动截断",
+        "_configuration_for_auto_truncation",
+        "自动截断配置示例",
+        "_why_this_works",
+        "为什么需要这样配置",
+        "_best_practices",
+        "使用建议",
+        "_spring_boot_auto_configuration",
+        "spring-boot-自动配置",
+        "_custom_implementation",
+        "自定义实现",
+        "_vectorstore_implementations",
+        "四实现与子页阅读顺序",
+        "_example_usage",
+        "五基本读写重点掌握",
+        "_writing_to_a_vector_store",
+        "写入向量存储",
+        "_reading_from_a_vector_store",
+        "查询向量存储",
+        "_separation_of_read_and_write_operations",
+        "分离读写职责",
+        "_retrieval_operations_with_vectorstoreretriever",
+        "六只读检索与-rag",
+        "_benefits_of_using_vectorstoreretriever",
+        "为什么使用只读接口",
+        "_example_usage_2",
+        "只读检索示例",
+        "_integration_with_rag_applications",
+        "集成到-rag-应用",
+        "metadata-filters",
+        "七元数据过滤重点掌握",
+        "_filter_string",
+        "字符串表达式",
+        "_filter_expression",
+        "filterexpression",
+        "_partitioning_a_shared_index",
+        "在共享索引中划分文档组",
+        "_deleting_documents_from_vector_store",
+        "八删除与文档版本管理参考",
+        "_delete_by_document_ids",
+        "按文档-id-删除",
+        "_delete_by_filter_expression",
+        "按-filterexpression-删除",
+        "_delete_by_string_filter_expression",
+        "按字符串表达式删除",
+        "_error_handling_when_calling_the_delete_api",
+        "处理删除异常",
+        "_document_versioning_use_case",
+        "文档版本管理",
+        "_performance_considerations_while_deleting_documents",
+        "删除操作的性能取舍",
+        "_understanding_vectors",
+        "九理解向量"
+      ],
+      "links": [
+        {
+          "href": "/rag/vector-db/chroma-vector-store/#%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3",
+          "text": "向量相似度"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "text": "检索增强生成（RAG）"
+        },
+        {
+          "href": "#api-overview",
+          "text": "API 概览"
+        },
+        {
+          "href": "#_example_usage",
+          "text": "基本读写"
+        },
+        {
+          "href": "#metadata-filters",
+          "text": "元数据过滤"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+          "text": "PGvector"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "text": "RAG"
+        },
+        {
+          "href": "/frameworks/spring-ai/engineering/evaluation/",
+          "text": "评估测试"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+          "text": "Milvus"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/redis/",
+          "text": "Redis"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+          "text": "S3 Vector Store"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+          "text": "Elasticsearch（ES）"
+        },
+        {
+          "href": "#一api-概览重点掌握",
+          "text": "Section titled “一、API 概览（重点掌握）”"
+        },
+        {
+          "href": "#vectorstoreretriever只读检索接口",
+          "text": "Section titled “VectorStoreRetriever：只读检索接口”"
+        },
+        {
+          "href": "#vectorstore读写接口",
+          "text": "Section titled “VectorStore：读写接口”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/#vectorstore",
+          "text": "ETL 管道"
+        },
+        {
+          "href": "#searchrequest构建检索请求",
+          "text": "Section titled “SearchRequest：构建检索请求”"
+        },
+        {
+          "href": "https://en.wikipedia.org/wiki/Word2vec",
+          "text": "Word2Vec"
+        },
+        {
+          "href": "https://en.wikipedia.org/wiki/GloVe_(machine_learning)",
+          "text": "GloVe"
+        },
+        {
+          "href": "https://en.wikipedia.org/wiki/BERT_(language_model)",
+          "text": "BERT"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "EmbeddingModel"
+        },
+        {
+          "href": "#metadata-filters",
+          "text": "元数据过滤"
+        },
+        {
+          "href": "#二结构初始化",
+          "text": "Section titled “二、结构初始化”"
+        },
+        {
+          "href": "#三批处理策略按需深入",
+          "text": "Section titled “三、批处理策略（按需深入）”"
+        },
+        {
+          "href": "#默认实现tokencountbatchingstrategy",
+          "text": "Section titled “默认实现：TokenCountBatchingStrategy”"
+        },
+        {
+          "href": "https://platform.openai.com/docs/guides/embeddings/embedding-models",
+          "text": "OpenAI 嵌入模型的输入限制"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/#tokentextsplitter",
+          "text": "TokenTextSplitter"
+        },
+        {
+          "href": "#配合自动截断",
+          "text": "Section titled “配合自动截断”"
+        },
+        {
+          "href": "#自动截断配置示例",
+          "text": "Section titled “自动截断配置示例”"
+        },
+        {
+          "href": "#为什么需要这样配置",
+          "text": "Section titled “为什么需要这样配置”"
+        },
+        {
+          "href": "#使用建议",
+          "text": "Section titled “使用建议”"
+        },
+        {
+          "href": "#spring-boot-自动配置",
+          "text": "Section titled “Spring Boot 自动配置”"
+        },
+        {
+          "href": "#自定义实现",
+          "text": "Section titled “自定义实现”"
+        },
+        {
+          "href": "#四实现与子页阅读顺序",
+          "text": "Section titled “四、实现与子页阅读顺序”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+          "text": "PGvector"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+          "text": "Milvus"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/redis/",
+          "text": "Redis"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+          "text": "S3 Vector Store"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+          "text": "Elasticsearch（ES）"
+        },
+        {
+          "href": "/basics/embedding/embedding-basics/",
+          "text": "Embedding"
+        },
+        {
+          "href": "/rag/vector-db/chroma-vector-store/#%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3",
+          "text": "相似度笔记"
+        },
+        {
+          "href": "#_understanding_vectors",
+          "text": "附录"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure.html",
+          "text": "Azure Vector Search"
+        },
+        {
+          "href": "https://learn.microsoft.com/en-us/azure/search/vector-search-overview",
+          "text": "Azure"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure-cosmos-db.html",
+          "text": "Azure Cosmos DB"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/bedrock-knowledge-base.html",
+          "text": "Amazon Bedrock Knowledge Base"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/couchbase.html",
+          "text": "Couchbase"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/apache-cassandra.html",
+          "text": "Apache Cassandra"
+        },
+        {
+          "href": "https://cassandra.apache.org/doc/latest/cassandra/vector-search/overview.html",
+          "text": "Apache Cassandra"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/chroma.html",
+          "text": "Chroma Vector Store"
+        },
+        {
+          "href": "https://www.trychroma.com/",
+          "text": "Chroma"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+          "text": "Elasticsearch Vector Store"
+        },
+        {
+          "href": "https://www.elastic.co/",
+          "text": "Elasticsearch"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/gemfire.html",
+          "text": "GemFire Vector Store"
+        },
+        {
+          "href": "https://tanzu.vmware.com/content/blog/vmware-gemfire-vector-database-extension",
+          "text": "GemFire"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mariadb.html",
+          "text": "MariaDB Vector Store"
+        },
+        {
+          "href": "https://mariadb.com/",
+          "text": "MariaDB"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+          "text": "Milvus Vector Store"
+        },
+        {
+          "href": "https://milvus.io/",
+          "text": "Milvus"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mongodb.html",
+          "text": "MongoDB Atlas Vector Store"
+        },
+        {
+          "href": "https://www.mongodb.com/atlas/database",
+          "text": "MongoDB Atlas"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/neo4j.html",
+          "text": "Neo4j Vector Store"
+        },
+        {
+          "href": "https://neo4j.com/",
+          "text": "Neo4j"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/opensearch.html",
+          "text": "OpenSearch Vector Store"
+        },
+        {
+          "href": "https://opensearch.org/platform/search/vector-database.html",
+          "text": "OpenSearch"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/oracle.html",
+          "text": "Oracle Vector Store"
+        },
+        {
+          "href": "https://docs.oracle.com/en/database/oracle/oracle-database/23/vecse/overview-ai-vector-search.html",
+          "text": "Oracle Database"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+          "text": "PgVector Store"
+        },
+        {
+          "href": "https://github.com/pgvector/pgvector",
+          "text": "PostgreSQL/PGVector"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pinecone.html",
+          "text": "Pinecone Vector Store"
+        },
+        {
+          "href": "https://www.pinecone.io/",
+          "text": "Pinecone"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/qdrant.html",
+          "text": "Qdrant Vector Store"
+        },
+        {
+          "href": "https://www.qdrant.tech/",
+          "text": "Qdrant"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/redis/",
+          "text": "Redis Vector Store"
+        },
+        {
+          "href": "https://redis.io/",
+          "text": "Redis"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/typesense.html",
+          "text": "Typesense Vector Store"
+        },
+        {
+          "href": "https://typesense.org/docs/0.24.0/api/vector-search.html",
+          "text": "Typesense"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/weaviate.html",
+          "text": "Weaviate Vector Store"
+        },
+        {
+          "href": "https://weaviate.io/",
+          "text": "Weaviate"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+          "text": "S3 Vector Store"
+        },
+        {
+          "href": "https://aws.amazon.com/s3/features/vectors/",
+          "text": "AWS S3"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/SimpleVectorStore.java",
+          "text": "SimpleVectorStore"
+        },
+        {
+          "href": "https://azurecosmosdb.github.io/spring-ai/docs/index.html",
+          "text": "azurecosmosdb.github.io/spring-ai/docs/index.html"
+        },
+        {
+          "href": "#五基本读写重点掌握",
+          "text": "Section titled “五、基本读写（重点掌握）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "Embedding 模型"
+        },
+        {
+          "href": "#写入向量存储",
+          "text": "Section titled “写入向量存储”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/",
+          "text": "ETL 管道"
+        },
+        {
+          "href": "#查询向量存储",
+          "text": "Section titled “查询向量存储”"
+        },
+        {
+          "href": "#分离读写职责",
+          "text": "Section titled “分离读写职责”"
+        },
+        {
+          "href": "#六只读检索与-rag",
+          "text": "Section titled “六、只读检索与 RAG”"
+        },
+        {
+          "href": "#为什么使用只读接口",
+          "text": "Section titled “为什么使用只读接口”"
+        },
+        {
+          "href": "#只读检索示例",
+          "text": "Section titled “只读检索示例”"
+        },
+        {
+          "href": "#集成到-rag-应用",
+          "text": "Section titled “集成到 RAG 应用”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "text": "RAG 的检索与生成"
+        },
+        {
+          "href": "#七元数据过滤重点掌握",
+          "text": "Section titled “七、元数据过滤（重点掌握）”"
+        },
+        {
+          "href": "#字符串表达式",
+          "text": "Section titled “字符串表达式”"
+        },
+        {
+          "href": "#filterexpression",
+          "text": "Section titled “Filter.Expression”"
+        },
+        {
+          "href": "#在共享索引中划分文档组",
+          "text": "Section titled “在共享索引中划分文档组”"
+        },
+        {
+          "href": "#八删除与文档版本管理参考",
+          "text": "Section titled “八、删除与文档版本管理（参考）”"
+        },
+        {
+          "href": "#按文档-id-删除",
+          "text": "Section titled “按文档 ID 删除”"
+        },
+        {
+          "href": "#按-filterexpression-删除",
+          "text": "Section titled “按 Filter.Expression 删除”"
+        },
+        {
+          "href": "#按字符串表达式删除",
+          "text": "Section titled “按字符串表达式删除”"
+        },
+        {
+          "href": "#处理删除异常",
+          "text": "Section titled “处理删除异常”"
+        },
+        {
+          "href": "#文档版本管理",
+          "text": "Section titled “文档版本管理”"
+        },
+        {
+          "href": "#删除操作的性能取舍",
+          "text": "Section titled “删除操作的性能取舍”"
+        },
+        {
+          "href": "#九理解向量",
+          "text": "Section titled “九、理解向量”"
+        },
+        {
+          "href": "/basics/embedding/embedding-basics/",
+          "text": "Embedding 基础"
+        },
+        {
+          "href": "/rag/vector-db/chroma-vector-store/#%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3",
+          "text": "Chroma：相似度怎么理解"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/understand-vectordbs.html",
+          "text": "Understanding Vectors"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+          "text": "Vector Databases"
+        }
+      ],
+      "images": 0,
+      "errors": [],
+      "localTargets": 68
+    },
+    {
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：向量存储",
+      "viewport": 390,
+      "width": 390,
+      "anchors": [
+        "api-overview",
+        "一api-概览重点掌握",
+        "_vectorstoreretriever_interface",
+        "vectorstoreretriever只读检索接口",
+        "_vectorstore_interface",
+        "vectorstore读写接口",
+        "_searchrequest_builder",
+        "searchrequest构建检索请求",
+        "_schema_initialization",
+        "二结构初始化",
+        "_batching_strategy",
+        "三批处理策略按需深入",
+        "_default_implementation",
+        "默认实现tokencountbatchingstrategy",
+        "_working_with_auto_truncation",
+        "配合自动截断",
+        "_configuration_for_auto_truncation",
+        "自动截断配置示例",
+        "_why_this_works",
+        "为什么需要这样配置",
+        "_best_practices",
+        "使用建议",
+        "_spring_boot_auto_configuration",
+        "spring-boot-自动配置",
+        "_custom_implementation",
+        "自定义实现",
+        "_vectorstore_implementations",
+        "四实现与子页阅读顺序",
+        "_example_usage",
+        "五基本读写重点掌握",
+        "_writing_to_a_vector_store",
+        "写入向量存储",
+        "_reading_from_a_vector_store",
+        "查询向量存储",
+        "_separation_of_read_and_write_operations",
+        "分离读写职责",
+        "_retrieval_operations_with_vectorstoreretriever",
+        "六只读检索与-rag",
+        "_benefits_of_using_vectorstoreretriever",
+        "为什么使用只读接口",
+        "_example_usage_2",
+        "只读检索示例",
+        "_integration_with_rag_applications",
+        "集成到-rag-应用",
+        "metadata-filters",
+        "七元数据过滤重点掌握",
+        "_filter_string",
+        "字符串表达式",
+        "_filter_expression",
+        "filterexpression",
+        "_partitioning_a_shared_index",
+        "在共享索引中划分文档组",
+        "_deleting_documents_from_vector_store",
+        "八删除与文档版本管理参考",
+        "_delete_by_document_ids",
+        "按文档-id-删除",
+        "_delete_by_filter_expression",
+        "按-filterexpression-删除",
+        "_delete_by_string_filter_expression",
+        "按字符串表达式删除",
+        "_error_handling_when_calling_the_delete_api",
+        "处理删除异常",
+        "_document_versioning_use_case",
+        "文档版本管理",
+        "_performance_considerations_while_deleting_documents",
+        "删除操作的性能取舍",
+        "_understanding_vectors",
+        "九理解向量"
+      ],
+      "links": [
+        {
+          "href": "/rag/vector-db/chroma-vector-store/#%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3",
+          "text": "向量相似度"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "text": "检索增强生成（RAG）"
+        },
+        {
+          "href": "#api-overview",
+          "text": "API 概览"
+        },
+        {
+          "href": "#_example_usage",
+          "text": "基本读写"
+        },
+        {
+          "href": "#metadata-filters",
+          "text": "元数据过滤"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+          "text": "PGvector"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "text": "RAG"
+        },
+        {
+          "href": "/frameworks/spring-ai/engineering/evaluation/",
+          "text": "评估测试"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+          "text": "Milvus"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/redis/",
+          "text": "Redis"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+          "text": "S3 Vector Store"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+          "text": "Elasticsearch（ES）"
+        },
+        {
+          "href": "#一api-概览重点掌握",
+          "text": "Section titled “一、API 概览（重点掌握）”"
+        },
+        {
+          "href": "#vectorstoreretriever只读检索接口",
+          "text": "Section titled “VectorStoreRetriever：只读检索接口”"
+        },
+        {
+          "href": "#vectorstore读写接口",
+          "text": "Section titled “VectorStore：读写接口”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/#vectorstore",
+          "text": "ETL 管道"
+        },
+        {
+          "href": "#searchrequest构建检索请求",
+          "text": "Section titled “SearchRequest：构建检索请求”"
+        },
+        {
+          "href": "https://en.wikipedia.org/wiki/Word2vec",
+          "text": "Word2Vec"
+        },
+        {
+          "href": "https://en.wikipedia.org/wiki/GloVe_(machine_learning)",
+          "text": "GloVe"
+        },
+        {
+          "href": "https://en.wikipedia.org/wiki/BERT_(language_model)",
+          "text": "BERT"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "EmbeddingModel"
+        },
+        {
+          "href": "#metadata-filters",
+          "text": "元数据过滤"
+        },
+        {
+          "href": "#二结构初始化",
+          "text": "Section titled “二、结构初始化”"
+        },
+        {
+          "href": "#三批处理策略按需深入",
+          "text": "Section titled “三、批处理策略（按需深入）”"
+        },
+        {
+          "href": "#默认实现tokencountbatchingstrategy",
+          "text": "Section titled “默认实现：TokenCountBatchingStrategy”"
+        },
+        {
+          "href": "https://platform.openai.com/docs/guides/embeddings/embedding-models",
+          "text": "OpenAI 嵌入模型的输入限制"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/#tokentextsplitter",
+          "text": "TokenTextSplitter"
+        },
+        {
+          "href": "#配合自动截断",
+          "text": "Section titled “配合自动截断”"
+        },
+        {
+          "href": "#自动截断配置示例",
+          "text": "Section titled “自动截断配置示例”"
+        },
+        {
+          "href": "#为什么需要这样配置",
+          "text": "Section titled “为什么需要这样配置”"
+        },
+        {
+          "href": "#使用建议",
+          "text": "Section titled “使用建议”"
+        },
+        {
+          "href": "#spring-boot-自动配置",
+          "text": "Section titled “Spring Boot 自动配置”"
+        },
+        {
+          "href": "#自定义实现",
+          "text": "Section titled “自定义实现”"
+        },
+        {
+          "href": "#四实现与子页阅读顺序",
+          "text": "Section titled “四、实现与子页阅读顺序”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+          "text": "PGvector"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+          "text": "Milvus"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/redis/",
+          "text": "Redis"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+          "text": "S3 Vector Store"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+          "text": "Elasticsearch（ES）"
+        },
+        {
+          "href": "/basics/embedding/embedding-basics/",
+          "text": "Embedding"
+        },
+        {
+          "href": "/rag/vector-db/chroma-vector-store/#%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3",
+          "text": "相似度笔记"
+        },
+        {
+          "href": "#_understanding_vectors",
+          "text": "附录"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure.html",
+          "text": "Azure Vector Search"
+        },
+        {
+          "href": "https://learn.microsoft.com/en-us/azure/search/vector-search-overview",
+          "text": "Azure"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/azure-cosmos-db.html",
+          "text": "Azure Cosmos DB"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/bedrock-knowledge-base.html",
+          "text": "Amazon Bedrock Knowledge Base"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/couchbase.html",
+          "text": "Couchbase"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/apache-cassandra.html",
+          "text": "Apache Cassandra"
+        },
+        {
+          "href": "https://cassandra.apache.org/doc/latest/cassandra/vector-search/overview.html",
+          "text": "Apache Cassandra"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/chroma.html",
+          "text": "Chroma Vector Store"
+        },
+        {
+          "href": "https://www.trychroma.com/",
+          "text": "Chroma"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/elasticsearch/",
+          "text": "Elasticsearch Vector Store"
+        },
+        {
+          "href": "https://www.elastic.co/",
+          "text": "Elasticsearch"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/gemfire.html",
+          "text": "GemFire Vector Store"
+        },
+        {
+          "href": "https://tanzu.vmware.com/content/blog/vmware-gemfire-vector-database-extension",
+          "text": "GemFire"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mariadb.html",
+          "text": "MariaDB Vector Store"
+        },
+        {
+          "href": "https://mariadb.com/",
+          "text": "MariaDB"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/milvus/",
+          "text": "Milvus Vector Store"
+        },
+        {
+          "href": "https://milvus.io/",
+          "text": "Milvus"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/mongodb.html",
+          "text": "MongoDB Atlas Vector Store"
+        },
+        {
+          "href": "https://www.mongodb.com/atlas/database",
+          "text": "MongoDB Atlas"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/neo4j.html",
+          "text": "Neo4j Vector Store"
+        },
+        {
+          "href": "https://neo4j.com/",
+          "text": "Neo4j"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/opensearch.html",
+          "text": "OpenSearch Vector Store"
+        },
+        {
+          "href": "https://opensearch.org/platform/search/vector-database.html",
+          "text": "OpenSearch"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/oracle.html",
+          "text": "Oracle Vector Store"
+        },
+        {
+          "href": "https://docs.oracle.com/en/database/oracle/oracle-database/23/vecse/overview-ai-vector-search.html",
+          "text": "Oracle Database"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+          "text": "PgVector Store"
+        },
+        {
+          "href": "https://github.com/pgvector/pgvector",
+          "text": "PostgreSQL/PGVector"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pinecone.html",
+          "text": "Pinecone Vector Store"
+        },
+        {
+          "href": "https://www.pinecone.io/",
+          "text": "Pinecone"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/qdrant.html",
+          "text": "Qdrant Vector Store"
+        },
+        {
+          "href": "https://www.qdrant.tech/",
+          "text": "Qdrant"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/redis/",
+          "text": "Redis Vector Store"
+        },
+        {
+          "href": "https://redis.io/",
+          "text": "Redis"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/typesense.html",
+          "text": "Typesense Vector Store"
+        },
+        {
+          "href": "https://typesense.org/docs/0.24.0/api/vector-search.html",
+          "text": "Typesense"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/weaviate.html",
+          "text": "Weaviate Vector Store"
+        },
+        {
+          "href": "https://weaviate.io/",
+          "text": "Weaviate"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/s3-vector-store/",
+          "text": "S3 Vector Store"
+        },
+        {
+          "href": "https://aws.amazon.com/s3/features/vectors/",
+          "text": "AWS S3"
+        },
+        {
+          "href": "https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-vector-store/src/main/java/org/springframework/ai/vectorstore/SimpleVectorStore.java",
+          "text": "SimpleVectorStore"
+        },
+        {
+          "href": "https://azurecosmosdb.github.io/spring-ai/docs/index.html",
+          "text": "azurecosmosdb.github.io/spring-ai/docs/index.html"
+        },
+        {
+          "href": "#五基本读写重点掌握",
+          "text": "Section titled “五、基本读写（重点掌握）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "Embedding 模型"
+        },
+        {
+          "href": "#写入向量存储",
+          "text": "Section titled “写入向量存储”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/",
+          "text": "ETL 管道"
+        },
+        {
+          "href": "#查询向量存储",
+          "text": "Section titled “查询向量存储”"
+        },
+        {
+          "href": "#分离读写职责",
+          "text": "Section titled “分离读写职责”"
+        },
+        {
+          "href": "#六只读检索与-rag",
+          "text": "Section titled “六、只读检索与 RAG”"
+        },
+        {
+          "href": "#为什么使用只读接口",
+          "text": "Section titled “为什么使用只读接口”"
+        },
+        {
+          "href": "#只读检索示例",
+          "text": "Section titled “只读检索示例”"
+        },
+        {
+          "href": "#集成到-rag-应用",
+          "text": "Section titled “集成到 RAG 应用”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "text": "RAG 的检索与生成"
+        },
+        {
+          "href": "#七元数据过滤重点掌握",
+          "text": "Section titled “七、元数据过滤（重点掌握）”"
+        },
+        {
+          "href": "#字符串表达式",
+          "text": "Section titled “字符串表达式”"
+        },
+        {
+          "href": "#filterexpression",
+          "text": "Section titled “Filter.Expression”"
+        },
+        {
+          "href": "#在共享索引中划分文档组",
+          "text": "Section titled “在共享索引中划分文档组”"
+        },
+        {
+          "href": "#八删除与文档版本管理参考",
+          "text": "Section titled “八、删除与文档版本管理（参考）”"
+        },
+        {
+          "href": "#按文档-id-删除",
+          "text": "Section titled “按文档 ID 删除”"
+        },
+        {
+          "href": "#按-filterexpression-删除",
+          "text": "Section titled “按 Filter.Expression 删除”"
+        },
+        {
+          "href": "#按字符串表达式删除",
+          "text": "Section titled “按字符串表达式删除”"
+        },
+        {
+          "href": "#处理删除异常",
+          "text": "Section titled “处理删除异常”"
+        },
+        {
+          "href": "#文档版本管理",
+          "text": "Section titled “文档版本管理”"
+        },
+        {
+          "href": "#删除操作的性能取舍",
+          "text": "Section titled “删除操作的性能取舍”"
+        },
+        {
+          "href": "#九理解向量",
+          "text": "Section titled “九、理解向量”"
+        },
+        {
+          "href": "/basics/embedding/embedding-basics/",
+          "text": "Embedding 基础"
+        },
+        {
+          "href": "/rag/vector-db/chroma-vector-store/#%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3",
+          "text": "Chroma：相似度怎么理解"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/understand-vectordbs.html",
+          "text": "Understanding Vectors"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+          "text": "Vector Databases"
+        }
+      ],
+      "images": 0,
+      "errors": [],
+      "localTargets": 68
+    }
+  ],
+  "localTargets": 51
+}

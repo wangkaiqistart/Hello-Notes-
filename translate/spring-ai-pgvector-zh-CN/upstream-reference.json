@@ -1,0 +1,6 @@
+{
+  "url": "https://github.com/pgvector/pgvector/blob/v0.8.1/README.md#hnsw",
+  "file": "source-pgvector-v0.8.1-readme.md",
+  "sha256": "961ff3f27c7eed2360a75c1c544758f8c2576d46f3fbd0e501cfc503e7be5b1a",
+  "evidence": "vector HNSW up to 2000 dimensions; halfvec up to 4000"
+}

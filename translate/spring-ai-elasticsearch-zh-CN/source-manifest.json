@@ -1,0 +1,164 @@
+{
+  "sourceUrl": "https://docs.spring.io/spring-ai/reference/api/vectordbs/elasticsearch.html",
+  "date": "2026-11-01",
+  "version": "2.0.2",
+  "sourceSha256": "df7169ca310a51369203ce74a8eedf65f178fbfd5f7703f25eab8a82c9aed2cd",
+  "headings": [
+    {
+      "id": "_prerequisites",
+      "title": "Prerequisites"
+    },
+    {
+      "id": "_auto_configuration",
+      "title": "Auto-configuration"
+    },
+    {
+      "id": "elasticsearchvector-properties",
+      "title": "Configuration Properties"
+    },
+    {
+      "id": "_metadata_filtering",
+      "title": "Metadata Filtering"
+    },
+    {
+      "id": "_manual_configuration",
+      "title": "Manual Configuration"
+    },
+    {
+      "id": "_accessing_the_native_client",
+      "title": "Accessing the Native Client"
+    }
+  ],
+  "codeBlocks": [
+    {
+      "language": "xml",
+      "content": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-vector-store-elasticsearch</artifactId>\n</dependency>",
+      "sha256": "67ca1453ae883974eff1058fd161205927958021a26a4b610a3f0d6602908c14"
+    },
+    {
+      "language": "groovy",
+      "content": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-starter-vector-store-elasticsearch'\n}",
+      "sha256": "a523bb2e1c54152fa353fc773964d3b431cd62e271fb220dd09ee741c1addca4"
+    },
+    {
+      "language": "xml",
+      "content": "<dependency>\n    <groupId>co.elastic.clients</groupId>\n    <artifactId>elasticsearch-java</artifactId>\n    <version>8.13.3</version>\n</dependency>",
+      "sha256": "b6abdff97e7ae4342a1c3206eefc789ef7393b327e1587eb0136e1ff71d9926e"
+    },
+    {
+      "language": "groovy",
+      "content": "dependencies {\n    implementation 'co.elastic.clients:elasticsearch-java:8.13.3'\n}",
+      "sha256": "07ab5bbdc226d92f4d9ba896dd353fce92dc82a7853fce990dc12ac6c3359dca"
+    },
+    {
+      "language": "java",
+      "content": "@Autowired VectorStore vectorStore;\n\n// ...\n\nList <Document> documents = List.of(\n    new Document(\"Spring AI rocks!! Spring AI rocks!! Spring AI rocks!! Spring AI rocks!! Spring AI rocks!!\", Map.of(\"meta1\", \"meta1\")),\n    new Document(\"The World is Big and Salvation Lurks Around the Corner\"),\n    new Document(\"You walk forward facing the past and you turn back toward the future.\", Map.of(\"meta2\", \"meta2\")));\n\n// Add the documents to Elasticsearch\nvectorStore.add(documents);\n\n// Retrieve documents similar to a query\nList<Document> results = this.vectorStore.similaritySearch(SearchRequest.builder().query(\"Spring\").topK(5).build());",
+      "sha256": "74b30ae563b06b2022b315fdf1b690857f18a22b7aadc6d64fc62d0f847a18c9"
+    },
+    {
+      "language": "yaml",
+      "content": "spring:\n  elasticsearch:\n    uris: <elasticsearch instance URIs>\n    username: <elasticsearch username>\n    password: <elasticsearch password>\n  ai:\n    vectorstore:\n      elasticsearch:\n        initialize-schema: true\n        index-name: custom-index\n        dimensions: 1536\n        similarity: cosine",
+      "sha256": "5f75491463d9df16ab0401dd00dc8023d1fddb7823ec05028abbf45c3ffd8e4f"
+    },
+    {
+      "language": "java",
+      "content": "vectorStore.similaritySearch(SearchRequest.builder()\n        .query(\"The World\")\n        .topK(TOP_K)\n        .similarityThreshold(SIMILARITY_THRESHOLD)\n        .filterExpression(\"author in ['john', 'jill'] && 'article_type' == 'blog'\").build());",
+      "sha256": "564c0fc4ff025e18a14b08031444a41ff7c4e7dc3adac932001ddbfe2ea248a5"
+    },
+    {
+      "language": "java",
+      "content": "FilterExpressionBuilder b = new FilterExpressionBuilder();\n\nvectorStore.similaritySearch(SearchRequest.builder()\n        .query(\"The World\")\n        .topK(TOP_K)\n        .similarityThreshold(SIMILARITY_THRESHOLD)\n        .filterExpression(b.and(\n                b.in(\"author\", \"john\", \"jill\"),\n                b.eq(\"article_type\", \"blog\")).build()).build());",
+      "sha256": "925a77dd0d643a7cc723fbb684efe0c6903f7f4c73055bcc1391bae0732591fe"
+    },
+    {
+      "language": "sql",
+      "content": "author in ['john', 'jill'] && 'article_type' == 'blog'",
+      "sha256": "0cebe6aa1f9ca7fab2c3effd115164eba2a2c9fc5fde20bca037fdee6c8feb7c"
+    },
+    {
+      "language": "text",
+      "content": "(metadata.author:john OR jill) AND metadata.article_type:blog",
+      "sha256": "71611d951fdcf4ddf40dca09c26081da9e25b47b427bd7d695c82d17b54312b4"
+    },
+    {
+      "language": "xml",
+      "content": "<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-elasticsearch-store</artifactId>\n</dependency>",
+      "sha256": "1fa50a489f1dfd5c61d91add0154de5a4fd43cf29c3547aadaf78f21dd7d45c9"
+    },
+    {
+      "language": "groovy",
+      "content": "dependencies {\n    implementation 'org.springframework.ai:spring-ai-elasticsearch-store'\n}",
+      "sha256": "0e9fc75db826695f479ab66f97b41d6a9806199033d37a9cc2eddb02c1152a1c"
+    },
+    {
+      "language": "java",
+      "content": "@Bean\npublic Rest5Client restClient() {\n    return Rest5Client.builder(new HttpHost(\"<host>\", 9200, \"http\"))\n        .setDefaultHeaders(new Header[]{\n            new BasicHeader(\"Authorization\", \"Basic <encoded username and password>\")\n        })\n        .build();\n}",
+      "sha256": "20e470dfd2d8a3abbdb03190ff6f447446ef6dc29cfd700e5ea3ee7f9910529d"
+    },
+    {
+      "language": "java",
+      "content": "@Bean\npublic VectorStore vectorStore(Rest5Client restClient, EmbeddingModel embeddingModel) {\n    ElasticsearchVectorStoreOptions options = new ElasticsearchVectorStoreOptions();\n    options.setIndexName(\"custom-index\");    // Optional: defaults to \"spring-ai-document-index\"\n    options.setSimilarity(COSINE);           // Optional: defaults to COSINE\n    options.setDimensions(1536);             // Optional: defaults to model dimensions or 1536\n\n    return ElasticsearchVectorStore.builder(restClient, embeddingModel)\n        .options(options)                     // Optional: use custom options\n        .initializeSchema(true)               // Optional: defaults to false\n        .batchingStrategy(new TokenCountBatchingStrategy()) // Optional: defaults to TokenCountBatchingStrategy\n        .build();\n}\n\n// This can be any EmbeddingModel implementation\n@Bean\npublic EmbeddingModel embeddingModel() {\n    return new OpenAiEmbeddingModel(OpenAiEmbeddingOptions.builder().apiKey(System.getenv(\"OPENAI_API_KEY\")).build());\n}",
+      "sha256": "6c6a103fe99ac5916aac18d9c4643b53398a694c2fe644edc5d2f4ebebdf5f25"
+    },
+    {
+      "language": "java",
+      "content": "ElasticsearchVectorStore vectorStore = context.getBean(ElasticsearchVectorStore.class);\nOptional<ElasticsearchClient> nativeClient = vectorStore.getNativeClient();\n\nif (nativeClient.isPresent()) {\n    ElasticsearchClient client = nativeClient.get();\n    // Use the native client for Elasticsearch-specific operations\n}",
+      "sha256": "3fefa11dc9ca5ba9113b6cb0ee048c0d1916c2e444e45274779089cb467cf75d"
+    }
+  ],
+  "images": [],
+  "links": [
+    {
+      "url": "https://www.elastic.co/elasticsearch",
+      "text": "Elasticsearch"
+    },
+    {
+      "url": "https://hub.docker.com/_/elasticsearch/",
+      "text": "Docker"
+    },
+    {
+      "url": "https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#elasticsearch-install-packages",
+      "text": "Self-Managed Elasticsearch"
+    },
+    {
+      "url": "https://www.elastic.co/cloud/elasticsearch-service/signup?page=docs&placement=docs-body",
+      "text": "Elastic Cloud"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+      "text": "upgrade notes"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management",
+      "text": "Dependency Management"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/getting-started.html#artifact-repositories",
+      "text": "Artifact Repositories"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs/elasticsearch.html#elasticsearchvector-properties",
+      "text": "configuration parameters"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations",
+      "text": "EmbeddingModel"
+    },
+    {
+      "url": "https://www.elastic.co/guide/en/elasticsearch/reference/master/dense-vector.html#dense-vector-params",
+      "text": "Elasticsearch Documentation"
+    },
+    {
+      "url": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#metadata-filters",
+      "text": "metadata filters"
+    },
+    {
+      "url": "https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html",
+      "text": "Query string query"
+    },
+    {
+      "url": "https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/java-rest-low-usage-initialization.html",
+      "text": "Elasticsearch Documentation"
+    }
+  ]
+}

@@ -1,0 +1,4817 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "summary": {
+    "pages": 15,
+    "responsivePageChecks": 30,
+    "uniqueLocalTargets": 215,
+    "uniqueLocalResources": 36,
+    "otherModuleReferences": 0
+  },
+  "pages": [
+    {
+      "name": "index",
+      "route": "/frameworks/spring-ai/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI 总览",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 0,
+      "links": [
+        {
+          "href": "#解决什么问题",
+          "label": "Section titled “解决什么问题”"
+        },
+        {
+          "href": "#核心能力",
+          "label": "Section titled “核心能力”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/",
+          "label": "模型接入"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量数据库"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/",
+          "label": "工具调用"
+        },
+        {
+          "href": "/frameworks/spring-ai/mcp/overview/",
+          "label": "MCP"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "文档处理"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisors"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/observability/index.html",
+          "label": "可观测性"
+        },
+        {
+          "href": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "模型评估"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/",
+          "label": "Spring Boot 集成"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/index.html",
+          "label": "模型提供方"
+        },
+        {
+          "href": "#从哪里开始",
+          "label": "Section titled “从哪里开始”"
+        },
+        {
+          "href": "/frameworks/spring-ai/concepts/",
+          "label": "AI 核心概念"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/",
+          "label": "快速入门"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient API"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/index.html",
+          "label": "Spring AI Overview"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-logo.svg",
+          "alt": "Spring AI 项目标识",
+          "loaded": true,
+          "width": 300,
+          "right": 624
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-integration-zh.svg",
+          "alt": "Spring AI 集成关系图：左侧企业应用包含数据和 API，中央 Spring AI 连接右侧生成式 AI，顶部发送请求，底部返回结果",
+          "loaded": true,
+          "width": 640,
+          "right": 964
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "index",
+      "route": "/frameworks/spring-ai/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI 总览",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 0,
+      "links": [
+        {
+          "href": "#解决什么问题",
+          "label": "Section titled “解决什么问题”"
+        },
+        {
+          "href": "#核心能力",
+          "label": "Section titled “核心能力”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/",
+          "label": "模型接入"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量数据库"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/",
+          "label": "工具调用"
+        },
+        {
+          "href": "/frameworks/spring-ai/mcp/overview/",
+          "label": "MCP"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "文档处理"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisors"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/observability/index.html",
+          "label": "可观测性"
+        },
+        {
+          "href": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "模型评估"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/",
+          "label": "Spring Boot 集成"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/index.html",
+          "label": "模型提供方"
+        },
+        {
+          "href": "#从哪里开始",
+          "label": "Section titled “从哪里开始”"
+        },
+        {
+          "href": "/frameworks/spring-ai/concepts/",
+          "label": "AI 核心概念"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/",
+          "label": "快速入门"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient API"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/index.html",
+          "label": "Spring AI Overview"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-logo.svg",
+          "alt": "Spring AI 项目标识",
+          "loaded": true,
+          "width": 300,
+          "right": 316
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-integration-zh.svg",
+          "alt": "Spring AI 集成关系图：左侧企业应用包含数据和 API，中央 Spring AI 连接右侧生成式 AI，顶部发送请求，底部返回结果",
+          "loaded": true,
+          "width": 358,
+          "right": 374
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "concepts",
+      "route": "/frameworks/spring-ai/concepts/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：AI 核心概念",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 1,
+      "links": [
+        {
+          "href": "#模型处理什么生成什么",
+          "label": "Section titled “模型：处理什么，生成什么”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/",
+          "label": "模型概览"
+        },
+        {
+          "href": "#提示词不只是一个字符串",
+          "label": "Section titled “提示词：不只是一个字符串”"
+        },
+        {
+          "href": "#提示词模板",
+          "label": "Section titled “提示词模板”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+          "label": "提示词模板"
+        },
+        {
+          "href": "https://www.stringtemplate.org/",
+          "label": "StringTemplate"
+        },
+        {
+          "href": "#embedding内容的向量表示",
+          "label": "Section titled “Embedding：内容的向量表示”"
+        },
+        {
+          "href": "#token长度费用和上下文限制",
+          "label": "Section titled “Token：长度、费用和上下文限制”"
+        },
+        {
+          "href": "#结构化输出让结果能被程序使用",
+          "label": "Section titled “结构化输出：让结果能被程序使用”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "href": "#把企业数据和-api-接入模型",
+          "label": "Section titled “把企业数据和 API 接入模型”"
+        },
+        {
+          "href": "#rag先检索再生成",
+          "label": "Section titled “RAG：先检索，再生成”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "ETL Pipeline"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90",
+          "label": "ChatClient 的 RAG 能力"
+        },
+        {
+          "href": "#工具调用由应用执行实际操作",
+          "label": "Section titled “工具调用：由应用执行实际操作”"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/",
+          "label": "工具调用文档"
+        },
+        {
+          "href": "#评估回答是否符合问题和依据",
+          "label": "Section titled “评估：回答是否符合问题和依据”"
+        },
+        {
+          "href": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "响应评估与测试"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/concepts.html",
+          "label": "Spring AI Concepts"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-model-types-zh.svg",
+          "alt": "模型类型对照：语言、图像、音频及 Embedding 模型的输入与输出",
+          "loaded": true,
+          "width": 755.984375,
+          "right": 1079.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-embeddings-zh.svg",
+          "alt": "Embedding 流程：文本和图像经嵌入模型转换为浮点向量，并在向量空间中表达内容之间的关系",
+          "loaded": true,
+          "width": 755.953125,
+          "right": 1079.953125
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-tokens-zh.svg",
+          "alt": "Token 切分示例：中文“这是一个测试。”切成 5 个 Token，英文“ChatGPT generates tokens.”切成 6 个 Token；使用 cl100k_base 分词器",
+          "loaded": true,
+          "width": 755.984375,
+          "right": 1079.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg",
+          "alt": "结构化输出转换：在调用模型前补充格式指令，将模型返回的文本转换为结构化结果",
+          "loaded": true,
+          "width": 755.96875,
+          "right": 1079.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-prompt-stuffing-zh.svg",
+          "alt": "提示词填充流程：将用户问题与参考资料合并为提示词，再发送给聊天模型",
+          "loaded": true,
+          "width": 755.984375,
+          "right": 1079.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-rag-zh.svg",
+          "alt": "Spring AI RAG 架构：离线读取和切分文档写入向量库，运行时检索片段并补充到提示词中生成回答",
+          "loaded": true,
+          "width": 755.984375,
+          "right": 1079.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-tool-calling-zh.svg",
+          "alt": "工具调用流程：请求携带工具定义，模型按需提出调用，Spring AI 分派执行并回传结果，模型生成回答",
+          "loaded": true,
+          "width": 755.96875,
+          "right": 1079.96875
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "concepts",
+      "route": "/frameworks/spring-ai/concepts/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：AI 核心概念",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 1,
+      "links": [
+        {
+          "href": "#模型处理什么生成什么",
+          "label": "Section titled “模型：处理什么，生成什么”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/",
+          "label": "模型概览"
+        },
+        {
+          "href": "#提示词不只是一个字符串",
+          "label": "Section titled “提示词：不只是一个字符串”"
+        },
+        {
+          "href": "#提示词模板",
+          "label": "Section titled “提示词模板”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+          "label": "提示词模板"
+        },
+        {
+          "href": "https://www.stringtemplate.org/",
+          "label": "StringTemplate"
+        },
+        {
+          "href": "#embedding内容的向量表示",
+          "label": "Section titled “Embedding：内容的向量表示”"
+        },
+        {
+          "href": "#token长度费用和上下文限制",
+          "label": "Section titled “Token：长度、费用和上下文限制”"
+        },
+        {
+          "href": "#结构化输出让结果能被程序使用",
+          "label": "Section titled “结构化输出：让结果能被程序使用”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "href": "#把企业数据和-api-接入模型",
+          "label": "Section titled “把企业数据和 API 接入模型”"
+        },
+        {
+          "href": "#rag先检索再生成",
+          "label": "Section titled “RAG：先检索，再生成”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/",
+          "label": "ETL Pipeline"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90",
+          "label": "ChatClient 的 RAG 能力"
+        },
+        {
+          "href": "#工具调用由应用执行实际操作",
+          "label": "Section titled “工具调用：由应用执行实际操作”"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/",
+          "label": "工具调用文档"
+        },
+        {
+          "href": "#评估回答是否符合问题和依据",
+          "label": "Section titled “评估：回答是否符合问题和依据”"
+        },
+        {
+          "href": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "响应评估与测试"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/concepts.html",
+          "label": "Spring AI Concepts"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-model-types-zh.svg",
+          "alt": "模型类型对照：语言、图像、音频及 Embedding 模型的输入与输出",
+          "loaded": true,
+          "width": 357.984375,
+          "right": 373.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-embeddings-zh.svg",
+          "alt": "Embedding 流程：文本和图像经嵌入模型转换为浮点向量，并在向量空间中表达内容之间的关系",
+          "loaded": true,
+          "width": 357.984375,
+          "right": 373.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-tokens-zh.svg",
+          "alt": "Token 切分示例：中文“这是一个测试。”切成 5 个 Token，英文“ChatGPT generates tokens.”切成 6 个 Token；使用 cl100k_base 分词器",
+          "loaded": true,
+          "width": 357.953125,
+          "right": 373.953125
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg",
+          "alt": "结构化输出转换：在调用模型前补充格式指令，将模型返回的文本转换为结构化结果",
+          "loaded": true,
+          "width": 357.96875,
+          "right": 373.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-prompt-stuffing-zh.svg",
+          "alt": "提示词填充流程：将用户问题与参考资料合并为提示词，再发送给聊天模型",
+          "loaded": true,
+          "width": 357.984375,
+          "right": 373.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-rag-zh.svg",
+          "alt": "Spring AI RAG 架构：离线读取和切分文档写入向量库，运行时检索片段并补充到提示词中生成回答",
+          "loaded": true,
+          "width": 357.96875,
+          "right": 373.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-tool-calling-zh.svg",
+          "alt": "工具调用流程：请求携带工具定义，模型按需提出调用，Spring AI 分派执行并回传结果，模型生成回答",
+          "loaded": true,
+          "width": 357.984375,
+          "right": 373.984375
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "getting-started/quickstart",
+      "route": "/frameworks/spring-ai/getting-started/quickstart/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：快速入门",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 8,
+      "links": [
+        {
+          "href": "#创建项目",
+          "label": "Section titled “创建项目”"
+        },
+        {
+          "href": "https://start.spring.io/",
+          "label": "Spring Initializr"
+        },
+        {
+          "href": "#配置依赖仓库",
+          "label": "Section titled “配置依赖仓库”"
+        },
+        {
+          "href": "#正式版使用-maven-central",
+          "label": "Section titled “正式版：使用 Maven Central”"
+        },
+        {
+          "href": "#tab-panel-0-0",
+          "label": "Maven"
+        },
+        {
+          "href": "#tab-panel-0-1",
+          "label": "Gradle"
+        },
+        {
+          "href": "#快照版添加-snapshot-仓库",
+          "label": "Section titled “快照版：添加 SNAPSHOT 仓库”"
+        },
+        {
+          "href": "#tab-panel-1-0",
+          "label": "Maven"
+        },
+        {
+          "href": "#tab-panel-1-1",
+          "label": "Gradle"
+        },
+        {
+          "href": "#maven-镜像配置",
+          "label": "Section titled “Maven 镜像配置”"
+        },
+        {
+          "href": "#使用-bom-管理版本",
+          "label": "Section titled “使用 BOM 管理版本”"
+        },
+        {
+          "href": "#tab-panel-2-0",
+          "label": "Maven"
+        },
+        {
+          "href": "#tab-panel-2-1",
+          "label": "Gradle"
+        },
+        {
+          "href": "#添加具体组件依赖",
+          "label": "Section titled “添加具体组件依赖”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/",
+          "label": "聊天模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "嵌入模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像生成模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/#%E8%AF%AD%E9%9F%B3%E8%BD%AC%E6%96%87%E5%AD%97",
+          "label": "语音转写模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/#%E6%96%87%E5%AD%97%E8%BD%AC%E8%AF%AD%E9%9F%B3",
+          "label": "语音合成（TTS）模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量数据库"
+        },
+        {
+          "href": "#示例与学习资源",
+          "label": "Section titled “示例与学习资源”"
+        },
+        {
+          "href": "https://github.com/spring-ai-community/awesome-spring-ai",
+          "label": "Awesome Spring AI"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient API"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/getting-started.html",
+          "label": "Spring AI Getting Started"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "getting-started/quickstart",
+      "route": "/frameworks/spring-ai/getting-started/quickstart/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：快速入门",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 8,
+      "links": [
+        {
+          "href": "#创建项目",
+          "label": "Section titled “创建项目”"
+        },
+        {
+          "href": "https://start.spring.io/",
+          "label": "Spring Initializr"
+        },
+        {
+          "href": "#配置依赖仓库",
+          "label": "Section titled “配置依赖仓库”"
+        },
+        {
+          "href": "#正式版使用-maven-central",
+          "label": "Section titled “正式版：使用 Maven Central”"
+        },
+        {
+          "href": "#tab-panel-0-0",
+          "label": "Maven"
+        },
+        {
+          "href": "#tab-panel-0-1",
+          "label": "Gradle"
+        },
+        {
+          "href": "#快照版添加-snapshot-仓库",
+          "label": "Section titled “快照版：添加 SNAPSHOT 仓库”"
+        },
+        {
+          "href": "#tab-panel-1-0",
+          "label": "Maven"
+        },
+        {
+          "href": "#tab-panel-1-1",
+          "label": "Gradle"
+        },
+        {
+          "href": "#maven-镜像配置",
+          "label": "Section titled “Maven 镜像配置”"
+        },
+        {
+          "href": "#使用-bom-管理版本",
+          "label": "Section titled “使用 BOM 管理版本”"
+        },
+        {
+          "href": "#tab-panel-2-0",
+          "label": "Maven"
+        },
+        {
+          "href": "#tab-panel-2-1",
+          "label": "Gradle"
+        },
+        {
+          "href": "#添加具体组件依赖",
+          "label": "Section titled “添加具体组件依赖”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/",
+          "label": "聊天模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "嵌入模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像生成模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/#%E8%AF%AD%E9%9F%B3%E8%BD%AC%E6%96%87%E5%AD%97",
+          "label": "语音转写模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/#%E6%96%87%E5%AD%97%E8%BD%AC%E8%AF%AD%E9%9F%B3",
+          "label": "语音合成（TTS）模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/",
+          "label": "向量数据库"
+        },
+        {
+          "href": "#示例与学习资源",
+          "label": "Section titled “示例与学习资源”"
+        },
+        {
+          "href": "https://github.com/spring-ai-community/awesome-spring-ai",
+          "label": "Awesome Spring AI"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient API"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/getting-started.html",
+          "label": "Spring AI Getting Started"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "core/chat-client",
+      "route": "/frameworks/spring-ai/core/chat-client/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：ChatClient API",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 42,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/core/prompts/#prompt%E6%B6%88%E6%81%AF%E4%B8%8E%E8%AF%B7%E6%B1%82%E9%80%89%E9%A1%B9%E7%9A%84%E5%AE%B9%E5%99%A8",
+          "label": "Prompt"
+        },
+        {
+          "href": "#%E5%AE%9E%E7%8E%B0%E8%AF%B4%E6%98%8E",
+          "label": "实现说明"
+        },
+        {
+          "href": "#运行前配置",
+          "label": "Section titled “运行前配置”"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/",
+          "label": "快速入门"
+        },
+        {
+          "href": "#tab-panel-0-0",
+          "label": "OpenAI"
+        },
+        {
+          "href": "#tab-panel-0-1",
+          "label": "DeepSeek（兼容接口）"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+          "label": "OpenAI Chat"
+        },
+        {
+          "href": "#创建-chatclient",
+          "label": "Section titled “创建 ChatClient”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/",
+          "label": "ChatModel"
+        },
+        {
+          "href": "#使用自动配置的-chatclientbuilder",
+          "label": "Section titled “使用自动配置的 ChatClient.Builder”"
+        },
+        {
+          "href": "#使用多个聊天模型",
+          "label": "Section titled “使用多个聊天模型”"
+        },
+        {
+          "href": "#同一模型类型创建多个-chatclient",
+          "label": "Section titled “同一模型类型创建多个 ChatClient”"
+        },
+        {
+          "href": "#为不同模型类型创建-chatclient",
+          "label": "Section titled “为不同模型类型创建 ChatClient”"
+        },
+        {
+          "href": "#单模型与多模型的配置差异",
+          "label": "Section titled “单模型与多模型的配置差异”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/deepseek-chat.html",
+          "label": "DeepSeek"
+        },
+        {
+          "href": "#连接多个-openai-兼容端点",
+          "label": "Section titled “连接多个 OpenAI 兼容端点”"
+        },
+        {
+          "href": "#chatclient-链式-api",
+          "label": "Section titled “ChatClient 链式 API”"
+        },
+        {
+          "href": "#chatclient-的响应",
+          "label": "Section titled “ChatClient 的响应”"
+        },
+        {
+          "href": "#返回-chatresponse",
+          "label": "Section titled “返回 ChatResponse”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/#%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E5%8C%85%E5%90%AB%E4%BB%80%E4%B9%88",
+          "label": "ChatResponse"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/#%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E5%8C%85%E5%90%AB%E4%BB%80%E4%B9%88",
+          "label": "Generation"
+        },
+        {
+          "href": "#返回-java-对象",
+          "label": "Section titled “返回 Java 对象”"
+        },
+        {
+          "href": "#可靠性配置entityparamspec",
+          "label": "Section titled “可靠性配置：EntityParamSpec”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "href": "#流式响应",
+          "label": "Section titled “流式响应”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/#%E8%BE%93%E5%87%BA%E8%BD%AC%E6%8D%A2%E5%99%A8",
+          "label": "结构化输出转换器"
+        },
+        {
+          "href": "#提示词模板",
+          "label": "Section titled “提示词模板”"
+        },
+        {
+          "href": "https://www.stringtemplate.org/",
+          "label": "StringTemplate"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/#_custom_template",
+          "label": "定制机制"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor",
+          "label": "Advisor 说明"
+        },
+        {
+          "href": "#call-的返回值",
+          "label": "Section titled “call() 的返回值”"
+        },
+        {
+          "href": "#%E5%8F%AF%E9%9D%A0%E6%80%A7%E9%85%8D%E7%BD%AEentityparamspec",
+          "label": "EntityParamSpec"
+        },
+        {
+          "href": "#stream-的返回值",
+          "label": "Section titled “stream() 的返回值”"
+        },
+        {
+          "href": "#消息元数据",
+          "label": "Section titled “消息元数据”"
+        },
+        {
+          "href": "#为用户消息添加元数据",
+          "label": "Section titled “为用户消息添加元数据”"
+        },
+        {
+          "href": "#为系统消息添加元数据",
+          "label": "Section titled “为系统消息添加元数据”"
+        },
+        {
+          "href": "#默认元数据",
+          "label": "Section titled “默认元数据”"
+        },
+        {
+          "href": "#元数据校验",
+          "label": "Section titled “元数据校验”"
+        },
+        {
+          "href": "#读取元数据",
+          "label": "Section titled “读取元数据”"
+        },
+        {
+          "href": "#默认配置",
+          "label": "Section titled “默认配置”"
+        },
+        {
+          "href": "#默认系统提示词",
+          "label": "Section titled “默认系统提示词”"
+        },
+        {
+          "href": "#带参数的默认系统提示词",
+          "label": "Section titled “带参数的默认系统提示词”"
+        },
+        {
+          "href": "#其他默认配置",
+          "label": "Section titled “其他默认配置”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/",
+          "label": "ChatModel"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/chat-client-options-merging-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#基于现有配置创建客户端",
+          "label": "Section titled “基于现有配置创建客户端”"
+        },
+        {
+          "href": "#advisors",
+          "label": "Section titled “Advisors”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisors API"
+        },
+        {
+          "href": "#在-chatclient-中配置-advisor",
+          "label": "Section titled “在 ChatClient 中配置 Advisor”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor",
+          "label": "Question Answer Advisor"
+        },
+        {
+          "href": "#检索增强生成",
+          "label": "Section titled “检索增强生成”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG"
+        },
+        {
+          "href": "#日志",
+          "label": "Section titled “日志”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/observability/index.html",
+          "label": "可观测性"
+        },
+        {
+          "href": "#工具调用",
+          "label": "Section titled “工具调用”"
+        },
+        {
+          "href": "#禁用自动注册",
+          "label": "Section titled “禁用自动注册”"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "label": "用户控制的工具执行"
+        },
+        {
+          "href": "#定制默认-toolcallingadvisor",
+          "label": "Section titled “定制默认 ToolCallingAdvisor”"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "label": "使用 ChatClient 控制工具执行"
+        },
+        {
+          "href": "#tooladvisor-标记接口",
+          "label": "Section titled “ToolAdvisor 标记接口”"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/#extending-the-loop",
+          "label": "扩展工具调用循环"
+        },
+        {
+          "href": "#对话记忆",
+          "label": "Section titled “对话记忆”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        },
+        {
+          "href": "#memoryadvisor-标记接口",
+          "label": "Section titled “MemoryAdvisor 标记接口”"
+        },
+        {
+          "href": "#实现说明",
+          "label": "Section titled “实现说明”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chatclient.html",
+          "label": "Spring AI Chat Client API"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/chat-client-options-merging-zh.svg",
+          "alt": "ChatClient 配置合并与调用链：模型选项合并为请求，经过 Advisor 调用模型，响应沿相反方向返回",
+          "loaded": true,
+          "width": 755.984375,
+          "right": 1079.984375
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "core/chat-client",
+      "route": "/frameworks/spring-ai/core/chat-client/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：ChatClient API",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 42,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/core/prompts/#prompt%E6%B6%88%E6%81%AF%E4%B8%8E%E8%AF%B7%E6%B1%82%E9%80%89%E9%A1%B9%E7%9A%84%E5%AE%B9%E5%99%A8",
+          "label": "Prompt"
+        },
+        {
+          "href": "#%E5%AE%9E%E7%8E%B0%E8%AF%B4%E6%98%8E",
+          "label": "实现说明"
+        },
+        {
+          "href": "#运行前配置",
+          "label": "Section titled “运行前配置”"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/",
+          "label": "快速入门"
+        },
+        {
+          "href": "#tab-panel-0-0",
+          "label": "OpenAI"
+        },
+        {
+          "href": "#tab-panel-0-1",
+          "label": "DeepSeek（兼容接口）"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+          "label": "OpenAI Chat"
+        },
+        {
+          "href": "#创建-chatclient",
+          "label": "Section titled “创建 ChatClient”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/",
+          "label": "ChatModel"
+        },
+        {
+          "href": "#使用自动配置的-chatclientbuilder",
+          "label": "Section titled “使用自动配置的 ChatClient.Builder”"
+        },
+        {
+          "href": "#使用多个聊天模型",
+          "label": "Section titled “使用多个聊天模型”"
+        },
+        {
+          "href": "#同一模型类型创建多个-chatclient",
+          "label": "Section titled “同一模型类型创建多个 ChatClient”"
+        },
+        {
+          "href": "#为不同模型类型创建-chatclient",
+          "label": "Section titled “为不同模型类型创建 ChatClient”"
+        },
+        {
+          "href": "#单模型与多模型的配置差异",
+          "label": "Section titled “单模型与多模型的配置差异”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/deepseek-chat.html",
+          "label": "DeepSeek"
+        },
+        {
+          "href": "#连接多个-openai-兼容端点",
+          "label": "Section titled “连接多个 OpenAI 兼容端点”"
+        },
+        {
+          "href": "#chatclient-链式-api",
+          "label": "Section titled “ChatClient 链式 API”"
+        },
+        {
+          "href": "#chatclient-的响应",
+          "label": "Section titled “ChatClient 的响应”"
+        },
+        {
+          "href": "#返回-chatresponse",
+          "label": "Section titled “返回 ChatResponse”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/#%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E5%8C%85%E5%90%AB%E4%BB%80%E4%B9%88",
+          "label": "ChatResponse"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/#%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E5%8C%85%E5%90%AB%E4%BB%80%E4%B9%88",
+          "label": "Generation"
+        },
+        {
+          "href": "#返回-java-对象",
+          "label": "Section titled “返回 Java 对象”"
+        },
+        {
+          "href": "#可靠性配置entityparamspec",
+          "label": "Section titled “可靠性配置：EntityParamSpec”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "href": "#流式响应",
+          "label": "Section titled “流式响应”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/#%E8%BE%93%E5%87%BA%E8%BD%AC%E6%8D%A2%E5%99%A8",
+          "label": "结构化输出转换器"
+        },
+        {
+          "href": "#提示词模板",
+          "label": "Section titled “提示词模板”"
+        },
+        {
+          "href": "https://www.stringtemplate.org/",
+          "label": "StringTemplate"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/#_custom_template",
+          "label": "定制机制"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor",
+          "label": "Advisor 说明"
+        },
+        {
+          "href": "#call-的返回值",
+          "label": "Section titled “call() 的返回值”"
+        },
+        {
+          "href": "#%E5%8F%AF%E9%9D%A0%E6%80%A7%E9%85%8D%E7%BD%AEentityparamspec",
+          "label": "EntityParamSpec"
+        },
+        {
+          "href": "#stream-的返回值",
+          "label": "Section titled “stream() 的返回值”"
+        },
+        {
+          "href": "#消息元数据",
+          "label": "Section titled “消息元数据”"
+        },
+        {
+          "href": "#为用户消息添加元数据",
+          "label": "Section titled “为用户消息添加元数据”"
+        },
+        {
+          "href": "#为系统消息添加元数据",
+          "label": "Section titled “为系统消息添加元数据”"
+        },
+        {
+          "href": "#默认元数据",
+          "label": "Section titled “默认元数据”"
+        },
+        {
+          "href": "#元数据校验",
+          "label": "Section titled “元数据校验”"
+        },
+        {
+          "href": "#读取元数据",
+          "label": "Section titled “读取元数据”"
+        },
+        {
+          "href": "#默认配置",
+          "label": "Section titled “默认配置”"
+        },
+        {
+          "href": "#默认系统提示词",
+          "label": "Section titled “默认系统提示词”"
+        },
+        {
+          "href": "#带参数的默认系统提示词",
+          "label": "Section titled “带参数的默认系统提示词”"
+        },
+        {
+          "href": "#其他默认配置",
+          "label": "Section titled “其他默认配置”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/",
+          "label": "ChatModel"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/chat-client-options-merging-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#基于现有配置创建客户端",
+          "label": "Section titled “基于现有配置创建客户端”"
+        },
+        {
+          "href": "#advisors",
+          "label": "Section titled “Advisors”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisors API"
+        },
+        {
+          "href": "#在-chatclient-中配置-advisor",
+          "label": "Section titled “在 ChatClient 中配置 Advisor”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor",
+          "label": "Question Answer Advisor"
+        },
+        {
+          "href": "#检索增强生成",
+          "label": "Section titled “检索增强生成”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG"
+        },
+        {
+          "href": "#日志",
+          "label": "Section titled “日志”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/observability/index.html",
+          "label": "可观测性"
+        },
+        {
+          "href": "#工具调用",
+          "label": "Section titled “工具调用”"
+        },
+        {
+          "href": "#禁用自动注册",
+          "label": "Section titled “禁用自动注册”"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "label": "用户控制的工具执行"
+        },
+        {
+          "href": "#定制默认-toolcallingadvisor",
+          "label": "Section titled “定制默认 ToolCallingAdvisor”"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+          "label": "使用 ChatClient 控制工具执行"
+        },
+        {
+          "href": "#tooladvisor-标记接口",
+          "label": "Section titled “ToolAdvisor 标记接口”"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/#extending-the-loop",
+          "label": "扩展工具调用循环"
+        },
+        {
+          "href": "#对话记忆",
+          "label": "Section titled “对话记忆”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        },
+        {
+          "href": "#memoryadvisor-标记接口",
+          "label": "Section titled “MemoryAdvisor 标记接口”"
+        },
+        {
+          "href": "#实现说明",
+          "label": "Section titled “实现说明”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chatclient.html",
+          "label": "Spring AI Chat Client API"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/chat-client-options-merging-zh.svg",
+          "alt": "ChatClient 配置合并与调用链：模型选项合并为请求，经过 Advisor 调用模型，响应沿相反方向返回",
+          "loaded": true,
+          "width": 357.96875,
+          "right": 373.96875
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "core/advisors",
+      "route": "/frameworks/spring-ai/core/advisors/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：Advisors 调用链与递归",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 16,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/observability/index.html",
+          "label": "可观测性"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor",
+          "label": "问答 Advisor"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        },
+        {
+          "href": "#核心组件与执行流程",
+          "label": "Section titled “核心组件与执行流程”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/advisors-api-classes-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "/images/frameworks/spring-ai/advisors-flow-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#advisor-顺序",
+          "label": "Section titled “Advisor 顺序”"
+        },
+        {
+          "href": "#api-接口",
+          "label": "Section titled “API 接口”"
+        },
+        {
+          "href": "#实现自定义-advisor",
+          "label": "Section titled “实现自定义 Advisor”"
+        },
+        {
+          "href": "#日志-advisor",
+          "label": "Section titled “日志 Advisor”"
+        },
+        {
+          "href": "#重读策略re2",
+          "label": "Section titled “重读策略：Re2”"
+        },
+        {
+          "href": "https://arxiv.org/pdf/2309.06275",
+          "label": "Re-Reading Improves Reasoning in Large Language Models"
+        },
+        {
+          "href": "#内置-advisor",
+          "label": "Section titled “内置 Advisor”"
+        },
+        {
+          "href": "#toolcallingadvisor%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E5%BE%AA%E7%8E%AF",
+          "label": "工具调用循环"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8",
+          "label": "ChatClient：工具调用"
+        },
+        {
+          "href": "#流式与非流式",
+          "label": "Section titled “流式与非流式”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/advisors-non-stream-vs-stream-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#实践建议",
+          "label": "Section titled “实践建议”"
+        },
+        {
+          "href": "#递归-advisors",
+          "label": "Section titled “递归 Advisors”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/advisors-recursive-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#toolcallingadvisor工具调用循环",
+          "label": "Section titled “ToolCallingAdvisor：工具调用循环”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8",
+          "label": "ChatClient：工具调用"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "label": "ToolCallingAdvisor"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "label": "工具调用循环"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-search-tool/",
+          "label": "Tool Search Tool"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/#%E5%A4%9A%E6%AD%A5%E6%B5%81%E7%A8%8B%E7%9A%84%E7%B4%AF%E8%AE%A1%E7%94%A8%E9%87%8F",
+          "label": "多步流程的累计用量"
+        },
+        {
+          "href": "#structuredoutputvalidationadvisor结构校验循环",
+          "label": "Section titled “StructuredOutputValidationAdvisor：结构校验循环”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/#schema-%E6%A0%A1%E9%AA%8C%E4%B8%8E%E8%87%AA%E5%8A%A8%E7%BA%A0%E6%AD%A3",
+          "label": "Schema 校验与自动纠正"
+        },
+        {
+          "href": "#自定义递归-advisor-的用量累计",
+          "label": "Section titled “自定义递归 Advisor 的用量累计”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/#%E5%A4%9A%E6%AD%A5%E6%B5%81%E7%A8%8B%E7%9A%84%E7%B4%AF%E8%AE%A1%E7%94%A8%E9%87%8F",
+          "label": "累计用量的限制"
+        },
+        {
+          "href": "#历史-api-迁移",
+          "label": "Section titled “历史 API 迁移”"
+        },
+        {
+          "href": "#advisor-接口演变",
+          "label": "Section titled “Advisor 接口演变”"
+        },
+        {
+          "href": "#上下文-map-的历史变化",
+          "label": "Section titled “上下文 Map 的历史变化”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/advisors.html",
+          "label": "Advisors API"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/advisors-recursive.html",
+          "label": "Recursive Advisors"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/advisors-api-classes-zh.svg",
+          "alt": "Advisors API 类型关系：Advisor 继承 Ordered，分为 CallAdvisor 与 StreamAdvisor，由相应 Chain 继续调用下游",
+          "loaded": true,
+          "width": 755.984375,
+          "right": 1079.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/advisors-flow-zh.svg",
+          "alt": "Advisor 六步流程：构建请求、调用前处理、请求模型、模型响应、调用后处理、提取结果",
+          "loaded": true,
+          "width": 755.984375,
+          "right": 1079.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/advisors-non-stream-vs-stream-zh.svg",
+          "alt": "非流式和流式 Advisor 对比：同步响应为单个对象，流式响应为 Flux，二者使用各自的处理链",
+          "loaded": true,
+          "width": 755.96875,
+          "right": 1079.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/advisors-recursive-zh.svg",
+          "alt": "递归 Advisor 循环范围：上游 ABC 在循环外，下游 XYZ 和模型可重复执行，由条件判断决定是否结束",
+          "loaded": true,
+          "width": 291,
+          "right": 615
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "core/advisors",
+      "route": "/frameworks/spring-ai/core/advisors/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：Advisors 调用链与递归",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 16,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/observability/index.html",
+          "label": "可观测性"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor",
+          "label": "问答 Advisor"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        },
+        {
+          "href": "#核心组件与执行流程",
+          "label": "Section titled “核心组件与执行流程”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/advisors-api-classes-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "/images/frameworks/spring-ai/advisors-flow-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#advisor-顺序",
+          "label": "Section titled “Advisor 顺序”"
+        },
+        {
+          "href": "#api-接口",
+          "label": "Section titled “API 接口”"
+        },
+        {
+          "href": "#实现自定义-advisor",
+          "label": "Section titled “实现自定义 Advisor”"
+        },
+        {
+          "href": "#日志-advisor",
+          "label": "Section titled “日志 Advisor”"
+        },
+        {
+          "href": "#重读策略re2",
+          "label": "Section titled “重读策略：Re2”"
+        },
+        {
+          "href": "https://arxiv.org/pdf/2309.06275",
+          "label": "Re-Reading Improves Reasoning in Large Language Models"
+        },
+        {
+          "href": "#内置-advisor",
+          "label": "Section titled “内置 Advisor”"
+        },
+        {
+          "href": "#toolcallingadvisor%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E5%BE%AA%E7%8E%AF",
+          "label": "工具调用循环"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8",
+          "label": "ChatClient：工具调用"
+        },
+        {
+          "href": "#流式与非流式",
+          "label": "Section titled “流式与非流式”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/advisors-non-stream-vs-stream-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#实践建议",
+          "label": "Section titled “实践建议”"
+        },
+        {
+          "href": "#递归-advisors",
+          "label": "Section titled “递归 Advisors”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/advisors-recursive-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#toolcallingadvisor工具调用循环",
+          "label": "Section titled “ToolCallingAdvisor：工具调用循环”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8",
+          "label": "ChatClient：工具调用"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling-advisor/",
+          "label": "ToolCallingAdvisor"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+          "label": "工具调用循环"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-search-tool/",
+          "label": "Tool Search Tool"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/#%E5%A4%9A%E6%AD%A5%E6%B5%81%E7%A8%8B%E7%9A%84%E7%B4%AF%E8%AE%A1%E7%94%A8%E9%87%8F",
+          "label": "多步流程的累计用量"
+        },
+        {
+          "href": "#structuredoutputvalidationadvisor结构校验循环",
+          "label": "Section titled “StructuredOutputValidationAdvisor：结构校验循环”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/",
+          "label": "结构化输出"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/#schema-%E6%A0%A1%E9%AA%8C%E4%B8%8E%E8%87%AA%E5%8A%A8%E7%BA%A0%E6%AD%A3",
+          "label": "Schema 校验与自动纠正"
+        },
+        {
+          "href": "#自定义递归-advisor-的用量累计",
+          "label": "Section titled “自定义递归 Advisor 的用量累计”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/#%E5%A4%9A%E6%AD%A5%E6%B5%81%E7%A8%8B%E7%9A%84%E7%B4%AF%E8%AE%A1%E7%94%A8%E9%87%8F",
+          "label": "累计用量的限制"
+        },
+        {
+          "href": "#历史-api-迁移",
+          "label": "Section titled “历史 API 迁移”"
+        },
+        {
+          "href": "#advisor-接口演变",
+          "label": "Section titled “Advisor 接口演变”"
+        },
+        {
+          "href": "#上下文-map-的历史变化",
+          "label": "Section titled “上下文 Map 的历史变化”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/advisors.html",
+          "label": "Advisors API"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/advisors-recursive.html",
+          "label": "Recursive Advisors"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/advisors-api-classes-zh.svg",
+          "alt": "Advisors API 类型关系：Advisor 继承 Ordered，分为 CallAdvisor 与 StreamAdvisor，由相应 Chain 继续调用下游",
+          "loaded": true,
+          "width": 357.984375,
+          "right": 373.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/advisors-flow-zh.svg",
+          "alt": "Advisor 六步流程：构建请求、调用前处理、请求模型、模型响应、调用后处理、提取结果",
+          "loaded": true,
+          "width": 357.984375,
+          "right": 373.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/advisors-non-stream-vs-stream-zh.svg",
+          "alt": "非流式和流式 Advisor 对比：同步响应为单个对象，流式响应为 Flux，二者使用各自的处理链",
+          "loaded": true,
+          "width": 357.96875,
+          "right": 373.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/advisors-recursive-zh.svg",
+          "alt": "递归 Advisor 循环范围：上游 ABC 在循环外，下游 XYZ 和模型可重复执行，由条件判断决定是否结束",
+          "loaded": true,
+          "width": 291,
+          "right": 307
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "core/prompts",
+      "route": "/frameworks/spring-ai/core/prompts/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：提示词",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 15,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/",
+          "label": "ChatModel"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisor"
+        },
+        {
+          "href": "#api-概览",
+          "label": "Section titled “API 概览”"
+        },
+        {
+          "href": "#prompt消息与请求选项的容器",
+          "label": "Section titled “Prompt：消息与请求选项的容器”"
+        },
+        {
+          "href": "#message文本元数据与角色",
+          "label": "Section titled “Message：文本、元数据与角色”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态消息"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/spring-ai-message-api-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/content/Content.html",
+          "label": "Spring AI 2.0.2 Content API"
+        },
+        {
+          "href": "#prompttemplate将模板转换为提示词",
+          "label": "Section titled “PromptTemplate：将模板转换为提示词”"
+        },
+        {
+          "href": "https://www.stringtemplate.org/",
+          "label": "StringTemplate"
+        },
+        {
+          "href": "#生成字符串render",
+          "label": "Section titled “生成字符串：render”"
+        },
+        {
+          "href": "#生成消息createmessage",
+          "label": "Section titled “生成消息：createMessage”"
+        },
+        {
+          "href": "#生成完整请求create",
+          "label": "Section titled “生成完整请求：create”"
+        },
+        {
+          "href": "#使用示例",
+          "label": "Section titled “使用示例”"
+        },
+        {
+          "href": "#填入模板变量",
+          "label": "Section titled “填入模板变量”"
+        },
+        {
+          "href": "https://github.com/Azure-Samples/spring-ai-azure-workshop/blob/main/2-README-prompt-templating.md",
+          "label": "PromptTemplates Workshop"
+        },
+        {
+          "href": "#组合系统消息与用户消息",
+          "label": "Section titled “组合系统消息与用户消息”"
+        },
+        {
+          "href": "https://github.com/Azure-Samples/spring-ai-azure-workshop/blob/main/3-README-prompt-roles.md",
+          "label": "Roles Workshop"
+        },
+        {
+          "href": "#自定义模板渲染器",
+          "label": "Section titled “自定义模板渲染器”"
+        },
+        {
+          "href": "#从资源文件加载模板",
+          "label": "Section titled “从资源文件加载模板”"
+        },
+        {
+          "href": "#提示词工程",
+          "label": "Section titled “提示词工程”"
+        },
+        {
+          "href": "#一条有效提示词包含什么",
+          "label": "Section titled “一条有效提示词包含什么”"
+        },
+        {
+          "href": "#基础技巧",
+          "label": "Section titled “基础技巧”"
+        },
+        {
+          "href": "https://www.promptingguide.ai/introduction/examples.en#text-summarization",
+          "label": "文本摘要"
+        },
+        {
+          "href": "https://www.promptingguide.ai/introduction/examples.en#question-answering",
+          "label": "问答"
+        },
+        {
+          "href": "https://www.promptingguide.ai/introduction/examples.en#text-classification",
+          "label": "文本分类"
+        },
+        {
+          "href": "https://www.promptingguide.ai/introduction/examples.en#conversation",
+          "label": "对话"
+        },
+        {
+          "href": "https://www.promptingguide.ai/introduction/examples.en#code-generation",
+          "label": "代码生成"
+        },
+        {
+          "href": "#进阶技巧",
+          "label": "Section titled “进阶技巧”"
+        },
+        {
+          "href": "https://www.promptingguide.ai/techniques/zeroshot",
+          "label": "零样本（Zero-shot）"
+        },
+        {
+          "href": "https://www.promptingguide.ai/techniques/fewshot",
+          "label": "少样本（Few-shot）"
+        },
+        {
+          "href": "https://www.promptingguide.ai/techniques/cot",
+          "label": "思维链（Chain-of-Thought，CoT）"
+        },
+        {
+          "href": "https://www.promptingguide.ai/techniques/react",
+          "label": "ReAct（Reason + Act）"
+        },
+        {
+          "href": "#microsoft-guidance",
+          "label": "Section titled “Microsoft Guidance”"
+        },
+        {
+          "href": "https://github.com/microsoft/guidance",
+          "label": "Guidance"
+        },
+        {
+          "href": "#token长度费用与上下文",
+          "label": "Section titled “Token：长度、费用与上下文”"
+        },
+        {
+          "href": "https://platform.openai.com/tokenizer",
+          "label": "OpenAI Tokenizer"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/#usagetoken-%E7%94%A8%E9%87%8F",
+          "label": "Token 用量"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/",
+          "label": "聊天响应元数据"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/prompt.html",
+          "label": "Spring AI Prompts"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-message-api-zh.svg",
+          "alt": "Spring AI 消息 API 类图：Message 和 MediaContent 扩展 Content，AbstractMessage 实现 Message；系统、用户、助手和工具响应消息分别携带角色、媒体或工具数据",
+          "loaded": true,
+          "width": 756,
+          "right": 1080
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "core/prompts",
+      "route": "/frameworks/spring-ai/core/prompts/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：提示词",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 15,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/",
+          "label": "ChatModel"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisor"
+        },
+        {
+          "href": "#api-概览",
+          "label": "Section titled “API 概览”"
+        },
+        {
+          "href": "#prompt消息与请求选项的容器",
+          "label": "Section titled “Prompt：消息与请求选项的容器”"
+        },
+        {
+          "href": "#message文本元数据与角色",
+          "label": "Section titled “Message：文本、元数据与角色”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态消息"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/spring-ai-message-api-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/content/Content.html",
+          "label": "Spring AI 2.0.2 Content API"
+        },
+        {
+          "href": "#prompttemplate将模板转换为提示词",
+          "label": "Section titled “PromptTemplate：将模板转换为提示词”"
+        },
+        {
+          "href": "https://www.stringtemplate.org/",
+          "label": "StringTemplate"
+        },
+        {
+          "href": "#生成字符串render",
+          "label": "Section titled “生成字符串：render”"
+        },
+        {
+          "href": "#生成消息createmessage",
+          "label": "Section titled “生成消息：createMessage”"
+        },
+        {
+          "href": "#生成完整请求create",
+          "label": "Section titled “生成完整请求：create”"
+        },
+        {
+          "href": "#使用示例",
+          "label": "Section titled “使用示例”"
+        },
+        {
+          "href": "#填入模板变量",
+          "label": "Section titled “填入模板变量”"
+        },
+        {
+          "href": "https://github.com/Azure-Samples/spring-ai-azure-workshop/blob/main/2-README-prompt-templating.md",
+          "label": "PromptTemplates Workshop"
+        },
+        {
+          "href": "#组合系统消息与用户消息",
+          "label": "Section titled “组合系统消息与用户消息”"
+        },
+        {
+          "href": "https://github.com/Azure-Samples/spring-ai-azure-workshop/blob/main/3-README-prompt-roles.md",
+          "label": "Roles Workshop"
+        },
+        {
+          "href": "#自定义模板渲染器",
+          "label": "Section titled “自定义模板渲染器”"
+        },
+        {
+          "href": "#从资源文件加载模板",
+          "label": "Section titled “从资源文件加载模板”"
+        },
+        {
+          "href": "#提示词工程",
+          "label": "Section titled “提示词工程”"
+        },
+        {
+          "href": "#一条有效提示词包含什么",
+          "label": "Section titled “一条有效提示词包含什么”"
+        },
+        {
+          "href": "#基础技巧",
+          "label": "Section titled “基础技巧”"
+        },
+        {
+          "href": "https://www.promptingguide.ai/introduction/examples.en#text-summarization",
+          "label": "文本摘要"
+        },
+        {
+          "href": "https://www.promptingguide.ai/introduction/examples.en#question-answering",
+          "label": "问答"
+        },
+        {
+          "href": "https://www.promptingguide.ai/introduction/examples.en#text-classification",
+          "label": "文本分类"
+        },
+        {
+          "href": "https://www.promptingguide.ai/introduction/examples.en#conversation",
+          "label": "对话"
+        },
+        {
+          "href": "https://www.promptingguide.ai/introduction/examples.en#code-generation",
+          "label": "代码生成"
+        },
+        {
+          "href": "#进阶技巧",
+          "label": "Section titled “进阶技巧”"
+        },
+        {
+          "href": "https://www.promptingguide.ai/techniques/zeroshot",
+          "label": "零样本（Zero-shot）"
+        },
+        {
+          "href": "https://www.promptingguide.ai/techniques/fewshot",
+          "label": "少样本（Few-shot）"
+        },
+        {
+          "href": "https://www.promptingguide.ai/techniques/cot",
+          "label": "思维链（Chain-of-Thought，CoT）"
+        },
+        {
+          "href": "https://www.promptingguide.ai/techniques/react",
+          "label": "ReAct（Reason + Act）"
+        },
+        {
+          "href": "#microsoft-guidance",
+          "label": "Section titled “Microsoft Guidance”"
+        },
+        {
+          "href": "https://github.com/microsoft/guidance",
+          "label": "Guidance"
+        },
+        {
+          "href": "#token长度费用与上下文",
+          "label": "Section titled “Token：长度、费用与上下文”"
+        },
+        {
+          "href": "https://platform.openai.com/tokenizer",
+          "label": "OpenAI Tokenizer"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/#usagetoken-%E7%94%A8%E9%87%8F",
+          "label": "Token 用量"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/",
+          "label": "聊天响应元数据"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/prompt.html",
+          "label": "Spring AI Prompts"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-message-api-zh.svg",
+          "alt": "Spring AI 消息 API 类图：Message 和 MediaContent 扩展 Content，AbstractMessage 实现 Message；系统、用户、助手和工具响应消息分别携带角色、媒体或工具数据",
+          "loaded": true,
+          "width": 358,
+          "right": 374
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "core/chat-response-metadata",
+      "route": "/frameworks/spring-ai/core/chat-response-metadata/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：聊天响应元数据",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 8,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/#%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E5%8C%85%E5%90%AB%E4%BB%80%E4%B9%88",
+          "label": "ChatResponse"
+        },
+        {
+          "href": "https://platform.openai.com/docs/guides/rate-limits?context=tier-free",
+          "label": "限流说明"
+        },
+        {
+          "href": "https://openai.com/pricing#language-models",
+          "label": "套餐"
+        },
+        {
+          "href": "#chatresponsemetadata响应元数据入口",
+          "label": "Section titled “ChatResponseMetadata：响应元数据入口”"
+        },
+        {
+          "href": "#ratelimit限额与剩余额度",
+          "label": "Section titled “RateLimit：限额与剩余额度”"
+        },
+        {
+          "href": "https://platform.openai.com/docs/guides/rate-limits/rate-limits-in-headers",
+          "label": "OpenAI 等服务"
+        },
+        {
+          "href": "#usagetoken-用量",
+          "label": "Section titled “Usage：Token 用量”"
+        },
+        {
+          "href": "#使用-chatmodel-读取用量",
+          "label": "Section titled “使用 ChatModel 读取用量”"
+        },
+        {
+          "href": "#使用-chatclient-读取用量",
+          "label": "Section titled “使用 ChatClient 读取用量”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E8%BF%94%E5%9B%9E-chatresponse",
+          "label": "ChatClient API"
+        },
+        {
+          "href": "#提示词缓存用量",
+          "label": "Section titled “提示词缓存用量”"
+        },
+        {
+          "href": "#多步流程的累计用量",
+          "label": "Section titled “多步流程的累计用量”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/",
+          "label": "Structured Output（结构化输出）"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/usage-handling.html",
+          "label": "Spring AI Chat Response Metadata"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "core/chat-response-metadata",
+      "route": "/frameworks/spring-ai/core/chat-response-metadata/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：聊天响应元数据",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 8,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/#%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E5%8C%85%E5%90%AB%E4%BB%80%E4%B9%88",
+          "label": "ChatResponse"
+        },
+        {
+          "href": "https://platform.openai.com/docs/guides/rate-limits?context=tier-free",
+          "label": "限流说明"
+        },
+        {
+          "href": "https://openai.com/pricing#language-models",
+          "label": "套餐"
+        },
+        {
+          "href": "#chatresponsemetadata响应元数据入口",
+          "label": "Section titled “ChatResponseMetadata：响应元数据入口”"
+        },
+        {
+          "href": "#ratelimit限额与剩余额度",
+          "label": "Section titled “RateLimit：限额与剩余额度”"
+        },
+        {
+          "href": "https://platform.openai.com/docs/guides/rate-limits/rate-limits-in-headers",
+          "label": "OpenAI 等服务"
+        },
+        {
+          "href": "#usagetoken-用量",
+          "label": "Section titled “Usage：Token 用量”"
+        },
+        {
+          "href": "#使用-chatmodel-读取用量",
+          "label": "Section titled “使用 ChatModel 读取用量”"
+        },
+        {
+          "href": "#使用-chatclient-读取用量",
+          "label": "Section titled “使用 ChatClient 读取用量”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E8%BF%94%E5%9B%9E-chatresponse",
+          "label": "ChatClient API"
+        },
+        {
+          "href": "#提示词缓存用量",
+          "label": "Section titled “提示词缓存用量”"
+        },
+        {
+          "href": "#多步流程的累计用量",
+          "label": "Section titled “多步流程的累计用量”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/structured-output/",
+          "label": "Structured Output（结构化输出）"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/usage-handling.html",
+          "label": "Spring AI Chat Response Metadata"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "core/structured-output",
+      "route": "/frameworks/spring-ai/core/structured-output/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：结构化输出",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 30,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "#返回-java-对象",
+          "label": "Section titled “返回 Java 对象”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/structured-output-basic-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#泛型listmap-等",
+          "label": "Section titled “泛型：List、Map 等”"
+        },
+        {
+          "href": "#可靠性配置entityparamspec",
+          "label": "Section titled “可靠性配置：EntityParamSpec”"
+        },
+        {
+          "href": "#validateschema校验失败后重试",
+          "label": "Section titled “validateSchema()：校验失败后重试”"
+        },
+        {
+          "href": "#schema-%E6%A0%A1%E9%AA%8C%E4%B8%8E%E8%87%AA%E5%8A%A8%E7%BA%A0%E6%AD%A3",
+          "label": "Schema 校验与自动纠正"
+        },
+        {
+          "href": "#useproviderstructuredoutput请求端约束",
+          "label": "Section titled “useProviderStructuredOutput()：请求端约束”"
+        },
+        {
+          "href": "#%E6%8F%90%E4%BE%9B%E6%96%B9%E5%8E%9F%E7%94%9F%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA",
+          "label": "提供方原生结构化输出"
+        },
+        {
+          "href": "#组合使用",
+          "label": "Section titled “组合使用”"
+        },
+        {
+          "href": "#schema-校验与自动纠正",
+          "label": "Section titled “Schema 校验与自动纠正”"
+        },
+        {
+          "href": "#validateschema%E6%A0%A1%E9%AA%8C%E5%A4%B1%E8%B4%A5%E5%90%8E%E9%87%8D%E8%AF%95",
+          "label": "validateSchema()"
+        },
+        {
+          "href": "#纠正循环如何执行",
+          "label": "Section titled “纠正循环如何执行”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/structured-output-self-correction-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/#structuredoutputvalidationadvisor%E7%BB%93%E6%9E%84%E6%A0%A1%E9%AA%8C%E5%BE%AA%E7%8E%AF",
+          "label": "递归 Advisor"
+        },
+        {
+          "href": "#定制-structuredoutputvalidationadvisor",
+          "label": "Section titled “定制 StructuredOutputValidationAdvisor”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/#%E5%A4%9A%E6%AD%A5%E6%B5%81%E7%A8%8B%E7%9A%84%E7%B4%AF%E8%AE%A1%E7%94%A8%E9%87%8F",
+          "label": "多步流程的累计用量"
+        },
+        {
+          "href": "#与提供方原生约束组合",
+          "label": "Section titled “与提供方原生约束组合”"
+        },
+        {
+          "href": "#%E7%BB%84%E5%90%88%E4%BD%BF%E7%94%A8",
+          "label": "组合使用"
+        },
+        {
+          "href": "#%E5%B7%B2%E7%9F%A5%E9%99%90%E5%88%B6",
+          "label": "已知限制"
+        },
+        {
+          "href": "#同时获取对象与完整响应",
+          "label": "Section titled “同时获取对象与完整响应”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/",
+          "label": "聊天响应元数据"
+        },
+        {
+          "href": "#提供方原生结构化输出",
+          "label": "Section titled “提供方原生结构化输出”"
+        },
+        {
+          "href": "#能力检测与默认回退",
+          "label": "Section titled “能力检测与默认回退”"
+        },
+        {
+          "href": "#支持的模型",
+          "label": "Section titled “支持的模型”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#structured-output",
+          "label": "jinfer Structured Output"
+        },
+        {
+          "href": "#已知限制",
+          "label": "Section titled “已知限制”"
+        },
+        {
+          "href": "#%E7%BB%84%E5%90%88%E4%BD%BF%E7%94%A8",
+          "label": "组合用法"
+        },
+        {
+          "href": "https://community.openai.com/t/support-top-level-array-in-json-schema/896048",
+          "label": "OpenAI 社区讨论"
+        },
+        {
+          "href": "#按请求或全局启用",
+          "label": "Section titled “按请求或全局启用”"
+        },
+        {
+          "href": "#提供方专用的-json-模式",
+          "label": "Section titled “提供方专用的 JSON 模式”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_structured_outputs",
+          "label": "OpenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html",
+          "label": "Ollama"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#structured-output",
+          "label": "Qxotic jinfer"
+        },
+        {
+          "href": "https://github.com/ggml-org/llama.cpp/blob/master/grammars/README.md",
+          "label": "GBNF 语法"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html",
+          "label": "Mistral AI"
+        },
+        {
+          "href": "#输出转换器",
+          "label": "Section titled “输出转换器”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#接口与数据流",
+          "label": "Section titled “接口与数据流”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/structured-output-api-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+          "label": "提示词模板"
+        },
+        {
+          "href": "#getjsonschema连接可靠性配置",
+          "label": "Section titled “getJsonSchema()：连接可靠性配置”"
+        },
+        {
+          "href": "#内置实现与选型",
+          "label": "Section titled “内置实现与选型”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/structured-output-hierarchy-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#beanoutputconverter映射-java-类型",
+          "label": "Section titled “BeanOutputConverter：映射 Java 类型”"
+        },
+        {
+          "href": "#mapoutputconverter键值结果",
+          "label": "Section titled “MapOutputConverter：键值结果”"
+        },
+        {
+          "href": "#listoutputconverter逗号分隔列表",
+          "label": "Section titled “ListOutputConverter：逗号分隔列表”"
+        },
+        {
+          "href": "#自定义转换器提取-json",
+          "label": "Section titled “自定义转换器：提取 JSON”"
+        },
+        {
+          "href": "#非-json-格式yamlcsv",
+          "label": "Section titled “非 JSON 格式：YAML、CSV”"
+        },
+        {
+          "href": "#用法速查",
+          "label": "Section titled “用法速查”"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/",
+          "label": "工具调用"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisors：调用链与递归"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/structured-output.html",
+          "label": "Structured Output"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/structured-output/validation.html",
+          "label": "Schema Validation & Self-Correction"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/structured-output/native.html",
+          "label": "Provider-Native Structured Output"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/structured-output/converters.html",
+          "label": "Output Converters"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/structured-output-basic-zh.svg",
+          "alt": "结构化输出默认流程：由返回类型生成 Schema，加入系统上下文，模型返回 JSON 后转换为 Java 对象",
+          "loaded": true,
+          "width": 755.96875,
+          "right": 1079.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/structured-output-self-correction-zh.svg",
+          "alt": "Schema 校验与自动纠正：模型响应通过校验后转换为对象，失败时将错误反馈到下一轮请求",
+          "loaded": true,
+          "width": 755.96875,
+          "right": 1079.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg",
+          "alt": "输出转换器的前后处理：输入与格式指令合并后调用模型，返回文本再转换为结构化结果",
+          "loaded": true,
+          "width": 755.96875,
+          "right": 1079.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/structured-output-api-zh.svg",
+          "alt": "结构化输出 API 数据流：FormatProvider 提供格式指令，PromptTemplate 构造请求，ChatModel 返回响应后由 Converter 转为目标类型",
+          "loaded": true,
+          "width": 755.984375,
+          "right": 1079.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/structured-output-hierarchy-zh.svg",
+          "alt": "输出转换器类关系：StructuredOutputConverter 继承格式与转换接口，Map、Bean、List 三种实现分别使用对应的转换能力",
+          "loaded": true,
+          "width": 755.96875,
+          "right": 1079.96875
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "core/structured-output",
+      "route": "/frameworks/spring-ai/core/structured-output/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：结构化输出",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 30,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "#返回-java-对象",
+          "label": "Section titled “返回 Java 对象”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/structured-output-basic-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#泛型listmap-等",
+          "label": "Section titled “泛型：List、Map 等”"
+        },
+        {
+          "href": "#可靠性配置entityparamspec",
+          "label": "Section titled “可靠性配置：EntityParamSpec”"
+        },
+        {
+          "href": "#validateschema校验失败后重试",
+          "label": "Section titled “validateSchema()：校验失败后重试”"
+        },
+        {
+          "href": "#schema-%E6%A0%A1%E9%AA%8C%E4%B8%8E%E8%87%AA%E5%8A%A8%E7%BA%A0%E6%AD%A3",
+          "label": "Schema 校验与自动纠正"
+        },
+        {
+          "href": "#useproviderstructuredoutput请求端约束",
+          "label": "Section titled “useProviderStructuredOutput()：请求端约束”"
+        },
+        {
+          "href": "#%E6%8F%90%E4%BE%9B%E6%96%B9%E5%8E%9F%E7%94%9F%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA",
+          "label": "提供方原生结构化输出"
+        },
+        {
+          "href": "#组合使用",
+          "label": "Section titled “组合使用”"
+        },
+        {
+          "href": "#schema-校验与自动纠正",
+          "label": "Section titled “Schema 校验与自动纠正”"
+        },
+        {
+          "href": "#validateschema%E6%A0%A1%E9%AA%8C%E5%A4%B1%E8%B4%A5%E5%90%8E%E9%87%8D%E8%AF%95",
+          "label": "validateSchema()"
+        },
+        {
+          "href": "#纠正循环如何执行",
+          "label": "Section titled “纠正循环如何执行”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/structured-output-self-correction-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/#structuredoutputvalidationadvisor%E7%BB%93%E6%9E%84%E6%A0%A1%E9%AA%8C%E5%BE%AA%E7%8E%AF",
+          "label": "递归 Advisor"
+        },
+        {
+          "href": "#定制-structuredoutputvalidationadvisor",
+          "label": "Section titled “定制 StructuredOutputValidationAdvisor”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/#%E5%A4%9A%E6%AD%A5%E6%B5%81%E7%A8%8B%E7%9A%84%E7%B4%AF%E8%AE%A1%E7%94%A8%E9%87%8F",
+          "label": "多步流程的累计用量"
+        },
+        {
+          "href": "#与提供方原生约束组合",
+          "label": "Section titled “与提供方原生约束组合”"
+        },
+        {
+          "href": "#%E7%BB%84%E5%90%88%E4%BD%BF%E7%94%A8",
+          "label": "组合使用"
+        },
+        {
+          "href": "#%E5%B7%B2%E7%9F%A5%E9%99%90%E5%88%B6",
+          "label": "已知限制"
+        },
+        {
+          "href": "#同时获取对象与完整响应",
+          "label": "Section titled “同时获取对象与完整响应”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/",
+          "label": "聊天响应元数据"
+        },
+        {
+          "href": "#提供方原生结构化输出",
+          "label": "Section titled “提供方原生结构化输出”"
+        },
+        {
+          "href": "#能力检测与默认回退",
+          "label": "Section titled “能力检测与默认回退”"
+        },
+        {
+          "href": "#支持的模型",
+          "label": "Section titled “支持的模型”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#structured-output",
+          "label": "jinfer Structured Output"
+        },
+        {
+          "href": "#已知限制",
+          "label": "Section titled “已知限制”"
+        },
+        {
+          "href": "#%E7%BB%84%E5%90%88%E4%BD%BF%E7%94%A8",
+          "label": "组合用法"
+        },
+        {
+          "href": "https://community.openai.com/t/support-top-level-array-in-json-schema/896048",
+          "label": "OpenAI 社区讨论"
+        },
+        {
+          "href": "#按请求或全局启用",
+          "label": "Section titled “按请求或全局启用”"
+        },
+        {
+          "href": "#提供方专用的-json-模式",
+          "label": "Section titled “提供方专用的 JSON 模式”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_structured_outputs",
+          "label": "OpenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html",
+          "label": "Ollama"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#structured-output",
+          "label": "Qxotic jinfer"
+        },
+        {
+          "href": "https://github.com/ggml-org/llama.cpp/blob/master/grammars/README.md",
+          "label": "GBNF 语法"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html",
+          "label": "Mistral AI"
+        },
+        {
+          "href": "#输出转换器",
+          "label": "Section titled “输出转换器”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#接口与数据流",
+          "label": "Section titled “接口与数据流”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/structured-output-api-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "/frameworks/spring-ai/core/prompts/#prompttemplate%E5%B0%86%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%8F%90%E7%A4%BA%E8%AF%8D",
+          "label": "提示词模板"
+        },
+        {
+          "href": "#getjsonschema连接可靠性配置",
+          "label": "Section titled “getJsonSchema()：连接可靠性配置”"
+        },
+        {
+          "href": "#内置实现与选型",
+          "label": "Section titled “内置实现与选型”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/structured-output-hierarchy-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#beanoutputconverter映射-java-类型",
+          "label": "Section titled “BeanOutputConverter：映射 Java 类型”"
+        },
+        {
+          "href": "#mapoutputconverter键值结果",
+          "label": "Section titled “MapOutputConverter：键值结果”"
+        },
+        {
+          "href": "#listoutputconverter逗号分隔列表",
+          "label": "Section titled “ListOutputConverter：逗号分隔列表”"
+        },
+        {
+          "href": "#自定义转换器提取-json",
+          "label": "Section titled “自定义转换器：提取 JSON”"
+        },
+        {
+          "href": "#非-json-格式yamlcsv",
+          "label": "Section titled “非 JSON 格式：YAML、CSV”"
+        },
+        {
+          "href": "#用法速查",
+          "label": "Section titled “用法速查”"
+        },
+        {
+          "href": "/frameworks/spring-ai/tools/tool-calling/",
+          "label": "工具调用"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/advisors/",
+          "label": "Advisors：调用链与递归"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-memory/",
+          "label": "对话记忆"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/structured-output.html",
+          "label": "Structured Output"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/structured-output/validation.html",
+          "label": "Schema Validation & Self-Correction"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/structured-output/native.html",
+          "label": "Provider-Native Structured Output"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/structured-output/converters.html",
+          "label": "Output Converters"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/structured-output-basic-zh.svg",
+          "alt": "结构化输出默认流程：由返回类型生成 Schema，加入系统上下文，模型返回 JSON 后转换为 Java 对象",
+          "loaded": true,
+          "width": 357.96875,
+          "right": 373.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/structured-output-self-correction-zh.svg",
+          "alt": "Schema 校验与自动纠正：模型响应通过校验后转换为对象，失败时将错误反馈到下一轮请求",
+          "loaded": true,
+          "width": 357.96875,
+          "right": 373.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg",
+          "alt": "输出转换器的前后处理：输入与格式指令合并后调用模型，返回文本再转换为结构化结果",
+          "loaded": true,
+          "width": 357.96875,
+          "right": 373.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/structured-output-api-zh.svg",
+          "alt": "结构化输出 API 数据流：FormatProvider 提供格式指令，PromptTemplate 构造请求，ChatModel 返回响应后由 Converter 转为目标类型",
+          "loaded": true,
+          "width": 357.96875,
+          "right": 373.96875
+        },
+        {
+          "src": "/images/frameworks/spring-ai/structured-output-hierarchy-zh.svg",
+          "alt": "输出转换器类关系：StructuredOutputConverter 继承格式与转换接口，Map、Bean、List 三种实现分别使用对应的转换能力",
+          "loaded": true,
+          "width": 357.984375,
+          "right": 373.984375
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "core/multimodality",
+      "route": "/frameworks/spring-ai/core/multimodality/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：多模态",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 2,
+      "links": [
+        {
+          "href": "#文本与媒体如何组合",
+          "label": "Section titled “文本与媒体如何组合”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/prompts/",
+          "label": "提示词"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/spring-ai-message-api-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#输入与输出的边界",
+          "label": "Section titled “输入与输出的边界”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/chat/messages/AssistantMessage.html",
+          "label": "2.0.2 的 AssistantMessage API"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/",
+          "label": "音频模型"
+        },
+        {
+          "href": "#示例让模型描述图片",
+          "label": "Section titled “示例：让模型描述图片”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/multimodal.test.png",
+          "label": ""
+        },
+        {
+          "href": "#使用-chatmodel",
+          "label": "Section titled “使用 ChatModel”"
+        },
+        {
+          "href": "#使用-chatclient",
+          "label": "Section titled “使用 ChatClient”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "#支持入口",
+          "label": "Section titled “支持入口”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/anthropic-chat.html#_multi_modal_support",
+          "label": "Claude 多模态支持"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/bedrock-converse.html#_multimodal",
+          "label": "Bedrock Converse 多模态"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html#_multimodal",
+          "label": "Pixtral 等模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html#_multimodal",
+          "label": "LLaVA、BakLLaVA、Llama 等模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_multimodal",
+          "label": "GPT 多模态"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/google-genai-chat.html#_multimodal",
+          "label": "Gemini 多模态"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#_multimodal",
+          "label": "Gemma 4、LFM2.5-VL、Qwen 3.5 等模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/",
+          "label": "模型概览"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/multimodality.html",
+          "label": "Multimodality API"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-message-api-zh.svg",
+          "alt": "Spring AI 消息 API 类图：UserMessage 与 AssistantMessage 支持 MediaContent，媒体内容由 Media 表达，消息角色由 MessageType 区分",
+          "loaded": true,
+          "width": 755.984375,
+          "right": 1079.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/multimodal.test.png",
+          "alt": "多模态示例输入：灰绿色背景中的金属水果篮，篮内有香蕉和苹果",
+          "loaded": true,
+          "width": 200,
+          "right": 524
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "core/multimodality",
+      "route": "/frameworks/spring-ai/core/multimodality/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：多模态",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 2,
+      "links": [
+        {
+          "href": "#文本与媒体如何组合",
+          "label": "Section titled “文本与媒体如何组合”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/prompts/",
+          "label": "提示词"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/spring-ai-message-api-zh.svg",
+          "label": ""
+        },
+        {
+          "href": "#输入与输出的边界",
+          "label": "Section titled “输入与输出的边界”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/chat/messages/AssistantMessage.html",
+          "label": "2.0.2 的 AssistantMessage API"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/",
+          "label": "音频模型"
+        },
+        {
+          "href": "#示例让模型描述图片",
+          "label": "Section titled “示例：让模型描述图片”"
+        },
+        {
+          "href": "/images/frameworks/spring-ai/multimodal.test.png",
+          "label": ""
+        },
+        {
+          "href": "#使用-chatmodel",
+          "label": "Section titled “使用 ChatModel”"
+        },
+        {
+          "href": "#使用-chatclient",
+          "label": "Section titled “使用 ChatClient”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "#支持入口",
+          "label": "Section titled “支持入口”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/anthropic-chat.html#_multi_modal_support",
+          "label": "Claude 多模态支持"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/bedrock-converse.html#_multimodal",
+          "label": "Bedrock Converse 多模态"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html#_multimodal",
+          "label": "Pixtral 等模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html#_multimodal",
+          "label": "LLaVA、BakLLaVA、Llama 等模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_multimodal",
+          "label": "GPT 多模态"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/google-genai-chat.html#_multimodal",
+          "label": "Gemini 多模态"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/jinfer-chat.html#_multimodal",
+          "label": "Gemma 4、LFM2.5-VL、Qwen 3.5 等模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/",
+          "label": "模型概览"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/multimodality.html",
+          "label": "Multimodality API"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/frameworks/spring-ai/spring-ai-message-api-zh.svg",
+          "alt": "Spring AI 消息 API 类图：UserMessage 与 AssistantMessage 支持 MediaContent，媒体内容由 Media 表达，消息角色由 MessageType 区分",
+          "loaded": true,
+          "width": 357.984375,
+          "right": 373.984375
+        },
+        {
+          "src": "/images/frameworks/spring-ai/multimodal.test.png",
+          "alt": "多模态示例输入：灰绿色背景中的金属水果篮，篮内有香蕉和苹果",
+          "loaded": true,
+          "width": 200,
+          "right": 216
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "models/index",
+      "route": "/frameworks/spring-ai/models/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：模型概览",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 0,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/",
+          "label": "聊天模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/",
+          "label": "音频模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/moderation-model/",
+          "label": "审核模型"
+        },
+        {
+          "href": "#按任务选择模型类型",
+          "label": "Section titled “按任务选择模型类型”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态"
+        },
+        {
+          "href": "#统一-api-统一了什么",
+          "label": "Section titled “统一 API 统一了什么”"
+        },
+        {
+          "href": "#接入时先确认这几件事",
+          "label": "Section titled “接入时先确认这几件事”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG 阶段"
+        },
+        {
+          "href": "#按需查询的文档入口",
+          "label": "Section titled “按需查询的文档入口”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+          "label": "Chat Models Comparison"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_available_implementations",
+          "label": "Chat Models"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations",
+          "label": "Embedding Models"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/#%E8%AF%AD%E9%9F%B3%E8%BD%AC%E6%96%87%E5%AD%97",
+          "label": "音频模型：语音转文字"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/#%E6%96%87%E5%AD%97%E8%BD%AC%E8%AF%AD%E9%9F%B3",
+          "label": "音频模型：文字转语音"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/moderation-model/",
+          "label": "审核模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_ai_model_api",
+          "label": "Spring AI API：AI Model API"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/index",
+      "route": "/frameworks/spring-ai/models/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：模型概览",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 0,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/models/chat-model/",
+          "label": "聊天模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/",
+          "label": "音频模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/moderation-model/",
+          "label": "审核模型"
+        },
+        {
+          "href": "#按任务选择模型类型",
+          "label": "Section titled “按任务选择模型类型”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态"
+        },
+        {
+          "href": "#统一-api-统一了什么",
+          "label": "Section titled “统一 API 统一了什么”"
+        },
+        {
+          "href": "#接入时先确认这几件事",
+          "label": "Section titled “接入时先确认这几件事”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG 阶段"
+        },
+        {
+          "href": "#按需查询的文档入口",
+          "label": "Section titled “按需查询的文档入口”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+          "label": "Chat Models Comparison"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html#_available_implementations",
+          "label": "Chat Models"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations",
+          "label": "Embedding Models"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/image-model/",
+          "label": "图像模型"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/#%E8%AF%AD%E9%9F%B3%E8%BD%AC%E6%96%87%E5%AD%97",
+          "label": "音频模型：语音转文字"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/#%E6%96%87%E5%AD%97%E8%BD%AC%E8%AF%AD%E9%9F%B3",
+          "label": "音频模型：文字转语音"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/moderation-model/",
+          "label": "审核模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/index.html#_ai_model_api",
+          "label": "Spring AI API：AI Model API"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/chat-model",
+      "route": "/frameworks/spring-ai/models/chat-model/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：聊天模型",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 3,
+      "links": [
+        {
+          "href": "#chatmodel-与-chatclient-的关系",
+          "label": "Section titled “ChatModel 与 ChatClient 的关系”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient API"
+        },
+        {
+          "href": "#一次请求和响应包含什么",
+          "label": "Section titled “一次请求和响应包含什么”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/prompts/",
+          "label": "提示词"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/",
+          "label": "响应元数据"
+        },
+        {
+          "href": "#同步调用与流式调用",
+          "label": "Section titled “同步调用与流式调用”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E6%B5%81%E5%BC%8F%E5%93%8D%E5%BA%94",
+          "label": "ChatClient 流式调用"
+        },
+        {
+          "href": "#chatoptions通用选项与专有选项",
+          "label": "Section titled “ChatOptions：通用选项与专有选项”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE",
+          "label": "ChatClient 参数配置"
+        },
+        {
+          "href": "#需要时再查的内容",
+          "label": "Section titled “需要时再查的内容”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+          "label": "Chat Model API 完整文档"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+          "label": "聊天模型能力对比"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+          "label": "OpenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/deepseek-chat.html",
+          "label": "DeepSeek"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html",
+          "label": "Ollama"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/anthropic-chat.html",
+          "label": "Anthropic"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/google-genai-chat.html",
+          "label": "Google GenAI"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+          "label": "Chat Model API"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/chat-model",
+      "route": "/frameworks/spring-ai/models/chat-model/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：聊天模型",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 3,
+      "links": [
+        {
+          "href": "#chatmodel-与-chatclient-的关系",
+          "label": "Section titled “ChatModel 与 ChatClient 的关系”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/",
+          "label": "ChatClient API"
+        },
+        {
+          "href": "#一次请求和响应包含什么",
+          "label": "Section titled “一次请求和响应包含什么”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/prompts/",
+          "label": "提示词"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-response-metadata/",
+          "label": "响应元数据"
+        },
+        {
+          "href": "#同步调用与流式调用",
+          "label": "Section titled “同步调用与流式调用”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E6%B5%81%E5%BC%8F%E5%93%8D%E5%BA%94",
+          "label": "ChatClient 流式调用"
+        },
+        {
+          "href": "#chatoptions通用选项与专有选项",
+          "label": "Section titled “ChatOptions：通用选项与专有选项”"
+        },
+        {
+          "href": "/frameworks/spring-ai/core/chat-client/#%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE",
+          "label": "ChatClient 参数配置"
+        },
+        {
+          "href": "#需要时再查的内容",
+          "label": "Section titled “需要时再查的内容”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+          "label": "Chat Model API 完整文档"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/comparison.html",
+          "label": "聊天模型能力对比"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+          "label": "OpenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/deepseek-chat.html",
+          "label": "DeepSeek"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html",
+          "label": "Ollama"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/anthropic-chat.html",
+          "label": "Anthropic"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chat/google-genai-chat.html",
+          "label": "Google GenAI"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "label": "Embedding 模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+          "label": "Chat Model API"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/embedding-model",
+      "route": "/frameworks/spring-ai/models/embedding-model/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：Embedding 模型",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 3,
+      "links": [
+        {
+          "href": "#embeddingmodel-负责什么",
+          "label": "Section titled “EmbeddingModel 负责什么”"
+        },
+        {
+          "href": "#常用方法",
+          "label": "Section titled “常用方法”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/embedding/EmbeddingModel.html#dimensions()",
+          "label": "dimensions() 的 API 说明"
+        },
+        {
+          "href": "#请求响应和-document-的边界",
+          "label": "Section titled “请求、响应和 Document 的边界”"
+        },
+        {
+          "href": "#工程上先记住三点",
+          "label": "Section titled “工程上先记住三点”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/#_tokentextsplitter",
+          "label": "文档切分"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#_batching_strategy",
+          "label": "批量入库"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+          "label": "Top-K"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "label": "过滤条件"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG 笔记"
+        },
+        {
+          "href": "#按需查询",
+          "label": "Section titled “按需查询”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+          "label": "Embedding Model API 完整文档"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations",
+          "label": "提供方实现列表"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/openai-embeddings.html",
+          "label": "OpenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/ollama-embeddings.html",
+          "label": "Ollama"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/google-genai-embeddings-text.html",
+          "label": "Google GenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/mistralai-embeddings.html",
+          "label": "Mistral AI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+          "label": "Embeddings Model API"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/embedding/EmbeddingModel.html",
+          "label": "2.0.2 API"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/embedding-model",
+      "route": "/frameworks/spring-ai/models/embedding-model/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：Embedding 模型",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 3,
+      "links": [
+        {
+          "href": "#embeddingmodel-负责什么",
+          "label": "Section titled “EmbeddingModel 负责什么”"
+        },
+        {
+          "href": "#常用方法",
+          "label": "Section titled “常用方法”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/embedding/EmbeddingModel.html#dimensions()",
+          "label": "dimensions() 的 API 说明"
+        },
+        {
+          "href": "#请求响应和-document-的边界",
+          "label": "Section titled “请求、响应和 Document 的边界”"
+        },
+        {
+          "href": "#工程上先记住三点",
+          "label": "Section titled “工程上先记住三点”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/document-ingestion/#_tokentextsplitter",
+          "label": "文档切分"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#_batching_strategy",
+          "label": "批量入库"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+          "label": "Top-K"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "label": "过滤条件"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+          "label": "RAG 笔记"
+        },
+        {
+          "href": "#按需查询",
+          "label": "Section titled “按需查询”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+          "label": "Embedding Model API 完整文档"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations",
+          "label": "提供方实现列表"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/openai-embeddings.html",
+          "label": "OpenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/ollama-embeddings.html",
+          "label": "Ollama"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/google-genai-embeddings-text.html",
+          "label": "Google GenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/mistralai-embeddings.html",
+          "label": "Mistral AI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+          "label": "Embeddings Model API"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/embedding/EmbeddingModel.html",
+          "label": "2.0.2 API"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/image-model",
+      "route": "/frameworks/spring-ai/models/image-model/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：图像模型",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 3,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态"
+        },
+        {
+          "href": "#核心-api",
+          "label": "Section titled “核心 API”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/#%E7%BB%9F%E4%B8%80-api-%E7%BB%9F%E4%B8%80%E4%BA%86%E4%BB%80%E4%B9%88",
+          "label": "通用模型 API"
+        },
+        {
+          "href": "#最小调用",
+          "label": "Section titled “最小调用”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/image/Image.html",
+          "label": "Image API"
+        },
+        {
+          "href": "#生成选项",
+          "label": "Section titled “生成选项”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/image/ImageOptions.html",
+          "label": "2.0.2 ImageOptions API"
+        },
+        {
+          "href": "#提供方入口",
+          "label": "Section titled “提供方入口”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/image/openai-image.html",
+          "label": "OpenAI 图像生成"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/image/stabilityai-image.html",
+          "label": "Stability AI 图像生成"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/image/google-genai-image.html",
+          "label": "Google GenAI 图像生成"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/",
+          "label": "音频模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/imageclient.html",
+          "label": "Image Model API"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/image-model",
+      "route": "/frameworks/spring-ai/models/image-model/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：图像模型",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 3,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态"
+        },
+        {
+          "href": "#核心-api",
+          "label": "Section titled “核心 API”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/#%E7%BB%9F%E4%B8%80-api-%E7%BB%9F%E4%B8%80%E4%BA%86%E4%BB%80%E4%B9%88",
+          "label": "通用模型 API"
+        },
+        {
+          "href": "#最小调用",
+          "label": "Section titled “最小调用”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/image/Image.html",
+          "label": "Image API"
+        },
+        {
+          "href": "#生成选项",
+          "label": "Section titled “生成选项”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/image/ImageOptions.html",
+          "label": "2.0.2 ImageOptions API"
+        },
+        {
+          "href": "#提供方入口",
+          "label": "Section titled “提供方入口”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/image/openai-image.html",
+          "label": "OpenAI 图像生成"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/image/stabilityai-image.html",
+          "label": "Stability AI 图像生成"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/image/google-genai-image.html",
+          "label": "Google GenAI 图像生成"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/audio-model/",
+          "label": "音频模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/imageclient.html",
+          "label": "Image Model API"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/audio-model",
+      "route": "/frameworks/spring-ai/models/audio-model/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：音频模型",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 5,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态交互"
+        },
+        {
+          "href": "#语音转文字",
+          "label": "Section titled “语音转文字”"
+        },
+        {
+          "href": "#文字转语音",
+          "label": "Section titled “文字转语音”"
+        },
+        {
+          "href": "#流式语音",
+          "label": "Section titled “流式语音”"
+        },
+        {
+          "href": "#对接阻塞-inputstream",
+          "label": "Section titled “对接阻塞 InputStream”"
+        },
+        {
+          "href": "#选择提供方与组织业务代码",
+          "label": "Section titled “选择提供方与组织业务代码”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/#%E7%BB%9F%E4%B8%80-api-%E7%BB%9F%E4%B8%80%E4%BA%86%E4%BB%80%E4%B9%88",
+          "label": "统一模型 API"
+        },
+        {
+          "href": "#提供方入口",
+          "label": "Section titled “提供方入口”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions/openai-transcriptions.html",
+          "label": "OpenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions/jinfer-transcriptions.html",
+          "label": "Qxotic jinfer（JVM 内本地推理）"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech/openai-speech.html",
+          "label": "OpenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech/elevenlabs-speech.html",
+          "label": "ElevenLabs"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech/jinfer-speech.html",
+          "label": "Qxotic jinfer（JVM 内本地推理）"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/moderation-model/",
+          "label": "审核模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio.html",
+          "label": "Audio Models"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html",
+          "label": "Transcription API"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html",
+          "label": "Text-To-Speech API"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/audio-model",
+      "route": "/frameworks/spring-ai/models/audio-model/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：音频模型",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 5,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/core/multimodality/",
+          "label": "多模态交互"
+        },
+        {
+          "href": "#语音转文字",
+          "label": "Section titled “语音转文字”"
+        },
+        {
+          "href": "#文字转语音",
+          "label": "Section titled “文字转语音”"
+        },
+        {
+          "href": "#流式语音",
+          "label": "Section titled “流式语音”"
+        },
+        {
+          "href": "#对接阻塞-inputstream",
+          "label": "Section titled “对接阻塞 InputStream”"
+        },
+        {
+          "href": "#选择提供方与组织业务代码",
+          "label": "Section titled “选择提供方与组织业务代码”"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/#%E7%BB%9F%E4%B8%80-api-%E7%BB%9F%E4%B8%80%E4%BA%86%E4%BB%80%E4%B9%88",
+          "label": "统一模型 API"
+        },
+        {
+          "href": "#提供方入口",
+          "label": "Section titled “提供方入口”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions/openai-transcriptions.html",
+          "label": "OpenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions/jinfer-transcriptions.html",
+          "label": "Qxotic jinfer（JVM 内本地推理）"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech/openai-speech.html",
+          "label": "OpenAI"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech/elevenlabs-speech.html",
+          "label": "ElevenLabs"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech/jinfer-speech.html",
+          "label": "Qxotic jinfer（JVM 内本地推理）"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/moderation-model/",
+          "label": "审核模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio.html",
+          "label": "Audio Models"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html",
+          "label": "Transcription API"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/audio/speech.html",
+          "label": "Text-To-Speech API"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/moderation-model",
+      "route": "/frameworks/spring-ai/models/moderation-model/",
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：审核模型",
+      "viewport": 1440,
+      "width": 1440,
+      "codeBlocks": 2,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "模型评估与测试"
+        },
+        {
+          "href": "#核心-api-与结果层级",
+          "label": "Section titled “核心 API 与结果层级”"
+        },
+        {
+          "href": "#最小调用",
+          "label": "Section titled “最小调用”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/moderation/ModerationResult.html",
+          "label": "ModerationResult API"
+        },
+        {
+          "href": "#三类结果分别表示什么",
+          "label": "Section titled “三类结果分别表示什么”"
+        },
+        {
+          "href": "#在应用中如何使用",
+          "label": "Section titled “在应用中如何使用”"
+        },
+        {
+          "href": "#提供方入口",
+          "label": "Section titled “提供方入口”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html",
+          "label": "OpenAI Moderation"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html",
+          "label": "Mistral AI Moderation"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/",
+          "label": "模型概览"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/moderation.html",
+          "label": "Moderation Models"
+        }
+      ],
+      "images": [],
+      "errors": []
+    },
+    {
+      "name": "models/moderation-model",
+      "route": "/frameworks/spring-ai/models/moderation-model/",
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：审核模型",
+      "viewport": 390,
+      "width": 390,
+      "codeBlocks": 2,
+      "links": [
+        {
+          "href": "/frameworks/spring-ai/engineering/evaluation/",
+          "label": "模型评估与测试"
+        },
+        {
+          "href": "#核心-api-与结果层级",
+          "label": "Section titled “核心 API 与结果层级”"
+        },
+        {
+          "href": "#最小调用",
+          "label": "Section titled “最小调用”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/docs/2.0.2/api/org/springframework/ai/moderation/ModerationResult.html",
+          "label": "ModerationResult API"
+        },
+        {
+          "href": "#三类结果分别表示什么",
+          "label": "Section titled “三类结果分别表示什么”"
+        },
+        {
+          "href": "#在应用中如何使用",
+          "label": "Section titled “在应用中如何使用”"
+        },
+        {
+          "href": "#提供方入口",
+          "label": "Section titled “提供方入口”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/moderation/openai-moderation.html",
+          "label": "OpenAI Moderation"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/moderation/mistral-ai-moderation.html",
+          "label": "Mistral AI Moderation"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/",
+          "label": "模型概览"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/moderation.html",
+          "label": "Moderation Models"
+        }
+      ],
+      "images": [],
+      "errors": []
+    }
+  ],
+  "targets": [
+    {
+      "path": "/frameworks/spring-ai/#解决什么问题",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/#核心能力",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/vector-stores/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/tools/tool-calling/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/mcp/overview/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/document-ingestion/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-memory/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/retrieval-and-generation/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/engineering/evaluation/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/#从哪里开始",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/#模型处理什么生成什么",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/#提示词不只是一个字符串",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/#提示词模板",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#prompttemplate将模板转换为提示词",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/#embedding内容的向量表示",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/#token长度费用和上下文限制",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/#结构化输出让结果能被程序使用",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/#把企业数据和-api-接入模型",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/#rag先检索再生成",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#检索增强生成",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/#工具调用由应用执行实际操作",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/concepts/#评估回答是否符合问题和依据",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#创建项目",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#配置依赖仓库",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#正式版使用-maven-central",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#tab-panel-0-0",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#tab-panel-0-1",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#快照版添加-snapshot-仓库",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#tab-panel-1-0",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#tab-panel-1-1",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#maven-镜像配置",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#使用-bom-管理版本",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#tab-panel-2-0",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#tab-panel-2-1",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#添加具体组件依赖",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/chat-model/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/embedding-model/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/image-model/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/audio-model/#语音转文字",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/audio-model/#文字转语音",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/getting-started/quickstart/#示例与学习资源",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#prompt消息与请求选项的容器",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#实现说明",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#运行前配置",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#tab-panel-0-0",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#tab-panel-0-1",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#创建-chatclient",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#使用自动配置的-chatclientbuilder",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#使用多个聊天模型",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#同一模型类型创建多个-chatclient",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#为不同模型类型创建-chatclient",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#单模型与多模型的配置差异",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#连接多个-openai-兼容端点",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#chatclient-链式-api",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#chatclient-的响应",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#返回-chatresponse",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/chat-model/#一次请求和响应包含什么",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#返回-java-对象",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#可靠性配置entityparamspec",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#流式响应",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#输出转换器",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#提示词模板",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#_custom_template",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/retrieval-and-generation/#_questionansweradvisor",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#call-的返回值",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#stream-的返回值",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#消息元数据",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#为用户消息添加元数据",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#为系统消息添加元数据",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#默认元数据",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#元数据校验",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#读取元数据",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#默认配置",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#默认系统提示词",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#带参数的默认系统提示词",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#其他默认配置",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/chat-client-options-merging-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#基于现有配置创建客户端",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#advisors",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#在-chatclient-中配置-advisor",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#日志",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#工具调用",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#禁用自动注册",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/tools/tool-calling/#user-controlled-tool-execution",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#定制默认-toolcallingadvisor",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#tooladvisor-标记接口",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/tools/tool-calling/#extending-the-loop",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#对话记忆",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-client/#memoryadvisor-标记接口",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#核心组件与执行流程",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/advisors-api-classes-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/advisors-flow-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#advisor-顺序",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#api-接口",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#实现自定义-advisor",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#日志-advisor",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#重读策略re2",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#内置-advisor",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#toolcallingadvisor工具调用循环",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#流式与非流式",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/advisors-non-stream-vs-stream-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#实践建议",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#递归-advisors",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/advisors-recursive-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/tools/tool-calling-advisor/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/tools/tool-calling/#the-tool-calling-loop",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/tools/tool-search-tool/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-response-metadata/#多步流程的累计用量",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#structuredoutputvalidationadvisor结构校验循环",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#schema-校验与自动纠正",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#自定义递归-advisor-的用量累计",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#历史-api-迁移",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#advisor-接口演变",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/advisors/#上下文-map-的历史变化",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#api-概览",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#message文本元数据与角色",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/multimodality/",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/spring-ai-message-api-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#生成字符串render",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#生成消息createmessage",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#生成完整请求create",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#使用示例",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#填入模板变量",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#组合系统消息与用户消息",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#自定义模板渲染器",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#从资源文件加载模板",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#提示词工程",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#一条有效提示词包含什么",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#基础技巧",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#进阶技巧",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#microsoft-guidance",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/#token长度费用与上下文",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-response-metadata/#usagetoken-用量",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-response-metadata/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-response-metadata/#chatresponsemetadata响应元数据入口",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-response-metadata/#ratelimit限额与剩余额度",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-response-metadata/#使用-chatmodel-读取用量",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-response-metadata/#使用-chatclient-读取用量",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/chat-response-metadata/#提示词缓存用量",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#返回-java-对象",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/structured-output-basic-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#泛型listmap-等",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#可靠性配置entityparamspec",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#validateschema校验失败后重试",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#useproviderstructuredoutput请求端约束",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#提供方原生结构化输出",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#组合使用",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#纠正循环如何执行",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/structured-output-self-correction-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#定制-structuredoutputvalidationadvisor",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#与提供方原生约束组合",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#已知限制",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#同时获取对象与完整响应",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#能力检测与默认回退",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#支持的模型",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#按请求或全局启用",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#提供方专用的-json-模式",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/spring-ai-structured-output-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#接口与数据流",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/structured-output-api-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#getjsonschema连接可靠性配置",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#内置实现与选型",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/structured-output-hierarchy-zh.svg",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#beanoutputconverter映射-java-类型",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#mapoutputconverter键值结果",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#listoutputconverter逗号分隔列表",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#自定义转换器提取-json",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#非-json-格式yamlcsv",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/structured-output/#用法速查",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/multimodality/#文本与媒体如何组合",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/prompts/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/multimodality/#输入与输出的边界",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/audio-model/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/multimodality/#示例让模型描述图片",
+      "status": 200
+    },
+    {
+      "path": "/images/frameworks/spring-ai/multimodal.test.png",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/multimodality/#使用-chatmodel",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/multimodality/#使用-chatclient",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/core/multimodality/#支持入口",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/moderation-model/",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/#按任务选择模型类型",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/#统一-api-统一了什么",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/#接入时先确认这几件事",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/#按需查询的文档入口",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/chat-model/#chatmodel-与-chatclient-的关系",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/chat-model/#同步调用与流式调用",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/chat-model/#chatoptions通用选项与专有选项",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/chat-model/#需要时再查的内容",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/embedding-model/#embeddingmodel-负责什么",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/embedding-model/#常用方法",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/embedding-model/#请求响应和-document-的边界",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/embedding-model/#工程上先记住三点",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/document-ingestion/#_tokentextsplitter",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/vector-stores/#_batching_strategy",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/vector-stores/#_searchrequest_builder",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/embedding-model/#按需查询",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/image-model/#核心-api",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/image-model/#最小调用",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/image-model/#生成选项",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/image-model/#提供方入口",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/audio-model/#流式语音",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/audio-model/#对接阻塞-inputstream",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/audio-model/#选择提供方与组织业务代码",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/audio-model/#提供方入口",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/moderation-model/#核心-api-与结果层级",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/moderation-model/#最小调用",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/moderation-model/#三类结果分别表示什么",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/moderation-model/#在应用中如何使用",
+      "status": 200
+    },
+    {
+      "path": "/frameworks/spring-ai/models/moderation-model/#提供方入口",
+      "status": 200
+    }
+  ]
+}

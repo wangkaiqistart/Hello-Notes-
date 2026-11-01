@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "static": {
+    "pages": 15,
+    "pagesChanged": 15,
+    "externalToLocal": 41,
+    "codeBlocksPreserved": 138,
+    "imagesPreserved": 22,
+    "localReferences": 130
+  },
+  "browser": {
+    "pages": 15,
+    "responsivePageChecks": 30,
+    "uniqueLocalTargets": 215,
+    "uniqueLocalResources": 36,
+    "otherModuleReferences": 0
+  },
+  "checks": {
+    "npm run check": {
+      "exitCode": 0,
+      "files": 18,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0
+    },
+    "npm run build": {
+      "exitCode": 0,
+      "pages": 93
+    },
+    "git diff --check": {
+      "exitCode": 0
+    }
+  },
+  "limits": [
+    "本次优化引用与必要的导航说明，没有重新审计所有官方内容或验证提供方运行行为。",
+    "外部链接的保留理由已审查，未逐项重新请求外部网站。",
+    "translation.md 与站点正文同步；初稿、审校及修订阶段文档保留历史内容。"
+  ]
+}

@@ -1,0 +1,528 @@
+{
+  "date": "2026-11-01",
+  "sourceUrl": "https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html",
+  "version": "2.0.2",
+  "result": "PASS",
+  "page": "src/content/docs/frameworks/spring-ai/rag/document-ingestion.mdx",
+  "pageSha256": "2cb8548738d1b72df0649c64b0ec080cafd4cf71217f25fb46993a19ad3ab671",
+  "sourceSections": 83,
+  "targetSourceSections": 83,
+  "sourceCodeBlocks": 41,
+  "targetCodeBlocks": 41,
+  "sourceImages": 3,
+  "targetImages": 3,
+  "sourceExternalLinks": 2,
+  "headings": [
+    {
+      "sourceId": "_api_overview",
+      "sourceTitle": "API Overview",
+      "targetTitle": "一、API 概览（重点掌握）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_etl_interfaces",
+      "sourceTitle": "ETL Interfaces",
+      "targetTitle": "二、ETL 接口（理解职责）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_documentreader",
+      "sourceTitle": "DocumentReader",
+      "targetTitle": "DocumentReader",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_documenttransformer",
+      "sourceTitle": "DocumentTransformer",
+      "targetTitle": "DocumentTransformer",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_documentwriter",
+      "sourceTitle": "DocumentWriter",
+      "targetTitle": "DocumentWriter",
+      "status": "covered"
+    },
+    {
+      "sourceId": "etl-class-diagram",
+      "sourceTitle": "ETL Class Diagram",
+      "targetTitle": "ETL 类图",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_documentreaders",
+      "sourceTitle": "DocumentReaders",
+      "targetTitle": "三、文档读取器（按格式查阅）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_json",
+      "sourceTitle": "JSON",
+      "targetTitle": "JSON",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_constructor_options",
+      "sourceTitle": "Constructor Options",
+      "targetTitle": "构造器",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_parameters",
+      "sourceTitle": "Parameters",
+      "targetTitle": "参数",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_behavior",
+      "sourceTitle": "Behavior",
+      "targetTitle": "处理流程",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_using_json_pointers",
+      "sourceTitle": "Using JSON Pointers",
+      "targetTitle": "使用 JSON Pointer",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_the_getstring_pointer_method",
+      "sourceTitle": "The get(String pointer) method",
+      "targetTitle": "`get(String pointer)` 方法",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_parameters_2",
+      "sourceTitle": "Parameters",
+      "targetTitle": "参数",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_return_value",
+      "sourceTitle": "Return Value",
+      "targetTitle": "返回值",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_behavior_2",
+      "sourceTitle": "Behavior",
+      "targetTitle": "处理流程",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_2",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_json_structure",
+      "sourceTitle": "Example JSON Structure",
+      "targetTitle": "JSON 结构示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_notes",
+      "sourceTitle": "Notes",
+      "targetTitle": "注意事项",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_text",
+      "sourceTitle": "Text",
+      "targetTitle": "纯文本",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_3",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_constructor_options_2",
+      "sourceTitle": "Constructor Options",
+      "targetTitle": "构造器",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_parameters_3",
+      "sourceTitle": "Parameters",
+      "targetTitle": "参数",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_configuration",
+      "sourceTitle": "Configuration",
+      "targetTitle": "配置",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_behavior_3",
+      "sourceTitle": "Behavior",
+      "targetTitle": "处理流程",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_notes_2",
+      "sourceTitle": "Notes",
+      "targetTitle": "注意事项",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_html_jsoup",
+      "sourceTitle": "HTML (JSoup)",
+      "targetTitle": "HTML（JSoup）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_dependencies",
+      "sourceTitle": "Dependencies",
+      "targetTitle": "依赖",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_4",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_sample_document_my_page_html",
+      "sourceTitle": "Sample Document: my-page.html",
+      "targetTitle": "示例文档：my-page.html",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_markdown",
+      "sourceTitle": "Markdown",
+      "targetTitle": "Markdown",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_dependencies_2",
+      "sourceTitle": "Dependencies",
+      "targetTitle": "依赖",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_5",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_sample_document_code_md",
+      "sourceTitle": "Sample Document: code.md",
+      "targetTitle": "示例文档：code.md",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_pdf_page",
+      "sourceTitle": "PDF Page",
+      "targetTitle": "按页读取 PDF",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_dependencies_3",
+      "sourceTitle": "Dependencies",
+      "targetTitle": "依赖",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_6",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_pdf_paragraph",
+      "sourceTitle": "PDF Paragraph",
+      "targetTitle": "按段落读取 PDF",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_dependencies_4",
+      "sourceTitle": "Dependencies",
+      "targetTitle": "依赖",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_7",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_tika_docx_pptx_html",
+      "sourceTitle": "Tika (DOCX, PPTX, HTML…​)",
+      "targetTitle": "Tika（DOCX、PPTX、HTML 等）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_dependencies_5",
+      "sourceTitle": "Dependencies",
+      "targetTitle": "依赖",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_8",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_transformers",
+      "sourceTitle": "Transformers",
+      "targetTitle": "四、转换器（切分是重点）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_textsplitter",
+      "sourceTitle": "TextSplitter",
+      "targetTitle": "TextSplitter",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_tokentextsplitter",
+      "sourceTitle": "TokenTextSplitter",
+      "targetTitle": "TokenTextSplitter",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_usage",
+      "sourceTitle": "Usage",
+      "targetTitle": "用法",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_basic_usage",
+      "sourceTitle": "Basic Usage",
+      "targetTitle": "基本用法",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_custom_encoding_type",
+      "sourceTitle": "Custom Encoding Type",
+      "targetTitle": "自定义编码类型",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_custom_punctuation_marks",
+      "sourceTitle": "Custom Punctuation Marks",
+      "targetTitle": "自定义标点",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_configuration_2",
+      "sourceTitle": "Configuration",
+      "targetTitle": "配置",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_parameters_4",
+      "sourceTitle": "Parameters",
+      "targetTitle": "参数",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_behavior_4",
+      "sourceTitle": "Behavior",
+      "targetTitle": "处理流程",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_9",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_notes_3",
+      "sourceTitle": "Notes",
+      "targetTitle": "注意事项",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_contentformattransformer",
+      "sourceTitle": "ContentFormatTransformer",
+      "targetTitle": "ContentFormatTransformer",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_keywordmetadataenricher",
+      "sourceTitle": "KeywordMetadataEnricher",
+      "targetTitle": "KeywordMetadataEnricher",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_usage_2",
+      "sourceTitle": "Usage",
+      "targetTitle": "用法",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_constructor_options_3",
+      "sourceTitle": "Constructor Options",
+      "targetTitle": "构造器",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_behavior_5",
+      "sourceTitle": "Behavior",
+      "targetTitle": "处理流程",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_customization",
+      "sourceTitle": "Customization",
+      "targetTitle": "自定义",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_10",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_notes_4",
+      "sourceTitle": "Notes",
+      "targetTitle": "注意事项",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_summarymetadataenricher",
+      "sourceTitle": "SummaryMetadataEnricher",
+      "targetTitle": "SummaryMetadataEnricher",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_usage_3",
+      "sourceTitle": "Usage",
+      "targetTitle": "用法",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_constructor",
+      "sourceTitle": "Constructor",
+      "targetTitle": "构造器",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_parameters_5",
+      "sourceTitle": "Parameters",
+      "targetTitle": "参数",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_behavior_6",
+      "sourceTitle": "Behavior",
+      "targetTitle": "处理流程",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_customization_2",
+      "sourceTitle": "Customization",
+      "targetTitle": "自定义",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_11",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_notes_5",
+      "sourceTitle": "Notes",
+      "targetTitle": "注意事项",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_writers",
+      "sourceTitle": "Writers",
+      "targetTitle": "五、写入器（入库与调试）",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_file",
+      "sourceTitle": "File",
+      "targetTitle": "文件写入",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_usage_4",
+      "sourceTitle": "Usage",
+      "targetTitle": "用法",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_constructors",
+      "sourceTitle": "Constructors",
+      "targetTitle": "构造器",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_parameters_6",
+      "sourceTitle": "Parameters",
+      "targetTitle": "参数",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_behavior_7",
+      "sourceTitle": "Behavior",
+      "targetTitle": "处理流程",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_document_markers",
+      "sourceTitle": "Document Markers",
+      "targetTitle": "文档标记",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_metadata_handling",
+      "sourceTitle": "Metadata Handling",
+      "targetTitle": "元数据处理",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_example_12",
+      "sourceTitle": "Example",
+      "targetTitle": "示例",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_notes_6",
+      "sourceTitle": "Notes",
+      "targetTitle": "注意事项",
+      "status": "covered"
+    },
+    {
+      "sourceId": "_vectorstore",
+      "sourceTitle": "VectorStore",
+      "targetTitle": "VectorStore",
+      "status": "covered"
+    }
+  ],
+  "codeFidelity": "code-fidelity.json",
+  "scope": "All source sections, code blocks and images retained. Corrections recorded separately; no claim of live model execution.",
+  "sourceLinkOverrides": [
+    {
+      "from": "https://docs.spring.io/spring-ai/reference/api/vectordbs.html",
+      "to": "/frameworks/spring-ai/rag/vector-stores/#_vectorstore_implementations",
+      "reason": "向量存储总览已完成，含完整后端入口列表。"
+    }
+  ],
+  "latestLinkAudit": "2026-11-01-spring-ai-only-links.json",
+  "latestImageAudit": "2026-11-01-image-localization.json",
+  "latestVectorStoreLinkAudit": "2026-11-01-vector-store-link.json",
+  "latestRagReferenceAudit": "../spring-ai-rag-reference-audit/audit.json"
+}

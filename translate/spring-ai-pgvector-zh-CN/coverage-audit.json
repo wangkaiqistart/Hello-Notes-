@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "page": "src/content/docs/frameworks/spring-ai/rag/vector-stores/pgvector.mdx",
+  "pageSha256": "842e825ff09b259103364a9171aff48122274d669100218b97f4f6daddc212e2",
+  "sourceSections": 7,
+  "targetSourceSections": 7,
+  "sourceCodeBlocks": 14,
+  "targetCodeBlocks": 14,
+  "sourceImages": 0,
+  "targetImages": 0,
+  "sourceLinksCovered": 15,
+  "sourceLinkOverrides": {
+    "https://docs.spring.io/spring-ai/reference/api/embeddings.html#available-implementations": "/frameworks/spring-ai/models/embedding-model/",
+    "https://docs.spring.io/spring-ai/reference/getting-started.html#dependency-management": "/frameworks/spring-ai/getting-started/quickstart/#使用-bom-管理版本",
+    "https://docs.spring.io/spring-ai/reference/getting-started.html#artifact-repositories": "/frameworks/spring-ai/getting-started/quickstart/#配置依赖仓库",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#_metadata_filters": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs.html#metadata-filters": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html#_run_postgres_pgvector_db_locally": "#_run_postgres_pgvector_db_locally",
+    "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html#pgvector-properties": "#pgvector-properties",
+    "https://docs.spring.io/spring-ai/reference/api/docker-compose.html": "/frameworks/spring-ai/engineering/docker-compose/",
+    "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose": "/frameworks/spring-ai/engineering/docker-compose/#service-connection-lifecycle"
+  },
+  "sourceConfigurationParameters": [
+    "spring.ai.vectorstore.pgvector.index-type",
+    "spring.ai.vectorstore.pgvector.distance-type",
+    "spring.ai.vectorstore.pgvector.dimensions",
+    "spring.ai.vectorstore.pgvector.remove-existing-vector-store-table",
+    "spring.ai.vectorstore.pgvector.initialize-schema",
+    "spring.ai.vectorstore.pgvector.schema-name",
+    "spring.ai.vectorstore.pgvector.table-name",
+    "spring.ai.vectorstore.pgvector.schema-validation",
+    "spring.ai.vectorstore.pgvector.max-document-batch-size"
+  ],
+  "allParameterKeysPreserved": true,
+  "latestRagReferenceAudit": "../spring-ai-rag-reference-audit/audit.json",
+  "latestDockerComposeReferenceAudit": "../spring-ai-docker-compose-zh-CN/coverage-audit.json"
+}

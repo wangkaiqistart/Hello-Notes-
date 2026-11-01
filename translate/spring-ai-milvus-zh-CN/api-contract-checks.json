@@ -1,0 +1,79 @@
+{
+  "version": "2.0.2",
+  "result": "PASS",
+  "checks": [
+    {
+      "check": "Gson整数Long小数Double",
+      "file": "MilvusVectorStore.java",
+      "evidence": "ToNumberPolicy.LONG_OR_DOUBLE",
+      "result": "PASS"
+    },
+    {
+      "check": "JSON参数透传",
+      "file": "MilvusVectorStore.java",
+      "evidence": "searchParamBuilder.withParams(searchParamsJson)",
+      "result": "PASS"
+    },
+    {
+      "check": "原生过滤优先",
+      "file": "MilvusVectorStore.java",
+      "evidence": "? milvusReq.getNativeExpression() : getConvertedFilterExpression(request)",
+      "result": "PASS"
+    },
+    {
+      "check": "分区写入",
+      "file": "MilvusVectorStore.java",
+      "evidence": "insertParamBuilder.withPartitionName(this.partitionName)",
+      "result": "PASS"
+    },
+    {
+      "check": "分区删除",
+      "file": "MilvusVectorStore.java",
+      "evidence": "deleteParamBuilder.withPartitionName(this.partitionName)",
+      "result": "PASS"
+    },
+    {
+      "check": "分区检索",
+      "file": "MilvusVectorStore.java",
+      "evidence": "searchParamBuilder.addPartitionName(this.partitionName)",
+      "result": "PASS"
+    },
+    {
+      "check": "IVF_FLAT默认索引",
+      "file": "MilvusVectorStoreProperties.java",
+      "evidence": "MilvusIndexType.IVF_FLAT",
+      "result": "PASS"
+    },
+    {
+      "check": "COSINE默认距离",
+      "file": "MilvusVectorStoreProperties.java",
+      "evidence": "MilvusMetricType.COSINE",
+      "result": "PASS"
+    },
+    {
+      "check": "空闲超时24h毫秒",
+      "file": "MilvusServiceClientProperties.java",
+      "evidence": "TimeUnit.MILLISECONDS.convert(24, TimeUnit.HOURS)",
+      "result": "PASS"
+    },
+    {
+      "check": "SDK连接host",
+      "file": "MilvusVectorStoreAutoConfiguration.java",
+      "evidence": ".withHost(connectionDetails.getHost())",
+      "result": "PASS"
+    },
+    {
+      "check": "SDK连接port",
+      "file": "MilvusVectorStoreAutoConfiguration.java",
+      "evidence": ".withPort(connectionDetails.getPort())",
+      "result": "PASS"
+    },
+    {
+      "check": "SDK身份认证",
+      "file": "MilvusVectorStoreAutoConfiguration.java",
+      "evidence": ".withAuthorization(clientProperties.getUsername(), clientProperties.getPassword())",
+      "result": "PASS"
+    }
+  ],
+  "boundary": "Static source inspection only; Java examples not compiled or executed; no database or model calls."
+}

@@ -1,0 +1,113 @@
+{
+  "result": "PASS",
+  "codeBlocks": 13,
+  "correctedBlocks": 2,
+  "blocks": [
+    {
+      "index": 1,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "a86f7323ae15fe13fc104d8f238910207a50b21f10125e49e24ae9ae715c2d4e",
+      "targetSha256": "a86f7323ae15fe13fc104d8f238910207a50b21f10125e49e24ae9ae715c2d4e"
+    },
+    {
+      "index": 2,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "89a03ce2b1c6b8edf13d584c4cdc8881ce20be2105b057c724fdaa00246c0e33",
+      "targetSha256": "89a03ce2b1c6b8edf13d584c4cdc8881ce20be2105b057c724fdaa00246c0e33"
+    },
+    {
+      "index": 3,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "fdededfa93ce1c4c992286329ab9bcbe41d0bcb0f8f27d22e31a74a704e6d8dc",
+      "targetSha256": "fdededfa93ce1c4c992286329ab9bcbe41d0bcb0f8f27d22e31a74a704e6d8dc"
+    },
+    {
+      "index": 4,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "52334c88da885d68821b03ed69b99d9ed8a0f79da393833f1c987172726c7456",
+      "targetSha256": "52334c88da885d68821b03ed69b99d9ed8a0f79da393833f1c987172726c7456"
+    },
+    {
+      "index": 5,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "cc03d3d8aa821ebac3ccdb88a9b03a4e9cfe3551f9459d544328e8fcd73c6090",
+      "targetSha256": "cc03d3d8aa821ebac3ccdb88a9b03a4e9cfe3551f9459d544328e8fcd73c6090"
+    },
+    {
+      "index": 6,
+      "language": "sql",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "9b6a1fe10cfdc4d71fc41649143ed7a67eba6ea05e09520e07fcc4ef0f6def09",
+      "targetSha256": "9b6a1fe10cfdc4d71fc41649143ed7a67eba6ea05e09520e07fcc4ef0f6def09"
+    },
+    {
+      "index": 7,
+      "language": "json",
+      "status": "corrected",
+      "reason": "仅将 JSON 对象展开为多行，字段和值不变；已按解析结果验证等价。",
+      "sourceSha256": "7453d12fc2a580a13e5008a84bd9a13f974ce7e5fcf58084dbacf05cc1451d6b",
+      "targetSha256": "454677c0599e6ce5c96731606c84ef80f592c477fc031f2c3f097675583b34a1",
+      "diff": "--- source\n+++ translation\n@@ -1 +1 @@\n-{\"$and\": [{\"country\": {\"$in\": [\"UK\", \"NL\"]}}, {\"year\": {\"$gte\": 2020}}]}+{ \"$and\": [{ \"country\": { \"$in\": [\"UK\", \"NL\"] } }, { \"year\": { \"$gte\": 2020 } }] }"
+    },
+    {
+      "index": 8,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "e993553c72d10916dd7d402148b0312289c0539fa89a96ee43593fd98bd3fdcf",
+      "targetSha256": "e993553c72d10916dd7d402148b0312289c0539fa89a96ee43593fd98bd3fdcf"
+    },
+    {
+      "index": 9,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "289a3be4e8e7193b10fef45b15b9fa33b27bbddd555445e3d9fe0bbb8ed20793",
+      "targetSha256": "289a3be4e8e7193b10fef45b15b9fa33b27bbddd555445e3d9fe0bbb8ed20793"
+    },
+    {
+      "index": 10,
+      "language": "xml",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "551dede0747e87db32eca03c6baf824c9d4b31cc4d5df001b194bba0aa95a13b",
+      "targetSha256": "551dede0747e87db32eca03c6baf824c9d4b31cc4d5df001b194bba0aa95a13b"
+    },
+    {
+      "index": 11,
+      "language": "groovy",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "bb5899133e8a7bdcf6055db02a53dd08b89b78a45788df088e6b1a098348ffdc",
+      "targetSha256": "bb5899133e8a7bdcf6055db02a53dd08b89b78a45788df088e6b1a098348ffdc"
+    },
+    {
+      "index": 12,
+      "language": "java",
+      "status": "corrected",
+      "reason": "补充客户端创建，修复未定义变量与模型构造，保留转换器扩展点。",
+      "sourceSha256": "d5cef0c2ff93e672e618054e1c06b9fc52315804e67abd61b3c1c0f6573f3c18",
+      "targetSha256": "628373fc9a1fb96c9505fe6ae5b92c098b9abf561684f6b94881cc3a787574db",
+      "diff": "--- source\n+++ translation\n@@ -1,14 +1,24 @@\n+@Bean(destroyMethod = \"close\")\n+public S3VectorsClient s3VectorsClient(@Value(\"${AWS_REGION}\") String region) {\n+    return S3VectorsClient.builder()\n+        .region(Region.of(region))\n+        .build(); // Uses the AWS SDK default credentials provider chain\n+}\n+\n @Bean\n-VectorStore s3VectorStore(S3VectorsClient s3VectorsClient, EmbeddingModel embeddingModel) {\n-    S3VectorStore.Builder builder = new S3VectorStore.Builder(s3VectorsClient, embeddingModel); // Required a must\n-    builder.indexName(properties.getIndexName()) // Required indexName must be specified\n-            .vectorBucketName(properties.getVectorBucketName()) // Required vectorBucketName must be specified\n-            .filterExpressionConverter(yourConverter);  // Optional if you want to override default filterConverter\n-    return builder.build();\n-\t}\n+public VectorStore s3VectorStore(S3VectorsClient s3VectorsClient, EmbeddingModel embeddingModel,\n+        @Value(\"${spring.ai.vectorstore.s3.index-name}\") String indexName,\n+        @Value(\"${spring.ai.vectorstore.s3.vector-bucket-name}\") String vectorBucketName) {\n+    return new S3VectorStore.Builder(s3VectorsClient, embeddingModel)\n+        .indexName(indexName)\n+        .vectorBucketName(vectorBucketName)\n+        // Optional: replace with your S3VectorFilterExpressionConverter implementation\n+        .filterExpressionConverter(new S3VectorFilterSearchExpressionConverter())\n+        .build();\n+}\n \n-// This can be any EmbeddingModel implementation\n @Bean\n public EmbeddingModel embeddingModel() {\n-    return new OpenAiEmbeddingModel(OpenAiEmbeddingOptions.builder().apiKey(System.getenv(\"OPENAI_API_KEY\")).build());\n+    // Reads OPENAI_API_KEY through the default OpenAI client setup\n+    return OpenAiEmbeddingModel.builder().build();\n }"
+    },
+    {
+      "index": 13,
+      "language": "java",
+      "status": "preserved",
+      "reason": "Source content preserved verbatim.",
+      "sourceSha256": "91452adf243dfc0e94de2cfb36c9666aec805b4f7005bf020a9930b80057aa9c",
+      "targetSha256": "91452adf243dfc0e94de2cfb36c9666aec805b4f7005bf020a9930b80057aa9c"
+    }
+  ]
+}

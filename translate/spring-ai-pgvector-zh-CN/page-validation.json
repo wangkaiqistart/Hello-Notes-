@@ -1,0 +1,273 @@
+{
+  "date": "2026-11-01",
+  "result": "PASS",
+  "base": "http://127.0.0.1:4322",
+  "route": "/frameworks/spring-ai/rag/vector-stores/pgvector/",
+  "pages": [
+    {
+      "device": "desktop",
+      "result": "PASS",
+      "title": "Spring AI：PGvector 向量存储",
+      "viewport": 1440,
+      "width": 1440,
+      "anchors": [
+        "_prerequisites",
+        "一准备工作",
+        "_auto_configuration",
+        "二自动配置重点",
+        "pgvector-properties",
+        "配置属性",
+        "_metadata_filtering",
+        "三元数据过滤重点",
+        "_manual_configuration",
+        "四手动配置参考",
+        "_run_postgres_pgvector_db_locally",
+        "五本地运行-postgresql-与-pgvector",
+        "_accessing_the_native_client",
+        "六访问原生客户端参考"
+      ],
+      "links": [
+        {
+          "href": "https://github.com/pgvector/pgvector",
+          "text": "PGvector"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/",
+          "text": "向量存储总览"
+        },
+        {
+          "href": "#一准备工作",
+          "text": "Section titled “一、准备工作”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/docker-compose.html",
+          "text": "Docker Compose"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/testcontainers.html",
+          "text": "Testcontainers"
+        },
+        {
+          "href": "#_run_postgres_pgvector_db_locally",
+          "text": "本地运行"
+        },
+        {
+          "href": "https://github.com/pgvector/pgvector/blob/v0.8.1/README.md#hnsw",
+          "text": "pgvector 的索引类型说明"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "Embedding 模型"
+        },
+        {
+          "href": "#二自动配置重点",
+          "text": "Section titled “二、自动配置（重点）”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "text": "升级说明"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "Embedding 模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/openai-embeddings.html",
+          "text": "OpenAI EmbeddingModel"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "依赖管理"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "text": "构件仓库"
+        },
+        {
+          "href": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose",
+          "text": "Docker Compose 开发服务"
+        },
+        {
+          "href": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.testcontainers",
+          "text": "Testcontainers 开发服务"
+        },
+        {
+          "href": "#pgvector-properties",
+          "text": "配置属性"
+        },
+        {
+          "href": "#配置属性",
+          "text": "Section titled “配置属性”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#_batching_strategy",
+          "text": "总览"
+        },
+        {
+          "href": "#三元数据过滤重点",
+          "text": "Section titled “三、元数据过滤（重点）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "text": "元数据过滤语法"
+        },
+        {
+          "href": "#四手动配置参考",
+          "text": "Section titled “四、手动配置（参考）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "依赖管理"
+        },
+        {
+          "href": "#五本地运行-postgresql-与-pgvector",
+          "text": "Section titled “五、本地运行 PostgreSQL 与 PGvector”"
+        },
+        {
+          "href": "#六访问原生客户端参考",
+          "text": "Section titled “六、访问原生客户端（参考）”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html",
+          "text": "PGvector"
+        }
+      ],
+      "images": 0,
+      "errors": [],
+      "localTargets": 17
+    },
+    {
+      "device": "mobile",
+      "result": "PASS",
+      "title": "Spring AI：PGvector 向量存储",
+      "viewport": 390,
+      "width": 390,
+      "anchors": [
+        "_prerequisites",
+        "一准备工作",
+        "_auto_configuration",
+        "二自动配置重点",
+        "pgvector-properties",
+        "配置属性",
+        "_metadata_filtering",
+        "三元数据过滤重点",
+        "_manual_configuration",
+        "四手动配置参考",
+        "_run_postgres_pgvector_db_locally",
+        "五本地运行-postgresql-与-pgvector",
+        "_accessing_the_native_client",
+        "六访问原生客户端参考"
+      ],
+      "links": [
+        {
+          "href": "https://github.com/pgvector/pgvector",
+          "text": "PGvector"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/",
+          "text": "向量存储总览"
+        },
+        {
+          "href": "#一准备工作",
+          "text": "Section titled “一、准备工作”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/docker-compose.html",
+          "text": "Docker Compose"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/testcontainers.html",
+          "text": "Testcontainers"
+        },
+        {
+          "href": "#_run_postgres_pgvector_db_locally",
+          "text": "本地运行"
+        },
+        {
+          "href": "https://github.com/pgvector/pgvector/blob/v0.8.1/README.md#hnsw",
+          "text": "pgvector 的索引类型说明"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "Embedding 模型"
+        },
+        {
+          "href": "#二自动配置重点",
+          "text": "Section titled “二、自动配置（重点）”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/upgrade-notes.html",
+          "text": "升级说明"
+        },
+        {
+          "href": "/frameworks/spring-ai/models/embedding-model/",
+          "text": "Embedding 模型"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/embeddings/openai-embeddings.html",
+          "text": "OpenAI EmbeddingModel"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "依赖管理"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96%E4%BB%93%E5%BA%93",
+          "text": "构件仓库"
+        },
+        {
+          "href": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.docker-compose",
+          "text": "Docker Compose 开发服务"
+        },
+        {
+          "href": "https://docs.spring.io/spring-boot/reference/features/dev-services.html#features.dev-services.testcontainers",
+          "text": "Testcontainers 开发服务"
+        },
+        {
+          "href": "#pgvector-properties",
+          "text": "配置属性"
+        },
+        {
+          "href": "#配置属性",
+          "text": "Section titled “配置属性”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#_batching_strategy",
+          "text": "总览"
+        },
+        {
+          "href": "#三元数据过滤重点",
+          "text": "Section titled “三、元数据过滤（重点）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/rag/vector-stores/#metadata-filters",
+          "text": "元数据过滤语法"
+        },
+        {
+          "href": "#四手动配置参考",
+          "text": "Section titled “四、手动配置（参考）”"
+        },
+        {
+          "href": "/frameworks/spring-ai/getting-started/quickstart/#%E4%BD%BF%E7%94%A8-bom-%E7%AE%A1%E7%90%86%E7%89%88%E6%9C%AC",
+          "text": "依赖管理"
+        },
+        {
+          "href": "#五本地运行-postgresql-与-pgvector",
+          "text": "Section titled “五、本地运行 PostgreSQL 与 PGvector”"
+        },
+        {
+          "href": "#六访问原生客户端参考",
+          "text": "Section titled “六、访问原生客户端（参考）”"
+        },
+        {
+          "href": "https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html",
+          "text": "PGvector"
+        }
+      ],
+      "images": 0,
+      "errors": [],
+      "localTargets": 17
+    }
+  ],
+  "localTargets": 15
+}

@@ -1,0 +1,175 @@
+{
+  "version": "2.0.2",
+  "result": "PASS",
+  "checks": [
+    {
+      "check": "自动配置index默认",
+      "file": "RedisVectorStoreProperties.java",
+      "evidence": "indexName = \"default-index\"",
+      "result": "PASS"
+    },
+    {
+      "check": "自动配置prefix默认",
+      "file": "RedisVectorStoreProperties.java",
+      "evidence": "prefix = \"default:\"",
+      "result": "PASS"
+    },
+    {
+      "check": "自动配置HNSW嵌套参数",
+      "file": "RedisVectorStoreAutoConfiguration.java",
+      "evidence": "properties.getHnsw().getEfRuntime()",
+      "result": "PASS"
+    },
+    {
+      "check": "手动index默认",
+      "file": "RedisVectorStore.java",
+      "evidence": "DEFAULT_INDEX_NAME = \"spring-ai-index\"",
+      "result": "PASS"
+    },
+    {
+      "check": "手动prefix默认",
+      "file": "RedisVectorStore.java",
+      "evidence": "DEFAULT_PREFIX = \"embedding:\"",
+      "result": "PASS"
+    },
+    {
+      "check": "范围默认阈值未设置",
+      "file": "RedisVectorStore.java",
+      "evidence": "private @Nullable Double defaultRangeThreshold;",
+      "result": "PASS"
+    },
+    {
+      "check": "范围过滤按原生条件拼接",
+      "file": "RedisVectorStore.java",
+      "evidence": "queryString = \"(\" + queryString + \" \" + filterExpression + \")\"",
+      "result": "PASS"
+    },
+    {
+      "check": "IP小阈值topK1000回退",
+      "file": "RedisVectorStore.java",
+      "evidence": ".topK(1000)",
+      "result": "PASS"
+    },
+    {
+      "check": "余弦分数转换",
+      "file": "RedisVectorStore.java",
+      "evidence": "Math.max((2 - rawScore) / 2, 0)",
+      "result": "PASS"
+    },
+    {
+      "check": "L2分数转换",
+      "file": "RedisVectorStore.java",
+      "evidence": "1.0f / (1.0f + rawScore)",
+      "result": "PASS"
+    },
+    {
+      "check": "文本分数转换",
+      "file": "RedisVectorStore.java",
+      "evidence": "Math.min(textScore / 10.0f, 1.0f)",
+      "result": "PASS"
+    },
+    {
+      "check": "文本分数回退",
+      "file": "RedisVectorStore.java",
+      "evidence": "return 0.9f;",
+      "result": "PASS"
+    },
+    {
+      "check": "缓存阈值默认0.95",
+      "file": "RedisSemanticCacheProperties.java",
+      "evidence": "DEFAULT_SIMILARITY_THRESHOLD = 0.95",
+      "result": "PASS"
+    },
+    {
+      "check": "缓存依赖Redis连接工厂",
+      "file": "RedisSemanticCacheAutoConfiguration.java",
+      "evidence": "JedisConnectionFactory jedisConnectionFactory",
+      "result": "PASS"
+    },
+    {
+      "check": "默认模型按类路径启用",
+      "file": "RedisSemanticCacheAutoConfiguration.java",
+      "evidence": "@ConditionalOnClass(TransformersEmbeddingModel.class)",
+      "result": "PASS"
+    },
+    {
+      "check": "默认模型资源",
+      "file": "RedisSemanticCacheAutoConfiguration.java",
+      "evidence": "redis/langcache-embed-v1",
+      "result": "PASS"
+    },
+    {
+      "check": "缓存前缀建索引",
+      "file": "DefaultSemanticCache.java",
+      "evidence": ".prefix(this.prefix)",
+      "result": "PASS"
+    },
+    {
+      "check": "距离转换",
+      "file": "DefaultSemanticCache.java",
+      "evidence": "effectiveThreshold = 1 - (this.similarityThreshold / 2)",
+      "result": "PASS"
+    },
+    {
+      "check": "上下文过滤按非空应用",
+      "file": "DefaultSemanticCache.java",
+      "evidence": "if (contextHash != null)",
+      "result": "PASS"
+    },
+    {
+      "check": "上下文检索topK5",
+      "file": "DefaultSemanticCache.java",
+      "evidence": ".topK(5)",
+      "result": "PASS"
+    },
+    {
+      "check": "系统提示词哈希",
+      "file": "SemanticCacheAdvisor.java",
+      "evidence": "return computeHash(systemMessage.getText())",
+      "result": "PASS"
+    },
+    {
+      "check": "流式缓存接口",
+      "file": "SemanticCacheAdvisor.java",
+      "evidence": "Flux<ChatClientResponse> adviseStream",
+      "result": "PASS"
+    },
+    {
+      "check": "TTL设置Redis过期",
+      "file": "DefaultSemanticCache.java",
+      "evidence": "expire(key, ttl.getSeconds())",
+      "result": "PASS"
+    },
+    {
+      "check": "Advisor写入上下文重载",
+      "file": "SemanticCacheAdvisor.java",
+      "evidence": "this.cache.set(userText, response.chatResponse(), contextHash)",
+      "result": "PASS"
+    },
+    {
+      "check": "Embedding模型支持builder",
+      "file": "OpenAiEmbeddingModel.java",
+      "evidence": "public static Builder builder()",
+      "result": "PASS"
+    },
+    {
+      "check": "OpenAI setup自动检测凭据",
+      "file": "OpenAiSetup.java",
+      "evidence": "detectApiKey(modelProvider)",
+      "result": "PASS"
+    },
+    {
+      "check": "来源未绑定配置键核实",
+      "result": "PASS",
+      "fields": [
+        "distanceMetric",
+        "vectorAlgorithm",
+        "defaultRangeThreshold",
+        "textScorer",
+        "semantic-cache.host",
+        "semantic-cache.port"
+      ]
+    }
+  ],
+  "boundary": "Static source inspection only; Java examples not compiled or executed; no database or model calls."
+}
