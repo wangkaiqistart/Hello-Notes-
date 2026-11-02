@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="663" viewBox="0 0 820 663" role="img" aria-labelledby="title desc">
+<title id="title">Skill 的渐进式加载</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="820" height="663" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="410.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">Skill 的渐进式加载</text>
+<text x="410.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">先判断是否适用，再读取执行所需的内容</text>
+<rect x="58" y="140" width="704" height="112" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="58" y="160" width="6" height="72" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="84" y="179" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">01  元数据</text>
+<text x="84" y="214" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">名称与描述：发现能力，判断触发条件</text>
+<path d="M 410,254 L 410,280" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="58" y="286" width="704" height="112" rx="18" fill="#f3eeff" stroke="#8a58ff" stroke-width="2"/>
+<rect x="58" y="306" width="6" height="72" rx="3" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="84" y="325" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">02  正文</text>
+<text x="84" y="360" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">输入、步骤、边界、失败处理和验收要求</text>
+<path d="M 410,400 L 410,426" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="58" y="432" width="704" height="112" rx="18" fill="#edf8ee" stroke="#50b467" stroke-width="2"/>
+<rect x="58" y="452" width="6" height="72" rx="3" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="84" y="471" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">03  参考资料与脚本</text>
+<text x="84" y="506" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">只在具体步骤需要时读取或运行</text>
+<text x="410" y="628" xml:space="preserve" font-size="21" fill="#777777" text-anchor="middle" font-weight="400">减少无关上下文，同时保留可执行细节</text>
+</g>
+</svg>

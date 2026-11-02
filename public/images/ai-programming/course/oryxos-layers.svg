@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1472" height="720" viewBox="0 0 1472 720" role="img" aria-labelledby="title desc">
+<title id="title">OryxOS 四层结构</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="1472" height="720" rx="0" fill="#ffffff" stroke="none" stroke-width="0"/>
+<rect x="136" y="72" width="1200" height="128" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="246" y="148" xml:space="preserve" font-size="32" fill="#333333" text-anchor="middle" font-weight="700">接入层</text>
+<text x="822" y="125" xml:space="preserve" font-size="27" fill="#333333" text-anchor="middle" font-weight="700">CLI Channel   Web Service（REST API）</text>
+<text x="822" y="170" xml:space="preserve" font-size="25" fill="#333333" text-anchor="middle" font-weight="400">消息进出的两个入口</text>
+<rect x="136" y="232" width="1200" height="128" rx="28" fill="#e0f5ef" stroke="#50cbaa" stroke-width="2"/>
+<text x="246" y="308" xml:space="preserve" font-size="32" fill="#333333" text-anchor="middle" font-weight="700">引擎层</text>
+<text x="822" y="285" xml:space="preserve" font-size="27" fill="#333333" text-anchor="middle" font-weight="700">ReActLoop   PromptBuilder   ToolExecutor</text>
+<text x="822" y="330" xml:space="preserve" font-size="25" fill="#333333" text-anchor="middle" font-weight="400">Agent 的大脑</text>
+<rect x="136" y="392" width="1200" height="128" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="246" y="468" xml:space="preserve" font-size="32" fill="#333333" text-anchor="middle" font-weight="700">能力层</text>
+<text x="822" y="445" xml:space="preserve" font-size="27" fill="#333333" text-anchor="middle" font-weight="700">Provider   Memory   Tool</text>
+<text x="822" y="490" xml:space="preserve" font-size="25" fill="#333333" text-anchor="middle" font-weight="400">给引擎提供 LLM、上下文、执行能力</text>
+<rect x="136" y="552" width="1200" height="128" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="246" y="628" xml:space="preserve" font-size="32" fill="#333333" text-anchor="middle" font-weight="700">基础层</text>
+<text x="822" y="605" xml:space="preserve" font-size="27" fill="#333333" text-anchor="middle" font-weight="700">Profile/Bootstrap/Skill 加载  Session  SQLite  配置密钥</text>
+<text x="822" y="650" xml:space="preserve" font-size="25" fill="#333333" text-anchor="middle" font-weight="400">工程地基</text>
+</g>
+</svg>

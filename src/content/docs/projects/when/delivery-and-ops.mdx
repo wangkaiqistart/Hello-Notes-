@@ -1,0 +1,61 @@
+---
+title: When：投递、可观测与部署
+description: Sink 插件、失败重试、Metrics、管理台和三种部署形态
+sidebar:
+  label: 投递与运维
+  order: 26
+---
+
+> **运维重点**：生产可用不只看消息能否投出去，还要能解释失败、观测延迟、执行切换、管理集群并重复部署。
+
+## Sink 插件
+
+`Sink` 统一描述“把到期消息投递到下游”。HTTP 和 Kafka 是第一阶段实现，后续可以增加 gRPC、RocketMQ 或其他类型。
+
+新增 Sink 应只增加实现和注册声明，不修改 When 核心调度流程。
+
+通过 `Sink` 接口、SPI 声明和 `ServiceLoader` 连接内置与第三方实现，下图分别展开 HTTP、Kafka 和自定义插件的配置与执行路径。
+
+[![Sink 插件架构：公共接口和 ServiceLoader 发现机制，分别连接 HTTP、Kafka 与自定义 Sink 的配置和执行步骤](/images/ai-programming/course/when-sink.svg)](/images/ai-programming/course/when-sink.svg)
+
+_图中的“热加载”应理解为重启后发现插件；SPI 本身不保证运行时热加载。图中的 3 次重试与生命周期图的 5 次也不同，应以统一配置为准。_
+
+## 失败分类与重试
+
+- 参数或鉴权错误：通常不应无限重试；
+- 网络超时、临时不可用：按退避策略重试；
+- 下游明确拒绝：记录原因并进入失败或人工处理；
+- 达到最大次数：停止自动重试，保留完整投递记录。
+
+## 可观测性
+
+至少包含：
+
+- 请求量、提交量、各状态存量；
+- 投递延迟、耗时、失败率；
+- 节点数、选举、故障切换和上下线次数；
+- Redis、ETCD 操作成功与失败；
+- 带 `trace_id` 的结构化日志；
+- `/health`、`/ready` 和 `/metrics`。
+
+高基数字段如 `message_id` 不应直接作为 Metrics label。
+
+## 管理台
+
+业务 API 提供 Submit、Query、Cancel；管理 API 提供时间轮、消息、节点和集群视图。管理台只调用管理 API，不直接操作 ETCD、Redis 或内部对象。
+
+## 部署形态
+
+| 形态                | 用途                                       |
+| ------------------- | ------------------------------------------ |
+| Docker Compose      | 本地开发、依赖和多节点演示                 |
+| Jar / Docker 单节点 | 最小功能验证和低可用场景                   |
+| Kubernetes          | 多节点生产部署、探针、Secret、PDB 和扩缩容 |
+
+下图对照本地 Compose 和 Kubernetes 参考拓扑，重点区分应用节点、ETCD、Redis、入口服务与配置密钥的部署职责。
+
+[![When 部署拓扑：本地三节点 Compose 集群与 Kubernetes StatefulSet、Service、Ingress、配置及外部依赖的对照](/images/ai-programming/course/when-deployment.svg)](/images/ai-programming/course/when-deployment.svg)
+
+_固定主从标签和 StatefulSet 是该图的参考方案；运行角色应结合时间轮分配理解，PVC 也不能单独保证数据零丢失。_
+
+CI 至少执行构建、单元测试、集成测试、安全检查和合并门禁。

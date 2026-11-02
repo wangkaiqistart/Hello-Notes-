@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="1101" viewBox="0 0 820 1101" role="img" aria-labelledby="title desc">
+<title id="title">Superpowers 的执行主线</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="820" height="1101" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="410.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">Superpowers 的执行主线</text>
+<text x="410.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">流程随任务裁剪，规格与质量都要检查</text>
+<rect x="58" y="140" width="704" height="112" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="58" y="160" width="6" height="72" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="84" y="179" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">01  澄清与设计</text>
+<text x="84" y="214" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">确认目标、非目标、约束与候选方案</text>
+<path d="M 410,254 L 410,280" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="58" y="286" width="704" height="112" rx="18" fill="#f3eeff" stroke="#8a58ff" stroke-width="2"/>
+<rect x="58" y="306" width="6" height="72" rx="3" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="84" y="325" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">02  准备工作空间</text>
+<text x="84" y="360" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">隔离文件与分支；确认环境和测试基线</text>
+<path d="M 410,400 L 410,426" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="58" y="432" width="704" height="112" rx="18" fill="#edf8ee" stroke="#50b467" stroke-width="2"/>
+<rect x="58" y="452" width="6" height="72" rx="3" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="84" y="471" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">03  拆分计划</text>
+<text x="84" y="506" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">写清依赖、修改范围和每项验证步骤</text>
+<path d="M 410,546 L 410,572" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="58" y="578" width="704" height="112" rx="18" fill="#fff8e8" stroke="#e69d4c" stroke-width="2"/>
+<rect x="58" y="598" width="6" height="72" rx="3" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="84" y="617" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">04  逐项实现</text>
+<text x="84" y="652" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">按需使用子 Agent；测试先红，再绿，再重构</text>
+<path d="M 410,692 L 410,718" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="58" y="724" width="704" height="112" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="58" y="744" width="6" height="72" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="84" y="763" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">05  审查与修正</text>
+<text x="84" y="798" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">核对规格符合性和代码质量，补充相关回归</text>
+<path d="M 410,838 L 410,864" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="58" y="870" width="704" height="112" rx="18" fill="#f3eeff" stroke="#8a58ff" stroke-width="2"/>
+<rect x="58" y="890" width="6" height="72" rx="3" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="84" y="909" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">06  验证与交接</text>
+<text x="84" y="944" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">检查整体差异，报告结果、限制与后续选择</text>
+<text x="410" y="1066" xml:space="preserve" font-size="21" fill="#777777" text-anchor="middle" font-weight="400">子 Agent 隔离上下文，worktree 隔离工作文件</text>
+</g>
+</svg>

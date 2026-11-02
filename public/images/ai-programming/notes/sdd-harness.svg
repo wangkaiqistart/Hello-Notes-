@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="810" viewBox="0 0 900 810" role="img" aria-labelledby="title desc">
+<title id="title">规格与执行约束如何配合</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="900" height="810" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="450.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">规格与执行约束如何配合</text>
+<text x="450.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">把目标、边界、执行和验证放到同一个闭环</text>
+<rect x="50" y="140" width="800" height="144" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="50" y="160" width="6" height="104" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="76" y="179" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">SDD：定义目标与验收</text>
+<text x="76" y="214" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">目标与非目标 · 输入输出 · 状态与接口</text>
+<text x="76" y="245" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">成功条件 · 异常场景 · 验证标准</text>
+<path d="M 450,288 L 450,331" fill="none" stroke="#4b94df" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="50" y="335" width="800" height="292" rx="18" fill="#f3eeff" stroke="#8a58ff" stroke-width="2"/>
+<text x="450" y="378" xml:space="preserve" font-size="28" fill="#1b3e70" text-anchor="middle" font-weight="700">Harness：约束执行环境</text>
+<rect x="75" y="408" width="350" height="86" rx="12" fill="white" stroke="#b69be9" stroke-width="1.5"/>
+<text x="250" y="441" xml:space="preserve" font-size="24" fill="#6c46af" text-anchor="middle" font-weight="700">知道什么</text>
+<text x="250" y="473" xml:space="preserve" font-size="21" fill="#333333" text-anchor="middle" font-weight="400">项目说明、上下文、规则</text>
+<rect x="475" y="408" width="350" height="86" rx="12" fill="white" stroke="#b69be9" stroke-width="1.5"/>
+<text x="650" y="441" xml:space="preserve" font-size="24" fill="#6c46af" text-anchor="middle" font-weight="700">能做什么</text>
+<text x="650" y="473" xml:space="preserve" font-size="21" fill="#333333" text-anchor="middle" font-weight="400">权限、工具、工作空间</text>
+<rect x="75" y="510" width="350" height="86" rx="12" fill="white" stroke="#b69be9" stroke-width="1.5"/>
+<text x="250" y="543" xml:space="preserve" font-size="24" fill="#6c46af" text-anchor="middle" font-weight="700">如何验收</text>
+<text x="250" y="575" xml:space="preserve" font-size="21" fill="#333333" text-anchor="middle" font-weight="400">流程、测试、Review</text>
+<rect x="475" y="510" width="350" height="86" rx="12" fill="white" stroke="#b69be9" stroke-width="1.5"/>
+<text x="650" y="543" xml:space="preserve" font-size="24" fill="#6c46af" text-anchor="middle" font-weight="700">如何停止</text>
+<text x="650" y="575" xml:space="preserve" font-size="21" fill="#333333" text-anchor="middle" font-weight="400">预算、失败处理、回滚</text>
+<path d="M 450,631 L 450,671" fill="none" stroke="#50b467" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="50" y="675" width="800" height="100" rx="18" fill="#edf8ee" stroke="#50b467" stroke-width="2"/>
+<rect x="50" y="695" width="6" height="60" rx="3" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="76" y="714" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">可控执行与证据验收</text>
+<text x="76" y="749" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">完成标准由测试、运行结果和独立复核共同确认</text>
+</g>
+</svg>

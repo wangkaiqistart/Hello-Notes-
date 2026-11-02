@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2110" height="1272" viewBox="0 0 2110 1272" role="img" aria-labelledby="title desc">
+<title id="title">部署拓扑：3节点集群</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="2110" height="1272" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="1055.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">部署拓扑：3节点集群</text>
+<text x="1055.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">docker-compose 本地 3 节点 · 生产最小 3 节点保证 HA</text>
+<rect x="30" y="126" width="960" height="860" rx="16" fill="#eaf3fc" stroke="#4b94df" stroke-width="3"/>
+<rect x="31" y="127" width="958" height="16" rx="12" fill="#4b94df" stroke="none" stroke-width="0"/>
+<rect x="31" y="136" width="958" height="7" rx="0" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="510.0" y="174" xml:space="preserve" font-size="28" fill="#4b94df" text-anchor="middle" font-weight="700">docker-compose 集群（本地开发 / CI）</text>
+<rect x="1030" y="126" width="1040" height="860" rx="16" fill="#edf8ee" stroke="#50b467" stroke-width="3"/>
+<rect x="1031" y="127" width="1038" height="16" rx="12" fill="#50b467" stroke="none" stroke-width="0"/>
+<rect x="1031" y="136" width="1038" height="7" rx="0" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="1550.0" y="174" xml:space="preserve" font-size="28" fill="#50b467" text-anchor="middle" font-weight="700">K8s 生产部署（参考架构）</text>
+<rect x="50" y="196" width="920" height="100" rx="12" fill="#f3eeff" stroke="#8a58ff" stroke-width="3"/>
+<text x="510" y="234" xml:space="preserve" font-size="23" fill="#8a58ff" text-anchor="middle" font-weight="700">ETCD 集群（3节点）</text>
+<text x="510" y="264" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">etcd-0:2379 etcd-1:2379 etcd-2:2379 — Raft 共识</text>
+<path d="M 196,326 L 196,300" fill="none" stroke="#8a58ff" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="9 7"/>
+<rect x="50" y="326" width="292" height="220" rx="14" fill="white" stroke="#4b94df" stroke-width="4"/>
+<rect x="51" y="327" width="290" height="16" rx="12" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="196" y="369" xml:space="preserve" font-size="23" fill="#4b94df" text-anchor="middle" font-weight="700">when-node-0</text>
+<text x="196" y="399" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">Master（初始）</text>
+<text x="196" y="427" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">port: 8080 / 9090</text>
+<text x="196" y="455" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">时间轮 · 状态机</text>
+<text x="196" y="483" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">复制 · Sink 分发</text>
+<text x="196" y="511" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">./data/node-0:/data</text>
+<path d="M 342,436 L 349,436" fill="none" stroke="#888888" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 496,326 L 496,300" fill="none" stroke="#8a58ff" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="9 7"/>
+<rect x="350" y="326" width="292" height="220" rx="14" fill="white" stroke="#50b467" stroke-width="4"/>
+<rect x="351" y="327" width="290" height="16" rx="12" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="496" y="369" xml:space="preserve" font-size="23" fill="#50b467" text-anchor="middle" font-weight="700">when-node-1</text>
+<text x="496" y="399" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">Slave A</text>
+<text x="496" y="427" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">port: 8081 / 9091</text>
+<text x="496" y="455" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">时间轮 · 状态机</text>
+<text x="496" y="483" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">复制 · Sink 分发</text>
+<text x="496" y="511" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">./data/node-1:/data</text>
+<path d="M 642,436 L 649,436" fill="none" stroke="#888888" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 796,326 L 796,300" fill="none" stroke="#8a58ff" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="9 7"/>
+<rect x="650" y="326" width="292" height="220" rx="14" fill="white" stroke="#e69d4c" stroke-width="4"/>
+<rect x="651" y="327" width="290" height="16" rx="12" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="796" y="369" xml:space="preserve" font-size="23" fill="#e69d4c" text-anchor="middle" font-weight="700">when-node-2</text>
+<text x="796" y="399" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">Slave B</text>
+<text x="796" y="427" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">port: 8082 / 9092</text>
+<text x="796" y="455" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">时间轮 · 状态机</text>
+<text x="796" y="483" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">复制 · Sink 分发</text>
+<text x="796" y="511" xml:space="preserve" font-size="17" fill="#888888" text-anchor="middle" font-weight="400">./data/node-2:/data</text>
+<path d="M 510,546 L 272.0,576" fill="none" stroke="#e94e50" stroke-width="2" stroke-linejoin="round" stroke-dasharray="9 7"/>
+<rect x="50" y="576" width="444" height="90" rx="12" fill="#fff5f5" stroke="#e94e50" stroke-width="3"/>
+<text x="272.0" y="612" xml:space="preserve" font-size="21" fill="#e94e50" text-anchor="middle" font-weight="700">Redis（单节点 / Sentinel）</text>
+<text x="272.0" y="643" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">redis:6379 RDB+AOF 持久化</text>
+<path d="M 510,546 L 742.0,576" fill="none" stroke="#b67816" stroke-width="2" stroke-linejoin="round" stroke-dasharray="9 7"/>
+<rect x="514" y="576" width="456" height="90" rx="12" fill="#fffaf0" stroke="#b67816" stroke-width="3"/>
+<text x="742.0" y="612" xml:space="preserve" font-size="21" fill="#b67816" text-anchor="middle" font-weight="700">Nginx / HAProxy</text>
+<text x="742.0" y="643" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">:8080 → node-0/1/2 轮询</text>
+<rect x="50" y="692" width="920" height="272" rx="12" fill="#f8f8f8" stroke="#cccccc" stroke-width="2"/>
+<text x="510" y="724" xml:space="preserve" font-size="21" fill="#333333" text-anchor="middle" font-weight="700">docker-compose.yml（关键片段）</text>
+<text x="66" y="750" xml:space="preserve" font-size="15" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">services:</text>
+<text x="66" y="774" xml:space="preserve" font-size="15" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  when-node-0:</text>
+<text x="66" y="798" xml:space="preserve" font-size="15" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    image: when-server:latest</text>
+<text x="66" y="822" xml:space="preserve" font-size="15" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    environment:</text>
+<text x="66" y="846" xml:space="preserve" font-size="15" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">      - WHEN_NODE_ID=0</text>
+<text x="66" y="870" xml:space="preserve" font-size="15" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">      - WHEN_ETCD_ENDPOINTS=etcd-0:2379,etcd-1:2379</text>
+<text x="66" y="894" xml:space="preserve" font-size="15" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">      - WHEN_REDIS_HOST=redis</text>
+<text x="66" y="918" xml:space="preserve" font-size="15" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    volumes: [./data/node-0:/data]</text>
+<text x="66" y="942" xml:space="preserve" font-size="15" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    ports: [&quot;8080:8080&quot;,&quot;9090:9090&quot;]</text>
+<rect x="1050" y="196" width="1000" height="130" rx="12" fill="#efffef" stroke="#50b467" stroke-width="3"/>
+<text x="1550" y="233" xml:space="preserve" font-size="23" fill="#338b3a" text-anchor="middle" font-weight="700">StatefulSet: when-node（3 replicas）</text>
+<text x="1550" y="267" xml:space="preserve" font-size="18" fill="#777777" text-anchor="middle" font-weight="400">有序启动 · 稳定网络标识 · PVC 独立持久卷</text>
+<text x="1550" y="297" xml:space="preserve" font-size="18" fill="#777777" text-anchor="middle" font-weight="400">when-node-0/1/2.when-svc — 各节点稳定 DNS</text>
+<rect x="1050" y="352" width="490" height="110" rx="10" fill="white" stroke="#50b467" stroke-width="2"/>
+<text x="1295" y="388" xml:space="preserve" font-size="21" fill="#50b467" text-anchor="middle" font-weight="700">Service（ClusterIP）</text>
+<text x="1295" y="421" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">when-svc:8080</text>
+<text x="1295" y="450" xml:space="preserve" font-size="16" fill="#888888" text-anchor="middle" font-weight="400">内部服务发现</text>
+<rect x="1560" y="352" width="490" height="110" rx="10" fill="white" stroke="#b67816" stroke-width="2"/>
+<text x="1805" y="388" xml:space="preserve" font-size="21" fill="#b67816" text-anchor="middle" font-weight="700">Ingress / LoadBalancer</text>
+<text x="1805" y="421" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">对外 :80 / :443</text>
+<text x="1805" y="450" xml:space="preserve" font-size="16" fill="#888888" text-anchor="middle" font-weight="400">限流 · TLS 终止</text>
+<rect x="1050" y="488" width="490" height="110" rx="10" fill="#fff8e8" stroke="#e69d4c" stroke-width="2"/>
+<text x="1295" y="524" xml:space="preserve" font-size="21" fill="#e69d4c" text-anchor="middle" font-weight="700">ConfigMap</text>
+<text x="1295" y="557" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">etcd-endpoints, node-count</text>
+<text x="1295" y="586" xml:space="preserve" font-size="16" fill="#888888" text-anchor="middle" font-weight="400">redis-host, sink-config</text>
+<rect x="1560" y="488" width="490" height="110" rx="10" fill="#fff0f0" stroke="#e94e50" stroke-width="2"/>
+<text x="1805" y="524" xml:space="preserve" font-size="21" fill="#e94e50" text-anchor="middle" font-weight="700">Secret</text>
+<text x="1805" y="557" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">redis-password / etcd-cert</text>
+<text x="1805" y="586" xml:space="preserve" font-size="16" fill="#888888" text-anchor="middle" font-weight="400">api-token</text>
+<rect x="1050" y="624" width="1000" height="84" rx="10" fill="#f3eeff" stroke="#8a58ff" stroke-width="3"/>
+<text x="1550.0" y="659" xml:space="preserve" font-size="21" fill="#8a58ff" text-anchor="middle" font-weight="700">PVC: each-node-pvc（ReadWriteOnce）</text>
+<text x="1550.0" y="688" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">Pod 重启不丢数据 · StorageClass 按需配置</text>
+<rect x="1050" y="732" width="490" height="84" rx="10" fill="#eaf3fc" stroke="#4b94df" stroke-width="3"/>
+<text x="1295.0" y="767" xml:space="preserve" font-size="21" fill="#4b94df" text-anchor="middle" font-weight="700">External ETCD</text>
+<text x="1295.0" y="796" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">生产建议独立部署</text>
+<rect x="1560" y="732" width="490" height="84" rx="10" fill="#fff0f0" stroke="#e94e50" stroke-width="3"/>
+<text x="1805.0" y="767" xml:space="preserve" font-size="21" fill="#e94e50" text-anchor="middle" font-weight="700">Redis Cluster / Sentinel</text>
+<text x="1805.0" y="796" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">生产高可用配置</text>
+<rect x="30" y="1012" width="2040" height="110" rx="16" fill="#fafafa" stroke="#cccccc" stroke-width="2"/>
+<text x="1050" y="1047" xml:space="preserve" font-size="23" fill="#333333" text-anchor="middle" font-weight="700">环境选型对比</text>
+<rect x="50" y="1068" width="656" height="40" rx="8" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="76" y="1096" xml:space="preserve" font-size="20" fill="#4b94df" text-anchor="start" font-weight="700">本地开发</text>
+<text x="230" y="1096" xml:space="preserve" font-size="16" fill="#555555" text-anchor="start" font-weight="400">docker-compose · 1/3节点均可 · 快速验证</text>
+<rect x="726" y="1068" width="656" height="40" rx="8" fill="white" stroke="#50b467" stroke-width="1.5"/>
+<text x="752" y="1096" xml:space="preserve" font-size="20" fill="#50b467" text-anchor="start" font-weight="700">CI / 集成测试</text>
+<text x="906" y="1096" xml:space="preserve" font-size="16" fill="#555555" text-anchor="start" font-weight="400">docker-compose 3节点 · 故障转移自动化测试</text>
+<rect x="1402" y="1068" width="656" height="40" rx="8" fill="white" stroke="#e94e50" stroke-width="1.5"/>
+<text x="1428" y="1096" xml:space="preserve" font-size="20" fill="#e94e50" text-anchor="start" font-weight="700">生产</text>
+<text x="1582" y="1096" xml:space="preserve" font-size="16" fill="#555555" text-anchor="start" font-weight="400">K8s StatefulSet · 外部ETCD · Redis Sentinel</text>
+<rect x="30" y="1140" width="2040" height="112" rx="16" fill="#f3eeff" stroke="#8a58ff" stroke-width="3"/>
+<text x="1050" y="1178" xml:space="preserve" font-size="23" fill="#6f36d9" text-anchor="middle" font-weight="700">高可用设计：3节点容忍1节点故障 · ETCD Raft保证选主一致性 · PVC保证数据不丢</text>
+<text x="1050" y="1208" xml:space="preserve" font-size="18" fill="#888888" text-anchor="middle" font-weight="400">扩容：增加Slave节点（不影响Master）· Sink横向扩展 · Redis分片可选</text>
+<text x="1050" y="1236" xml:space="preserve" font-size="18" fill="#888888" text-anchor="middle" font-weight="400">监控：JVM metrics → Prometheus → Grafana · ETCD metrics · Redis INFO</text>
+</g>
+</svg>

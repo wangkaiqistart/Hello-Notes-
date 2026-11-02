@@ -1,0 +1,36 @@
+---
+title: OryxOS：核心模块学习笔记
+description: 按实现顺序理解 Provider、ReAct、入口、Memory、Tool、Sandbox 和 Web Service
+sidebar:
+  label: 核心模块
+  order: 5
+---
+
+> **阅读重点**：每个模块都按“职责 → 接口 → 实现 → 验证”理解，不把代码演示误当成完整生产实现。
+
+## 实现顺序
+
+先建立日志、接口和模型调用的基础，再串联循环、工具和记忆，最后开放服务与扩展点。
+
+[![OryxOS 实现顺序：工程地基、模型与循环、工具与记忆、运行环境、接口和扩展](/images/ai-programming/notes/oryxos-modules.svg)](/images/ai-programming/notes/oryxos-modules.svg)
+
+## 模块职责
+
+| 模块          | 关键问题                   | 验证重点                         |
+| ------------- | -------------------------- | -------------------------------- |
+| Provider      | 如何屏蔽模型厂商差异       | 配置映射、错误传播、模型切换     |
+| ReAct         | 如何循环思考、行动、观察   | 终止条件、最大轮数、工具结果回填 |
+| CLI / Channel | 消息如何进入系统           | 参数、模式复用、错误提示         |
+| Notify        | 结果如何主动送出           | 通道适配、失败处理、幂等         |
+| Tool          | Agent 如何真正做事         | Schema、权限、超时、结果回填     |
+| Memory        | 如何跨轮次和跨会话记忆     | 读写边界、压缩、后端切换         |
+| Sandbox       | 如何限制文件、Shell 和网络 | 路径、命令、资源和凭证隔离       |
+| Web Service   | 业务系统如何集成           | API 契约、鉴权、统一错误和审计   |
+
+## 工程地基
+
+结构化日志、监控、HTTP Server、OpenAPI、代码规范和安全扫描应作为业务模块之前的共同地基。没有这些检查，后续 Agent 能力越多，问题越难定位。
+
+## 重要边界
+
+Provider 只负责调用模型，不执行工具；ReAct 只负责调度，不承载所有业务逻辑；Memory 不等于把全部历史塞进上下文；Sandbox 是安全边界，不是简单的工作目录。

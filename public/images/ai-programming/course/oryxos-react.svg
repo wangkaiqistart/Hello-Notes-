@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1472" height="840" viewBox="0 0 1472 840" role="img" aria-labelledby="title desc">
+<title id="title">OryxOS ReAct 循环</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="1472" height="840" rx="0" fill="#ffffff" stroke="none" stroke-width="0"/>
+<rect x="556" y="60" width="360" height="100" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="736.0" y="120.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="400">接收用户消息</text>
+<path d="M 736,160 L 736,212" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="556" y="216" width="360" height="100" rx="28" fill="#e0f5ef" stroke="#50cbaa" stroke-width="2"/>
+<text x="736.0" y="262.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="700">组装 Prompt</text>
+<text x="736.0" y="301.0" xml:space="preserve" font-size="22" fill="#444444" text-anchor="middle" font-weight="400">注入 Bootstrap、Memory、历史</text>
+<path d="M 736,316 L 736,368" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="556" y="372" width="360" height="100" rx="28" fill="#e0f5ef" stroke="#50cbaa" stroke-width="2"/>
+<text x="736.0" y="432.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="400">调用 LLM Provider</text>
+<path d="M 736,472 L 736,524" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M736 528 L920 588 L736 648 L552 588 Z" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="736" y="598" xml:space="preserve" font-size="28" fill="#333333" text-anchor="middle" font-weight="700">有 Tool 调用？</text>
+<path d="M 736,648 L 736,708" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="756" y="689" xml:space="preserve" font-size="24" fill="#333333" text-anchor="start" font-weight="400">无</text>
+<rect x="556" y="712" width="360" height="92" rx="28" fill="#e0f5ef" stroke="#50cbaa" stroke-width="2"/>
+<text x="736.0" y="768.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="400">返回最终响应</text>
+<path d="M 920,588 L 1032,588" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="968" y="568" xml:space="preserve" font-size="24" fill="#333333" text-anchor="start" font-weight="400">有</text>
+<rect x="1036" y="538" width="320" height="100" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="1196.0" y="584.0" xml:space="preserve" font-size="28" fill="#333333" text-anchor="middle" font-weight="700">执行 Tool</text>
+<text x="1196.0" y="623.0" xml:space="preserve" font-size="24" fill="#444444" text-anchor="middle" font-weight="400">结果回填对话历史</text>
+<path d="M 1196,538 L 1196,266 L 920,266" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="1216" y="404" xml:space="preserve" font-size="23" fill="#333333" text-anchor="start" font-weight="400">回填后继续循环</text>
+</g>
+</svg>

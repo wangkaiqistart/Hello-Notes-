@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="740" viewBox="0 0 900 740" role="img" aria-labelledby="title desc">
+<title id="title">Agent 运行底座的五个组件</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="900" height="740" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="450.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">Agent 运行底座的五个组件</text>
+<text x="450.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">模型、循环、记忆、工具与执行环境各自承担职责</text>
+<rect x="270" y="305" width="360" height="118" rx="18" fill="#f3eeff" stroke="#8a58ff" stroke-width="2"/>
+<rect x="270" y="325" width="6" height="78" rx="3" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="296" y="344" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">ReAct Loop</text>
+<text x="296" y="379" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">调度执行、累积状态与终止</text>
+<rect x="40" y="140" width="360" height="110" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="40" y="160" width="6" height="70" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="66" y="179" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">Provider</text>
+<text x="66" y="214" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">屏蔽模型厂商差异</text>
+<rect x="500" y="140" width="360" height="110" rx="18" fill="#edf8ee" stroke="#50b467" stroke-width="2"/>
+<rect x="500" y="160" width="6" height="70" rx="3" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="526" y="179" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">Memory</text>
+<text x="526" y="214" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">保存会话与跨会话记忆</text>
+<rect x="40" y="540" width="360" height="110" rx="18" fill="#fff8e8" stroke="#e69d4c" stroke-width="2"/>
+<rect x="40" y="560" width="6" height="70" rx="3" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="66" y="579" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">Tools</text>
+<text x="66" y="614" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">连接工具与外部能力</text>
+<rect x="500" y="540" width="360" height="110" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="500" y="560" width="6" height="70" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="526" y="579" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">Environment</text>
+<text x="526" y="614" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">限制文件、命令与网络</text>
+<path d="M 360,305 L 220,254" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 540,305 L 680,254" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 360,423 L 220,536" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 540,423 L 680,536" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+</g>
+</svg>

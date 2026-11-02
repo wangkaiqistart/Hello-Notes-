@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="820" viewBox="0 0 900 820" role="img" aria-labelledby="title desc">
+<title id="title">两种规格工作流</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="900" height="820" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="450.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">两种规格工作流</text>
+<text x="450.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">按项目阶段选择流程，具体命令以工具版本为准</text>
+<rect x="40" y="140" width="390" height="625" rx="16" fill="#eaf3fc" stroke="#4b94df" stroke-width="3"/>
+<text x="235.0" y="188" xml:space="preserve" font-size="30" fill="#4b94df" text-anchor="middle" font-weight="700">Spec-Kit</text>
+<text x="235" y="224" xml:space="preserve" font-size="22" fill="#777777" text-anchor="middle" font-weight="400">从零建立项目约定</text>
+<rect x="65" y="260" width="340" height="52" rx="10" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="235" y="294" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="400">constitution · 工程原则</text>
+<path d="M 235,316 L 235,330" fill="none" stroke="#4b94df" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="65" y="335" width="340" height="52" rx="10" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="235" y="369" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="400">specify · 明确需求</text>
+<path d="M 235,391 L 235,405" fill="none" stroke="#4b94df" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="65" y="410" width="340" height="52" rx="10" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="235" y="444" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="400">clarify · 澄清歧义</text>
+<path d="M 235,466 L 235,480" fill="none" stroke="#4b94df" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="65" y="485" width="340" height="52" rx="10" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="235" y="519" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="400">plan · 技术计划</text>
+<path d="M 235,541 L 235,555" fill="none" stroke="#4b94df" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="65" y="560" width="340" height="52" rx="10" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="235" y="594" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="400">tasks · 任务拆分</text>
+<path d="M 235,616 L 235,630" fill="none" stroke="#4b94df" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="65" y="635" width="340" height="52" rx="10" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="235" y="669" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="400">implement · 实现验证</text>
+<rect x="470" y="140" width="390" height="625" rx="16" fill="#f3eeff" stroke="#8a58ff" stroke-width="3"/>
+<text x="665.0" y="188" xml:space="preserve" font-size="30" fill="#8a58ff" text-anchor="middle" font-weight="700">OpenSpec</text>
+<text x="665" y="224" xml:space="preserve" font-size="22" fill="#777777" text-anchor="middle" font-weight="400">已有系统的增量变更</text>
+<rect x="495" y="260" width="340" height="52" rx="10" fill="white" stroke="#8a58ff" stroke-width="1.5"/>
+<text x="665" y="294" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="400">propose · 提出变更</text>
+<path d="M 665,316 L 665,405" fill="none" stroke="#8a58ff" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="495" y="410" width="340" height="52" rx="10" fill="white" stroke="#8a58ff" stroke-width="1.5"/>
+<text x="665" y="444" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="400">apply · 实施与验证</text>
+<path d="M 665,466 L 665,555" fill="none" stroke="#8a58ff" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="495" y="560" width="340" height="52" rx="10" fill="white" stroke="#8a58ff" stroke-width="1.5"/>
+<text x="665" y="594" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="400">archive · 归档结果</text>
+</g>
+</svg>

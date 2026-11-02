@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1860" height="1116" viewBox="0 0 1860 1116" role="img" aria-labelledby="title desc">
+<title id="title">AI 编程工具七层架构</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="1860" height="1116" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="930.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">AI 编程工具七层架构</text>
+<text x="930.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">从模型原料到方法论，每一层有独立职责，层间协作构成完整工程体系</text>
+<rect x="35" y="127" width="1748" height="128" rx="17" fill="#ffe2e2" stroke="#e94e50" stroke-width="3"/>
+<circle cx="87" cy="191" r="36" fill="#e94e50" stroke="none" stroke-width="2"/>
+<text x="87" y="202" xml:space="preserve" font-size="30" fill="white" text-anchor="middle" font-weight="700">7</text>
+<text x="167" y="174" xml:space="preserve" font-size="27" fill="#222222" text-anchor="start" font-weight="700">方法论层</text>
+<text x="167" y="216" xml:space="preserve" font-size="22" fill="#666666" text-anchor="start" font-weight="400">用工具的思想</text>
+<rect x="513" y="167" width="260" height="48" rx="24" fill="#e94e50" stroke="none" stroke-width="0"/>
+<text x="643.0" y="199" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">SDD</text>
+<rect x="961" y="167" width="260" height="48" rx="24" fill="#e94e50" stroke="none" stroke-width="0"/>
+<text x="1091.0" y="199" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Harness Engineering</text>
+<rect x="1409" y="167" width="260" height="48" rx="24" fill="#e94e50" stroke="none" stroke-width="0"/>
+<text x="1539.0" y="199" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Vibe Coding</text>
+<rect x="35" y="263" width="1748" height="128" rx="17" fill="#ffe9d8" stroke="#e69d4c" stroke-width="3"/>
+<circle cx="87" cy="327" r="36" fill="#e69d4c" stroke="none" stroke-width="2"/>
+<text x="87" y="338" xml:space="preserve" font-size="30" fill="white" text-anchor="middle" font-weight="700">6</text>
+<text x="167" y="310" xml:space="preserve" font-size="27" fill="#222222" text-anchor="start" font-weight="700">工作流层</text>
+<text x="167" y="352" xml:space="preserve" font-size="22" fill="#666666" text-anchor="start" font-weight="400">AI 自动化运行</text>
+<rect x="457" y="303" width="260" height="48" rx="24" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="587.0" y="335" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Headless Mode</text>
+<rect x="793" y="303" width="260" height="48" rx="24" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="923.0" y="335" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">GitHub Actions</text>
+<rect x="1129" y="303" width="260" height="48" rx="24" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="1259.0" y="335" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">CI/CD 触发</text>
+<rect x="1465" y="303" width="260" height="48" rx="24" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="1595.0" y="335" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">事件触发</text>
+<rect x="35" y="399" width="1748" height="128" rx="17" fill="#fff0f0" stroke="#e66e70" stroke-width="3"/>
+<circle cx="87" cy="463" r="36" fill="#e66e70" stroke="none" stroke-width="2"/>
+<text x="87" y="474" xml:space="preserve" font-size="30" fill="white" text-anchor="middle" font-weight="700">5</text>
+<text x="167" y="446" xml:space="preserve" font-size="27" fill="#222222" text-anchor="start" font-weight="700">协议生态层</text>
+<text x="167" y="488" xml:space="preserve" font-size="22" fill="#666666" text-anchor="start" font-weight="400">连接外部世界</text>
+<rect x="457" y="439" width="260" height="48" rx="24" fill="#e66e70" stroke="none" stroke-width="0"/>
+<text x="587.0" y="471" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">MCP</text>
+<rect x="793" y="439" width="260" height="48" rx="24" fill="#e66e70" stroke="none" stroke-width="0"/>
+<text x="923.0" y="471" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">gh CLI</text>
+<rect x="1129" y="439" width="260" height="48" rx="24" fill="#e66e70" stroke="none" stroke-width="0"/>
+<text x="1259.0" y="471" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">REST API</text>
+<rect x="1465" y="439" width="260" height="48" rx="24" fill="#e66e70" stroke="none" stroke-width="0"/>
+<text x="1595.0" y="471" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">内部系统</text>
+<rect x="35" y="535" width="1748" height="128" rx="17" fill="#f3eeff" stroke="#8a58ff" stroke-width="3"/>
+<circle cx="87" cy="599" r="36" fill="#8a58ff" stroke="none" stroke-width="2"/>
+<text x="87" y="610" xml:space="preserve" font-size="30" fill="white" text-anchor="middle" font-weight="700">4</text>
+<text x="167" y="582" xml:space="preserve" font-size="27" fill="#222222" text-anchor="start" font-weight="700">协作机制层</text>
+<text x="167" y="624" xml:space="preserve" font-size="22" fill="#666666" text-anchor="start" font-weight="400">AI 团队协作</text>
+<rect x="513" y="575" width="260" height="48" rx="24" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="643.0" y="607" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Subagents</text>
+<rect x="961" y="575" width="260" height="48" rx="24" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="1091.0" y="607" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Worktrees</text>
+<rect x="1409" y="575" width="260" height="48" rx="24" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="1539.0" y="607" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Plan Mode</text>
+<rect x="35" y="671" width="1748" height="128" rx="17" fill="#fff8df" stroke="#d4a73b" stroke-width="3"/>
+<circle cx="87" cy="735" r="36" fill="#d4a73b" stroke="none" stroke-width="2"/>
+<text x="87" y="746" xml:space="preserve" font-size="30" fill="white" text-anchor="middle" font-weight="700">3</text>
+<text x="167" y="718" xml:space="preserve" font-size="27" fill="#222222" text-anchor="start" font-weight="700">配置约束层</text>
+<text x="167" y="760" xml:space="preserve" font-size="22" fill="#666666" text-anchor="start" font-weight="400">让 AI 遵守规则</text>
+<rect x="429" y="711" width="248" height="48" rx="24" fill="#d4a73b" stroke="none" stroke-width="0"/>
+<text x="553.0" y="743" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">CLAUDE.md</text>
+<rect x="697" y="711" width="248" height="48" rx="24" fill="#d4a73b" stroke="none" stroke-width="0"/>
+<text x="821.0" y="743" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">AGENTS.md</text>
+<rect x="965" y="711" width="248" height="48" rx="24" fill="#d4a73b" stroke="none" stroke-width="0"/>
+<text x="1089.0" y="743" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Skills</text>
+<rect x="1233" y="711" width="248" height="48" rx="24" fill="#d4a73b" stroke="none" stroke-width="0"/>
+<text x="1357.0" y="743" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Hooks</text>
+<rect x="1501" y="711" width="248" height="48" rx="24" fill="#d4a73b" stroke="none" stroke-width="0"/>
+<text x="1625.0" y="743" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Permissions</text>
+<rect x="35" y="807" width="1748" height="128" rx="17" fill="#e0f2e9" stroke="#50b467" stroke-width="3"/>
+<circle cx="87" cy="871" r="36" fill="#50b467" stroke="none" stroke-width="2"/>
+<text x="87" y="882" xml:space="preserve" font-size="30" fill="white" text-anchor="middle" font-weight="700">2</text>
+<text x="167" y="854" xml:space="preserve" font-size="27" fill="#222222" text-anchor="start" font-weight="700">工具层</text>
+<text x="167" y="896" xml:space="preserve" font-size="22" fill="#666666" text-anchor="start" font-weight="400">每天直接打交道</text>
+<rect x="429" y="847" width="248" height="48" rx="24" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="553.0" y="879" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Cursor</text>
+<rect x="697" y="847" width="248" height="48" rx="24" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="821.0" y="879" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Claude Code</text>
+<rect x="965" y="847" width="248" height="48" rx="24" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="1089.0" y="879" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Copilot</text>
+<rect x="1233" y="847" width="248" height="48" rx="24" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="1357.0" y="879" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Windsurf</text>
+<rect x="1501" y="847" width="248" height="48" rx="24" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="1625.0" y="879" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Aider</text>
+<rect x="35" y="943" width="1748" height="128" rx="17" fill="#def0fc" stroke="#4b94df" stroke-width="3"/>
+<circle cx="87" cy="1007" r="36" fill="#4b94df" stroke="none" stroke-width="2"/>
+<text x="87" y="1018" xml:space="preserve" font-size="30" fill="white" text-anchor="middle" font-weight="700">1</text>
+<text x="167" y="990" xml:space="preserve" font-size="27" fill="#222222" text-anchor="start" font-weight="700">模型层</text>
+<text x="167" y="1032" xml:space="preserve" font-size="22" fill="#666666" text-anchor="start" font-weight="400">AI 的原料</text>
+<rect x="429" y="983" width="248" height="48" rx="24" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="553.0" y="1015" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Claude</text>
+<rect x="697" y="983" width="248" height="48" rx="24" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="821.0" y="1015" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">GPT-4o</text>
+<rect x="965" y="983" width="248" height="48" rx="24" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="1089.0" y="1015" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Gemini</text>
+<rect x="1233" y="983" width="248" height="48" rx="24" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="1357.0" y="1015" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">DeepSeek</text>
+<rect x="1501" y="983" width="248" height="48" rx="24" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="1625.0" y="1015" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">Qwen</text>
+<path d="M 1799,135 L 1811,135 L 1811,383 L 1799,383" fill="none" stroke="#e94e50" stroke-width="4" stroke-linejoin="round"/>
+<text transform="translate(1838 259.0) rotate(-90)" text-anchor="middle" font-size="22" font-weight="700" fill="#e94e50">杠杆价值</text>
+<path d="M 1799,407 L 1811,407 L 1811,791 L 1799,791" fill="none" stroke="#8a58ff" stroke-width="4" stroke-linejoin="round"/>
+<text transform="translate(1838 599.0) rotate(-90)" text-anchor="middle" font-size="22" font-weight="700" fill="#8a58ff">工程能力</text>
+<path d="M 1799,815 L 1811,815 L 1811,1063 L 1799,1063" fill="none" stroke="#4b94df" stroke-width="4" stroke-linejoin="round"/>
+<text transform="translate(1838 939.0) rotate(-90)" text-anchor="middle" font-size="22" font-weight="700" fill="#4b94df">工具基础</text>
+</g>
+</svg>

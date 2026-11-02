@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1030" viewBox="0 0 900 1030" role="img" aria-labelledby="title desc">
+<title id="title">Loop Engineering 的运行控制</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="900" height="1030" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="450.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">Loop Engineering 的运行控制</text>
+<text x="450.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">每次继续执行，都要有状态、证据和剩余预算</text>
+<rect x="170" y="140" width="560" height="100" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="170" y="160" width="6" height="60" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="196" y="179" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">触发与发现任务</text>
+<text x="196" y="214" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">定时、事件或目标驱动</text>
+<path d="M 450,244 L 450,270" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="170" y="275" width="560" height="100" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="170" y="295" width="6" height="60" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="196" y="314" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">准备上下文与状态</text>
+<text x="196" y="349" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">加载规则、工作空间和上次进度</text>
+<path d="M 450,379 L 450,405" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="170" y="410" width="560" height="100" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="170" y="430" width="6" height="60" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="196" y="449" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">执行并记录</text>
+<text x="196" y="484" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">调用工具，记录操作、结果与成本</text>
+<path d="M 450,514 L 450,540" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="170" y="545" width="560" height="100" rx="18" fill="#fff8e8" stroke="#e69d4c" stroke-width="2"/>
+<text x="450" y="585" xml:space="preserve" font-size="28" fill="#1b3e70" text-anchor="middle" font-weight="700">独立验证</text>
+<text x="450" y="620" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="400">测试、检查器、状态读回与运行指标</text>
+<path d="M 450,649 L 450,700" fill="none" stroke="#e69d4c" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="468" y="680" xml:space="preserve" font-size="21" fill="#e94e50" text-anchor="start" font-weight="400">失败</text>
+<rect x="170" y="705" width="560" height="105" rx="18" fill="#f3eeff" stroke="#8a58ff" stroke-width="2"/>
+<rect x="170" y="725" width="6" height="65" rx="3" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="196" y="744" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">检查失败类型与预算</text>
+<text x="196" y="779" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">可修正且预算充足：退避后重试</text>
+<path d="M 170,760 L 85,760 L 85,325 L 165,325" fill="none" stroke="#8a58ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="100" y="545" xml:space="preserve" font-size="21" fill="#8a58ff" text-anchor="start" font-weight="400">重试</text>
+<path d="M 730,595 L 820,595 L 820,890 L 735,890" fill="none" stroke="#50b467" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="800" y="572" xml:space="preserve" font-size="21" fill="#50b467" text-anchor="middle" font-weight="400">成功</text>
+<rect x="490" y="850" width="290" height="120" rx="18" fill="#edf8ee" stroke="#50b467" stroke-width="2"/>
+<rect x="490" y="870" width="6" height="80" rx="3" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="516" y="889" xml:space="preserve" font-size="26" fill="#1b3e70" text-anchor="start" font-weight="700">完成归档</text>
+<text x="516" y="924" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">保存结果与运行记录</text>
+<path d="M 320,814 L 320,845" fill="none" stroke="#e94e50" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="120" y="850" width="300" height="120" rx="18" fill="#fff0f0" stroke="#e94e50" stroke-width="2"/>
+<rect x="120" y="870" width="6" height="80" rx="3" fill="#e94e50" stroke="none" stroke-width="0"/>
+<text x="146" y="889" xml:space="preserve" font-size="26" fill="#1b3e70" text-anchor="start" font-weight="700">停止或人工处理</text>
+<text x="146" y="924" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">不可恢复、超权限</text>
+<text x="146" y="955" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">超出轮数或成本预算</text>
+</g>
+</svg>

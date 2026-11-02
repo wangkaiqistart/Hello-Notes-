@@ -1,0 +1,80 @@
+{
+  "course": "JK - 2026年企业级AI编程实战营【系统课】",
+  "method": "使用可编辑 SVG 图元与文字按原图重绘；非像素级复刻。调整少量文字间距和容器高度以消除遮挡，透明图补白色背景。",
+  "generator": "scripts/redraw_course_diagrams.py",
+  "caveats": {
+    "when-cluster": "原图TTL=10s，时间线恢复至12s，与10s目标不一致；独立心跳线程仍可能受全局GC停顿影响。",
+    "when-timewheel": "原图含取模分片示意，与正文一致性Hash口径不同；O(1)、内存及精度为图中简化指标。",
+    "when-ha": "保留原图同步复制、两个Slave、5s TTL及Controller/时间轮Master混用；正文采用异步副本与分离角色，零丢失与切换SLA未经验证。",
+    "when-lifecycle": "原图成功后删除Redis及取消删除为早期流程示意；最终状态保留、投递权和幂等须独立设计，SET/Pipeline不等于磁盘落盘。",
+    "when-sink": "原图同时含热加载和重启加载；SPI不自动实现动态热加载，重试次数与生命周期图不同。",
+    "when-deployment": "原图固定主从拓扑与StatefulSet为示意，不能代替按时间轮分配角色或后续部署方案；PVC并不保证零丢失。"
+  },
+  "images": [
+    {
+      "svg": "cognition-seven-layers.svg",
+      "source": "https://static001.infoq.cn/resource/image/0a/54/0a68413f9dbd3153b40a101e2661a654.png",
+      "document": "03-05 5. 认知篇：AI 编程市场观察和工具全景.html"
+    },
+    {
+      "svg": "oryxos-overview.svg",
+      "source": "https://static001.infoq.cn/resource/image/55/d5/55a755810905b687a3a8eccf503432d5.png",
+      "document": "03-18 18. 项目篇 OryxOS：技术方案文档.html"
+    },
+    {
+      "svg": "oryxos-layers.svg",
+      "source": "https://static001.infoq.cn/resource/image/8b/c3/8b1e501518bf0258513c17968ef7a2c3.png",
+      "document": "03-18 18. 项目篇 OryxOS：技术方案文档.html"
+    },
+    {
+      "svg": "oryxos-boundary.svg",
+      "source": "https://static001.infoq.cn/resource/image/9c/57/9c0530bb15f2da00971bf52649796957.png",
+      "document": "03-18 18. 项目篇 OryxOS：技术方案文档.html"
+    },
+    {
+      "svg": "oryxos-react.svg",
+      "source": "https://static001.infoq.cn/resource/image/9a/47/9a6d1bd19b98c62d5839512407a1ce47.png",
+      "document": "03-18 18. 项目篇 OryxOS：技术方案文档.html"
+    },
+    {
+      "svg": "oryxos-memory.svg",
+      "source": "https://static001.infoq.cn/resource/image/7f/ac/7fe51cd4e23b8cff897118929214cbac.png",
+      "document": "03-18 18. 项目篇 OryxOS：技术方案文档.html"
+    },
+    {
+      "svg": "when-overview.svg",
+      "source": "https://static001.infoq.cn/resource/image/38/4b/38f1a8f1fae2276e6d10afddb34eea4b.png",
+      "document": "03-22 22. 项目篇 When：技术方案文档.html"
+    },
+    {
+      "svg": "when-cluster.svg",
+      "source": "https://static001.infoq.cn/resource/image/f4/0d/f490901bd6401245959a42837b90cf0d.png",
+      "document": "03-22 22. 项目篇 When：技术方案文档.html"
+    },
+    {
+      "svg": "when-timewheel.svg",
+      "source": "https://static001.infoq.cn/resource/image/fb/e8/fb7d3547da98b3c8eac6d146f3f6d8e8.png",
+      "document": "03-22 22. 项目篇 When：技术方案文档.html"
+    },
+    {
+      "svg": "when-ha.svg",
+      "source": "https://static001.infoq.cn/resource/image/f3/b3/f319dce2e856c84ed29ccedbd6fe96b3.png",
+      "document": "03-22 22. 项目篇 When：技术方案文档.html"
+    },
+    {
+      "svg": "when-lifecycle.svg",
+      "source": "https://static001.infoq.cn/resource/image/bd/65/bd1972b16b5c7961facbd91c09d80465.png",
+      "document": "03-22 22. 项目篇 When：技术方案文档.html"
+    },
+    {
+      "svg": "when-sink.svg",
+      "source": "https://static001.infoq.cn/resource/image/5b/a5/5b58b09717cc9899d872d50e22d6c1a5.png",
+      "document": "03-22 22. 项目篇 When：技术方案文档.html"
+    },
+    {
+      "svg": "when-deployment.svg",
+      "source": "https://static001.infoq.cn/resource/image/42/81/42663ca60076c41fe1ec3485e61c9e81.png",
+      "document": "03-22 22. 项目篇 When：技术方案文档.html"
+    }
+  ]
+}

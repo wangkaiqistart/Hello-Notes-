@@ -1,0 +1,37 @@
+---
+title: When：整体架构与技术决策
+description: 解释 ETCD、Redis、多层时间轮、gRPC、HTTP 和 Java 的组合取舍
+sidebar:
+  label: 整体架构
+  order: 23
+---
+
+> **架构重点**：ETCD 管协调，Redis 管权威数据，多层时间轮管内存调度，Master/Slave 管快速接管，Sink 管投递扩展。
+
+## 节点内部模块
+
+请求经接入和路由进入消息服务与状态机，消息先保存到 Redis，再交给时间轮调度。ETCD 管理集群归属，Due Handler 取得投递权后调用 Sink 并处理结果。
+
+[![When 节点数据流：API、路由、消息服务、状态机、Redis、时间轮和 Sink，ETCD 负责协调](/images/ai-programming/notes/when-architecture.svg)](/images/ai-programming/notes/when-architecture.svg)
+
+## 技术决策
+
+| 决策                 | 原因                                        | 明确边界                 |
+| -------------------- | ------------------------------------------- | ------------------------ |
+| ETCD                 | Lease、Watch 和一致性适合注册、选主和元数据 | 不保存大体量消息         |
+| Redis                | 写入快、TTL 和生态成熟，适合作为消息真源    | 需要拆小 Key，避免大 Key |
+| 多层时间轮           | 内存调度接近 O(1)，覆盖不同时间跨度         | 不是持久化层             |
+| Master/Slave         | 目标是快速接管，不追求强一致副本            | Redis 负责权威恢复       |
+| 外部 HTTP、内部 gRPC | 外部易接入，内部强类型高效                  | 需明确错误和超时语义     |
+| Java                 | Spring、JVM 运维和开发者生态成熟            | 仍要控制工程复杂度       |
+
+## 数据流原则
+
+消息先写入 Redis，成功后才进入本节点时间轮。时间轮到期只负责触发，真正投递和状态收口由 Due Handler 完成。
+
+## 设计边界
+
+- ETCD 元数据和 Redis 消息状态分工明确；
+- 节点可以重启，不能依赖单机内存恢复全部事实；
+- API、状态机和 Sink 都必须有稳定契约；
+- 集群决策与故障执行分离。

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1472" height="1040" viewBox="0 0 1472 1040" role="img" aria-labelledby="title desc">
+<title id="title">OryxOS 单体应用架构</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="1472" height="1040" rx="0" fill="#ffffff" stroke="none" stroke-width="0"/>
+<rect x="56" y="40" width="1360" height="956" rx="44" fill="none" stroke="#bcbcaf" stroke-width="2" stroke-dasharray="12 9"/>
+<text x="112" y="89" xml:space="preserve" font-size="26" fill="#333333" text-anchor="start" font-weight="700">OryxOS 单体应用（Spring Boot，单二进制）</text>
+<text x="736" y="138" xml:space="preserve" font-size="26" fill="#333333" text-anchor="middle" font-weight="700">入口层</text>
+<rect x="396" y="156" width="300" height="88" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="546.0" y="210.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="400">CLI Channel</text>
+<rect x="776" y="156" width="300" height="88" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="926.0" y="210.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="400">Web Service</text>
+<path d="M 546,244 L 656,312" fill="none" stroke="#777777" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 926,244 L 816,312" fill="none" stroke="#777777" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="496" y="316" width="480" height="116" rx="28" fill="#e0f5ef" stroke="#50cbaa" stroke-width="2"/>
+<text x="736.0" y="370.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="700">ReAct 循环（引擎）</text>
+<text x="736.0" y="409.0" xml:space="preserve" font-size="25" fill="#444444" text-anchor="middle" font-weight="400">PromptBuilder   ToolExecutor</text>
+<path d="M 616,432 L 276,538" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="96" y="540" width="360" height="116" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="276.0" y="594.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="700">Provider</text>
+<text x="276.0" y="633.0" xml:space="preserve" font-size="25" fill="#444444" text-anchor="middle" font-weight="400">LLM 调用抽象</text>
+<path d="M 736,432 L 736,538" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="556" y="540" width="360" height="116" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="736.0" y="594.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="700">Memory</text>
+<text x="736.0" y="633.0" xml:space="preserve" font-size="25" fill="#444444" text-anchor="middle" font-weight="400">会话加长期记忆</text>
+<path d="M 856,432 L 1196,538" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="1016" y="540" width="360" height="116" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="1196.0" y="594.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="700">Tool</text>
+<text x="1196.0" y="633.0" xml:space="preserve" font-size="25" fill="#444444" text-anchor="middle" font-weight="400">内置加 MCP Client</text>
+<path d="M 736,656 L 736,732" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="496" y="736" width="480" height="100" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2"/>
+<text x="736.0" y="782.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="700">存储层</text>
+<text x="736.0" y="821.0" xml:space="preserve" font-size="25" fill="#444444" text-anchor="middle" font-weight="400">SQLite（Session、审计） 文件系统</text>
+<path d="M 276,656 L 276,900" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="276" y="701" xml:space="preserve" font-size="24" fill="#333333" text-anchor="middle" font-weight="700">外接</text>
+<rect x="96" y="904" width="360" height="80" rx="28" fill="none" stroke="#cbc9bf" stroke-width="2" stroke-dasharray="12 9"/>
+<text x="276.0" y="954.0" xml:space="preserve" font-size="26" fill="#333333" text-anchor="middle" font-weight="400">LLM 厂商 API</text>
+<path d="M 1196,656 L 1196,900" fill="none" stroke="#99998c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="1196" y="701" xml:space="preserve" font-size="24" fill="#333333" text-anchor="middle" font-weight="700">外接</text>
+<rect x="1016" y="904" width="360" height="80" rx="28" fill="none" stroke="#cbc9bf" stroke-width="2" stroke-dasharray="12 9"/>
+<text x="1196.0" y="954.0" xml:space="preserve" font-size="26" fill="#333333" text-anchor="middle" font-weight="400">外部 MCP server</text>
+</g>
+</svg>

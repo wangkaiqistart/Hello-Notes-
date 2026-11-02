@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1936" height="1198" viewBox="0 0 1936 1198" role="img" aria-labelledby="title desc">
+<title id="title">When 集群协调机制</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="1936" height="1198" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="968.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">When 集群协调机制</text>
+<text x="968.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">全部基于 ETCD · 事件驱动而非主动探测 · 声明式集群状态管理</text>
+<rect x="32" y="131" width="520" height="660" rx="16" fill="#1e1e30" stroke="#4b94df" stroke-width="3"/>
+<text x="52" y="168" xml:space="preserve" font-size="23" fill="#4b94df" text-anchor="start" font-weight="700">ETCD key 空间</text>
+<text x="52" y="199" xml:space="preserve" font-size="18" fill="#dddfff" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">/when/</text>
+<text x="52" y="237" xml:space="preserve" font-size="18" fill="#b4efa2" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  nodes/</text>
+<text x="52" y="275" xml:space="preserve" font-size="18" fill="#90e5f8" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    node-1 {ip,port} ←Lease</text>
+<text x="52" y="313" xml:space="preserve" font-size="18" fill="#90e5f8" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    node-2 {ip,port} ←Lease</text>
+<text x="52" y="351" xml:space="preserve" font-size="18" fill="#90e5f8" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    node-3 {ip,port} ←Lease</text>
+<text x="52" y="389" xml:space="preserve" font-size="18" fill="#ffc17a" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  controller node-1 ←Lease</text>
+<text x="52" y="427" xml:space="preserve" font-size="18" fill="#b4efa2" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  timewheels/</text>
+<text x="52" y="465" xml:space="preserve" font-size="18" fill="#90e5f8" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    tw-001 {master:node-1,</text>
+<text x="52" y="503" xml:space="preserve" font-size="18" fill="#90e5f8" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">            slave:node-2}</text>
+<text x="52" y="541" xml:space="preserve" font-size="18" fill="#90e5f8" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    tw-002 {master:node-2,</text>
+<text x="52" y="579" xml:space="preserve" font-size="18" fill="#90e5f8" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">            slave:node-3}</text>
+<text x="52" y="617" xml:space="preserve" font-size="18" fill="#b4efa2" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  config/</text>
+<text x="52" y="655" xml:space="preserve" font-size="18" fill="#ffdfa0" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    cluster_size 3</text>
+<text x="52" y="693" xml:space="preserve" font-size="18" fill="#ffdfa0" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    timewheel_count 12</text>
+<rect x="592" y="131" width="760" height="200" rx="16" fill="#fafaff" stroke="#4b94df" stroke-width="3"/>
+<rect x="593" y="132" width="758" height="51" rx="14" fill="#4b94df" stroke="none" stroke-width="0"/>
+<rect x="593" y="161" width="758" height="22" rx="0" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="972" y="166" xml:space="preserve" font-size="23" fill="white" text-anchor="middle" font-weight="700">① 节点注册与保活</text>
+<circle cx="620" cy="200" r="8" fill="#4b94df" stroke="none" stroke-width="2"/>
+<text x="640" y="207" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">启动 → PUT /when/nodes/node-N + Lease(TTL=10s)</text>
+<circle cx="620" cy="244" r="8" fill="#4b94df" stroke="none" stroke-width="2"/>
+<text x="640" y="251" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">后台线程每3s续约 KeepAlive（独立线程）</text>
+<circle cx="620" cy="288" r="8" fill="#4b94df" stroke="none" stroke-width="2"/>
+<text x="640" y="295" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">续约停止 → ETCD自动删key → 其他节点感知</text>
+<rect x="592" y="355" width="760" height="200" rx="16" fill="#fafaff" stroke="#8a58ff" stroke-width="3"/>
+<rect x="593" y="356" width="758" height="51" rx="14" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<rect x="593" y="385" width="758" height="22" rx="0" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="972" y="390" xml:space="preserve" font-size="23" fill="white" text-anchor="middle" font-weight="700">② Controller 选举</text>
+<circle cx="620" cy="424" r="8" fill="#8a58ff" stroke="none" stroke-width="2"/>
+<text x="640" y="431" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">所有节点同时尝试 Txn: IF NOT EXISTS PUT /when/controller</text>
+<circle cx="620" cy="468" r="8" fill="#8a58ff" stroke="none" stroke-width="2"/>
+<text x="640" y="475" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">首个成功的节点成为 Controller（原子保证）</text>
+<circle cx="620" cy="512" r="8" fill="#8a58ff" stroke="none" stroke-width="2"/>
+<text x="640" y="519" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">Controller故障 → Lease过期 → Watch触发 → 重新选举</text>
+<rect x="592" y="579" width="760" height="200" rx="16" fill="#fafaff" stroke="#e94e50" stroke-width="3"/>
+<rect x="593" y="580" width="758" height="51" rx="14" fill="#e94e50" stroke="none" stroke-width="0"/>
+<rect x="593" y="609" width="758" height="22" rx="0" fill="#e94e50" stroke="none" stroke-width="0"/>
+<text x="972" y="614" xml:space="preserve" font-size="23" fill="white" text-anchor="middle" font-weight="700">③ 节点故障检测与切换</text>
+<circle cx="620" cy="648" r="8" fill="#e94e50" stroke="none" stroke-width="2"/>
+<text x="640" y="655" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">Controller Watch /when/nodes/ 前缀</text>
+<circle cx="620" cy="692" r="8" fill="#e94e50" stroke="none" stroke-width="2"/>
+<text x="640" y="699" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">DELETE事件 → 检查故障节点的Master时间轮</text>
+<circle cx="620" cy="736" r="8" fill="#e94e50" stroke="none" stroke-width="2"/>
+<text x="640" y="743" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">更新 ETCD tw-N: Slave→Master → 新Master感知并接管</text>
+<rect x="592" y="803" width="760" height="200" rx="16" fill="#fafaff" stroke="#50b467" stroke-width="3"/>
+<rect x="593" y="804" width="758" height="51" rx="14" fill="#50b467" stroke="none" stroke-width="0"/>
+<rect x="593" y="833" width="758" height="22" rx="0" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="972" y="838" xml:space="preserve" font-size="23" fill="white" text-anchor="middle" font-weight="700">④ 节点加入与Rebalance</text>
+<circle cx="620" cy="872" r="8" fill="#50b467" stroke="none" stroke-width="2"/>
+<text x="640" y="879" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">新节点 PUT /when/nodes/node-new</text>
+<circle cx="620" cy="916" r="8" fill="#50b467" stroke="none" stroke-width="2"/>
+<text x="640" y="923" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">Controller感知 → 计算负载均衡 → 迁移Slave副本到新节点</text>
+<circle cx="620" cy="960" r="8" fill="#50b467" stroke="none" stroke-width="2"/>
+<text x="640" y="967" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">优先迁Slave（不影响写入路径）→ 同步完成后正式承担Slave</text>
+<rect x="1392" y="131" width="520" height="930" rx="16" fill="#fff0f0" stroke="#e94e50" stroke-width="3"/>
+<text x="1652.0" y="179" xml:space="preserve" font-size="24" fill="#e94e50" text-anchor="middle" font-weight="700">故障切换时间线</text>
+<path d="M 1436,203 L 1436,935" fill="none" stroke="#dddddd" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="1436" cy="203" r="12" fill="#e94e50" stroke="none" stroke-width="2"/>
+<text x="1456" y="210" xml:space="preserve" font-size="17" fill="#e94e50" text-anchor="start" font-weight="700">T+0s</text>
+<text x="1548" y="210" xml:space="preserve" font-size="17" fill="#333333" text-anchor="start" font-weight="400">Master节点故障（进程崩溃/网络断）</text>
+<circle cx="1436" cy="301" r="12" fill="#e69d4c" stroke="none" stroke-width="2"/>
+<text x="1456" y="308" xml:space="preserve" font-size="17" fill="#e69d4c" text-anchor="start" font-weight="700">T+3s</text>
+<text x="1548" y="308" xml:space="preserve" font-size="17" fill="#333333" text-anchor="start" font-weight="400">ETCD Lease续约停止</text>
+<circle cx="1436" cy="399" r="12" fill="#e69d4c" stroke="none" stroke-width="2"/>
+<text x="1456" y="406" xml:space="preserve" font-size="17" fill="#e69d4c" text-anchor="start" font-weight="700">T+10s</text>
+<text x="1548" y="406" xml:space="preserve" font-size="17" fill="#333333" text-anchor="start" font-weight="400">Lease TTL到期 → key自动删除</text>
+<circle cx="1436" cy="497" r="12" fill="#4b94df" stroke="none" stroke-width="2"/>
+<text x="1456" y="504" xml:space="preserve" font-size="17" fill="#4b94df" text-anchor="start" font-weight="700">T+10s</text>
+<text x="1548" y="504" xml:space="preserve" font-size="17" fill="#333333" text-anchor="start" font-weight="400">Controller Watch触发DELETE事件</text>
+<circle cx="1436" cy="595" r="12" fill="#4b94df" stroke="none" stroke-width="2"/>
+<text x="1456" y="602" xml:space="preserve" font-size="17" fill="#4b94df" text-anchor="start" font-weight="700">T+11s</text>
+<text x="1548" y="602" xml:space="preserve" font-size="17" fill="#333333" text-anchor="start" font-weight="400">Controller更新ETCD: Slave→Master</text>
+<circle cx="1436" cy="693" r="12" fill="#50b467" stroke="none" stroke-width="2"/>
+<text x="1456" y="700" xml:space="preserve" font-size="17" fill="#50b467" text-anchor="start" font-weight="700">T+11s</text>
+<text x="1548" y="700" xml:space="preserve" font-size="17" fill="#333333" text-anchor="start" font-weight="400">新Master Watch到tw-N变化</text>
+<circle cx="1436" cy="791" r="12" fill="#50b467" stroke="none" stroke-width="2"/>
+<text x="1456" y="798" xml:space="preserve" font-size="17" fill="#50b467" text-anchor="start" font-weight="700">T+12s</text>
+<text x="1548" y="798" xml:space="preserve" font-size="17" fill="#333333" text-anchor="start" font-weight="400">新Master从Redis加载未投递消息</text>
+<circle cx="1436" cy="889" r="12" fill="#888888" stroke="none" stroke-width="2"/>
+<text x="1456" y="896" xml:space="preserve" font-size="17" fill="#888888" text-anchor="start" font-weight="700">T+15s</text>
+<text x="1548" y="896" xml:space="preserve" font-size="17" fill="#333333" text-anchor="start" font-weight="400">Controller为tw-N分配新Slave</text>
+<rect x="1412" y="966" width="480" height="76" rx="13" fill="#ffd0d0" stroke="#e94e50" stroke-width="3"/>
+<text x="1652" y="994" xml:space="preserve" font-size="21" fill="#c90000" text-anchor="middle" font-weight="700">SLA: Master故障后 Slave 在10秒内接管</text>
+<text x="1652" y="1025" xml:space="preserve" font-size="15" fill="#666666" text-anchor="middle" font-weight="400">已写入Redis的消息:绝对不丢 · 正在投递的消息:至少一次</text>
+<rect x="32" y="1091" width="1880" height="88" rx="16" fill="#eaf3fc" stroke="#4b94df" stroke-width="3"/>
+<text x="972" y="1124" xml:space="preserve" font-size="22" fill="#2c5180" text-anchor="middle" font-weight="700">核心设计：Controller 不主动 ping 节点，而是被动响应 ETCD Watch 事件流——「主动探测」变「事件驱动」</text>
+<text x="972" y="1157" xml:space="preserve" font-size="20" fill="#555555" text-anchor="middle" font-weight="400">Lease由独立线程续约，GC停顿和业务线程繁忙不影响心跳——只有真正“节点失能”才触发切换</text>
+</g>
+</svg>

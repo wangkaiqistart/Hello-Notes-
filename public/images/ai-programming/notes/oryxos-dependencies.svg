@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="680" viewBox="0 0 900 680" role="img" aria-labelledby="title desc">
+<title id="title">OryxOS 能力依赖</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="900" height="680" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="450.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">OryxOS 能力依赖</text>
+<text x="450.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">箭头表示主要依赖与集成方向</text>
+<rect x="50" y="140" width="320" height="100" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="50" y="160" width="6" height="60" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="76" y="179" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">Provider</text>
+<text x="76" y="214" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">统一模型调用</text>
+<rect x="530" y="140" width="320" height="100" rx="18" fill="#f3eeff" stroke="#8a58ff" stroke-width="2"/>
+<rect x="530" y="160" width="6" height="60" rx="3" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="556" y="179" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">ReAct</text>
+<text x="556" y="214" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">组织模型与工具循环</text>
+<path d="M 375,190 L 525,190" fill="none" stroke="#4b94df" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="50" y="335" width="320" height="110" rx="18" fill="#edf8ee" stroke="#50b467" stroke-width="2"/>
+<rect x="50" y="355" width="6" height="70" rx="3" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="76" y="374" xml:space="preserve" font-size="23" fill="#1b3e70" text-anchor="start" font-weight="700">Memory / Tool</text>
+<text x="76" y="409" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">上下文记忆与工具执行</text>
+<rect x="530" y="335" width="320" height="110" rx="18" fill="#edf8ee" stroke="#50b467" stroke-width="2"/>
+<rect x="530" y="355" width="6" height="70" rx="3" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="556" y="374" xml:space="preserve" font-size="23" fill="#1b3e70" text-anchor="start" font-weight="700">CLI / Channel / Sandbox</text>
+<text x="556" y="409" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">消息入口与执行边界</text>
+<path d="M 690,245 L 690,285 L 210,285 L 210,330" fill="none" stroke="#8a58ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 690,245 L 690,330" fill="none" stroke="#8a58ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="290" y="530" width="320" height="100" rx="18" fill="#fff8e8" stroke="#e69d4c" stroke-width="2"/>
+<rect x="290" y="550" width="6" height="60" rx="3" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="316" y="569" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">Web Service</text>
+<text x="316" y="604" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">将能力开放给业务系统</text>
+<path d="M 210,450 L 210,580 L 285,580" fill="none" stroke="#50b467" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+</g>
+</svg>

@@ -1,0 +1,38 @@
+---
+title: When：分布式延时投递项目
+description: 用 AI 编程实现带集群、高可用和可观测能力的延时消息服务
+sidebar:
+  label: When 总览
+  order: 20
+---
+
+> **项目重点**：When 不是一个单机定时器，而是一个面向生产场景的分布式延时投递组件。
+
+## 一句话定义
+
+业务方提交一条带投递时间和下游 Sink 的消息，When 负责持久化、调度、到期投递、重试、查询、取消和故障恢复。
+
+集群中的普通节点具有相同模块，其中一个额外承担 Controller 职责。HTTP 面向业务方，内部路由和副本同步使用 gRPC；ETCD 负责协调，Redis 保存消息事实，Sink 负责连接下游。
+
+[![When 整体架构：同构节点中的接入、路由、时间轮和副本模块，连接 ETCD、Redis 及下游 Sink](/images/ai-programming/course/when-overview.svg)](/images/ai-programming/course/when-overview.svg)
+
+_gRPC Sink 标为后续扩展，内部 gRPC 通信属于已有架构职责。_
+
+## 项目文档
+
+- [业界调研](./research/)
+- [需求与验收](./requirements/)
+- [整体架构](./architecture/)
+- [存储、时间轮与生命周期](./runtime/)
+- [集群与高可用](./ha/)
+- [投递、可观测与部署](./delivery-and-ops/)
+- [AI 编程实施指南](./ai-development-guide/)
+- [项目总结](./summary/)
+
+## 关键硬指标
+
+- 延时时间覆盖秒级到较长时间范围；
+- 消息先落 Redis，再进入内存时间轮；
+- 节点故障后由副本接管并恢复未完成消息；
+- 投递失败可分类、重试和观测；
+- 支持本地、单节点和 Kubernetes 部署。

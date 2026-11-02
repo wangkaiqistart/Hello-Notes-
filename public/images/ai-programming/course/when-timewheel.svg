@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2102" height="1236" viewBox="0 0 2102 1236" role="img" aria-labelledby="title desc">
+<title id="title">多层时间轮设计</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="2102" height="1236" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="1051.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">多层时间轮设计</text>
+<text x="1051.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">4层嵌套覆盖1秒~30天 · O(1)插入触发 · 到期降级 · 调度循环不做重IO</text>
+<rect x="32" y="124" width="860" height="860" rx="14" fill="white" stroke="#b67816" stroke-width="4"/>
+<rect x="33" y="125" width="858" height="16" rx="10" fill="#b67816" stroke="none" stroke-width="0"/>
+<text x="462.0" y="171" xml:space="preserve" font-size="24" fill="#b67816" text-anchor="middle" font-weight="700">第四层 · 30天</text>
+<rect x="92" y="184" width="740" height="740" rx="14" fill="white" stroke="#e94e50" stroke-width="4"/>
+<rect x="93" y="185" width="738" height="16" rx="10" fill="#e94e50" stroke="none" stroke-width="0"/>
+<text x="462.0" y="231" xml:space="preserve" font-size="24" fill="#e94e50" text-anchor="middle" font-weight="700">第三层 · 24小时</text>
+<rect x="152" y="244" width="620" height="620" rx="14" fill="white" stroke="#50b467" stroke-width="4"/>
+<rect x="153" y="245" width="618" height="16" rx="10" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="462.0" y="291" xml:space="preserve" font-size="24" fill="#50b467" text-anchor="middle" font-weight="700">第二层 · 60分钟</text>
+<rect x="212" y="304" width="500" height="500" rx="14" fill="white" stroke="#4b94df" stroke-width="4"/>
+<rect x="213" y="305" width="498" height="16" rx="10" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="462.0" y="351" xml:space="preserve" font-size="24" fill="#4b94df" text-anchor="middle" font-weight="700">第一层 · 60秒</text>
+<text x="462" y="386" xml:space="preserve" font-size="18" fill="#777777" text-anchor="middle" font-weight="400">60 槽，步长=1秒</text>
+<text x="462" y="414" xml:space="preserve" font-size="18" fill="#777777" text-anchor="middle" font-weight="400">覆盖范围：1秒~60秒</text>
+<rect x="232" y="454" width="460" height="160" rx="10" fill="#fffbef" stroke="#b67816" stroke-width="2"/>
+<text x="462" y="491" xml:space="preserve" font-size="22" fill="#b67816" text-anchor="middle" font-weight="700">插入示例：delay=90分钟</text>
+<text x="462" y="525" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">→ 第三层 slot=1（1小时后降级）</text>
+<text x="462" y="553" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">→ 降到第二层 slot=30（30分钟）</text>
+<text x="462" y="581" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">→ 降到第一层 tick=0 触发投递</text>
+<path d="M 482,614 L 482,650" fill="none" stroke="#b67816" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="491" y="641" xml:space="preserve" font-size="17" fill="#b67816" text-anchor="start" font-weight="400">到期降级</text>
+<path d="M 542,614 L 542,700" fill="none" stroke="#e94e50" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="551" y="691" xml:space="preserve" font-size="17" fill="#e94e50" text-anchor="start" font-weight="400">到期降级</text>
+<path d="M 602,614 L 602,750" fill="none" stroke="#50b467" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="611" y="741" xml:space="preserve" font-size="17" fill="#50b467" text-anchor="start" font-weight="400">到期降级</text>
+<rect x="932" y="124" width="560" height="500" rx="16" fill="#eaf3fc" stroke="#4b94df" stroke-width="3"/>
+<rect x="933" y="125" width="558" height="16" rx="12" fill="#4b94df" stroke="none" stroke-width="0"/>
+<rect x="933" y="134" width="558" height="7" rx="0" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="1212.0" y="172" xml:space="preserve" font-size="24" fill="#4b94df" text-anchor="middle" font-weight="700">调度循环（关键路径设计）</text>
+<text x="956" y="205" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">while running:</text>
+<text x="956" y="229" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  msgs = wheel[pointer]</text>
+<text x="956" y="253" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  // O(1) 取槽</text>
+<text x="956" y="277" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  for msg in msgs:</text>
+<text x="956" y="301" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    if layer==0:</text>
+<text x="956" y="325" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">      sink_pool.submit(</text>
+<text x="956" y="349" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">        deliver, msg) // 异步</text>
+<text x="956" y="373" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">    else:</text>
+<text x="956" y="397" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">      lower_wheel.add(msg)</text>
+<text x="956" y="421" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">      // 降级</text>
+<text x="956" y="445" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  pointer = (pointer+1) % size</text>
+<text x="956" y="469" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  sleep_until_next_slot()</text>
+<text x="956" y="493" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400" font-family="Menlo, Consolas, monospace">  // 补偿耗时，防漂移</text>
+<rect x="932" y="644" width="560" height="180" rx="16" fill="#edf8ee" stroke="#50b467" stroke-width="3"/>
+<text x="1212.0" y="692" xml:space="preserve" font-size="24" fill="#50b467" text-anchor="middle" font-weight="700">性能指标</text>
+<text x="956" y="711" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="700">插入复杂度:</text>
+<text x="1472" y="711" xml:space="preserve" font-size="18" fill="#338b3a" text-anchor="end" font-weight="400">O(1)</text>
+<text x="956" y="742" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="700">触发复杂度:</text>
+<text x="1472" y="742" xml:space="preserve" font-size="18" fill="#338b3a" text-anchor="end" font-weight="400">O(1)</text>
+<text x="956" y="773" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="700">内存占用:</text>
+<text x="1472" y="773" xml:space="preserve" font-size="18" fill="#338b3a" text-anchor="end" font-weight="400">O(slots × layers)</text>
+<text x="956" y="804" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="700">精度误差:</text>
+<text x="1472" y="804" xml:space="preserve" font-size="18" fill="#338b3a" text-anchor="end" font-weight="400">&lt; 1秒（slot步长）</text>
+<rect x="1532" y="124" width="540" height="700" rx="16" fill="#f3eeff" stroke="#8a58ff" stroke-width="3"/>
+<rect x="1533" y="125" width="538" height="16" rx="12" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<rect x="1533" y="134" width="538" height="7" rx="0" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="1802.0" y="172" xml:space="preserve" font-size="24" fill="#8a58ff" text-anchor="middle" font-weight="700">集群分布策略</text>
+<rect x="1552" y="194" width="500" height="200" rx="10" fill="white" stroke="#b68cff" stroke-width="1.5"/>
+<text x="1802" y="231" xml:space="preserve" font-size="23" fill="#6f36d9" text-anchor="middle" font-weight="700">消息分片规则</text>
+<text x="1562" y="263" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">shard = msgId % nodeCount</text>
+<text x="1562" y="293" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">· 同一消息始终在同一节点</text>
+<text x="1562" y="323" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">· Master 节点负责本 shard 调度</text>
+<text x="1562" y="353" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">· Slave 跟随复制，不独立触发</text>
+<text x="1562" y="383" xml:space="preserve" font-size="18" fill="#333333" text-anchor="start" font-weight="400">· rebalance 时重新分配 shard</text>
+<rect x="1552" y="418" width="500" height="104" rx="10" fill="white" stroke="#4b94df" stroke-width="3"/>
+<rect x="1553" y="419" width="498" height="16" rx="10" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="1802" y="462" xml:space="preserve" font-size="23" fill="#4b94df" text-anchor="middle" font-weight="700">节点0</text>
+<text x="1802" y="491" xml:space="preserve" font-size="18" fill="#777777" text-anchor="middle" font-weight="400">(Master)</text>
+<text x="2036" y="491" xml:space="preserve" font-size="16" fill="#777777" text-anchor="end" font-weight="400">shard 0,3,6…</text>
+<rect x="1552" y="542" width="500" height="104" rx="10" fill="white" stroke="#50b467" stroke-width="3"/>
+<rect x="1553" y="543" width="498" height="16" rx="10" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="1802" y="586" xml:space="preserve" font-size="23" fill="#50b467" text-anchor="middle" font-weight="700">节点1</text>
+<text x="1802" y="615" xml:space="preserve" font-size="18" fill="#777777" text-anchor="middle" font-weight="400">(Slave)</text>
+<text x="2036" y="615" xml:space="preserve" font-size="16" fill="#777777" text-anchor="end" font-weight="400">shard 1,4,7…</text>
+<rect x="1552" y="666" width="500" height="104" rx="10" fill="white" stroke="#e69d4c" stroke-width="3"/>
+<rect x="1553" y="667" width="498" height="16" rx="10" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="1802" y="710" xml:space="preserve" font-size="23" fill="#e69d4c" text-anchor="middle" font-weight="700">节点2</text>
+<text x="1802" y="739" xml:space="preserve" font-size="18" fill="#777777" text-anchor="middle" font-weight="400">(Slave)</text>
+<text x="2036" y="739" xml:space="preserve" font-size="16" fill="#777777" text-anchor="end" font-weight="400">shard 2,5,8…</text>
+<rect x="1552" y="838" width="500" height="110" rx="16" fill="#fff8e8" stroke="#e69d4c" stroke-width="3"/>
+<text x="1802.0" y="886" xml:space="preserve" font-size="20" fill="#e69d4c" text-anchor="middle" font-weight="700">Rebalance 触发条件</text>
+<text x="1802" y="912" xml:space="preserve" font-size="18" fill="#777777" text-anchor="middle" font-weight="400">节点加入 / 离开 / 故障转移</text>
+<text x="1802" y="939" xml:space="preserve" font-size="18" fill="#777777" text-anchor="middle" font-weight="400">→ ETCD Watch 事件驱动重分片</text>
+<rect x="32" y="994" width="2040" height="220" rx="16" fill="#fafafa" stroke="#cccccc" stroke-width="2"/>
+<text x="1052" y="1030" xml:space="preserve" font-size="23" fill="#333333" text-anchor="middle" font-weight="700">4层时间轮参数汇总</text>
+<text x="122" y="1064" xml:space="preserve" font-size="20" fill="#555555" text-anchor="middle" font-weight="700">层</text>
+<text x="312" y="1064" xml:space="preserve" font-size="20" fill="#555555" text-anchor="middle" font-weight="700">槽数</text>
+<text x="532" y="1064" xml:space="preserve" font-size="20" fill="#555555" text-anchor="middle" font-weight="700">步长</text>
+<text x="822" y="1064" xml:space="preserve" font-size="20" fill="#555555" text-anchor="middle" font-weight="700">覆盖范围</text>
+<text x="1212" y="1064" xml:space="preserve" font-size="20" fill="#555555" text-anchor="middle" font-weight="700">溢出处理</text>
+<path d="M 42,1074 L 2062,1074" fill="none" stroke="#dddddd" stroke-width="2" stroke-linejoin="round"/>
+<text x="122" y="1101" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">L1</text>
+<text x="312" y="1101" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">60</text>
+<text x="532" y="1101" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">1秒</text>
+<text x="822" y="1101" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">1s ~ 60s</text>
+<text x="1212" y="1101" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">无（最小粒度）</text>
+<text x="122" y="1130" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">L2</text>
+<text x="312" y="1130" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">60</text>
+<text x="532" y="1130" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">1分钟</text>
+<text x="822" y="1130" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">1m ~ 60m</text>
+<text x="1212" y="1130" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">降级到 L1</text>
+<text x="122" y="1159" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">L3</text>
+<text x="312" y="1159" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">24</text>
+<text x="532" y="1159" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">1小时</text>
+<text x="822" y="1159" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">1h ~ 24h</text>
+<text x="1212" y="1159" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">降级到 L2</text>
+<text x="122" y="1188" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">L4</text>
+<text x="312" y="1188" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">30</text>
+<text x="532" y="1188" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">1天</text>
+<text x="822" y="1188" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">1d ~ 30d</text>
+<text x="1212" y="1188" xml:space="preserve" font-size="18" fill="#333333" text-anchor="middle" font-weight="400">降级到 L3</text>
+</g>
+</svg>

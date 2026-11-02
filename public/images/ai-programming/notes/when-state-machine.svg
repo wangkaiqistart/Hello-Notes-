@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1070" viewBox="0 0 900 1070" role="img" aria-labelledby="title desc">
+<title id="title">延时消息状态流转</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="900" height="1070" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="450.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">延时消息状态流转</text>
+<text x="450.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">成功、重试、失败和取消需要各自明确的状态与条件</text>
+<rect x="170" y="140" width="560" height="100" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="170" y="160" width="6" height="60" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="196" y="179" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">Submit → PERSISTED</text>
+<text x="196" y="214" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">提交并完成持久化</text>
+<path d="M 450,244 L 450,285" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="170" y="290" width="560" height="100" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="170" y="310" width="6" height="60" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="196" y="329" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">SCHEDULED → DUE</text>
+<text x="196" y="364" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">进入时间轮，等待到期</text>
+<path d="M 450,394 L 450,435" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="170" y="440" width="560" height="100" rx="18" fill="#f3eeff" stroke="#8a58ff" stroke-width="2"/>
+<rect x="170" y="460" width="6" height="60" rx="3" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="196" y="479" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">DELIVERING</text>
+<text x="196" y="514" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">取得投递权后异步调用 Sink</text>
+<path d="M 450,544 L 450,600 L 150,600" fill="none" stroke="#96a4b4" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 450,600 L 750,600" fill="none" stroke="#96a4b4" stroke-width="2" stroke-linejoin="round"/>
+<rect x="35" y="660" width="230" height="110" rx="18" fill="#edf8ee" stroke="#50b467" stroke-width="2"/>
+<rect x="35" y="680" width="6" height="70" rx="3" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="61" y="699" xml:space="preserve" font-size="22" fill="#1b3e70" text-anchor="start" font-weight="700">DELIVERED</text>
+<text x="61" y="734" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">投递成功</text>
+<path d="M 150,600 L 150,655" fill="none" stroke="#50b467" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="335" y="660" width="230" height="110" rx="18" fill="#fff8e8" stroke="#e69d4c" stroke-width="2"/>
+<rect x="335" y="680" width="6" height="70" rx="3" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="361" y="699" xml:space="preserve" font-size="22" fill="#1b3e70" text-anchor="start" font-weight="700">RETRYING</text>
+<text x="361" y="734" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">可重试失败</text>
+<path d="M 450,600 L 450,655" fill="none" stroke="#e69d4c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="635" y="660" width="230" height="110" rx="18" fill="#fff0f0" stroke="#e94e50" stroke-width="2"/>
+<rect x="635" y="680" width="6" height="70" rx="3" fill="#e94e50" stroke="none" stroke-width="0"/>
+<text x="661" y="699" xml:space="preserve" font-size="22" fill="#1b3e70" text-anchor="start" font-weight="700">FAILED</text>
+<text x="661" y="734" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">不可重试或超限</text>
+<path d="M 750,600 L 750,655" fill="none" stroke="#e94e50" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 450,775 L 450,840 L 885,840 L 885,340 L 735,340" fill="none" stroke="#e69d4c" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="680" y="823" xml:space="preserve" font-size="21" fill="#e69d4c" text-anchor="middle" font-weight="400">退避后重新入轮</text>
+<rect x="170" y="900" width="560" height="100" rx="18" fill="#fff0f0" stroke="#e94e50" stroke-width="2"/>
+<rect x="170" y="920" width="6" height="60" rx="3" fill="#e94e50" stroke="none" stroke-width="0"/>
+<text x="196" y="939" xml:space="preserve" font-size="26" fill="#1b3e70" text-anchor="start" font-weight="700">CANCELLED</text>
+<text x="196" y="974" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">仅允许的状态可取消；与投递竞争时执行原子校验</text>
+<path d="M 170,340 L 15,340 L 15,950 L 165,950" fill="none" stroke="#e94e50" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="35" y="865" xml:space="preserve" font-size="21" fill="#e94e50" text-anchor="start" font-weight="400">取消</text>
+</g>
+</svg>

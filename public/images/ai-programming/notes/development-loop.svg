@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1150" viewBox="0 0 1100 1150" role="img" aria-labelledby="title desc">
+<title id="title">从任务到证据的开发循环</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="1100" height="1150" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="550.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">从任务到证据的开发循环</text>
+<text x="550.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">本地检查指导修正，独立验收决定是否交接</text>
+<rect x="60" y="140" width="680" height="110" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="60" y="160" width="6" height="70" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="86" y="179" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">01  任务与基线</text>
+<text x="86" y="214" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">读取契约、依赖与边界；准备隔离工作空间</text>
+<path d="M 400,254 L 400,280" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="60" y="285" width="680" height="110" rx="18" fill="#f3eeff" stroke="#8a58ff" stroke-width="2"/>
+<rect x="60" y="305" width="6" height="70" rx="3" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="86" y="324" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">02  复现失败</text>
+<text x="86" y="359" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">确认测试真正捕获目标行为，而非环境错误</text>
+<path d="M 400,399 L 400,425" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="60" y="430" width="680" height="110" rx="18" fill="#eaf3fc" stroke="#4b94df" stroke-width="2"/>
+<rect x="60" y="450" width="6" height="70" rx="3" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="86" y="469" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">03  最小实现</text>
+<text x="86" y="504" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">只处理当前任务；保留变更与操作记录</text>
+<path d="M 400,544 L 400,570" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="60" y="575" width="680" height="110" rx="18" fill="#fff8e8" stroke="#e69d4c" stroke-width="2"/>
+<rect x="60" y="595" width="6" height="70" rx="3" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="86" y="614" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">04  快速验证</text>
+<text x="86" y="649" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">运行目标回归、类型或构建；读取失败证据</text>
+<path d="M 400,689 L 400,715" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="60" y="720" width="680" height="110" rx="18" fill="#f3eeff" stroke="#8a58ff" stroke-width="2"/>
+<rect x="60" y="740" width="6" height="70" rx="3" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="86" y="759" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">05  独立验收</text>
+<text x="86" y="794" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">核对规格与代码质量；执行外部必要检查</text>
+<path d="M 400,834 L 400,860" fill="none" stroke="#96a4b4" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="60" y="865" width="680" height="110" rx="18" fill="#edf8ee" stroke="#50b467" stroke-width="2"/>
+<rect x="60" y="885" width="6" height="70" rx="3" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="86" y="904" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="start" font-weight="700">06  交接与下一项</text>
+<text x="86" y="939" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">保存版本、结果和限制；按依赖推进</text>
+<path d="M 744,630 L 775,630 L 775,485 L 744,485" fill="none" stroke="#e69d4c" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="805" y="400" width="255" height="148" rx="18" fill="#fff8e8" stroke="#e69d4c" stroke-width="2"/>
+<rect x="805" y="420" width="6" height="108" rx="3" fill="#e69d4c" stroke="none" stroke-width="0"/>
+<text x="831" y="439" xml:space="preserve" font-size="26" fill="#1b3e70" text-anchor="start" font-weight="700">允许重试</text>
+<text x="831" y="474" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">失败原因可修正</text>
+<text x="831" y="505" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">有新证据</text>
+<text x="831" y="536" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">预算和范围允许</text>
+<path d="M 775,630 L 775,680 L 800,680" fill="none" stroke="#e94e50" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="805" y="605" width="255" height="150" rx="18" fill="#fff0f0" stroke="#e94e50" stroke-width="2"/>
+<rect x="805" y="625" width="6" height="110" rx="3" fill="#e94e50" stroke="none" stroke-width="0"/>
+<text x="831" y="644" xml:space="preserve" font-size="26" fill="#1b3e70" text-anchor="start" font-weight="700">停止并交接</text>
+<text x="831" y="679" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">需求或权限不明</text>
+<text x="831" y="710" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">无新证据</text>
+<text x="831" y="741" xml:space="preserve" font-size="22" fill="#536477" text-anchor="start" font-weight="400">预算耗尽</text>
+<path d="M 744,775 L 775,775 L 775,680" fill="none" stroke="#e94e50" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="550" y="1045" xml:space="preserve" font-size="27" fill="#1b3e70" text-anchor="middle" font-weight="700">验收受保护：不能靠删测试、松断言或跳过场景变绿</text>
+<text x="550" y="1091" xml:space="preserve" font-size="23" fill="#777777" text-anchor="middle" font-weight="400">新的任务上下文读取外置状态；人工审查与真实使用形成外层反馈</text>
+</g>
+</svg>

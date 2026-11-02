@@ -7,6 +7,10 @@ export default defineConfig({
 	site: 'https://notes.wwkq.top',
 	redirects: {
 		'/frameworks/spring-ai/core/advisors-recursive/': '/frameworks/spring-ai/core/advisors/#递归-advisors',
+		'/ai-programming/cognition/software-engineering-and-learning/': '/ai-programming/cognition/essence-and-value/#个人能力闭环',
+		'/ai-programming/cognition/trend-snapshot-2026/': '/ai-programming/cognition/tool-landscape/#技术趋势与证据核验',
+		'/ai-programming/methodology/enterprise-workflow/': '/ai-programming/cognition/human-ai-workflow/#从准备到交付',
+		'/ai-programming/methodology/spec-kit-and-openspec/': '/ai-programming/methodology/sdd-and-harness/#规格工具怎么选',
 	},
 	integrations: [
 		starlight({
@@ -170,26 +174,13 @@ export default defineConfig({
 					label: 'AI 编程',
 					collapsed: true,
 					items: [
-						'ai-programming',
-						{
-							label: '认知篇',
-							collapsed: true,
-							items: [
-								'ai-programming/cognition/essence-and-value',
-								'ai-programming/cognition/tool-landscape',
-								'ai-programming/cognition/human-ai-workflow',
-								'ai-programming/cognition/trend-snapshot-2026',
-							],
-						},
-						{
-							label: '方法论',
-							collapsed: true,
-							items: [
-								'ai-programming/methodology/sdd-and-harness',
-								'ai-programming/methodology/spec-kit-and-openspec',
-								'ai-programming/methodology/skills-and-superpowers',
-							],
-						},
+						{ slug: 'ai-programming', label: '概览' },
+						'ai-programming/cognition/essence-and-value',
+						'ai-programming/cognition/tool-landscape',
+						'ai-programming/cognition/human-ai-workflow',
+						'ai-programming/methodology/sdd-and-harness',
+						'ai-programming/methodology/skills-and-superpowers',
+						'ai-programming/methodology/loop-engineering',
 					],
 				},
 

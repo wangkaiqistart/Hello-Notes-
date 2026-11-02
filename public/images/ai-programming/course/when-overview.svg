@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1932" height="1040" viewBox="0 0 1932 1040" role="img" aria-labelledby="title desc">
+<title id="title">When 整体架构</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="1932" height="1040" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="966.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">When 整体架构</text>
+<text x="966.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">业务方 → When集群（无差别多节点）→ 外部依赖 → 下游Sink</text>
+<rect x="28" y="133" width="240" height="280" rx="16" fill="#f3eeff" stroke="#8a58ff" stroke-width="3"/>
+<text x="148.0" y="181" xml:space="preserve" font-size="24" fill="#8a58ff" text-anchor="middle" font-weight="700">调用方</text>
+<rect x="48" y="193" width="200" height="40" rx="8" fill="white" stroke="#b593ff" stroke-width="1.5"/>
+<text x="148" y="221" xml:space="preserve" font-size="21" fill="#6330db" text-anchor="middle" font-weight="400">订单服务</text>
+<rect x="48" y="245" width="200" height="40" rx="8" fill="white" stroke="#b593ff" stroke-width="1.5"/>
+<text x="148" y="273" xml:space="preserve" font-size="21" fill="#6330db" text-anchor="middle" font-weight="400">推送服务</text>
+<rect x="48" y="297" width="200" height="40" rx="8" fill="white" stroke="#b593ff" stroke-width="1.5"/>
+<text x="148" y="325" xml:space="preserve" font-size="21" fill="#6330db" text-anchor="middle" font-weight="400">任务系统</text>
+<rect x="48" y="349" width="200" height="40" rx="8" fill="white" stroke="#b593ff" stroke-width="1.5"/>
+<text x="148" y="377" xml:space="preserve" font-size="21" fill="#6330db" text-anchor="middle" font-weight="400">任意业务</text>
+<path d="M 268,273 L 304,273" fill="none" stroke="#8a58ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="288" y="252" xml:space="preserve" font-size="17" fill="#8a58ff" text-anchor="middle" font-weight="400">HTTP</text>
+<rect x="28" y="453" width="240" height="320" rx="16" fill="#fff8e8" stroke="#e69d4c" stroke-width="3"/>
+<text x="148.0" y="501" xml:space="preserve" font-size="22" fill="#e69d4c" text-anchor="middle" font-weight="700">设计原则</text>
+<text x="148" y="526" xml:space="preserve" font-size="18" fill="#555555" text-anchor="middle" font-weight="400">无差别节点</text>
+<text x="148" y="566" xml:space="preserve" font-size="18" fill="#555555" text-anchor="middle" font-weight="400">HTTP外 gRPC内</text>
+<text x="148" y="606" xml:space="preserve" font-size="18" fill="#555555" text-anchor="middle" font-weight="400">Redis=真理源</text>
+<text x="148" y="646" xml:space="preserve" font-size="18" fill="#555555" text-anchor="middle" font-weight="400">ETCD不造轮</text>
+<text x="148" y="686" xml:space="preserve" font-size="18" fill="#555555" text-anchor="middle" font-weight="400">Sink可插拔</text>
+<text x="148" y="726" xml:space="preserve" font-size="18" fill="#555555" text-anchor="middle" font-weight="400">90%AI完成</text>
+<rect x="308" y="133" width="1160" height="760" rx="16" fill="#eaf3fc" stroke="#4b94df" stroke-width="3"/>
+<text x="888.0" y="181" xml:space="preserve" font-size="24" fill="#4b94df" text-anchor="middle" font-weight="700">When 集群（无差别多节点架构）</text>
+<rect x="328" y="188" width="348" height="602" rx="17" fill="#eaf3fc" stroke="#4b94df" stroke-width="3"/>
+<rect x="329" y="189" width="346" height="60" rx="15" fill="#2c5180" stroke="none" stroke-width="0"/>
+<rect x="329" y="218" width="346" height="31" rx="0" fill="#2c5180" stroke="none" stroke-width="0"/>
+<text x="502" y="218" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">节点 1</text>
+<text x="502" y="243" xml:space="preserve" font-size="18" fill="white" text-anchor="middle" font-weight="400">(Controller★)</text>
+<rect x="340" y="261" width="324" height="52" rx="8" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="502" y="294" xml:space="preserve" font-size="18" fill="#2c5180" text-anchor="middle" font-weight="400">接入层 HTTP API</text>
+<rect x="340" y="325" width="324" height="52" rx="8" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="502" y="358" xml:space="preserve" font-size="18" fill="#2c5180" text-anchor="middle" font-weight="400">路由层（一致性Hash）</text>
+<rect x="340" y="389" width="324" height="52" rx="8" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="502" y="422" xml:space="preserve" font-size="18" fill="#2c5180" text-anchor="middle" font-weight="400">时间轮调度引擎</text>
+<rect x="340" y="453" width="324" height="52" rx="8" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="502" y="486" xml:space="preserve" font-size="18" fill="#2c5180" text-anchor="middle" font-weight="400">副本同步器</text>
+<rect x="340" y="517" width="324" height="52" rx="8" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="502" y="550" xml:space="preserve" font-size="18" fill="#2c5180" text-anchor="middle" font-weight="400">Sink 投递器</text>
+<rect x="340" y="581" width="324" height="52" rx="8" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="502" y="614" xml:space="preserve" font-size="18" fill="#2c5180" text-anchor="middle" font-weight="400">ETCD 客户端</text>
+<rect x="340" y="645" width="324" height="52" rx="8" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="502" y="678" xml:space="preserve" font-size="18" fill="#2c5180" text-anchor="middle" font-weight="400">Redis 客户端</text>
+<rect x="340" y="709" width="324" height="52" rx="8" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="502" y="742" xml:space="preserve" font-size="18" fill="#2c5180" text-anchor="middle" font-weight="400">可观测模块</text>
+<rect x="688" y="188" width="348" height="602" rx="17" fill="#edf8ee" stroke="#50b467" stroke-width="3"/>
+<rect x="689" y="189" width="346" height="60" rx="15" fill="#1c5e1e" stroke="none" stroke-width="0"/>
+<rect x="689" y="218" width="346" height="31" rx="0" fill="#1c5e1e" stroke="none" stroke-width="0"/>
+<text x="862" y="218" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">节点 2</text>
+<rect x="700" y="261" width="324" height="52" rx="8" fill="white" stroke="#50b467" stroke-width="1.5"/>
+<text x="862" y="294" xml:space="preserve" font-size="18" fill="#1c5e1e" text-anchor="middle" font-weight="400">接入层 HTTP API</text>
+<rect x="700" y="325" width="324" height="52" rx="8" fill="white" stroke="#50b467" stroke-width="1.5"/>
+<text x="862" y="358" xml:space="preserve" font-size="18" fill="#1c5e1e" text-anchor="middle" font-weight="400">路由层（一致性Hash）</text>
+<rect x="700" y="389" width="324" height="52" rx="8" fill="white" stroke="#50b467" stroke-width="1.5"/>
+<text x="862" y="422" xml:space="preserve" font-size="18" fill="#1c5e1e" text-anchor="middle" font-weight="400">时间轮调度引擎</text>
+<rect x="700" y="453" width="324" height="52" rx="8" fill="white" stroke="#50b467" stroke-width="1.5"/>
+<text x="862" y="486" xml:space="preserve" font-size="18" fill="#1c5e1e" text-anchor="middle" font-weight="400">副本同步器</text>
+<rect x="700" y="517" width="324" height="52" rx="8" fill="white" stroke="#50b467" stroke-width="1.5"/>
+<text x="862" y="550" xml:space="preserve" font-size="18" fill="#1c5e1e" text-anchor="middle" font-weight="400">Sink 投递器</text>
+<rect x="700" y="581" width="324" height="52" rx="8" fill="white" stroke="#50b467" stroke-width="1.5"/>
+<text x="862" y="614" xml:space="preserve" font-size="18" fill="#1c5e1e" text-anchor="middle" font-weight="400">ETCD 客户端</text>
+<rect x="700" y="645" width="324" height="52" rx="8" fill="white" stroke="#50b467" stroke-width="1.5"/>
+<text x="862" y="678" xml:space="preserve" font-size="18" fill="#1c5e1e" text-anchor="middle" font-weight="400">Redis 客户端</text>
+<rect x="700" y="709" width="324" height="52" rx="8" fill="white" stroke="#50b467" stroke-width="1.5"/>
+<text x="862" y="742" xml:space="preserve" font-size="18" fill="#1c5e1e" text-anchor="middle" font-weight="400">可观测模块</text>
+<rect x="1048" y="188" width="348" height="602" rx="17" fill="#fff8e8" stroke="#e69d4c" stroke-width="3"/>
+<rect x="1049" y="189" width="346" height="60" rx="15" fill="#8d5000" stroke="none" stroke-width="0"/>
+<rect x="1049" y="218" width="346" height="31" rx="0" fill="#8d5000" stroke="none" stroke-width="0"/>
+<text x="1222" y="218" xml:space="preserve" font-size="21" fill="white" text-anchor="middle" font-weight="700">节点 3</text>
+<rect x="1060" y="261" width="324" height="52" rx="8" fill="white" stroke="#e69d4c" stroke-width="1.5"/>
+<text x="1222" y="294" xml:space="preserve" font-size="18" fill="#8d5000" text-anchor="middle" font-weight="400">接入层 HTTP API</text>
+<rect x="1060" y="325" width="324" height="52" rx="8" fill="white" stroke="#e69d4c" stroke-width="1.5"/>
+<text x="1222" y="358" xml:space="preserve" font-size="18" fill="#8d5000" text-anchor="middle" font-weight="400">路由层（一致性Hash）</text>
+<rect x="1060" y="389" width="324" height="52" rx="8" fill="white" stroke="#e69d4c" stroke-width="1.5"/>
+<text x="1222" y="422" xml:space="preserve" font-size="18" fill="#8d5000" text-anchor="middle" font-weight="400">时间轮调度引擎</text>
+<rect x="1060" y="453" width="324" height="52" rx="8" fill="white" stroke="#e69d4c" stroke-width="1.5"/>
+<text x="1222" y="486" xml:space="preserve" font-size="18" fill="#8d5000" text-anchor="middle" font-weight="400">副本同步器</text>
+<rect x="1060" y="517" width="324" height="52" rx="8" fill="white" stroke="#e69d4c" stroke-width="1.5"/>
+<text x="1222" y="550" xml:space="preserve" font-size="18" fill="#8d5000" text-anchor="middle" font-weight="400">Sink 投递器</text>
+<rect x="1060" y="581" width="324" height="52" rx="8" fill="white" stroke="#e69d4c" stroke-width="1.5"/>
+<text x="1222" y="614" xml:space="preserve" font-size="18" fill="#8d5000" text-anchor="middle" font-weight="400">ETCD 客户端</text>
+<rect x="1060" y="645" width="324" height="52" rx="8" fill="white" stroke="#e69d4c" stroke-width="1.5"/>
+<text x="1222" y="678" xml:space="preserve" font-size="18" fill="#8d5000" text-anchor="middle" font-weight="400">Redis 客户端</text>
+<rect x="1060" y="709" width="324" height="52" rx="8" fill="white" stroke="#e69d4c" stroke-width="1.5"/>
+<text x="1222" y="742" xml:space="preserve" font-size="18" fill="#8d5000" text-anchor="middle" font-weight="400">可观测模块</text>
+<text x="888" y="866" xml:space="preserve" font-size="22" fill="#4b94df" text-anchor="middle" font-weight="400">节点间通过 gRPC 互相路由（消息转发 + 副本同步）</text>
+<rect x="1508" y="133" width="400" height="200" rx="16" fill="#eaf3fc" stroke="#4b94df" stroke-width="3"/>
+<text x="1708.0" y="181" xml:space="preserve" font-size="24" fill="#4b94df" text-anchor="middle" font-weight="700">ETCD 集群</text>
+<text x="1530" y="206" xml:space="preserve" font-size="19" fill="#333333" text-anchor="start" font-weight="400">· 节点注册 + 心跳 Lease</text>
+<text x="1530" y="235" xml:space="preserve" font-size="19" fill="#333333" text-anchor="start" font-weight="400">· Controller 选举</text>
+<text x="1530" y="264" xml:space="preserve" font-size="19" fill="#333333" text-anchor="start" font-weight="400">· Watch 事件驱动</text>
+<text x="1530" y="293" xml:space="preserve" font-size="19" fill="#333333" text-anchor="start" font-weight="400">· 配置动态下发</text>
+<path d="M 1468,233 L 1503,233" fill="none" stroke="#4b94df" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="1508" y="365" width="400" height="200" rx="16" fill="#fff0f0" stroke="#e94e50" stroke-width="3"/>
+<text x="1708.0" y="413" xml:space="preserve" font-size="24" fill="#e94e50" text-anchor="middle" font-weight="700">Redis</text>
+<text x="1530" y="438" xml:space="preserve" font-size="19" fill="#333333" text-anchor="start" font-weight="400">· 消息体持久化</text>
+<text x="1530" y="467" xml:space="preserve" font-size="19" fill="#333333" text-anchor="start" font-weight="400">· 时间索引存储</text>
+<text x="1530" y="496" xml:space="preserve" font-size="19" fill="#333333" text-anchor="start" font-weight="400">· key按消息ID拆分</text>
+<text x="1530" y="525" xml:space="preserve" font-size="19" fill="#333333" text-anchor="start" font-weight="400">· TTL自动清理</text>
+<path d="M 1468,465 L 1503,465" fill="none" stroke="#e94e50" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="1508" y="593" width="400" height="300" rx="16" fill="#edf8ee" stroke="#50b467" stroke-width="3"/>
+<text x="1708.0" y="641" xml:space="preserve" font-size="24" fill="#50b467" text-anchor="middle" font-weight="700">下游 Sink</text>
+<rect x="1520" y="657" width="376" height="44" rx="8" fill="white" stroke="#4b94df" stroke-width="1.5"/>
+<text x="1544" y="686" xml:space="preserve" font-size="21" fill="#4b94df" text-anchor="start" font-weight="700">HTTP</text>
+<text x="1628" y="686" xml:space="preserve" font-size="19" fill="#666666" text-anchor="start" font-weight="400">业务回调接口</text>
+<rect x="1520" y="713" width="376" height="44" rx="8" fill="white" stroke="#e69d4c" stroke-width="1.5"/>
+<text x="1544" y="742" xml:space="preserve" font-size="21" fill="#e69d4c" text-anchor="start" font-weight="700">Kafka</text>
+<text x="1628" y="742" xml:space="preserve" font-size="19" fill="#666666" text-anchor="start" font-weight="400">消息总线Topic</text>
+<rect x="1520" y="769" width="376" height="44" rx="8" fill="white" stroke="#8a58ff" stroke-width="1.5"/>
+<text x="1544" y="798" xml:space="preserve" font-size="21" fill="#8a58ff" text-anchor="start" font-weight="700">gRPC★</text>
+<text x="1628" y="798" xml:space="preserve" font-size="19" fill="#666666" text-anchor="start" font-weight="400">内部RPC服务</text>
+<rect x="1520" y="825" width="376" height="44" rx="8" fill="white" stroke="#888888" stroke-width="1.5"/>
+<text x="1544" y="854" xml:space="preserve" font-size="21" fill="#888888" text-anchor="start" font-weight="700">更多...</text>
+<text x="1628" y="854" xml:space="preserve" font-size="19" fill="#666666" text-anchor="start" font-weight="400">SPI扩展接入</text>
+<path d="M 1468,743 L 1503,743" fill="none" stroke="#50b467" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="28" y="917" width="1880" height="88" rx="16" fill="#f4f4f4" stroke="#cccccc" stroke-width="2"/>
+<text x="968" y="950" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="700">Controller 是“角色”不是“专用节点”——集群中一台普通节点同时承担 Controller 职责，节点同构，运维简单</text>
+<text x="968" y="983" xml:space="preserve" font-size="21" fill="#888888" text-anchor="middle" font-weight="400">★ gRPC Sink 在3周MVP之后实现；When内部节点间通信已使用gRPC</text>
+</g>
+</svg>

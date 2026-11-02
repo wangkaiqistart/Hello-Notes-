@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1938" height="1392" viewBox="0 0 1938 1392" role="img" aria-labelledby="title desc">
+<title id="title">Sink 插件架构：SPI 扩展机制</title>
+<desc id="desc">组件关系与执行流程。文字、矩形、路径与箭头均为可编辑矢量元素；方案差异见配套正文。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>
+<g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="1938" height="1392" rx="0" fill="#f8f9ff" stroke="none" stroke-width="0"/>
+<text x="969.0" y="60" xml:space="preserve" font-size="38" fill="#1b3e70" text-anchor="middle" font-weight="700">Sink 插件架构：SPI 扩展机制</text>
+<text x="969.0" y="100" xml:space="preserve" font-size="23" fill="#888888" text-anchor="middle" font-weight="400">一个 SPI 接口 → N 种投递实现 → 用户零成本扩展</text>
+<rect x="488" y="124" width="960" height="200" rx="16" fill="#f3eeff" stroke="#8a58ff" stroke-width="3"/>
+<rect x="489" y="125" width="958" height="16" rx="12" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<rect x="489" y="134" width="958" height="7" rx="0" fill="#8a58ff" stroke="none" stroke-width="0"/>
+<text x="968.0" y="172" xml:space="preserve" font-size="27" fill="#8a58ff" text-anchor="middle" font-weight="700">Sink 接口（SPI 契约）</text>
+<text x="968" y="211" xml:space="preserve" font-size="19" fill="#333333" text-anchor="middle" font-weight="400" font-family="Menlo, Consolas, monospace">public interface Sink {</text>
+<text x="968" y="239" xml:space="preserve" font-size="19" fill="#333333" text-anchor="middle" font-weight="400" font-family="Menlo, Consolas, monospace">  String type(); // 唯一标识符</text>
+<text x="968" y="267" xml:space="preserve" font-size="19" fill="#333333" text-anchor="middle" font-weight="400" font-family="Menlo, Consolas, monospace">  void deliver(Message m) throws Exception; // 投递</text>
+<text x="968" y="295" xml:space="preserve" font-size="19" fill="#333333" text-anchor="middle" font-weight="400" font-family="Menlo, Consolas, monospace">}</text>
+<rect x="488" y="338" width="960" height="56" rx="10" fill="#efffef" stroke="#50b467" stroke-width="2"/>
+<text x="968" y="374" xml:space="preserve" font-size="21" fill="#338b3a" text-anchor="middle" font-weight="400">META-INF/services/com.when.sink.Sink → ServiceLoader 自动发现</text>
+<path d="M 968,398 L 318,450" fill="none" stroke="#8a58ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="28" y="454" width="580" height="120" rx="14" fill="white" stroke="#4b94df" stroke-width="4"/>
+<rect x="29" y="455" width="578" height="16" rx="12" fill="#4b94df" stroke="none" stroke-width="0"/>
+<text x="318" y="500" xml:space="preserve" font-size="27" fill="#4b94df" text-anchor="middle" font-weight="700">HTTP Sink（内置）</text>
+<text x="318" y="540" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">实现类 → ServiceLoader 注册</text>
+<rect x="28" y="594" width="580" height="300" rx="12" fill="#fafafa" stroke="#dddddd" stroke-width="2"/>
+<text x="318" y="628" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="700">配置参数</text>
+<path d="M 48,643 L 588,643" fill="none" stroke="#e7e7e7" stroke-width="1.5" stroke-linejoin="round"/>
+<text x="52" y="671" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">trigger_type:</text>
+<text x="592" y="671" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">http</text>
+<text x="52" y="715" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">endpoint_url:</text>
+<text x="592" y="715" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">https://your-api.com/callback</text>
+<text x="52" y="759" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">method:</text>
+<text x="592" y="759" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">POST / GET</text>
+<text x="52" y="803" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">headers:</text>
+<text x="592" y="803" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">Content-Type / Auth</text>
+<text x="52" y="847" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">retry:</text>
+<text x="592" y="847" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">最多 3 次，指数退避</text>
+<rect x="28" y="910" width="580" height="260" rx="12" fill="#f8f7ff" stroke="#cfcee0" stroke-width="2"/>
+<text x="318" y="944" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="700">执行步骤</text>
+<path d="M 48,958 L 588,958" fill="none" stroke="#e7e7e7" stroke-width="1.5" stroke-linejoin="round"/>
+<text x="52" y="986" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">① 到期 → 取出消息配置</text>
+<text x="52" y="1030" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">② 构造 HTTP 请求体</text>
+<text x="52" y="1074" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">③ 发起调用，等待 200</text>
+<text x="52" y="1118" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">④ 非 200 → 放回重试队列</text>
+<path d="M 968,398 L 968,450" fill="none" stroke="#8a58ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="678" y="454" width="580" height="120" rx="14" fill="white" stroke="#e94e50" stroke-width="4"/>
+<rect x="679" y="455" width="578" height="16" rx="12" fill="#e94e50" stroke="none" stroke-width="0"/>
+<text x="968" y="500" xml:space="preserve" font-size="27" fill="#e94e50" text-anchor="middle" font-weight="700">Kafka Sink（内置）</text>
+<text x="968" y="540" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">实现类 → ServiceLoader 注册</text>
+<rect x="678" y="594" width="580" height="300" rx="12" fill="#fafafa" stroke="#dddddd" stroke-width="2"/>
+<text x="968" y="628" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="700">配置参数</text>
+<path d="M 698,643 L 1238,643" fill="none" stroke="#e7e7e7" stroke-width="1.5" stroke-linejoin="round"/>
+<text x="702" y="671" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">trigger_type:</text>
+<text x="1242" y="671" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">kafka</text>
+<text x="702" y="715" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">bootstrap:</text>
+<text x="1242" y="715" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">broker1:9092,broker2</text>
+<text x="702" y="759" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">topic:</text>
+<text x="1242" y="759" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">delay-callback</text>
+<text x="702" y="803" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">key:</text>
+<text x="1242" y="803" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">消息 ID（幂等去重）</text>
+<text x="702" y="847" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">acks:</text>
+<text x="1242" y="847" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">acks=all 保证写入</text>
+<rect x="678" y="910" width="580" height="260" rx="12" fill="#f8f7ff" stroke="#cfcee0" stroke-width="2"/>
+<text x="968" y="944" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="700">执行步骤</text>
+<path d="M 698,958 L 1238,958" fill="none" stroke="#e7e7e7" stroke-width="1.5" stroke-linejoin="round"/>
+<text x="702" y="986" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">① 到期 → 取出消息</text>
+<text x="702" y="1030" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">② 序列化 payload</text>
+<text x="702" y="1074" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">③ KafkaProducer.send()</text>
+<text x="702" y="1118" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">④ 等待 RecordMetadata</text>
+<path d="M 968,398 L 1618,450" fill="none" stroke="#8a58ff" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="1328" y="454" width="580" height="120" rx="14" fill="white" stroke="#50b467" stroke-width="4"/>
+<rect x="1329" y="455" width="578" height="16" rx="12" fill="#50b467" stroke="none" stroke-width="0"/>
+<text x="1618" y="500" xml:space="preserve" font-size="27" fill="#50b467" text-anchor="middle" font-weight="700">自定义 Sink（扩展）</text>
+<text x="1618" y="540" xml:space="preserve" font-size="18" fill="#666666" text-anchor="middle" font-weight="400">实现类 → ServiceLoader 注册</text>
+<rect x="1328" y="594" width="580" height="300" rx="12" fill="#fafafa" stroke="#dddddd" stroke-width="2"/>
+<text x="1618" y="628" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="700">配置参数</text>
+<path d="M 1348,643 L 1888,643" fill="none" stroke="#e7e7e7" stroke-width="1.5" stroke-linejoin="round"/>
+<text x="1352" y="671" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">trigger_type:</text>
+<text x="1892" y="671" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">my-mq</text>
+<text x="1352" y="715" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">step1:</text>
+<text x="1892" y="715" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">implement Sink interface</text>
+<text x="1352" y="759" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">step2:</text>
+<text x="1892" y="759" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">register in META-INF/services</text>
+<text x="1352" y="803" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">step3:</text>
+<text x="1892" y="803" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">jar 放入 plugins/ 目录</text>
+<text x="1352" y="847" xml:space="preserve" font-size="17" fill="#555555" text-anchor="start" font-weight="700">step4:</text>
+<text x="1892" y="847" xml:space="preserve" font-size="17" fill="#666666" text-anchor="end" font-weight="400">重启服务自动加载</text>
+<rect x="1328" y="910" width="580" height="260" rx="12" fill="#f8f7ff" stroke="#cfcee0" stroke-width="2"/>
+<text x="1618" y="944" xml:space="preserve" font-size="22" fill="#333333" text-anchor="middle" font-weight="700">执行步骤</text>
+<path d="M 1348,958 L 1888,958" fill="none" stroke="#e7e7e7" stroke-width="1.5" stroke-linejoin="round"/>
+<text x="1352" y="986" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">① 实现 type() 返回唯一标识</text>
+<text x="1352" y="1030" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">② 实现 deliver() 业务逻辑</text>
+<text x="1352" y="1074" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">③ SPI 文件声明实现类</text>
+<text x="1352" y="1118" xml:space="preserve" font-size="18" fill="#555555" text-anchor="start" font-weight="400">④ 热插拔，无需修改核心</text>
+<rect x="28" y="1234" width="1880" height="144" rx="16" fill="#fffbef" stroke="#b67816" stroke-width="3"/>
+<text x="968" y="1270" xml:space="preserve" font-size="23" fill="#b67816" text-anchor="middle" font-weight="700">插件目录 &amp; 热加载</text>
+<text x="968" y="1303" xml:space="preserve" font-size="21" fill="#555555" text-anchor="middle" font-weight="400">when-server/plugins/ → my-sink-1.0.jar | SPI loader 扫描 → 注入 SinkRegistry | type 唯一性校验</text>
+<text x="968" y="1337" xml:space="preserve" font-size="19" fill="#888888" text-anchor="middle" font-weight="400">内置插件打包进主 jar；第三方插件放 plugins/ 目录；重启后自动合并到 type→Sink 注册表</text>
+</g>
+</svg>

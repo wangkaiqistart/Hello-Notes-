@@ -1,0 +1,39 @@
+---
+title: OryxOS：AI 编程实施指南
+description: 用 Spec-Kit 与手工增量任务协作开发 OryxOS
+sidebar:
+  label: AI 编程实施指南
+  order: 6
+---
+
+> **实施重点**：先用规格冻结目标和架构，再按 User Story 和依赖顺序实现；主体阶段可以用 Spec-Kit，增量阶段切换到轻量手工流程。
+
+## 两阶段模式
+
+### 主体阶段：Spec-Kit
+
+1. 写项目宪章，固定关键工程原则。
+2. 把需求转成五个 User Story：Provider、ReAct、Memory、Tool、Web Service。
+3. 把技术方案转成实施计划和任务。
+4. 按依赖顺序实现，并在每个阶段验证。
+
+### 增量阶段：手工规格
+
+主体架构稳定后，小改动不必重新跑完整流程。为每个变更写目标、范围、文件、验收和回滚，再让 AI 按任务执行。
+
+## 协作规则
+
+- 模块边界和公共接口先冻结。
+- 并行任务必须拥有独立上下文和清晰文件范围。
+- 每个任务完成后先做规格 Review，再做代码质量 Review。
+- 测试、构建和运行证据必须进入交付记录。
+
+## 五个 User Story 的依赖
+
+Provider 提供模型调用，ReAct 依赖它完成循环，再接入 Memory 和 Tool；Web Service 将已验证的能力开放给调用方。CLI、Channel 和 Sandbox 为交互与执行提供支持。
+
+[![OryxOS 能力依赖：Provider 接入模型，ReAct 组织循环，再集成 Memory、Tool、入口和执行环境](/images/ai-programming/notes/oryxos-dependencies.svg)](/images/ai-programming/notes/oryxos-dependencies.svg)
+
+## 并行协作的前提
+
+AI 能够并行初始化多个模块，但并行不等于可以共享未冻结的接口。先定义公共契约，再拆任务，才能避免上下文漂移和重复实现。

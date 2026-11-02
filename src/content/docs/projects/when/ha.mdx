@@ -1,0 +1,56 @@
+---
+title: When：集群与高可用
+slug: projects/when/ha
+description: 节点注册、Controller、Master/Slave、副本同步和故障切换
+sidebar:
+  label: 集群与高可用
+  order: 25
+---
+
+> **高可用重点**：集群负责发现和分配，副本负责快速接管，Redis 负责恢复事实；不要把内存副本误当成唯一数据源。
+
+## 集群组成
+
+- 节点通过 ETCD 注册并用 Lease 保活；
+- 节点 Watch 上下线事件；
+- 某个节点竞选为 Controller；
+- Controller 统一决定时间轮分布和 rebalance；
+- 普通节点承载时间轮和业务请求。
+
+下图将 ETCD key 空间、注册选举、故障检测、rebalance 和切换时间线放在一起，重点看 Lease 失效如何经 Watch 事件触发角色调整。
+
+[![When 集群协调：ETCD key 空间、Lease 保活、Controller 选举、故障切换、节点加入及时间线](/images/ai-programming/course/when-cluster.svg)](/images/ai-programming/course/when-cluster.svg)
+
+:::note[切换时序与目标]
+示意图使用 10 秒 Lease，恢复时间线到约 12 秒，又写“10 秒内接管”，两者不能直接视为已满足 SLA。独立线程续约也不能避免 JVM 全局 GC 停顿的影响，需通过故障测试确认。
+:::
+
+## Master/Slave 副本
+
+每个时间轮配置 Master 和 Slave。Master 负责接收、调度和投递，Slave 接收异步同步并保持热备。
+
+[![When 异步副本与恢复：Redis 持久化、Master 入轮、异步同步 Slave，故障后补齐并接管](/images/ai-programming/notes/when-replication.svg)](/images/ai-programming/notes/when-replication.svg)
+
+同步失败时标记 `out-of-sync`，该副本不能直接提升，由 Controller 触发从 Redis 全量重建。
+
+## 故障切换
+
+1. ETCD 感知 Master 下线。
+2. Controller 选择可用且同步完整的 Slave。
+3. FailoverExecutor 提升新 Master。
+4. 新 Master 从 Redis 补齐未完成消息。
+5. 重新建立副本并更新元数据。
+
+设计目标是故障后在约束时间内完成接管；实际时间必须由测试环境验证。
+
+下面的主从复制示意采用另一种方案。阅读时重点看写入、复制、心跳和角色切换的关系，并结合图后的差异说明区分两份方案。
+
+[![主从复制示意：一个 Master 向两个 Slave 复制、ETCD 心跳监控，以及故障后的选主和恢复时间线](/images/ai-programming/course/when-ha.svg)](/images/ai-programming/course/when-ha.svg)
+
+:::caution[同步复制与异步副本的区别]
+这张示意图采用同步复制、两个 Slave 和 5 秒 TTL，还混用了 Controller 与时间轮 Master。本文采用按时间轮分配 Master/Slave、异步同步、Redis 补齐的方案，Controller 是独立的协调角色。图中的“零丢失”和切换耗时均为示意目标，不能据此确认实现保证。
+:::
+
+## 为什么不直接用 Raft/Paxos
+
+When 的目标是延时投递的快速切换，Redis 保存权威状态，副本只负责减少恢复时间，因此选择较轻的异步 Master/Slave。这个取舍降低复杂度，但必须接受短暂副本落后和重建成本。

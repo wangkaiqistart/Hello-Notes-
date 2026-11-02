@@ -1,0 +1,38 @@
+---
+title: When：项目总结与后续规划
+description: 回顾分布式延时投递系统的核心成果、取舍和后续方向
+sidebar:
+  label: 项目总结
+  order: 28
+---
+
+> **最终判断**：When 的学习价值不只是做出延时投递功能，而是用一个有真实分布式约束的项目练习规格、架构、AI 协作、验证和运维闭环。
+
+## 核心闭环
+
+请求接入后先持久化，再由时间轮触发异步投递；状态机处理成功、失败与重试，日志、指标和管理台负责观测整个过程。
+
+[![When 核心闭环：接入与路由、持久化、时间轮触发和异步投递](/images/ai-programming/notes/when-architecture.svg)](/images/ai-programming/notes/when-architecture.svg)
+
+集群侧增加：ETCD 注册与协调、Controller、Master/Slave、副本重建、故障切换和 rebalance。
+
+## 六个关键取舍
+
+1. ETCD 做协调，Redis 做消息真源；
+2. 多层时间轮做调度加速；
+3. Master/Slave 追求快速接管，不追求强一致副本；
+4. 外部 HTTP、内部 gRPC；
+5. Sink 用插件化扩展；
+6. 用 Compose、单节点和 Kubernetes 覆盖不同部署需求。
+
+## 后续方向
+
+- 更多 Sink、死信队列和优先级；
+- 鉴权、限流和租户隔离；
+- 跨地域和更复杂的故障模型；
+- 更完整的管理台和告警；
+- Kubernetes Operator 和社区协作。
+
+## 不能省略的验证
+
+“代码能编译”不等于“系统可用”。最终结论必须绑定测试环境、消息状态、投递结果、指标、日志和故障切换证据。
