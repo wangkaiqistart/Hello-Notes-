@@ -129,8 +129,8 @@ def loop():
 
 
 def project_diagrams():
-    vertical('oryxos-modules', 'OryxOS 的实现顺序', '先打通最小执行闭环，再补齐扩展能力', [('工程地基与模型接入', '日志、监控、API 规范 → Provider'), ('执行与工具', 'ReAct → CLI / Notify → Tool'), ('状态与运行环境', 'Memory → Sandbox → 定时任务'), ('接口与扩展', 'Web Service → 主流程串联 → 插件化 → 动态管理')])
-    s = SVG('oryxos-dependencies', 900, 680, 'OryxOS 能力依赖', '箭头表示主要依赖与集成方向')
+    vertical('agentos-modules', 'AgentOS 的实现顺序', '先打通最小执行闭环，再补齐扩展能力', [('工程地基与模型接入', '日志、监控、API 规范 → Provider'), ('执行与工具', 'ReAct → CLI / Notify → Tool'), ('状态与运行环境', 'Memory → Sandbox → 定时任务'), ('接口与扩展', 'Web Service → 主流程串联 → 插件化 → 动态管理')])
+    s = SVG('agentos-dependencies', 900, 680, 'AgentOS 能力依赖', '箭头表示主要依赖与集成方向')
     card(s, 50, 140, 320, 100, 'Provider', '统一模型调用', BLUE)
     card(s, 530, 140, 320, 100, 'ReAct', '组织模型与工具循环', PURPLE)
     s.path([(375, 190), (525, 190)], BLUE, 3)
@@ -141,7 +141,7 @@ def project_diagrams():
     card(s, 290, 530, 320, 100, 'Web Service', '将能力开放给业务系统', ORANGE)
     s.path([(210, 450), (210, 580), (285, 580)], GREEN, 3)
     s.save(OUT)
-    s = SVG('oryxos-components', 900, 740, 'Agent 运行底座的五个组件', '模型、循环、记忆、工具与执行环境各自承担职责')
+    s = SVG('agentos-components', 900, 740, 'Agent 运行底座的五个组件', '模型、循环、记忆、工具与执行环境各自承担职责')
     card(s, 270, 305, 360, 118, 'ReAct Loop', '调度执行、累积状态与终止', PURPLE)
     around=[(40, 140, 'Provider', '屏蔽模型厂商差异', BLUE), (500, 140, 'Memory', '保存会话与跨会话记忆', GREEN), (40, 540, 'Tools', '连接工具与外部能力', ORANGE), (500, 540, 'Environment', '限制文件、命令与网络', BLUE)]
     for x, y, title, detail, c in around:

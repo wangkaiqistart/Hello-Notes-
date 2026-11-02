@@ -1,5 +1,5 @@
 ---
-title: OryxOS：业界调研
+title: AgentOS：业界调研
 description: Agent OS 的定义、相邻概念、运行治理和 Java 生态定位
 sidebar:
   label: 业界调研
@@ -14,12 +14,12 @@ Agent OS 是一套共享运行底座，负责模型接入、状态和记忆、�
 
 ## 与相邻概念的边界
 
-| 概念       | 重点                 | 与 OryxOS 的关系             |
-| ---------- | -------------------- | ---------------------------- |
-| LLM SDK    | 调用模型             | OryxOS 的 Provider 使用它    |
-| Agent 框架 | 组织工具和循环       | OryxOS 包含并固化运行时边界  |
-| 工作流平台 | 编排固定步骤         | OryxOS 关注 Agent 运行和扩展 |
-| Agent OS   | 运行、治理和集成底座 | OryxOS 的目标定位            |
+| 概念       | 重点                 | 与 AgentOS 的关系             |
+| ---------- | -------------------- | ----------------------------- |
+| LLM SDK    | 调用模型             | AgentOS 的 Provider 使用它    |
+| Agent 框架 | 组织工具和循环       | AgentOS 包含并固化运行时边界  |
+| 工作流平台 | 编排固定步骤         | AgentOS 关注 Agent 运行和扩展 |
+| Agent OS   | 运行、治理和集成底座 | AgentOS 的目标定位            |
 
 ## 业界观察
 
@@ -29,7 +29,7 @@ OpenClaw 和 Hermes Agent 代表了不同的 Agent 系统方向，实际落地�
 
 Java 的优势在于现有系统的积累、Spring 生态和 JVM 运维工具链，适合需要与这些设施集成的场景。机会不等于自动成功，底座仍需通过真实模块、测试和运行证据证明价值。
 
-## OryxOS 的边界
+## AgentOS 的边界
 
 - 做运行时，不做万能业务编排。
 - 做可扩展底座，不替业务决定所有 Agent 逻辑。

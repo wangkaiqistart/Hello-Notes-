@@ -97,10 +97,10 @@ def cognition():
     s.save()
 
 
-def oryx():
-    s = SVG("oryxos-overview", 1472, 1040, "OryxOS 单体应用架构", plain=True)
+def agentos():
+    s = SVG("agentos-overview", 1472, 1040, "AgentOS 单体应用架构", plain=True)
     s.rect(56, 40, 1360, 956, "none", "#bcbcaf", 44, 2, True)
-    s.text(112, 89, "OryxOS 单体应用（Spring Boot，单二进制）", 26, bold=True)
+    s.text(112, 89, "AgentOS 单体应用（Spring Boot，单二进制）", 26, bold=True)
     s.text(736, 138, "入口层", 26, anchor="middle", bold=True)
     s.box(396, 156, 300, 88, "CLI Channel")
     s.box(776, 156, 300, 88, "Web Service")
@@ -118,7 +118,7 @@ def oryx():
         s.text(x + 180, 701, "外接", 24, anchor="middle", bold=True)
         s.box(x, 904, 360, 80, label, fill="none", dash=True, size=26)
     s.save()
-    s = SVG("oryxos-layers", 1472, 720, "OryxOS 四层结构", plain=True)
+    s = SVG("agentos-layers", 1472, 720, "AgentOS 四层结构", plain=True)
     rows = [
         ("接入层", "CLI Channel   Web Service（REST API）", "消息进出的两个入口"),
         ("引擎层", "ReActLoop   PromptBuilder   ToolExecutor", "Agent 的大脑"),
@@ -132,16 +132,16 @@ def oryx():
         s.text(822, y + 53, line, 27, anchor="middle", bold=True)
         s.text(822, y + 98, sub, 25, anchor="middle")
     s.save()
-    s = SVG("oryxos-boundary", 1274, 524, "Spring AI 使用边界", plain=True)
+    s = SVG("agentos-boundary", 1274, 524, "Spring AI 使用边界", plain=True)
     for x, title in [(75, "只用这部分"), (674, "禁用这部分")]:
         s.text(x + 262.5, 75, title, 29, anchor="middle", bold=True)
     s.box(75, 112, 525, 106, "Provider 抽象与协议转换", "向各家 LLM 适配", MINT, TEAL)
     s.box(75, 240, 525, 106, "@Tool 的 Schema 生成", "扫描方法生成 JSON Schema", MINT, TEAL)
     s.box(674, 112, 525, 106, "自动 tool 执行", "否则 tool 会被调两次", dash=True)
-    s.box(674, 240, 525, 106, "tool 调度由 OryxOS 控制", "ReActLoop 加 ToolExecutor", dash=True)
+    s.box(674, 240, 525, 106, "tool 调度由 AgentOS 控制", "ReActLoop 加 ToolExecutor", dash=True)
     s.text(637, 437, "Spring AI 只做协议适配器和 schema 生成器，不做循环引擎", 27, anchor="middle", bold=True)
     s.save()
-    s = SVG("oryxos-react", 1472, 840, "OryxOS ReAct 循环", plain=True)
+    s = SVG("agentos-react", 1472, 840, "AgentOS ReAct 循环", plain=True)
     for y, title, sub, fill in [(60, "接收用户消息", None, STONE), (216, "组装 Prompt", "注入 Bootstrap、Memory、历史", MINT), (372, "调用 LLM Provider", None, MINT)]:
         s.box(556, y, 360, 100, title, sub, fill, TEAL if fill == MINT else "#cbc9bf", subsize=22)
         s.path([(736, y + 100), (736, y + 152 if y < 372 else 524)], "#99998c", 2)
@@ -156,7 +156,7 @@ def oryx():
     s.path([(1196, 538), (1196, 266), (920, 266)], "#99998c", 2)
     s.text(1216, 404, "回填后继续循环", 23)
     s.save()
-    s = SVG("oryxos-memory", 1274, 600, "OryxOS 记忆层统一门面", plain=True)
+    s = SVG("agentos-memory", 1274, 600, "AgentOS 记忆层统一门面", plain=True)
     s.box(468, 68, 338, 94, "ReAct 循环")
     s.path([(637, 162), (637, 240)], "#99998c", 2)
     s.text(660, 213, "只调一个接口", 24)
@@ -465,11 +465,11 @@ def provenance():
     base = "https://static001.infoq.cn/resource/image/"
     refs = [
         ("cognition-seven-layers", "0a/54/0a68413f9dbd3153b40a101e2661a654", "03-05 5. 认知篇：AI 编程市场观察和工具全景.html"),
-        ("oryxos-overview", "55/d5/55a755810905b687a3a8eccf503432d5", "03-18 18. 项目篇 OryxOS：技术方案文档.html"),
-        ("oryxos-layers", "8b/c3/8b1e501518bf0258513c17968ef7a2c3", "03-18 18. 项目篇 OryxOS：技术方案文档.html"),
-        ("oryxos-boundary", "9c/57/9c0530bb15f2da00971bf52649796957", "03-18 18. 项目篇 OryxOS：技术方案文档.html"),
-        ("oryxos-react", "9a/47/9a6d1bd19b98c62d5839512407a1ce47", "03-18 18. 项目篇 OryxOS：技术方案文档.html"),
-        ("oryxos-memory", "7f/ac/7fe51cd4e23b8cff897118929214cbac", "03-18 18. 项目篇 OryxOS：技术方案文档.html"),
+        ("agentos-overview", "55/d5/55a755810905b687a3a8eccf503432d5", "03-18 18. 项目篇 OryxOS：技术方案文档.html"),
+        ("agentos-layers", "8b/c3/8b1e501518bf0258513c17968ef7a2c3", "03-18 18. 项目篇 OryxOS：技术方案文档.html"),
+        ("agentos-boundary", "9c/57/9c0530bb15f2da00971bf52649796957", "03-18 18. 项目篇 OryxOS：技术方案文档.html"),
+        ("agentos-react", "9a/47/9a6d1bd19b98c62d5839512407a1ce47", "03-18 18. 项目篇 OryxOS：技术方案文档.html"),
+        ("agentos-memory", "7f/ac/7fe51cd4e23b8cff897118929214cbac", "03-18 18. 项目篇 OryxOS：技术方案文档.html"),
         ("when-overview", "38/4b/38f1a8f1fae2276e6d10afddb34eea4b", "03-22 22. 项目篇 When：技术方案文档.html"),
         ("when-cluster", "f4/0d/f490901bd6401245959a42837b90cf0d", "03-22 22. 项目篇 When：技术方案文档.html"),
         ("when-timewheel", "fb/e8/fb7d3547da98b3c8eac6d146f3f6d8e8", "03-22 22. 项目篇 When：技术方案文档.html"),
@@ -485,7 +485,7 @@ def provenance():
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     cognition()
-    oryx()
+    agentos()
     when_overview()
     when_cluster()
     when_timewheel()

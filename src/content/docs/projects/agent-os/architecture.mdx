@@ -1,5 +1,5 @@
 ---
-title: OryxOS：架构与技术决策
+title: AgentOS：架构与技术决策
 description: 解释 Provider、ReAct、Memory、Tool、入口和持久化之间的关系
 sidebar:
   label: 架构与技术决策
@@ -12,7 +12,7 @@ sidebar:
 
 下图将这些职责归为接入、引擎、能力和基础四层，其中引擎层只组织执行，具体能力通过接口注入。
 
-[![OryxOS 四层结构：接入层、引擎层、能力层和基础层及各层模块](/images/ai-programming/course/oryxos-layers.svg)](/images/ai-programming/course/oryxos-layers.svg)
+[![AgentOS 四层结构：接入层、引擎层、能力层和基础层及各层模块](/images/ai-programming/course/agentos-layers.svg)](/images/ai-programming/course/agentos-layers.svg)
 
 ## 关键决策
 
@@ -20,17 +20,17 @@ sidebar:
 
 上层传入 Provider 和 Model 配置，由 ProviderService 选择具体 `ChatModel`。ReAct 不直接依赖厂商 SDK，换模型只改配置或映射。
 
-在自建循环方案里，Spring AI 只承担协议适配和 `@Tool` Schema 生成。Tool 调度与执行由 OryxOS 接管，需要关闭框架的自动 Tool 执行，避免同一调用被执行两次。这是该项目的集成边界。
+在自建循环方案里，Spring AI 只承担协议适配和 `@Tool` Schema 生成。Tool 调度与执行由 AgentOS 接管，需要关闭框架的自动 Tool 执行，避免同一调用被执行两次。这是该项目的集成边界。
 
-[![OryxOS 使用 Spring AI 的边界：复用 Provider 适配和 Tool Schema 生成，由自建 ReActLoop 和 ToolExecutor 控制执行](/images/ai-programming/course/oryxos-boundary.svg)](/images/ai-programming/course/oryxos-boundary.svg)
+[![AgentOS 使用 Spring AI 的边界：复用 Provider 适配和 Tool Schema 生成，由自建 ReActLoop 和 ToolExecutor 控制执行](/images/ai-programming/course/agentos-boundary.svg)](/images/ai-programming/course/agentos-boundary.svg)
 
-_“禁用”针对 OryxOS 自建循环的配置。_
+_“禁用”针对 AgentOS 自建循环的配置。_
 
 ### ReAct 只负责编排
 
 循环负责转圈、累积状态、判断终止；Prompt 组装、模型调用和工具执行分别交给专门模块。默认需要最大轮数和无工具调用的结束条件。
 
-[![ReAct 流程：接收消息、组装 Prompt、调用模型；有 Tool 调用则执行并回填历史后继续循环，否则返回最终响应](/images/ai-programming/course/oryxos-react.svg)](/images/ai-programming/course/oryxos-react.svg)
+[![ReAct 流程：接收消息、组装 Prompt、调用模型；有 Tool 调用则执行并回填历史后继续循环，否则返回最终响应](/images/ai-programming/course/agentos-react.svg)](/images/ai-programming/course/agentos-react.svg)
 
 _最大轮数、超时和异常出口也需要实现，图中省略了这些分支。_
 
@@ -42,7 +42,7 @@ _最大轮数、超时和异常出口也需要实现，图中省略了这些分�
 
 对引擎只暴露统一的 `MemoryService`，由它委托会话记忆和长期记忆组件，避免循环直接操作两套存储。
 
-[![MemoryService 统一门面：ReAct 通过一个接口访问 SessionManager 会话记忆和 LongTermMemory 长期记忆](/images/ai-programming/course/oryxos-memory.svg)](/images/ai-programming/course/oryxos-memory.svg)
+[![MemoryService 统一门面：ReAct 通过一个接口访问 SessionManager 会话记忆和 LongTermMemory 长期记忆](/images/ai-programming/course/agentos-memory.svg)](/images/ai-programming/course/agentos-memory.svg)
 
 _图中仅展开会话记忆与长期记忆两个组件，统一门面负责协调访问。_
 

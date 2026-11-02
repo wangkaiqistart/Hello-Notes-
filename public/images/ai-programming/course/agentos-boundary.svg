@@ -16,7 +16,7 @@
 <text x="936.5" y="161.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="700">自动 tool 执行</text>
 <text x="936.5" y="200.0" xml:space="preserve" font-size="25" fill="#444444" text-anchor="middle" font-weight="400">否则 tool 会被调两次</text>
 <rect x="674" y="240" width="525" height="106" rx="28" fill="#f1efe7" stroke="#cbc9bf" stroke-width="2" stroke-dasharray="12 9"/>
-<text x="936.5" y="289.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="700">tool 调度由 OryxOS 控制</text>
+<text x="936.5" y="289.0" xml:space="preserve" font-size="29" fill="#333333" text-anchor="middle" font-weight="700">tool 调度由 AgentOS 控制</text>
 <text x="936.5" y="328.0" xml:space="preserve" font-size="25" fill="#444444" text-anchor="middle" font-weight="400">ReActLoop 加 ToolExecutor</text>
 <text x="637" y="437" xml:space="preserve" font-size="27" fill="#333333" text-anchor="middle" font-weight="700">Spring AI 只做协议适配器和 schema 生成器，不做循环引擎</text>
 </g>

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
-  <title id="title">Agent OS 分层架构</title>
-  <desc id="desc">Agent OS 由接入层、ReAct 引擎、核心能力层、支撑模块层和存储层组成。</desc>
+  <title id="title">AgentOS 分层架构</title>
+  <desc id="desc">AgentOS 由接入层、ReAct 引擎、核心能力层、支撑模块层和存储层组成。</desc>
   <style>
     .bg { fill: #171717; }
     .band { fill: #232323; stroke: #3a3a3a; stroke-width: 2; }
@@ -13,7 +13,7 @@
     .rule { fill: #3a3a3a; }
   </style>
   <rect class="bg" width="1440" height="900" rx="8"/>
-  <text class="title" x="56" y="68">Agent OS 分层架构</text>
+  <text class="title" x="56" y="68">AgentOS 分层架构</text>
   <rect class="rule" x="56" y="101" width="1328" height="2"/>
   <text class="subtitle" x="56" y="143">入口与运行引擎保持稳定，能力、支撑和存储按职责解耦</text>
 
