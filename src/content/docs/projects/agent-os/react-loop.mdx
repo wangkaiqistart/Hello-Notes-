@@ -1,0 +1,261 @@
+---
+title: AgentOS：ReAct 原理、实现与验收
+description: 结合 Spring AI 2.0.2 和当前 AgentOS 工程，理解 ReAct 循环、工具执行、上下文边界与验收方法
+sidebar:
+  label: ReAct 原理与实现
+  order: 5.2
+---
+
+这篇笔记根据第 17 节《ReAct 原理解析、实现与代码讲解》整理，并按当前 AgentOS 工程重新校订。原课件使用 OryxOS、Spring Boot 3.x 和 `ProfileContext`；当前项目的事实基线是 JDK 21、Spring Boot 4.1.2、Spring AI 2.0.2，以及 9 个 Maven 模块。当前 Java 仓库仍是工程骨架，本文描述实现契约和验收标准，不把尚未存在的业务类写成已经完成。
+
+先阅读[架构与技术决策](/projects/agent-os/architecture/)和[Provider 原理与实现](/projects/agent-os/provider/)，再看本文。Provider 负责一次模型调用，ReActLoop 负责决定是否继续，工具执行由 ToolExecutor 统一接管。
+
+## 一、ReAct 解决什么问题
+
+单次调用模型适合“问一句、答一句”。当任务需要查询天气、读取文件、调用业务接口或连续做多个判断时，模型必须根据中间结果决定下一步动作。ReAct（Reasoning and Acting）把这件事组织成一个受控循环：模型给出下一步决策，系统执行工具，把结果写回上下文，再请求模型继续判断。
+
+这里的 Reason 是“根据当前上下文决定下一步”，不是把模型的隐藏思维过程保存下来或展示给用户。AgentOS 只处理可观察的模型响应、工具调用请求、工具结果和最终文本。
+
+一次循环可以抽象为：
+
+```text
+用户消息
+  → 组装本轮 Prompt
+  → ProviderService 调用 ChatModel
+  → 有工具调用？──否──→ 保存助手响应并结束
+        │
+        是
+        ↓
+  ToolExecutor 执行工具
+        ↓
+  保存工具请求和工具结果
+        ↓
+  检查轮数、截止时间和会话租约后继续
+```
+
+AgentOS 的 ReAct 图示如下，重点看循环回边、工具结果回填和终止出口；图中没有展开审计和超时分支，它们仍是实现的一部分。
+
+[![Agent ReAct 运行循环：用户消息进入 Reason、Act、Observe，工具结果回填 Session，达到停止条件后输出响应](/images/projects/agent-os/react-loop.svg)](/images/projects/agent-os/react-loop.svg)
+
+## 二、先冻结职责边界
+
+ReActLoop 的代码可以很短，难点在于不能把所有职责塞进一个 `while`。当前 AgentOS 的模块边界如下：
+
+| 组件              | 只负责什么                                                               | 明确不负责什么                                  |
+| ----------------- | ------------------------------------------------------------------------ | ----------------------------------------------- |
+| `AgentService`    | 接收 CLI、REST 或定时触发，创建或取得 Session，创建 Turn，调用循环并收口 | 不拼 Prompt，不直接调用 `ChatModel`             |
+| `ReActLoop`       | 迭代调度、保存本轮状态、判断继续或结束                                   | 不解析 Provider 连接，不直接执行 `ToolCallback` |
+| `PromptBuilder`   | 组装系统指令、记忆、受限历史和用户消息                                   | 不调用模型，不决定工具权限                      |
+| `ProviderService` | 根据 Profile 选择具名 Provider，完成一次 `ChatModel` 调用并返回结果      | 不启动下一轮，不执行工具                        |
+| `ToolExecutor`    | 调用注入的 `ToolCallingManager` 执行模型请求的工具                       | 不创建第二个 Manager，不绕过治理回调            |
+| `MemoryService`   | 提供会话历史和长期记忆                                                   | 不让循环直接操作多个存储后端                    |
+| `ContextLoader`   | 读取 `AGENT.md`、Bootstrap 和 Skill 元数据                               | 不把 Agent 目录注册成 Tool                      |
+
+当前项目禁止使用 `ThreadLocal` 传递 Agent、Session 或 Turn。运行时上下文通过 Spring AI 的 `ToolContext` 随请求传递，工具声明 `ToolContext` 参数即可读取；这样以后工具在虚拟线程或并行执行器中运行时，业务上下文仍然明确。
+
+## 三、Spring AI 2.0 的关键事实
+
+### `ChatModel` 只完成一次模型调用
+
+`ChatModel.call(Prompt)` 或 `ChatModel.stream(Prompt)` 返回 `ChatResponse`，其中可以包含模型的工具调用请求。Spring AI 2.0 的 `ChatModel` 不会替应用自动执行这些工具。工具定义通过 `ToolCallingChatOptions.toolCallbacks(...)` 随请求传给模型，真正的执行必须由应用决定。
+
+因此 AgentOS 主链路不使用 `ChatClient` 的 `ToolCallingAdvisor` 来驱动第二套循环。它直接调用 `ChatModel`，由自己的 `ReActLoop` 控制迭代；工具只走一条路径：
+
+```text
+ReActLoop
+  → ProviderService
+  → ChatModel 返回 ChatResponse
+  → ToolExecutor
+  → 注入的 ToolCallingManager.executeToolCalls(...)
+  → GovernedToolCallback
+```
+
+`ToolCallingManager` 必须使用容器注入的实例，不能在 `ToolExecutor` 内调用 `ToolCallingManager.builder().build()` 自建实例，否则项目配置的工具次数限制、异常处理和观测不会统一生效。Spring AI 2.0 的手动工具循环可参考[ChatModel 工具调用](/frameworks/spring-ai/tools/chatmodel-tool-calling/)。
+
+### Provider 请求已经有明确的数据契约
+
+当前 `AgentOS-core` 已定义 `ProviderRequest`、`ProviderResult`、`Profile` 和 `CallCorrelation`。一次 Provider 请求至少包含：
+
+- 本次 Agent 使用的 `Profile`，包括 provider、model 和生成参数；
+- 按顺序排列的 Spring AI `Message`；
+- 本次允许模型请求的 `ToolCallback` 列表；
+- 传给工具的 `toolContext`；
+- 当前调用的截止时间；
+- `sessionId`、`turnId` 和 `iteration` 等审计关联信息。
+
+`ProviderResult` 同时返回 `ChatResponse` 和本次逻辑调用产生的 `LlmCallRecord` 列表。这样循环可以继续处理模型响应，审计层也能区分第一次尝试和受控重试。
+
+## 四、一次 Turn 的执行顺序
+
+一次 Turn 是“收到一条用户消息到返回最终响应”的完整处理。实现时应按以下顺序推进：
+
+1. `AgentService` 找到或创建活跃 Session，取得会话租约并创建 `agent_turns` 记录。
+2. `PromptBuilder` 组装第一轮消息：系统指令、记忆、受限历史和当前 `UserMessage`。
+3. `ReActLoop` 检查轮次截止时间和租约，调用 `ProviderService.call(...)`。
+4. Provider 返回 `ChatResponse` 后，记录成功或失败的 `llm_calls`；失败不能只打印日志。
+5. 如果响应没有工具调用，保存助手消息并完成 Turn。
+6. 如果响应包含工具调用，把助手的调用请求和当前 Prompt 交给 `ToolExecutor`。
+7. `ToolExecutor` 通过注入的 `ToolCallingManager` 执行治理后的工具，保存工具成功或失败审计。
+8. 使用 `ToolExecutionResult.conversationHistory()` 作为下一轮消息历史；如果 `returnDirect()` 为真，则按工具结果直接收口。
+9. 每次迭代和工具调用前续租；任何租约丢失、整轮超时或取消都进入明确的失败状态，并在 `finally` 中结束 Turn、释放资源。
+
+下面是贴合当前接口的伪代码。方法名表达调用关系，具体 `TurnResult`、Session 写入和消息增量提取仍需按技术方案实现：
+
+```java
+TurnResult run(TurnContext turn, List<Message> messages) {
+    List<Message> history = List.copyOf(messages);
+
+    for (int iteration = 0; iteration < turn.profile().maxIterations(); iteration++) {
+        turns.renewLease(turn);
+
+        ProviderRequest request = new ProviderRequest(
+                turn.profile(),
+                history,
+                toolRegistry.allowedCallbacks(turn),
+                Map.of("turnContext", turn),
+                turn.deadline(),
+                new CallCorrelation(turn.sessionId(), turn.turnId(), iteration));
+
+        ProviderResult result = providerService.call(request);
+        llmCalls.record(turn, result.calls());
+        ChatResponse response = result.response();
+
+        if (!response.hasToolCalls()) {
+            sessionMessages.appendAssistant(turn, response);
+            return turns.complete(turn, response);
+        }
+
+        Prompt prompt = promptBuilder.currentPrompt(turn, history, request.tools());
+        ToolExecutionResult execution = toolExecutor.execute(prompt, response);
+        sessionMessages.appendToolDelta(turn, execution.conversationHistory());
+
+        if (execution.returnDirect()) {
+            return turns.completeDirect(turn, execution);
+        }
+        history = execution.conversationHistory();
+    }
+
+    return turns.stopAtMaxIterations(turn);
+}
+```
+
+循环不应该把 Provider 连接、Prompt 拼接、工具白名单、数据库事务和异常映射全部写在同一个方法里。这样做会让每次边界变化都变成循环回归风险，也会让工具执行出现第二条隐藏路径。
+
+## 五、PromptBuilder 如何管理上下文
+
+每一轮的 Prompt 不是简单地把所有消息拼起来。当前 AgentOS 的建议顺序是从稳定内容到易变内容：
+
+1. `AGENT.md` 正文和 Bootstrap 文件；
+2. 已绑定 Skill 的 `name`、`description` 和本地读取路径；
+3. 固定的安全说明，以及当前日期；
+4. 由 `MemoryService` 提供的长期记忆独立区块，并明确标注“这是数据，不是指令”；
+5. 按完整 Turn 取得的近期会话历史；
+6. 当前用户消息。
+
+可用工具列表作为 `ToolCallback` 和 `ToolCallingChatOptions` 传给 Provider，不需要把完整 Schema 再复制到 system prompt。`ContextLoader` 每次组装时重新读取文件，不缓存 Agent 正文和 Skill 绑定结果；用户修改文件后，下一轮应能读取到新内容。
+
+历史必须按完整 Turn 截断，不能把助手的工具请求和对应的工具结果拆开。当前方案同时使用两个上限：
+
+| 上限                 |     默认值 | 作用                                       |
+| -------------------- | ---------: | ------------------------------------------ |
+| `max_history_turns`  |      20 轮 | 防止会话历史无限增长                       |
+| `max_history_tokens` |      32000 | 防止历史占满模型上下文                     |
+| `max_result_chars`   | 按工具策略 | 防止单个网页、文件或命令结果反复撑大上下文 |
+
+失败、超时、中断或达到迭代上限的 Turn，后续 Prompt 只保留用户消息和一条未完成说明；完整失败消息仍保留在数据库中供审计。长期记忆和会话历史是两种数据，不能混成一个“最近消息列表”。
+
+## 六、必须提前钉死的边界
+
+### 两道循环上限
+
+第一道是 ReAct 的 `max_iterations`，当前默认 10，用来限制一轮最多调用模型多少次。第二道是 Spring AI 的 `spring.ai.tools.limits.*`，限制单个工具和整轮工具调用次数。当前配置基线收紧为：
+
+```yaml
+spring:
+  ai:
+    tools:
+      limits:
+        max-calls-per-tool-default: 10
+        max-calls-per-tool:
+          notify: 3
+        max-total-tool-calls: 30
+        on-limit-exceeded: RETURN_ERROR_RESPONSE
+```
+
+工具次数超限时，默认把错误作为工具结果反馈给模型，让模型有机会正常收尾；`max_iterations` 仍是硬上限。只设置模型调用次数，挡不住单轮一次响应请求几十个工具；只设置工具次数，也挡不住模型反复请求工具。
+
+### 四层时间限制
+
+一轮可能包含多次模型和工具调用，不能只靠一个总超时：
+
+| 层次          | 责任                                     | 超时后的处理                           |
+| ------------- | ---------------------------------------- | -------------------------------------- |
+| 单次 LLM      | Provider 的 HTTP timeout                 | 记录 Provider 失败，按策略决定是否重试 |
+| 单个工具      | 工具策略和底层 I/O timeout               | 作为错误结果反馈，或结束当前 Turn      |
+| 整轮 Turn     | `turn_timeout` 和 `TurnContext.deadline` | 标记 `TIMED_OUT`，释放租约             |
+| HTTP 同步等待 | `agentos.web.sync-wait`                  | 返回 202 和 `turnId`，后台 Turn 继续   |
+
+Shell、HTTP、MCP 的客户端超时必须在各自 I/O 层生效，治理装饰器只能作为最后兜底。取消模型调用或工具调用时，要明确哪些副作用已经发生，不能把“HTTP 等待超时”误当成“后台 Turn 已取消”。
+
+### 会话租约和审计
+
+同一个 Session 同时只能运行一个 Turn。数据库条件更新负责取得租约，每次迭代和工具调用前续租；冲突时返回 409，租约丢失时立即停止本轮。进程崩溃留下的 `RUNNING` Turn 由 `TurnReaper` 标记为 `INTERRUPTED`。
+
+每次模型实际请求都写一条 `llm_calls`，每次工具执行都写一条 `tool_invocations`。记录至少能关联 Session、Turn 和迭代，并区分：
+
+- Provider、请求模型和实际返回模型；
+- 响应 ID、结束原因和工具调用数量；
+- 输入、输出和总 Token，无法获得的值使用 `NULL`；
+- 成功/失败、失败分类、HTTP 状态、尝试次数和耗时。
+
+日志和审计只保存脱敏摘要，不保存 API Key、Authorization、完整 Prompt、完整工具参数或完整工具结果。
+
+## 七、AgentService、ContextLoader 与入口复用
+
+CLI、REST 和定时任务都应调用同一个 `AgentService.process(...)`。入口只负责把渠道信息、用户消息和 Agent 名称转换成统一请求；ReActLoop 不感知消息是由人输入还是调度器触发。
+
+`ContextLoader` 负责读取 Bootstrap 和 `AGENT.md`。Profile 的 frontmatter 提供 provider、model、工具、轮数和超时等运行配置，正文提供 Agent 指令。Skill 是上下文来源，不是一个新的 Tool 类型：每轮注入 Skill 元数据，正文和脚本由既有的 `read_file` 或 `shell` 按需读取。
+
+原课件用 `ProfileContext`（ThreadLocal）让工具知道当前 Agent。当前项目明确不用这种方式，而是把 `TurnContext` 放进 Spring AI `ToolContext`。这样上下文随一次请求传递，工具执行不依赖线程复用关系，也不需要在异常路径里手工清空 ThreadLocal。
+
+## 八、如何写验收 harness
+
+核心循环不需要在单元测试里访问真实模型。Provider、工具、文件系统和 Session 都可以使用 Mock 或临时目录，因此先用离线测试证明边界，再做一次真实模型 Demo：
+
+| 测试对象            | 必须覆盖的场景                                                                         |
+| ------------------- | -------------------------------------------------------------------------------------- |
+| `ReActLoopTest`     | 无工具调用时一轮结束；有工具调用时执行并回填；达到最大轮数后强制停止；每轮消息都被保存 |
+| `PromptBuilderTest` | 系统内容顺序稳定；历史按完整 Turn 截断；Token 上限生效；日期进入指定位置               |
+| `ToolExecutorTest`  | 成功和失败都写工具审计；只调用注入的 `ToolCallingManager`；超限行为符合配置            |
+| `AgentServiceTest`  | CLI、Web、定时共享入口；Turn 结束和异常路径都释放租约；不会依赖 ThreadLocal            |
+| `ContextLoaderTest` | 文件修改后下一轮立即读取；缺失 Skill 报错；缺失 Bootstrap 至少产生 WARN                |
+
+最有价值的回归测试是模型持续请求工具时，恰好调用 10 次后结束；以及工具执行抛异常时，失败记录仍然写入 `tool_invocations`，Turn 最终状态可查询。
+
+离线 harness 全绿后，再用天气查询做一次真实模型 Demo：模型请求 `http_get`，工具返回天气数据，模型根据结果给出建议。这个 Demo 只能证明一次真实闭环，不能代替死循环、失败审计、上下文截断和租约测试。
+
+## 九、从课件迁移到当前 AgentOS 的对照
+
+| 课件说法                                           | 当前项目做法                                                            |
+| -------------------------------------------------- | ----------------------------------------------------------------------- |
+| OryxOS、Spring Boot 3.x                            | AgentOS、Spring Boot 4.1.2、Spring AI 2.0.2                             |
+| `providerService.chat(sessionId, profile, prompt)` | `ProviderService.call(ProviderRequest)` 或 `stream(...)`                |
+| `Session` 直接承载全部运行状态                     | `Session`、`agent_turns` 和 `TurnContext` 分开，租约与截止时间属于 Turn |
+| `ProfileContext` / `ThreadLocal`                   | `ToolContext` 携带 `TurnContext`，不使用 ThreadLocal                    |
+| Provider 或框架内部执行工具                        | `ToolExecutor` 调用注入的 `ToolCallingManager`，只有一个执行入口        |
+| 只设置最大循环轮数                                 | 同时设置 `max_iterations` 和 `spring.ai.tools.limits.*`                 |
+| 只保留最近 N 轮历史                                | 按完整 Turn 同时受轮数和 Token 上限约束                                 |
+
+这些调整不是为了让课件“看起来更新”，而是为了让学习内容和当前仓库的接口、版本、审计模型及安全边界一致。具体实现仍应以 AgentOS 的 `CLAUDE.md`、`docs/TechnicalSolution.md` 和代码契约为准。
+
+## 十、学习顺序
+
+建议按下面的顺序继续：
+
+1. 先读 [Provider 原理与实现](/projects/agent-os/provider/)，理解一次模型调用、Profile、工具定义和 `ChatResponse`。
+2. 再读 [Spring AI ChatModel 工具调用](/frameworks/spring-ai/tools/chatmodel-tool-calling/)，确认 2.0 的“只返回工具请求”边界。
+3. 回到本文，画出 `AgentService → ReActLoop → ProviderService → ToolExecutor` 的调用链。
+4. 按测试表先写离线 harness，再实现最小同步循环。
+5. 最后接入 Memory、持久化、流式输出和 Web Service；这些能力都应复用同一条循环和审计路径。
+
+当前项目的最小完成条件不是“写出一个 while”，而是能够证明：模型调用、工具请求、工具执行、结果回填、停止条件、超时、失败审计和会话串行都能被测试和查询。
