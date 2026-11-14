@@ -1,0 +1,12 @@
+{
+  "javaRelease": 21,
+  "springAiVersion": "2.0.1",
+  "scope": "Article examples only; no project tests or model requests executed",
+  "exitCode": 0,
+  "diagnostics": "",
+  "files": [
+    "SchemaDescriptor.java",
+    "ModelRound.java",
+    "MessageExample.java"
+  ]
+}

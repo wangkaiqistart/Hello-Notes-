@@ -1,0 +1,58 @@
+[
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.1",
+    "source": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.1/spring-ai-model-2.0.1-sources.jar",
+    "entry": "org/springframework/ai/chat/model/ChatModel.java",
+    "saved": "translate/agentos-provider-lesson16-zh-CN/spring-ai-2.0/ChatModel.java",
+    "sha256": "19832864e931028bcddf176b1138bf81e0cdf824d5604ade88d4cf56f18f7463"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.1",
+    "source": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.1/spring-ai-model-2.0.1-sources.jar",
+    "entry": "org/springframework/ai/model/tool/ToolCallingChatOptions.java",
+    "saved": "translate/agentos-provider-lesson16-zh-CN/spring-ai-2.0/ToolCallingChatOptions.java",
+    "sha256": "088d353258c52fbf94e8a3c0ed14eda58e52eec78fb2269a731f117dbd2d0cc1"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.1",
+    "source": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.1/spring-ai-model-2.0.1-sources.jar",
+    "entry": "org/springframework/ai/tool/ToolCallback.java",
+    "saved": "translate/agentos-provider-lesson16-zh-CN/spring-ai-2.0/ToolCallback.java",
+    "sha256": "1db47c47995c7220640e87184090fd74b751ad43375a610c994dc0c51bbc1b60"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.1",
+    "source": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.1/spring-ai-model-2.0.1-sources.jar",
+    "entry": "org/springframework/ai/tool/definition/ToolDefinition.java",
+    "saved": "translate/agentos-provider-lesson16-zh-CN/spring-ai-2.0/ToolDefinition.java",
+    "sha256": "8624807c139ac9392baa8c37a985b3707501a2ff78bc300657a3c0b82697c389"
+  },
+  {
+    "artifact": "spring-ai-openai",
+    "version": "2.0.1",
+    "source": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-openai/2.0.1/spring-ai-openai-2.0.1-sources.jar",
+    "entry": "org/springframework/ai/openai/OpenAiChatOptions.java",
+    "saved": "translate/agentos-provider-lesson16-zh-CN/spring-ai-2.0/OpenAiChatOptions.java",
+    "sha256": "52335f740cc686ffb8fc7c5ad68781d008122b37c666da6aa6a25e2d6d0ee5cf"
+  },
+  {
+    "artifact": "spring-ai-openai",
+    "version": "2.0.1",
+    "source": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-openai/2.0.1/spring-ai-openai-2.0.1-sources.jar",
+    "entry": "org/springframework/ai/openai/OpenAiChatModel.java",
+    "saved": "translate/agentos-provider-lesson16-zh-CN/spring-ai-2.0/OpenAiChatModel.java",
+    "sha256": "ec44c7e27d1de6da7ea6ba71aadd07980c48bb2eb13b60eb4beb802cfc948355"
+  },
+  {
+    "artifact": "spring-ai-client-chat",
+    "version": "2.0.1",
+    "source": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-client-chat/2.0.1/spring-ai-client-chat-2.0.1-sources.jar",
+    "entry": "org/springframework/ai/chat/client/DefaultChatClient.java",
+    "saved": "translate/agentos-provider-lesson16-zh-CN/spring-ai-2.0/DefaultChatClient.java",
+    "sha256": "9af6ac89c1a54e8d7f6b23e5aba72134ac865b9f39ca758c464b248a94dede36"
+  }
+]

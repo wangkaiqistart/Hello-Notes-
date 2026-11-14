@@ -1,0 +1,27 @@
+{
+  "root": "/Volumes/Data/my_project/agent-os",
+  "trackedFilesChecked": 137,
+  "gitStatusClean": false,
+  "keyFiles": {
+    "CLAUDE.md": {
+      "sha256": "aed5405c75e7f6d5158e4f4db210d650afa86a94a4bc4bc76d95207e86f2c094"
+    },
+    "docs/AiProgrammingGuide.md": {
+      "sha256": "9333dda49da23f0d3bb18710c0be6018f92ffab0ed0f25f9448a4dadc2afc920"
+    },
+    "docs/DemandAnalysis.md": {
+      "sha256": "0d0a5b06af058b526f8fb65fd67ee6836c93210cedfcabb8d0980d05b3c2875c"
+    },
+    "docs/TechnicalSolution.md": {
+      "sha256": "4fdb3b087ea07f1e62e034293beab3af11db90e8576cc0ba3c2a971e1c1e250c"
+    },
+    "pom.xml": {
+      "sha256": "a56d463db7c1b6c9f1c9dc7c35a4aaed8444d4a807c85ac7022001170de91dcd"
+    }
+  },
+  "observedStatus": {
+    "modified": [".env.example", "AgentOS-boot/src/main/resources/application.yaml", "CLAUDE.md"],
+    "untracked": ["specs/"],
+    "taskImpact": "本任务未修改目标项目，保留工作区现状"
+  }
+}

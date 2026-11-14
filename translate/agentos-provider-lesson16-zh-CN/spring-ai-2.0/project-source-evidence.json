@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-08",
+  "repository": "/Volumes/Data/my_project/java-agent-os",
+  "mode": "read-only source inspection; no Java AgentOS project tests executed",
+  "files": [
+    {
+      "path": "pom.xml",
+      "sha256": "4006939f76fe587f6a3d71f9a6b6d58f9c84fcf6f6ba6b21a0b500308c9d978b"
+    },
+    {
+      "path": "aegisos-core/src/main/java/com/aegisos/core/provider/ProviderService.java",
+      "sha256": "8b9856e9a2c50600d5372e091f9f748238ae368bd4c0ebd703e489f5006f2777"
+    },
+    {
+      "path": "aegisos-core/src/main/java/com/aegisos/core/provider/ProfileProviderService.java",
+      "sha256": "2fc20c61122dce4f503ce7292db5e9ab8a94d56c9cab14c8f39b4201077db111"
+    },
+    {
+      "path": "aegisos-core/src/main/java/com/aegisos/core/provider/ProfilePrompt.java",
+      "sha256": "faee6c8549939a1e53c3ce0398b80c35e647056347599edf4f94a7066ac9ce3b"
+    },
+    {
+      "path": "aegisos-provider/src/main/java/com/aegisos/provider/adapter/OpenAiMessageMapper.java",
+      "sha256": "7cc36548029ebe2888c2dfa676bce614466c6d30c1dd480fae7a53a5b5d69ede"
+    },
+    {
+      "path": "aegisos-provider/src/main/java/com/aegisos/provider/adapter/OpenAiCompatibleAdapter.java",
+      "sha256": "12b293ad1c50b51d6876806bb80a2cad7b9718f651ad659713bcc3fb001ae32d"
+    },
+    {
+      "path": "aegisos-provider/src/main/java/com/aegisos/provider/adapter/OpenAiClientFactory.java",
+      "sha256": "72b008bf3f52459c46ba7ee9578b54ccdaecec0841d89ff170f1ad4633b6bec9"
+    },
+    {
+      "path": "aegisos-provider/src/main/java/com/aegisos/provider/service/DefaultProviderService.java",
+      "sha256": "d87258c7670f3738936913cafdbd2bcf51b265ff8d9c31eb64627ce0c3dfd069"
+    },
+    {
+      "path": "aegisos-provider/src/main/java/com/aegisos/provider/config/ProviderRegistry.java",
+      "sha256": "a129626692e9ca0814825fcc198dfc323cbb549e1a84bd703a7f5c0eaa87a1bb"
+    },
+    {
+      "path": "aegisos-boot/src/main/java/com/aegisos/boot/config/ProfileLoader.java",
+      "sha256": "3a58efe3d388a3aaf797e518f9e924a5d9dc47ede37e06abb5822c35b9113642"
+    },
+    {
+      "path": "aegisos-boot/src/main/java/com/aegisos/boot/config/ProviderProperties.java",
+      "sha256": "2e191d68742ec3a2c3db892a0bd5d41b98ff4dbf77b926083c81dce8a72bc754"
+    },
+    {
+      "path": "docs/engineering/cli-usage.md",
+      "sha256": "3eb61f0c648bb0d1a94894da1f201b4bfdd7d1d5d10f34c5f0d08b08217d5716"
+    },
+    {
+      "path": "aegisos-provider/src/test/java/com/aegisos/provider/adapter/OpenAiCompatibleAdapterTest.java",
+      "sha256": "738f15e9fc9584393e0a05e10c636f43c07d1ee95d4b9aa88c7970044ca1fe04"
+    },
+    {
+      "path": "aegisos-provider/src/test/java/com/aegisos/provider/adapter/ToolSchemaContractTest.java",
+      "sha256": "99e1c73c8849327ed45046da3fb2ad58b19cc6127782ac882f9e7ba07e26a9b7"
+    },
+    {
+      "path": "aegisos-provider/src/test/java/com/aegisos/provider/service/ProviderRetryTest.java",
+      "sha256": "144c74c78dce3f5b3527d7fe9178788b3c0a2f455fcfa7fe1349a01df33da962"
+    },
+    {
+      "path": "aegisos-provider/src/test/java/com/aegisos/provider/service/ProviderAuditFailureTest.java",
+      "sha256": "9a9391ffee5cfff08d0c0a631c5dc6899f86008be04f5e1d8322cd23908014bd"
+    }
+  ]
+}

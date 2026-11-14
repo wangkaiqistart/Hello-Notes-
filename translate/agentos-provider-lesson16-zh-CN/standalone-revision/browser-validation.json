@@ -1,0 +1,108 @@
+[
+  {
+    "name": "desktop",
+    "status": 200,
+    "title": "AgentOS：Provider 原理与实现",
+    "overflow": false,
+    "images": [
+      {
+        "src": "/images/projects/agent-os/provider-overview.png",
+        "alt": "Provider 位于 ReActLoop 与模型服务之间，依据 Profile 选择连接，并将消息和工具描述交给 ChatModel",
+        "loaded": true,
+        "width": 756,
+        "clickable": true
+      },
+      {
+        "src": "/images/projects/agent-os/provider-boundaries.png",
+        "alt": "职责分工：Provider 处理模型选择、单次推理、工具格式与审计，其他模块处理循环、执行、上下文与记忆",
+        "loaded": true,
+        "width": 755.984375,
+        "clickable": true
+      },
+      {
+        "src": "/images/projects/agent-os/provider-call-flow.png",
+        "alt": "调用流程：ProviderService 根据 Profile 选择适配器、组装消息和工具描述，提交开始记录后调用 ChatModel，再提交结果审计并返回 ModelResponse",
+        "loaded": true,
+        "width": 756,
+        "clickable": true
+      }
+    ],
+    "codeBlocks": 5,
+    "headings": [
+      "定位与职责",
+      "工具执行边界",
+      "配置：连接、Profile 与提示词分开",
+      "请求适配与响应处理",
+      "审计与重试：一次外呼必须可追溯",
+      "验收：检查行为与最终请求",
+      "实现与排查顺序"
+    ],
+    "missingAnchors": [],
+    "links": [
+      "/images/projects/agent-os/provider-overview.png",
+      "/images/projects/agent-os/provider-boundaries.png",
+      "/images/projects/agent-os/provider-call-flow.png",
+      "/projects/agent-os/modules/",
+      "/projects/agent-os/agent-architecture/",
+      "/frameworks/spring-ai/tools/chatmodel-tool-calling/",
+      "/projects/agent-os/modules/",
+      "/projects/agent-os/ai-development-guide/"
+    ],
+    "errors": [],
+    "indexEntry": 1,
+    "navigationLinks": 1
+  },
+  {
+    "name": "mobile",
+    "status": 200,
+    "title": "AgentOS：Provider 原理与实现",
+    "overflow": false,
+    "images": [
+      {
+        "src": "/images/projects/agent-os/provider-overview.png",
+        "alt": "Provider 位于 ReActLoop 与模型服务之间，依据 Profile 选择连接，并将消息和工具描述交给 ChatModel",
+        "loaded": true,
+        "width": 357.984375,
+        "clickable": true
+      },
+      {
+        "src": "/images/projects/agent-os/provider-boundaries.png",
+        "alt": "职责分工：Provider 处理模型选择、单次推理、工具格式与审计，其他模块处理循环、执行、上下文与记忆",
+        "loaded": true,
+        "width": 357.953125,
+        "clickable": true
+      },
+      {
+        "src": "/images/projects/agent-os/provider-call-flow.png",
+        "alt": "调用流程：ProviderService 根据 Profile 选择适配器、组装消息和工具描述，提交开始记录后调用 ChatModel，再提交结果审计并返回 ModelResponse",
+        "loaded": true,
+        "width": 357.984375,
+        "clickable": true
+      }
+    ],
+    "codeBlocks": 5,
+    "headings": [
+      "定位与职责",
+      "工具执行边界",
+      "配置：连接、Profile 与提示词分开",
+      "请求适配与响应处理",
+      "审计与重试：一次外呼必须可追溯",
+      "验收：检查行为与最终请求",
+      "实现与排查顺序"
+    ],
+    "missingAnchors": [],
+    "links": [
+      "/images/projects/agent-os/provider-overview.png",
+      "/images/projects/agent-os/provider-boundaries.png",
+      "/images/projects/agent-os/provider-call-flow.png",
+      "/projects/agent-os/modules/",
+      "/projects/agent-os/agent-architecture/",
+      "/frameworks/spring-ai/tools/chatmodel-tool-calling/",
+      "/projects/agent-os/modules/",
+      "/projects/agent-os/ai-development-guide/"
+    ],
+    "errors": [],
+    "indexEntry": 1,
+    "navigationLinks": 1
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "protectedFilesUnchanged": 6,
+  "modulesOnlyProviderEntryChanged": true,
+  "javaExamplesUnchanged": true,
+  "readerFacingLegacyMentions": 0,
+  "siteAndFinalCopyMatch": true,
+  "beforeCharacters": 12846,
+  "afterCharacters": 11670,
+  "callFlowImageSha256": "3b685d526a520b9c0484c38efbf8081856e8fb9b85f354ad4de845ae180ac344",
+  "siteFile": "src/content/docs/projects/agent-os/provider.mdx",
+  "siteSha256": "284f4d0a496281a6378396fb7c601abace69f3986dc15f93d35775ebabad2a51",
+  "check": {
+    "files": 18,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0
+  },
+  "build": {
+    "passed": true,
+    "pages": 110,
+    "existingWarnings": [
+      "empty i18n collection",
+      "/404 route conflict"
+    ]
+  },
+  "browser": {
+    "desktop": "PASS",
+    "mobile": "PASS",
+    "images": 3,
+    "codeBlocks": 5,
+    "h2": 7
+  },
+  "javaExamples": "UNCHANGED; previous offline compilation evidence retained",
+  "javaProjectTests": "NOT_RUN",
+  "realModelSmoke": "NOT_RUN",
+  "globalConfiguration": "src/main/resources/application.yaml; Spring Boot ConfigurationProperties binding",
+  "modelSelection": "Profile explicitly selects model; global connection has no default model or model allowlist"
+}

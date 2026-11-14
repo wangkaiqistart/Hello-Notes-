@@ -1,0 +1,104 @@
+[
+  {
+    "name": "desktop",
+    "status": 200,
+    "title": "AgentOS：Provider 原理与实现",
+    "overflow": false,
+    "images": [
+      {
+        "src": "/images/projects/agent-os/provider-overview.png",
+        "alt": "ReActLoop 根据 Profile 通过 ProviderService 选择 ChatModel，再访问对应模型服务",
+        "loaded": true,
+        "width": 756,
+        "clickable": true
+      },
+      {
+        "src": "/images/projects/agent-os/provider-boundaries.png",
+        "alt": "Provider 负责模型选择、模型调用、工具协议转换和用量审计；循环、工具执行、上下文与记忆由其他模块负责",
+        "loaded": true,
+        "width": 755.984375,
+        "clickable": true
+      },
+      {
+        "src": "/images/projects/agent-os/provider-call-flow.png",
+        "alt": "ProviderService 按 Profile 选择 ChatModel，组装完整消息与工具定义，发起模型调用并写入成功或失败审计，返回 ChatResponse",
+        "loaded": true,
+        "width": 756,
+        "clickable": true
+      }
+    ],
+    "codeBlocks": 6,
+    "headings": [
+      "一、Provider 是什么，做什么",
+      "二、动手前先想清楚几件事",
+      "三、代码怎么写",
+      "四、验收 harness：把边界变成测试",
+      "五、做完怎么验"
+    ],
+    "missingAnchors": [],
+    "links": [
+      "/images/projects/agent-os/provider-overview.png",
+      "/images/projects/agent-os/provider-boundaries.png",
+      "/images/projects/agent-os/provider-call-flow.png",
+      "/projects/agent-os/modules/",
+      "/projects/agent-os/agent-architecture/",
+      "/frameworks/spring-ai/tools/chatmodel-tool-calling/",
+      "/projects/agent-os/modules/",
+      "/projects/agent-os/ai-development-guide/"
+    ],
+    "errors": [],
+    "indexEntry": 1,
+    "navigationLinks": 1
+  },
+  {
+    "name": "mobile",
+    "status": 200,
+    "title": "AgentOS：Provider 原理与实现",
+    "overflow": false,
+    "images": [
+      {
+        "src": "/images/projects/agent-os/provider-overview.png",
+        "alt": "ReActLoop 根据 Profile 通过 ProviderService 选择 ChatModel，再访问对应模型服务",
+        "loaded": true,
+        "width": 357.984375,
+        "clickable": true
+      },
+      {
+        "src": "/images/projects/agent-os/provider-boundaries.png",
+        "alt": "Provider 负责模型选择、模型调用、工具协议转换和用量审计；循环、工具执行、上下文与记忆由其他模块负责",
+        "loaded": true,
+        "width": 357.953125,
+        "clickable": true
+      },
+      {
+        "src": "/images/projects/agent-os/provider-call-flow.png",
+        "alt": "ProviderService 按 Profile 选择 ChatModel，组装完整消息与工具定义，发起模型调用并写入成功或失败审计，返回 ChatResponse",
+        "loaded": true,
+        "width": 357.984375,
+        "clickable": true
+      }
+    ],
+    "codeBlocks": 6,
+    "headings": [
+      "一、Provider 是什么，做什么",
+      "二、动手前先想清楚几件事",
+      "三、代码怎么写",
+      "四、验收 harness：把边界变成测试",
+      "五、做完怎么验"
+    ],
+    "missingAnchors": [],
+    "links": [
+      "/images/projects/agent-os/provider-overview.png",
+      "/images/projects/agent-os/provider-boundaries.png",
+      "/images/projects/agent-os/provider-call-flow.png",
+      "/projects/agent-os/modules/",
+      "/projects/agent-os/agent-architecture/",
+      "/frameworks/spring-ai/tools/chatmodel-tool-calling/",
+      "/projects/agent-os/modules/",
+      "/projects/agent-os/ai-development-guide/"
+    ],
+    "errors": [],
+    "indexEntry": 1,
+    "navigationLinks": 1
+  }
+]

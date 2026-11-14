@@ -1,0 +1,52 @@
+{
+  "targetProject": "/Volumes/Data/my_project/agent-os",
+  "baseline": {
+    "jdk": 21,
+    "springBoot": "4.1.2",
+    "springAi": "2.0.2",
+    "trackedFiles": 137
+  },
+  "article": {
+    "path": "src/content/docs/projects/agent-os/ai-development-guide.mdx",
+    "sha256": "a58d8e62c3decc94a22110992eed06332df03b0f31aab193fd34e8c2d7f5d61b",
+    "h2": 10,
+    "h3": 6,
+    "images": 1
+  },
+  "sourcePdfsUnchanged": true,
+  "articleCopyMatches": true,
+  "check": {
+    "passed": true,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0
+  },
+  "build": {
+    "passed": true,
+    "existingWarnings": ["empty i18n collection", "/404 route conflict"]
+  },
+  "prettier": "PASS",
+  "gitDiffCheck": "PASS",
+  "browser": {
+    "page": "/projects/agent-os/ai-development-guide/",
+    "viewports": ["1440x1000", "390x844"],
+    "status": 200,
+    "overflow": false,
+    "h2": 10,
+    "h3": 6,
+    "images": 1,
+    "internalPathsChecked": 7,
+    "errors": 0
+  },
+  "lint": {
+    "status": "NOT_RUN",
+    "reason": "知识库根目录没有 kb.contract.md；本仓库按 Astro/Starlight AGENTS.md 管理，不是 raw/wiki 契约库"
+  },
+  "projectBaselineComparison": {
+    "baselineTrackedFiles": 137,
+    "modifiedOrMissingAgainstSavedBaseline": 3,
+    "paths": [".env.example", "AgentOS-boot/src/main/resources/application.yaml", "CLAUDE.md"],
+    "untracked": ["specs/"],
+    "taskImpact": "本任务未修改 /Volumes/Data/my_project/agent-os；保留当前工作区变化"
+  }
+}

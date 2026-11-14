@@ -1,0 +1,27 @@
+{
+  "revision": "Spring AI 2.0.1",
+  "siteFile": "src/content/docs/projects/agent-os/provider.mdx",
+  "siteSha256": "585a38be4327a524e5a55a77f85a39a9124a9fd08165cf54892259e00cb86792",
+  "finalCopyMatches": true,
+  "unrelatedFilesUnchanged": true,
+  "protectedFileCount": 8,
+  "originalImagesUnchanged": true,
+  "codeBlockCount": 5,
+  "javaExamplesCompiled": true,
+  "check": {
+    "files": 18,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0
+  },
+  "build": {
+    "pages": 110,
+    "passed": true,
+    "existingWarnings": [
+      "empty i18n collection",
+      "/404 route conflict"
+    ]
+  },
+  "javaProjectTests": "NOT_RUN",
+  "realModelSmoke": "NOT_RUN"
+}

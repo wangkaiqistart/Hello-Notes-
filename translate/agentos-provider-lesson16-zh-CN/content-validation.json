@@ -1,0 +1,79 @@
+{
+  "protectedKnowledgeBaseFilesUnchanged": 7,
+  "targetProjectRoot": "/Volumes/Data/my_project/agent-os",
+  "targetProjectTrackedFilesUnchanged": 108,
+  "siteAndFinalCopyMatch": true,
+  "siteFile": "src/content/docs/projects/agent-os/provider.mdx",
+  "siteSha256": "af06544bcb4a768a055b059aa50ed7edf46076de817604af02e5a403202850c4",
+  "callFlowImageSha256": "d111aa47b176f3f7dc761200bc16fe9e3575e535701e8926d09fb3462150543c",
+  "codeBlocks": 4,
+  "h2": 8,
+  "javaExamples": {
+    "count": 2,
+    "exactArticleBlocksCompile": "PASS",
+    "dependencyVersion": "2.0.2"
+  },
+  "protocolCheck": {
+    "date": "2026-11-08",
+    "java": 21,
+    "springAi": "2.0.2",
+    "compilation": "PASS",
+    "protocolCheck": "PASS",
+    "physicalHttpCalls": 3,
+    "toolExecutions": 0,
+    "checks": [
+      "explicit v1 prefix preserved",
+      "root URL not appended with v1",
+      "Agent model and reasoning/output options",
+      "temperature and max_tokens absent",
+      "tool definition serialized",
+      "tool-only response and call ID preserved",
+      "response model and usage retained",
+      "ToolContext not sent",
+      "503 causes no SDK retry",
+      "blank model rejected before HTTP"
+    ],
+    "endpoint": "127.0.0.1 ephemeral port",
+    "credential": "fake local key only",
+    "javaProjectTests": "NOT_RUN",
+    "realModelSmoke": "NOT_RUN"
+  },
+  "check": {
+    "files": 18,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0
+  },
+  "build": {
+    "passed": true,
+    "pages": 110,
+    "existingWarnings": [
+      "empty i18n collection",
+      "/404 route conflict"
+    ]
+  },
+  "browser": {
+    "desktop": {
+      "status": 200,
+      "images": 3,
+      "codeBlocks": 4,
+      "h2": 8,
+      "pageOverflow": false,
+      "scriptErrors": []
+    },
+    "mobile": {
+      "status": 200,
+      "images": 3,
+      "codeBlocks": 4,
+      "h2": 8,
+      "pageOverflow": false,
+      "scriptErrors": []
+    }
+  },
+  "globalConfiguration": "application.yaml contains chat connections; Agent explicitly chooses chat model",
+  "javaProjectModified": false,
+  "javaProjectTests": "NOT_RUN",
+  "realModelSmoke": "NOT_RUN",
+  "postgresIntegration": "NOT_RUN",
+  "streamEndToEnd": "NOT_RUN"
+}

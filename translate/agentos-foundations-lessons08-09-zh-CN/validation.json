@@ -1,0 +1,214 @@
+{
+  "targetProject": "/Volumes/Data/my_project/agent-os",
+  "baseline": {
+    "jdk": 21,
+    "springBoot": "4.1.2",
+    "springAi": "2.0.2"
+  },
+  "articles": {
+    "src/content/docs/projects/agent-os/agent-architecture.mdx": {
+      "sha256": "a51a9def8e41809b40b94a64346a0bf61cf077fd43acaf0f8522534d552daf38",
+      "h2": 9,
+      "images": 2
+    },
+    "src/content/docs/projects/agent-os/agent-os-positioning.mdx": {
+      "sha256": "b1992b26cbd20bd8a13c4c611e182fb74f6af2eb9c7040b5cd3fa5aa79be44c5",
+      "h2": 13,
+      "images": 1
+    }
+  },
+  "images": {
+    "public/images/projects/agent-os/foundations-components.svg": {
+      "sha256": "012f18b5b57d0d2e2d8b0f6b9f648bb92ee9f69341031b37aac4877029895151",
+      "svgParsing": "PASS"
+    },
+    "public/images/projects/agent-os/foundations-runtime.svg": {
+      "sha256": "d15773c8b77b3a8df503fdcae46f5d2c2cf17fdc303d3727aeccd1ff0dffe6e5",
+      "svgParsing": "PASS"
+    },
+    "public/images/projects/agent-os/foundations-layers.svg": {
+      "sha256": "fe4dce7fe003f5281899415a300a9b3acd6ad21a500f0559277a20414b628960",
+      "svgParsing": "PASS"
+    }
+  },
+  "check": {
+    "passed": true,
+    "files": 18,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 0
+  },
+  "build": {
+    "passed": true,
+    "pages": 110,
+    "existingWarnings": ["empty i18n collection", "/404 route conflict"]
+  },
+  "targetedPrettier": "PASS",
+  "gitDiffCheck": "PASS",
+  "sourcePdfsUnchanged": true,
+  "articleCopiesMatch": true,
+  "protectedKnowledgeBaseFilesUnchanged": 1506,
+  "targetProjectTrackedFilesUnchanged": 137,
+  "javaProjectModified": false,
+  "browser": {
+    "pages": [
+      {
+        "slug": "agent-architecture",
+        "viewport": {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000
+        },
+        "status": 200,
+        "title": "AgentOS：从 Agent 五组件到运行底座",
+        "overflow": false,
+        "images": [
+          {
+            "src": "/images/projects/agent-os/foundations-components.svg",
+            "alt": "LLM、Tools 和 Memory 由 Loop 协调，工具在受控 Environment 中执行，结果进入下一次模型决策",
+            "loaded": true,
+            "clickable": true
+          },
+          {
+            "src": "/images/projects/agent-os/foundations-runtime.svg",
+            "alt": "任务进入会话后构造 Prompt，由 ChatModel 返回回答或工具请求；工具经 ToolExecutor 执行并回填历史，循环受上限、超时、取消与租约约束",
+            "loaded": true,
+            "clickable": true
+          }
+        ],
+        "headings": 9,
+        "codeBlocks": 1,
+        "links": [
+          "/images/projects/agent-os/foundations-components.svg",
+          "/projects/agent-os/provider/",
+          "/images/projects/agent-os/foundations-runtime.svg",
+          "/projects/agent-os/agent-os-positioning/",
+          "/projects/agent-os/modules/",
+          "/projects/agent-os/provider/",
+          "/projects/agent-os/requirements/",
+          "/projects/agent-os/architecture/"
+        ],
+        "missingAnchors": [],
+        "errors": [],
+        "navigationLinks": 1
+      },
+      {
+        "slug": "agent-architecture",
+        "viewport": {
+          "name": "mobile",
+          "width": 390,
+          "height": 844
+        },
+        "status": 200,
+        "title": "AgentOS：从 Agent 五组件到运行底座",
+        "overflow": false,
+        "images": [
+          {
+            "src": "/images/projects/agent-os/foundations-components.svg",
+            "alt": "LLM、Tools 和 Memory 由 Loop 协调，工具在受控 Environment 中执行，结果进入下一次模型决策",
+            "loaded": true,
+            "clickable": true
+          },
+          {
+            "src": "/images/projects/agent-os/foundations-runtime.svg",
+            "alt": "任务进入会话后构造 Prompt，由 ChatModel 返回回答或工具请求；工具经 ToolExecutor 执行并回填历史，循环受上限、超时、取消与租约约束",
+            "loaded": true,
+            "clickable": true
+          }
+        ],
+        "headings": 9,
+        "codeBlocks": 1,
+        "links": [
+          "/images/projects/agent-os/foundations-components.svg",
+          "/projects/agent-os/provider/",
+          "/images/projects/agent-os/foundations-runtime.svg",
+          "/projects/agent-os/agent-os-positioning/",
+          "/projects/agent-os/modules/",
+          "/projects/agent-os/provider/",
+          "/projects/agent-os/requirements/",
+          "/projects/agent-os/architecture/"
+        ],
+        "missingAnchors": [],
+        "errors": [],
+        "navigationLinks": 1
+      },
+      {
+        "slug": "agent-os-positioning",
+        "viewport": {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000
+        },
+        "status": 200,
+        "title": "AgentOS：定位、架构与价值",
+        "overflow": false,
+        "images": [
+          {
+            "src": "/images/projects/agent-os/foundations-layers.svg",
+            "alt": "CLI、REST 和定时触发进入统一 AgentService，引擎协调 Provider、Memory 与 Tool，支撑层提供定义加载、PostgreSQL 持久化和应用层白名单",
+            "loaded": true,
+            "clickable": true
+          }
+        ],
+        "headings": 13,
+        "codeBlocks": 1,
+        "links": [
+          "/images/projects/agent-os/foundations-layers.svg",
+          "/projects/agent-os/agent-architecture/",
+          "/projects/agent-os/architecture/",
+          "/projects/agent-os/modules/",
+          "/projects/agent-os/provider/",
+          "/projects/agent-os/roadmap/",
+          "/projects/agent-os/research/",
+          "/projects/agent-os/requirements/"
+        ],
+        "missingAnchors": [],
+        "errors": [],
+        "navigationLinks": 1
+      },
+      {
+        "slug": "agent-os-positioning",
+        "viewport": {
+          "name": "mobile",
+          "width": 390,
+          "height": 844
+        },
+        "status": 200,
+        "title": "AgentOS：定位、架构与价值",
+        "overflow": false,
+        "images": [
+          {
+            "src": "/images/projects/agent-os/foundations-layers.svg",
+            "alt": "CLI、REST 和定时触发进入统一 AgentService，引擎协调 Provider、Memory 与 Tool，支撑层提供定义加载、PostgreSQL 持久化和应用层白名单",
+            "loaded": true,
+            "clickable": true
+          }
+        ],
+        "headings": 13,
+        "codeBlocks": 1,
+        "links": [
+          "/images/projects/agent-os/foundations-layers.svg",
+          "/projects/agent-os/agent-architecture/",
+          "/projects/agent-os/architecture/",
+          "/projects/agent-os/modules/",
+          "/projects/agent-os/provider/",
+          "/projects/agent-os/roadmap/",
+          "/projects/agent-os/research/",
+          "/projects/agent-os/requirements/"
+        ],
+        "missingAnchors": [],
+        "errors": [],
+        "navigationLinks": 1
+      }
+    ],
+    "internalPathsChecked": 11,
+    "indexEntries": "PASS",
+    "svgTextWithinCanvas": "PASS"
+  },
+  "visualReview": "PASS; desktop/mobile pages and three diagrams inspected; final flow arrows checked",
+  "javaProjectTests": "NOT_RUN",
+  "realModelCalls": "NOT_RUN",
+  "databaseOperations": "NOT_RUN",
+  "committed": false,
+  "pushed": false
+}

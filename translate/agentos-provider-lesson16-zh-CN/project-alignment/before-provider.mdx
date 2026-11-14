@@ -1,0 +1,282 @@
+---
+title: AgentOS：Provider 原理与实现
+description: 理解 AgentOS 模型接入层的职责、配置、请求适配、工具边界、调用审计与重试策略
+sidebar:
+  label: Provider 原理与实现
+  order: 5.1
+---
+
+Provider 是 AgentOS 的模型接入层：根据 Agent 配置选择连接和模型，把消息与工具描述发给模型，再将文本或工具调用意图交回运行时。ReActLoop 决定下一步做什么，Provider 完成其中的一次模型推理。
+
+## 定位与职责
+
+Agent 由 LLM、Tools、Memory、Loop 和 Environment 协作组成。Provider 连接 LLM；上下文构建、记忆管理与工具执行各自有独立入口。
+
+一次模型推理需要两类输入：
+
+- **路由和生成参数**：使用哪个 provider、model，以及 temperature、输出上限等。
+- **推理上下文**：历史消息、本轮用户输入，以及本轮允许使用的工具 Schema。
+
+Profile 决定模型路由，Prompt 承载本轮上下文。核心层使用 `ProfilePrompt`、`ModelRequest` 和 `ModelResponse`，适配层负责将它们转换为客户端对象。
+
+[![Provider 位于 ReActLoop 与模型服务之间，依据 Profile 选择连接，并将消息和工具描述交给 ChatModel](/images/projects/agent-os/provider-overview.png)](/images/projects/agent-os/provider-overview.png)
+
+_先看路由，再看单次推理的输入与返回；点击图片可查看大图。_
+
+### Provider 管理调用，运行时管理行为
+
+Provider 负责模型路由、协议转换、一次推理的响应映射、调用审计及有限重试。ReActLoop 根据返回值决定执行工具还是结束；ToolExecutor 负责工具的权限、沙箱、超时和执行审计。
+
+[![职责分工：Provider 处理模型选择、单次推理、工具格式与审计，其他模块处理循环、执行、上下文与记忆](/images/projects/agent-os/provider-boundaries.png)](/images/projects/agent-os/provider-boundaries.png)
+
+_工具描述可以经过 Provider，工具行为必须经过统一执行入口。_
+
+Provider 的“单次推理”允许对可重试故障进行有限重试，但不会执行工具或继续下一轮推理。重试预算属于调用治理，ReAct 轮次属于运行时控制，两者应分开计数。
+
+### 核心接口与适配层
+
+| 接口或类型                                                                  | 用途                                      |
+| --------------------------------------------------------------------------- | ----------------------------------------- |
+| `ProviderService.chat(sessionId, ModelRequest)`                             | 接收已经明确 provider 和 model 的请求     |
+| `ProfileProviderService.chatProfile(sessionId, profileName, ProfilePrompt)` | 从已注册 Profile 取路由、温度和工具白名单 |
+| `ModelRequest` / `ModelResponse`                                            | 核心层的消息、工具意图和用量契约          |
+| `ProviderAdapter`                                                           | 封装具体模型协议与客户端                  |
+| `Prompt` / `ChatResponse`                                                   | 适配层内部使用的客户端类型                |
+
+`ProfilePrompt` 只提供消息、工具 Schema 和输出上限，不能覆盖 Profile 指定的 provider、model 或 temperature。运行时应使用 Profile 入口，避免调用方绕过 Agent 配置自行选择模型。
+
+## 工具执行边界
+
+**Provider 直接调用 `ChatModel.call(Prompt)`，取得 `ChatResponse` 后返回。响应包含工具调用意图时，由 ReActLoop 交给 ToolExecutor 执行。**
+
+一次完整的工具交互按以下顺序推进：
+
+1. Provider 将消息与本轮工具 Schema 发送给模型。
+2. 模型返回工具名称、调用 ID 和参数 JSON。
+3. ToolExecutor 检查权限并执行，运行时保存执行结果。
+4. ReActLoop 将工具意图与对应结果加入上下文，发起下一次模型推理。
+
+`ChatClient` 的 `ToolCallingAdvisor` 可以自动管理工具循环。AgentOS 使用自己的 ReActLoop，因此 Provider 采用直接调用 ChatModel 的路径，将循环和执行入口集中在运行时。
+
+## 配置：连接、Profile 与提示词分开
+
+全局连接配置放在启动模块的 `src/main/resources/application.yaml`，由 Spring Boot 加载，并通过 `@ConfigurationProperties(prefix = "aegisos")` 绑定到 `ProviderProperties`。它决定系统能连接哪些模型服务；Profile 决定当前 Agent 使用其中哪个连接和模型。任务说明写在 `AGENT.md`，不与运行参数混用。
+
+```yaml title="src/main/resources/application.yaml：全局连接配置"
+aegisos:
+  providers:
+    - name: openai-main
+      adapter: openai-compatible
+      base-url: https://api.openai.com
+      credential-ref: env:OPENAI_API_KEY
+      max-retries: 0
+      connect-timeout: 5s
+      read-timeout: 60s
+```
+
+```yaml title=".aegisos/agents/ops-agent/profile.yml：Agent 配置示例"
+name: ops-agent
+provider:
+  name: openai-main
+  model: gpt-4.1
+  temperature: 0.2
+tools:
+  - http_get
+```
+
+全局配置只定义连接，不设置默认模型或模型列表。每个 Agent 在 Profile 中显式指定 `model`，调用时将它写入请求。同一个 provider 连接可以供多个 Agent 使用，各自选择不同模型。
+
+模型名称和工具清单应与部署环境中实际可用的能力一致。`http_get` 出现在 Profile 中，只代表允许选择这个工具；网络访问策略仍由工具层配置。
+
+配置需要满足四个约束：
+
+1. **路由显式指定**：`provider.name` 必须命中全局注册项，Profile 的 `model` 必须非空；未知 provider 或缺少模型时直接失败。
+2. **凭证按引用解析**：使用 `env:变量名` 引用环境变量，由凭证解析器读取密钥。
+3. **端点符合适配器约定**：`OpenAiClientFactory` 会追加 `/v1`，这里填写服务根地址，不包含 `/v1` 或 `/chat/completions`。其他适配器应单独定义端点格式。
+4. **快照在启动时确定**：根据 Spring Boot 加载后的配置创建连接和凭证快照，并加载 Agent Profile；修改文件后需要重启才能应用。
+
+注册关系为 `provider name → ProviderRegistration → ProviderAdapter`，适配器内持有 ChatModel。只收集 `List<ChatModel>` 并不能自动建立正确的业务名称映射。
+
+### Profile 加载与错误隔离
+
+`ProfileLoader` 扫描 `.aegisos/agents/<目录>/profile.yml`，解析字段、校验路由和运行限制，形成不可变注册快照。坏文件会产生诊断，并与其他有效文件隔离；重复的 Profile 名称不会保留任意一项冒充唯一配置。
+
+调用时找不到 Profile、provider 不可用，或缺少 model，都应明确拒绝。模型服务返回模型不存在、不可用或无权访问时，将错误交回调用方，不自动改用其他模型。配置加载隔离和调用时严格路由是两个不同层面的规则。
+
+## 请求适配与响应处理
+
+适配层将核心消息转换为 `Message`，把模型参数与工具描述放入 Options，再调用 `ChatModel.call(Prompt)`。以下示例聚焦协议适配；路由、参数校验和审计由服务层统一处理。
+
+### 工具 Schema：有描述，没有执行器
+
+客户端使用 `ToolCallback` 携带工具定义。AgentOS 只需要它的名称、说明和输入 Schema，因此用只读描述符适配，执行方法直接拒绝。
+
+```java title="SchemaDescriptor.java：只传工具描述"
+import org.springframework.ai.tool.ToolCallback;
+import org.springframework.ai.tool.definition.ToolDefinition;
+
+public record SchemaDescriptor(
+        String name, String description, String inputSchemaJson)
+        implements ToolCallback {
+
+    @Override
+    public ToolDefinition getToolDefinition() {
+        return ToolDefinition.builder()
+                .name(name)
+                .description(description == null ? "" : description)
+                .inputSchema(inputSchemaJson)
+                .build();
+    }
+
+    @Override
+    public String call(String arguments) {
+        throw new IllegalStateException("Tool execution forbidden in Provider");
+    }
+}
+```
+
+`OpenAiMessageMapper.SchemaDescriptor` 按此方式传递工具定义。执行方法直接抛出异常，保证描述符被误调用时立即失败。
+
+发送前验证工具名唯一、Schema 合法且在适配器支持范围内。Profile 入口还会检查本轮工具是否属于该 Agent 的白名单。
+
+### 将模型参数写入请求
+
+下面的 `client` 由名称映射选出。每次调用明确设置 model、temperature、输出上限和工具描述，不依赖客户端默认模型。项目使用 OpenAI 兼容适配器，因此这里使用 `OpenAiChatOptions`。
+
+```java title="ModelRound.java：适配层的一次推理"
+import java.util.List;
+import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.ai.tool.ToolCallback;
+
+public final class ModelRound {
+    public static ChatResponse call(
+            ChatModel client, String modelName,
+            Double temperature, Integer maxOutputTokens,
+            List<Message> messages, List<ToolCallback> toolDescriptions) {
+
+        var options = OpenAiChatOptions.builder()
+                .model(modelName)
+                .temperature(temperature)
+                .maxCompletionTokens(maxOutputTokens)
+                .toolCallbacks(toolDescriptions)
+                .strict(false)
+                .maxRetries(0)
+                .build();
+
+        return client.call(new Prompt(messages, options));
+    }
+}
+```
+
+参数含义如下：
+
+- `maxCompletionTokens(...)` 对应这里使用的 OpenAI 兼容请求字段，不能假定所有模型都支持；也不要同时设置 `maxTokens`。
+- `strict(false)` 是工具 Schema 的严格模式选项。用它避免 SDK 为严格模式补写 `required` 等约束；它不控制工具执行，也不同于结构化输出的 JSON Schema 严格模式。
+- `maxRetries(0)` 关闭底层额外重试，项目服务层统一管理重试预算。工厂同时对底层 SDK 客户端设置零重试。
+
+`OpenAiClientFactory` 通过 `openAiClient(...)`、`openAiClientAsync(...)` 和 `options(...)` 构造 `OpenAiChatModel`。新增协议时实现对应的 ProviderAdapter，将端点、凭证和协议差异封装在适配层。
+
+### 消息与响应：完整保留工具调用关联
+
+工具调用通常至少跨两次模型推理：模型先返回工具意图，运行时执行后，再把结果发给模型。消息映射必须保留关联 ID，不能只拼接字符串。
+
+| 核心消息  | 客户端对象            | 需要保留的信息                                     |
+| --------- | --------------------- | -------------------------------------------------- |
+| SYSTEM    | `SystemMessage`       | 系统指令                                           |
+| USER      | `UserMessage`         | 用户输入                                           |
+| ASSISTANT | `AssistantMessage`    | 文本，以及 `ToolCall` 的 id、type、name、arguments |
+| TOOL      | `ToolResponseMessage` | 对应的工具调用 id、工具名和执行结果                |
+
+工具意图与执行结果通过相同的调用 ID 关联，执行结果来自 ToolExecutor：
+
+```java title="工具消息的关联方式：方法内片段"
+var intent = AssistantMessage.builder()
+        .content("")
+        .toolCalls(List.of(new AssistantMessage.ToolCall(
+                "call-1", "function", "http_get",
+                "{\"url\":\"https://example.com\"}")))
+        .build();
+
+var result = ToolResponseMessage.builder()
+        .responses(List.of(new ToolResponseMessage.ToolResponse(
+                "call-1", "http_get", "{\"status\":200}")))
+        .build();
+```
+
+返回时，`ChatResponse.getResult().getOutput()` 提供 `AssistantMessage`，其中 `getText()` 读取文本，`getToolCalls()` 读取工具意图。适配器先验证响应结构，再映射为核心层的 ModelResponse。
+
+**只有工具调用而没有文本，也是有效响应。** 应保留多条工具意图的顺序、调用 ID、名称和参数 JSON；只有文本与工具意图都为空时，才判为协议错误。Token 用量可能缺失，不能把缺失值伪装成零；兼容传输层还负责提取并保留可空用量字段。
+
+## 审计与重试：一次外呼必须可追溯
+
+`DefaultProviderService` 是统一的审计和重试边界。执行过程是：
+
+1. 生成 requestId，校验 Session 标识、Profile、provider、model、消息及工具描述；不合法的请求进入拒绝审计，不发送 HTTP。
+2. 为本次尝试写入 `audit.begin(...)`，通过独立短事务提交。
+3. 在数据库事务外调用 `ProviderAdapter.chat(request)`，映射响应或分类异常。
+4. 用 `audit.complete(...)` 提交成功或失败、耗时、可用 Token 数据和脱敏错误码。
+5. 成功则返回；失败仅在允许重试且预算未耗尽时发起下一次尝试，每次尝试独立记账。
+
+调用前提交开始记录，调用后提交结果记录；模型请求始终位于数据库事务之外。适配层接收 ChatResponse，服务层向运行时返回 ModelResponse。
+
+[![调用流程：ProviderService 根据 Profile 选择适配器、组装消息和工具描述，提交开始记录后调用 ChatModel，再提交结果审计并返回 ModelResponse](/images/projects/agent-os/provider-call-flow.png)](/images/projects/agent-os/provider-call-flow.png)
+
+_先提交开始记录，再发起模型请求，最后提交结果；每次重试重复这一过程。_
+
+### 重试预算与外部结果
+
+`max-retries` 默认为 `0`。配置为 N 时，一次逻辑调用最多发起 N + 1 次尝试；各次尝试共享 requestId，使用不同的 attemptNo，便于合并追踪。
+
+服务层只对被分类为可重试的临时网络或超时错误使用预算。已收到的 HTTP 错误响应、配置错误和协议错误不自动重试。超时后模型端仍可能已经处理请求，因此重试不保证只计费一次。
+
+### 审计失败不能假装调用未发生
+
+| 故障位置          | 处理方式                                                       | 对调用方的含义                             |
+| ----------------- | -------------------------------------------------------------- | ------------------------------------------ |
+| 校验失败          | 拒绝审计，外呼次数为零                                         | 修正输入或配置                             |
+| begin 提交失败    | 返回 `AUDIT_UNAVAILABLE`，不发起本次 HTTP                      | 本次尝试尚未外呼；此前重试的外呼不能被抹去 |
+| 模型调用失败      | 分类错误，完成失败审计后决定是否有限重试                       | 按错误类别和外呼状态处理                   |
+| complete 提交失败 | 返回 `AUDIT_UNAVAILABLE`，外部结果标记 `UNKNOWN`，停止内部重试 | 请求可能已经被处理或计费，不能盲目重放     |
+
+外呼状态区分 `NOT_SENT`、`RESPONDED` 和 `UNKNOWN`。连接失败与“请求已发送但没有读到结果”并不等价；仅凭一个 timeout 字样无法判断是否可安全重试。耗时采用单调时钟计算，数据库中不保存完整提示词、密钥或未脱敏异常。
+
+`sessionId` 用来关联追踪。Provider 校验标识格式，会话是否存在及其生命周期由上层管理。
+
+数据库验证应执行项目迁移脚本，确认成功、失败、拒绝记录可读回。Mock 只证明审计方法被调用，不能证明事务已经提交，也不能证明迁移脚本正确。
+
+## 验收：检查行为与最终请求
+
+工具边界测试应证明：**模型返回工具意图时，Provider 将其完整交回，既没有执行工具，也没有替运行时发起下一轮推理。**
+
+回归测试按以下职责组织：
+
+| 测试                                           | 验证重点                                                   |
+| ---------------------------------------------- | ---------------------------------------------------------- |
+| `ProviderServiceTest` / `ProviderRegistryTest` | 显式路由、不串台、未知名称与不可用项拒绝                   |
+| `ProfileLoaderTest` / `ProfileRoutingTest`     | 加载隔离、路由、参数和工具白名单                           |
+| `OpenAiCompatibleAdapterTest`                  | 最终 HTTP 参数、角色关联、仅工具响应、多意图顺序、一次请求 |
+| `ToolSchemaContractTest`                       | 最终 HTTP JSON 中的 Schema 语义，非法 Schema 发送前拒绝    |
+| `ProviderRetryTest`                            | 底层无隐藏重试、服务层重试次数与分类策略                   |
+| `ProviderAuditFailureTest`                     | begin/complete 故障、外呼状态与审计失败时停止重试          |
+
+适配器测试通过本地 HTTP 替身驱动真实模型客户端，检查请求中的 `model`、`temperature`、`max_completion_tokens`、`tools` 和 `tool_call_id`。断言最终发送的 JSON，覆盖对象构造之后的协议转换。
+
+工具边界应覆盖无文本工具响应、多条工具意图及混合文本响应，并验证本轮只有一次 HTTP。误调用 SchemaDescriptor 的执行方法也必须被拒绝。ReActLoop 后续是否正确执行、回填和再次调用，则由运行时集成测试验证。
+
+真实模型冒烟另行执行：它才能证明端点、凭证和具体模型的实际连通与工具能力。默认测试不应依赖付费服务；测试标签、Surefire/Failsafe 发现规则和实际报告数需要对应，不能把“没有发现测试”当作通过。
+
+## 实现与排查顺序
+
+实现时依次打通配置加载、名称路由、消息与 Schema 适配、响应映射、审计和有限重试。排查故障时沿同一条路径定位：
+
+1. **配置与路由**：Profile 是否注册，provider 是否可用，model 是否显式填写，服务端是否支持且授权访问该模型。
+2. **请求组装**：实际发送的模型、消息角色、工具 Schema 和生成参数是否正确。
+3. **响应映射**：是否保留工具调用 ID、参数和顺序，是否正确处理仅工具响应。
+4. **调用治理**：每次尝试的审计是否完整，重试次数和外呼状态是否符合预期。
+5. **运行时衔接**：工具是否经过统一执行入口，结果是否关联回原调用并进入下一轮上下文。
+
+相关内容可继续阅读 [核心模块](/projects/agent-os/modules/)、[Agent 架构拆解](/projects/agent-os/agent-architecture/) 和 [ChatModel 工具调用](/frameworks/spring-ai/tools/chatmodel-tool-calling/)。

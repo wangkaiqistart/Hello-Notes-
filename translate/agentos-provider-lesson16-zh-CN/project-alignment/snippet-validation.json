@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-08",
+  "java": 21,
+  "springAi": "2.0.2",
+  "compilation": "PASS",
+  "protocolCheck": "PASS",
+  "physicalHttpCalls": 3,
+  "toolExecutions": 0,
+  "checks": [
+    "explicit v1 prefix preserved",
+    "root URL not appended with v1",
+    "Agent model and reasoning/output options",
+    "temperature and max_tokens absent",
+    "tool definition serialized",
+    "tool-only response and call ID preserved",
+    "response model and usage retained",
+    "ToolContext not sent",
+    "503 causes no SDK retry",
+    "blank model rejected before HTTP"
+  ],
+  "endpoint": "127.0.0.1 ephemeral port",
+  "credential": "fake local key only",
+  "javaProjectTests": "NOT_RUN",
+  "realModelSmoke": "NOT_RUN"
+}

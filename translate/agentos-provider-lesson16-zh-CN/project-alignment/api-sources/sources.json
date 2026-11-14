@@ -1,0 +1,130 @@
+[
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/chat/model/ChatModel.java",
+    "file": "ChatModel.java",
+    "sha256": "19832864e931028bcddf176b1138bf81e0cdf824d5604ade88d4cf56f18f7463"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/chat/model/ChatResponse.java",
+    "file": "ChatResponse.java",
+    "sha256": "f8f064b2eaba0f381589756856bdcc5a3a24a8d4c59f42a5d1344ab4dfaaaff4"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/model/tool/ToolCallingChatOptions.java",
+    "file": "ToolCallingChatOptions.java",
+    "sha256": "088d353258c52fbf94e8a3c0ed14eda58e52eec78fb2269a731f117dbd2d0cc1"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/model/tool/DefaultToolCallingChatOptions.java",
+    "file": "DefaultToolCallingChatOptions.java",
+    "sha256": "3eb48c0d411184372b4b4a7038cb6a2e370fa7e9293ff31bfe7c6e45c6ea0762"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/tool/ToolCallback.java",
+    "file": "ToolCallback.java",
+    "sha256": "1db47c47995c7220640e87184090fd74b751ad43375a610c994dc0c51bbc1b60"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/model/tool/ToolCallingManager.java",
+    "file": "ToolCallingManager.java",
+    "sha256": "875659644ffc16d6ec63ad4d456ccafa99abd20a35ca81c72e87a182060c18df"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/chat/metadata/Usage.java",
+    "file": "Usage.java",
+    "sha256": "66f9806601034959c114ce1616e85d3b4ec7ef1e6a8f1034f1d1da354d0fdb60"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/chat/metadata/EmptyUsage.java",
+    "file": "EmptyUsage.java",
+    "sha256": "35205161ec1341ea6c1ef5633da6e7e6de91162637033e6b168b8366eae7ef6e"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/chat/metadata/EmptyRateLimit.java",
+    "file": "EmptyRateLimit.java",
+    "sha256": "d2555ca5a778cac93e4e22f1e699cf92d0f2fa1e91cc12ce82d45246ddaba5d5"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/chat/metadata/RateLimit.java",
+    "file": "RateLimit.java",
+    "sha256": "da676dfe1eb0d68fdbca007248a7b553fedc313526598e4204a95efa1b21146f"
+  },
+  {
+    "artifact": "spring-ai-model",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-model/2.0.2/spring-ai-model-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/embedding/EmbeddingModel.java",
+    "file": "EmbeddingModel.java",
+    "sha256": "9f65f333b869a9d69d2a513a2635b71b05634396dfdd153e4191cb776afdf1b7"
+  },
+  {
+    "artifact": "spring-ai-openai",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-openai/2.0.2/spring-ai-openai-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/openai/OpenAiChatOptions.java",
+    "file": "OpenAiChatOptions.java",
+    "sha256": "88d57c296ae8552f0b9c83aa3b408b2721e0a618620b6d2f6f42ae02ddd157b1"
+  },
+  {
+    "artifact": "spring-ai-openai",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-openai/2.0.2/spring-ai-openai-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/openai/OpenAiChatModel.java",
+    "file": "OpenAiChatModel.java",
+    "sha256": "7726fa4e199124ae8bde0158d878e6f876c1bf3768268ffc4d43fd5c663727c2"
+  },
+  {
+    "artifact": "spring-ai-client-chat",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-client-chat/2.0.2/spring-ai-client-chat-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/chat/client/DefaultChatClient.java",
+    "file": "DefaultChatClient.java",
+    "sha256": "9af6ac89c1a54e8d7f6b23e5aba72134ac865b9f39ca758c464b248a94dede36"
+  },
+  {
+    "artifact": "spring-ai-openai",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-openai/2.0.2/spring-ai-openai-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/openai/setup/OpenAiSetup.java",
+    "file": "OpenAiSetup.java",
+    "sha256": "673ec1c11c734b2e41134c88bf69f2f09584d85b715a006ef83d828fcaae577e"
+  },
+  {
+    "artifact": "spring-ai-openai",
+    "version": "2.0.2",
+    "url": "https://repo.maven.apache.org/maven2/org/springframework/ai/spring-ai-openai/2.0.2/spring-ai-openai-2.0.2-sources.jar",
+    "entry": "org/springframework/ai/openai/AbstractOpenAiOptions.java",
+    "file": "AbstractOpenAiOptions.java",
+    "sha256": "a7e6f05cadf52228dc71cd2d39cdb0538548751971a6be2cc0cd2f9a22b10022"
+  }
+]

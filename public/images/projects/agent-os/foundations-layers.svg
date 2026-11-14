@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="810" viewBox="0 0 1000 810" role="img" aria-labelledby="title desc">
+<title id="title">AgentOS 四层职责</title><desc id="desc">三种触发源进入同一引擎，Provider、Memory 与 Tool 提供能力，支撑层承载定义加载、关系存储、白名单和审计。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker></defs>
+<rect width="1000" height="810" rx="18" fill="white"/><g font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="40" y="25" width="920" height="110" rx="14" fill="#eef2ff" stroke="#818cf8" stroke-width="2"/>
+<text x="500.0" y="75.0" text-anchor="middle" font-size="30" font-weight="700" fill="#334155">入口与触发</text>
+<text x="500.0" y="111.0" text-anchor="middle" font-size="25" font-weight="400" fill="#64748b">CLI Channel     ·     REST     ·     AgentScheduler</text>
+<path d="M 500 135 L 500 175" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="40" y="180" width="920" height="125" rx="14" fill="#eff6ff" stroke="#60a5fa" stroke-width="2"/>
+<text x="500.0" y="221.5" text-anchor="middle" font-size="30" font-weight="700" fill="#334155">运行引擎</text>
+<text x="500.0" y="257.5" text-anchor="middle" font-size="24" font-weight="400" fill="#64748b">AgentService → ReActLoop</text>
+<text x="500.0" y="289.5" text-anchor="middle" font-size="24" font-weight="400" fill="#64748b">PromptBuilder 组装上下文 · ToolExecutor 发起工具执行</text>
+<path d="M 500 305 L 500 350" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="500" y="381" text-anchor="middle" font-size="30" font-weight="700" fill="#334155">可替换能力</text>
+<rect x="40" y="410" width="285" height="105" rx="14" fill="#eff6ff" stroke="#60a5fa" stroke-width="2"/>
+<text x="182.5" y="456.0" text-anchor="middle" font-size="27" font-weight="700" fill="#334155">ProviderService</text>
+<text x="182.5" y="492.0" text-anchor="middle" font-size="23" font-weight="400" fill="#64748b">具名 ChatModel 映射</text>
+<rect x="358" y="410" width="285" height="105" rx="14" fill="#ecfdf5" stroke="#34d399" stroke-width="2"/>
+<text x="500.5" y="456.0" text-anchor="middle" font-size="27" font-weight="700" fill="#334155">MemoryService</text>
+<text x="500.5" y="492.0" text-anchor="middle" font-size="23" font-weight="400" fill="#64748b">会话 + 长期记忆</text>
+<rect x="676" y="410" width="285" height="105" rx="14" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+<text x="818.5" y="456.0" text-anchor="middle" font-size="27" font-weight="700" fill="#334155">ToolRegistry</text>
+<text x="818.5" y="492.0" text-anchor="middle" font-size="23" font-weight="400" fill="#64748b">本地 / MCP 回调</text>
+<path d="M 500 515 L 500 555" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="40" y="560" width="920" height="135" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+<text x="500.0" y="606.5" text-anchor="middle" font-size="30" font-weight="700" fill="#334155">支撑设施</text>
+<text x="500.0" y="642.5" text-anchor="middle" font-size="24" font-weight="400" fill="#64748b">AgentLoader / ContextLoader · PostgreSQL / Flyway</text>
+<text x="500.0" y="674.5" text-anchor="middle" font-size="24" font-weight="400" fill="#64748b">WhitelistSandbox · 日志 · 模型与工具审计</text>
+<text x="500" y="749" text-anchor="middle" font-size="23" font-weight="400" fill="#64748b">Agent 定义与长期记忆文件位于工作区；模型服务与 MCP 可在应用外部。</text>
+<text x="500" y="783" text-anchor="middle" font-size="23" font-weight="400" fill="#64748b">图示为目标职责关系；多租户、强隔离和集群能力需另行建设。</text>
+</g></svg>

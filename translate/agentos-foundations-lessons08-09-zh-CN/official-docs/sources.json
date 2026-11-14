@@ -1,0 +1,16 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html",
+    "resolved": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html",
+    "file": "chatmodel-tool-calling.txt",
+    "sha256": "ae557cf1e3d73957d89ed5dad214f01e235ba2d31e730a3309be18ea47ce4b36",
+    "retrieved": "2026-11-08T11:05:42.253479+00:00"
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html",
+    "resolved": "https://docs.spring.io/spring-ai/reference/api/chat-memory.html",
+    "file": "chat-memory.txt",
+    "sha256": "9b8efcc04377b45a0c48cdbeb1dfea9dcf5b87f90f8f8fe28d7409cab1cae936",
+    "retrieved": "2026-11-08T11:05:42.548599+00:00"
+  }
+]

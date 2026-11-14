@@ -1,0 +1,17 @@
+{
+  "root": "/Volumes/Data/my_project/agent-os",
+  "files": {
+    "pom.xml": "a56d463db7c1b6c9f1c9dc7c35a4aaed8444d4a807c85ac7022001170de91dcd",
+    "CLAUDE.md": "d0c8e114e97c9b7977e97ad5317f43e539bf368da61a8be189765409f0ef86d4",
+    "README.md": "61119a2250b538fefddf8440a10d70fc3d6e1f56328410d92e0a4360d8ae863a",
+    "docs/TechnicalSolution.md": "4fdb3b087ea07f1e62e034293beab3af11db90e8576cc0ba3c2a971e1c1e250c",
+    "docs/DemandAnalysis.md": "0d0a5b06af058b526f8fb65fd67ee6836c93210cedfcabb8d0980d05b3c2875c",
+    "docs/IndustryResearch.md": "5457564b486f1ca8fc3ad8f638caf34c482a761f126360cf4b3f068c42e6b321",
+    "AgentOS-boot/src/main/resources/application.yaml": "c3b947f84d444c25a303ffb79785ae4a4598164f27256b342931f0a8cdf38e69",
+    "AgentOS-core/src/main/java/com/agentos/core/package-info.java": "066ec3ca0a2ecc44d67a3f03be5c5affbd59ac4900f220fc9ff0813fb3551641",
+    "AgentOS-tool/src/main/java/com/agentos/tool/package-info.java": "9b2ef60957d10bbe95c5721b5109ed1a49770999a200eb0b2b88112ca3fb4024",
+    "AgentOS-memory/src/main/java/com/agentos/memory/package-info.java": "bad03791eecd0491ae79297370a55dae5c196e2124bf92634d6770fe10cea9e1",
+    "AgentOS-provider/src/main/java/com/agentos/provider/package-info.java": "d3d64786245fc93b637c7e9006e8c3caa8d87b7550648a3e6183c6204e83e235",
+    "AgentOS-boot/src/test/java/com/agentos/boot/ArchitectureRulesTest.java": "7aa6b59c8f003bbcbb9fe57007912030245cf51ceca61de08bf27876afc72809"
+  }
+}

@@ -1,0 +1,44 @@
+---
+title: AgentOS：Agent OS 实战项目
+description: 以 AI 编程方式设计和实现可扩展、可治理的 Java Agent 运行底座
+sidebar:
+  label: AgentOS 总览
+  order: 1
+---
+
+> **项目重点**：AgentOS 不是一个聊天页面，而是把模型、循环、记忆、工具、运行环境和接口组织成可复用的 Agent 运行底座。
+
+## 项目定位
+
+AgentOS 是可扩展的 Agent 运行底座：上层业务只配置目标、规则和工具，底座统一提供模型接入、ReAct 执行、记忆、Tool、Sandbox、Session、Channel 和 Web Service。
+
+它的边界是**运行时**，不是低代码编排平台，也不是单纯的模型 SDK。
+
+## 五个核心能力
+
+1. **Provider**：用显式映射连接不同模型，屏蔽厂商差异。
+2. **ReAct**：循环执行 Reason、Act、Observe，直到完成或达到上限。
+3. **Memory**：管理会话上下文和跨会话长期记忆。
+4. **Tool**：统一内置工具、Skill/MCP 和 Java 插件。
+5. **Web Service**：通过接口把 Agent 能力交给业务系统。
+
+整体关系如下：CLI 和 Web Service 进入同一个 ReAct 引擎，引擎调用 Provider、Memory 和 Tool；模型厂商 API 与 MCP Server 位于应用外部，记忆通过存储层持久化。
+
+[![AgentOS 单体架构：CLI 与 Web Service 接入 ReAct，引擎连接 Provider、Memory、Tool 及存储和外部服务](/images/ai-programming/course/agentos-overview.svg)](/images/ai-programming/course/agentos-overview.svg)
+
+_虚线标识应用边界与外接服务。_
+
+## 本项目文档
+
+- [业界调研](./research/)
+- [定位、架构与价值](./agent-os-positioning/)
+- [Agent 架构拆解](./agent-architecture/)
+- [需求与范围](./requirements/)
+- [架构与技术决策](./architecture/)
+- [核心模块](./modules/)
+- [AI 编程实施指南](./ai-development-guide/)
+- [验收与演进](./roadmap/)
+
+## 当前边界
+
+第一阶段关注单体运行、五大能力和基本治理；分布式、多实例高可用、复杂编排和外部系统集成属于后续演进方向。

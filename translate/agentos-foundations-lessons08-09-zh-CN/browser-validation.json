@@ -1,0 +1,155 @@
+{
+  "pages": [
+    {
+      "slug": "agent-architecture",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "title": "AgentOS：从 Agent 五组件到运行底座",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/images/projects/agent-os/foundations-components.svg",
+          "alt": "LLM、Tools 和 Memory 由 Loop 协调，工具在受控 Environment 中执行，结果进入下一次模型决策",
+          "loaded": true,
+          "clickable": true
+        },
+        {
+          "src": "/images/projects/agent-os/foundations-runtime.svg",
+          "alt": "任务进入会话后构造 Prompt，由 ChatModel 返回回答或工具请求；工具经 ToolExecutor 执行并回填历史，循环受上限、超时、取消与租约约束",
+          "loaded": true,
+          "clickable": true
+        }
+      ],
+      "headings": 9,
+      "codeBlocks": 1,
+      "links": [
+        "/images/projects/agent-os/foundations-components.svg",
+        "/projects/agent-os/provider/",
+        "/images/projects/agent-os/foundations-runtime.svg",
+        "/projects/agent-os/agent-os-positioning/",
+        "/projects/agent-os/modules/",
+        "/projects/agent-os/provider/",
+        "/projects/agent-os/requirements/",
+        "/projects/agent-os/architecture/"
+      ],
+      "missingAnchors": [],
+      "errors": [],
+      "navigationLinks": 1
+    },
+    {
+      "slug": "agent-architecture",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "title": "AgentOS：从 Agent 五组件到运行底座",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/images/projects/agent-os/foundations-components.svg",
+          "alt": "LLM、Tools 和 Memory 由 Loop 协调，工具在受控 Environment 中执行，结果进入下一次模型决策",
+          "loaded": true,
+          "clickable": true
+        },
+        {
+          "src": "/images/projects/agent-os/foundations-runtime.svg",
+          "alt": "任务进入会话后构造 Prompt，由 ChatModel 返回回答或工具请求；工具经 ToolExecutor 执行并回填历史，循环受上限、超时、取消与租约约束",
+          "loaded": true,
+          "clickable": true
+        }
+      ],
+      "headings": 9,
+      "codeBlocks": 1,
+      "links": [
+        "/images/projects/agent-os/foundations-components.svg",
+        "/projects/agent-os/provider/",
+        "/images/projects/agent-os/foundations-runtime.svg",
+        "/projects/agent-os/agent-os-positioning/",
+        "/projects/agent-os/modules/",
+        "/projects/agent-os/provider/",
+        "/projects/agent-os/requirements/",
+        "/projects/agent-os/architecture/"
+      ],
+      "missingAnchors": [],
+      "errors": [],
+      "navigationLinks": 1
+    },
+    {
+      "slug": "agent-os-positioning",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "status": 200,
+      "title": "AgentOS：定位、架构与价值",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/images/projects/agent-os/foundations-layers.svg",
+          "alt": "CLI、REST 和定时触发进入统一 AgentService，引擎协调 Provider、Memory 与 Tool，支撑层提供定义加载、PostgreSQL 持久化和应用层白名单",
+          "loaded": true,
+          "clickable": true
+        }
+      ],
+      "headings": 13,
+      "codeBlocks": 1,
+      "links": [
+        "/images/projects/agent-os/foundations-layers.svg",
+        "/projects/agent-os/agent-architecture/",
+        "/projects/agent-os/architecture/",
+        "/projects/agent-os/modules/",
+        "/projects/agent-os/provider/",
+        "/projects/agent-os/roadmap/",
+        "/projects/agent-os/research/",
+        "/projects/agent-os/requirements/"
+      ],
+      "missingAnchors": [],
+      "errors": [],
+      "navigationLinks": 1
+    },
+    {
+      "slug": "agent-os-positioning",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "title": "AgentOS：定位、架构与价值",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/images/projects/agent-os/foundations-layers.svg",
+          "alt": "CLI、REST 和定时触发进入统一 AgentService，引擎协调 Provider、Memory 与 Tool，支撑层提供定义加载、PostgreSQL 持久化和应用层白名单",
+          "loaded": true,
+          "clickable": true
+        }
+      ],
+      "headings": 13,
+      "codeBlocks": 1,
+      "links": [
+        "/images/projects/agent-os/foundations-layers.svg",
+        "/projects/agent-os/agent-architecture/",
+        "/projects/agent-os/architecture/",
+        "/projects/agent-os/modules/",
+        "/projects/agent-os/provider/",
+        "/projects/agent-os/roadmap/",
+        "/projects/agent-os/research/",
+        "/projects/agent-os/requirements/"
+      ],
+      "missingAnchors": [],
+      "errors": [],
+      "navigationLinks": 1
+    }
+  ],
+  "internalPathsChecked": 11,
+  "indexEntries": "PASS",
+  "svgTextWithinCanvas": "PASS"
+}

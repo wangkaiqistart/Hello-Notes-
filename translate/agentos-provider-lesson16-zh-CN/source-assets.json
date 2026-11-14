@@ -1,0 +1,41 @@
+[
+  {
+    "page": 1,
+    "crop_points": [
+      65,
+      490,
+      497,
+      690
+    ],
+    "path": "public/images/projects/agent-os/provider-overview.png",
+    "width": 1728,
+    "height": 800,
+    "sha256": "ee49e017db36bac0ae066c3d420974204a8eb3c129f287adfb5a31fceac5c8d9"
+  },
+  {
+    "page": 2,
+    "crop_points": [
+      64,
+      329,
+      503,
+      447
+    ],
+    "path": "public/images/projects/agent-os/provider-boundaries.png",
+    "width": 1756,
+    "height": 472,
+    "sha256": "5fdf9354486679f87390c65b0453d6b34077345b4526b0927dd41766bd4bb4fd"
+  },
+  {
+    "page": 3,
+    "crop_points": [
+      66,
+      367,
+      498,
+      509
+    ],
+    "path": "public/images/projects/agent-os/provider-call-flow.png",
+    "width": 1728,
+    "height": 568,
+    "sha256": "dc99041a2681a46e0a67456643c106d30005aff5ec1b978ad622439ffb2a6a89"
+  }
+]

@@ -1,0 +1,393 @@
+
+--- PAGE 1 ---
+Agent Provider：原理解析、实现与代码讲解
+
+OryxOS 的第⼀块核⼼能⼒是        Provider，也就是对接⼤模型（      LLM）的那⼀层。这节讲四件事：
+Provider 是什么、动⼿前该想清楚什么、代码怎么写、做完怎么验。
+
+技术栈是    JDK 21 + Spring Boot 3.x + Spring AI Alibaba。下⾯的代码是示意，ChatModel 的确
+切 API 以你⽤的   Spring AI 版本为准。
+
+
+⼀、Provider 是什么，⼲嘛⽤的
+
+⼀句话：   Provider 就是 Agent 和⼤模型之间的⼀个前台。
+
+上层要跟⼤模型说话，但它不想操⼼            "这次到底是调      DeepSeek 还是  Kimi、每家的接⼝格式还不
+⼀样 "。于是这些事全交给        Provider：上层把要说的话递进去，        Provider 负责挑对模型、⽤对⽅听
+得懂的格式发出去、再把回话拿回来。
+
+放到  Agent 的整体⾥看会更清楚。我们说          Agent = LLM + Tools + Memory + Loop +
+Environment，其中  LLM 是那个做决策的⼤脑       。Provider 就是把这个⼤脑接进系统的⼯程封装
+——ReAct 循环每转⼀圈，都要通过          Provider 调⼀次⼤模型。
+
+具体怎么⼯作：上层传两样东⻄进来，⼀个                Profile（⼀份配置，写了这次⽤哪个         provider、哪个
+model），⼀段   Prompt（要发给模型的内容）                 。Provider 按 Profile 挑出对应的模型，调⽤，把结
+果原样返回。好处是：以后想换模型，只改配置，                 ReAct 那边⼀⾏都不⽤动。
+
+
+
+                            上层 · ReAct 循环
+                             传⼊ Profile + Prompt
+
+
+
+                      ProviderService（前台 / 统⼀抽象层）
+                          按 Profile 选对应模型 · 屏蔽各家差异
+
+
+
+
+
+     ChatModel · DeepSeek    ChatModel · Kimi      ChatModel · Qwen
+
+
+
+
+
+                    各家 LLM API（OpenAI / Anthropic / Gemini 协议）
+
+
+
+图⾥  ChatModel 是 Spring AI ⾥代表"⼀个具体⼤模型     "的对象，⼀个      provider 对应⼀个。
+Provider ⼲的事，就是从上往下选⼀条路⾛通。
+
+--- PAGE 2 ---
+这⾥还有⼀个容易搞混的点：       ⼯具（  Tool）这件事，   Provider 只做翻译，不做执⾏。
+
+⼤模型能  "调⽤⼯具  "（业界叫   Function Calling），意思是：我们在发请求时，顺带告诉模型      "你⼿
+上有哪些⼯具能⽤、每个⼯具要传什么参数           "——这份⼯具说明叫      schema。模型看完可能回⼀
+句： "我想调  http_get，参数是这些。   " 注意，模型只是    说它想调  ，并不会真去调。     Provider 拿
+到这个请求后，原样交回给上层的循环，真正去执⾏               http_get 的是后⾯的  ToolExecutor。
+Provider 全程只负责把⼯具翻译成模型看得懂的格式，不碰执⾏。
+
+
+⼆、动⼿前先想清楚⼏件事
+
+写这种适配层，别急着敲代码。先把下⾯⼏件事定下来，代码基本就顺着出来了。
+
+第⼀，把职责划窄。      Provider 要做的事其实很少：挑对模型、发起⼀次调⽤、把结果拿回来。就
+这些。循环怎么转、⼯具怎么执⾏、上下⽂怎么拼，都不归它管。这个边界不划清楚，                       Provider
+会越写越胖，最后和      ReActLoop 缠在⼀起分不开。
+
+
+
+
+   Provider 负责                   Provider 不管
+
+   · 挑对哪家模型                      · 循环怎么转 → ReActLoop
+
+   · 组装并发起⼀次 LLM 调⽤              · ⼯具怎么执⾏ → ToolExecutor
+
+   · 把⼯具翻译成各家能懂的格式               · 上下⽂怎么拼 → PromptBuilder
+
+   · 记这次调⽤的⽤量 / 审计               · 记忆怎么存 → MemoryService
+
+
+
+第⼆，哪些不⾃⼰造。       各家⼤模型的协议不⼀样，      OpenAI、Anthropic、Gemini 的⼯具格式各写
+各的。这些转换     Spring AI Alibaba 已经做好了，我们直接⽤，不重复造。我们要写的只是薄薄⼀
+层 ProviderService，套在它上⾯。
+
+第三，三个坑   ——这⼏个直接决定了架构⻓什么样。
+
+坑⼀：多个    provider 时，怎么区分谁是谁。   你同时配了    DeepSeek 和 Kimi，它们在 Spring 容器
+⾥都是  ChatModel 类型，光靠  "把容器⾥所有    ChatModel 扫出来"根本分不清哪个是哪个（类型
+⼀样，名字也未必对得上）                   。所以从⼀开始就得⾃⼰维护⼀张表：provider 的名字 → 对应的
+ChatModel，⼀⼀显式对应。
+
+坑⼆： Spring AI 会"⾃作主张"帮你执⾏⼯具。     Spring AI ⾃带⼀套⾃动执⾏⼯具的机制    ——模型
+说想调  http_get，它会⾃⼰跑个⼩循环，直接把⼯具执⾏了，再把结果喂回模型。听起来省
+事，但我们⾃⼰写了      ReActLoop 和 ToolExecutor 来管这件事。两套⼀起跑，⼯具会被调两次，
+⽽且执⾏绕过了我们的沙箱检查，出了事都不知道谁⼲的。所以                 必须把  Spring AI 的⾃动执⾏关
+掉，只留它的协议转换和       schema ⽣成，执⾏权攥在⾃⼰⼿⾥。
+
+--- PAGE 3 ---
+坑三：教程⾥的      provider 名字只是示意，那家模型接不接得进来得先验证。                 下⾯举例的
+deepseek、 kimi 、 qwen 都只是  "provider 名字"的示意，不代表随⼿配⼀下就能⽤。            Spring AI
+⽣态⾥每家模型背后都是⼀个独⽴的             starter 依赖（⽐如阿⾥的通义千问⾛的是           spring-ai-
+alibaba-starter），这些依赖是否在你项⽬锁定的            Spring AI BOM 版本⾥存在、版本号对不
+对，动⼿前先跑⼀遍        mvn dependency:tree 确认。 真实踩过的坑     ：某些    milestone 版本的
+Spring AI BOM ⾥未必包含每⼀家的独⽴        starter——想接哪家，先确认依赖能下载、能解析，再
+当作示例往下写，不要照着教程的名字就假设⼀定能⽤。
+
+这三个坑想清楚，      Provider ⻓什么样就定了：⼀个薄薄的抽象层，只管⼀次调⽤，靠⼀张表显式
+选模型，关掉⾃动执⾏，接哪家提前验证过依赖能⽤。
+
+
+三、代码怎么写
+
+核⼼就⼀个类     ProviderService，外加两个配⻆：⼀个把⼯具转成             Spring AI 格式的适配器，⼀
+个写审计⽇志的。对外只露⼀个⽅法：              chat(sessionId, Profile, Prompt)。
+
+⼀次调⽤从头到尾是这样⾛的：
+
+
+
+
+                     chat(...)
+       ReActLoop               ProviderService          ChatModel
+
+
+
+                       ① 从映射表取出 profile.provider 对应的 ChatModel
+
+                        ② 组装消息 + ⼯具 schema（关掉⾃动执⾏）
+                                               调⽤
+                                 发起调⽤
+
+                                             Response
+
+       （响应⾥可能带       ③ 写 llm_calls（provider / model / token，成功失败都写）
+       tool 调⽤请求）  返回 Response
+
+
+
+对着这个流程，先补⼀个前置，再分四步写。
+
+第零步（前置）           ：Profile 的解析加载，这节⼀并交付。    Provider 是整个系统⾥第⼀个消费       Profile
+的模块（要从⾥⾯读        provider 名、model、温度）     ，所以 Profile 从 YAML 变成 Java 对象这件事
+归这节负责，包含三样：
+
+   Profile：⼀个承载全部字段的记录类           ——  name、 description、  identity、 provider
+   （name/model/temperature）、tools、 skills、  mcp_servers、 channels、
+   notify_channels、 schedules、 bootstrap、  settings。后⾯每节⽤到哪个字段就取哪
+   个字段，类本身这节就建全。
+   ProfileLoader：启动时扫     .oryxos/profiles/ 下所有   YAML，⽤  SnakeYAML 解析成
+   Profile，逐个做合法性校验（本节先校验            "provider 名能在全局层找到    "这⼀条，后⾯各节
+   的字段各⾃补⾃⼰的校验规则）                         。坏的 Profile 记错误⽇志、不阻断启动。
+
+--- PAGE 4 ---
+   ProfileRegistry ：解析好的     Profile 放进内存索引（    Map<String, Profile> ），按  name
+   查找。  29 节会给它补运⾏时        register()  ⽅法，现在只有启动扫描这⼀条注册路径。
+
+第⼀步：配置分两层，别搞混。             Provider 相关的配置其实分两层，职责不⼀样：
+
+   全局层  （  application.yaml）：声明这个实例上到底接了哪些              provider、每家的凭证从哪个
+   环境变量读。解决的是         "连不连得上    "的问题。
+   Profile 层（每个   Agent ⾃⼰的  YAML）：声明这个      Agent 具体⽤哪个     provider、哪个
+   model、什么温度。解决的是         "这个  Agent 怎么⽤  "的问题。
+
+
+ # application.yaml —— 全局层：声明有哪些       provider、凭证从哪来
+ oryxos:
+   providers:
+     - name: deepseek
+       api-key: ${DEEPSEEK_API_KEY}
+     - name: kimi
+       api-key: ${KIMI_API_KEY}
+
+
+
+ # .oryxos/profiles/ops-agent.yaml —— Profile 层：这个    Agent 具体怎么⽤
+ provider:
+   name: deepseek        # 必须能在全局层的       providers 列表⾥找到同名项
+   model: deepseek-chat  # ⽤哪个模型，    Profile ⾃⼰定
+   temperature: 0.7
+
+
+两层各管⼀段：全局层只管          "连接  "（provider 存不存在、   key 有没有）     ，Profile 层管"调⽤参
+数"（⽤哪个     model、什么温度）         。Profile 引⽤的 provider.name 如果在全局层找不到同名项，
+必须直接报错，不能悄悄⽤错或者留空跑过去。
+
+${DEEPSEEK_API_KEY} 表示运⾏时从环境变量取，代码和配置⽂件⾥都不会出现真实                         key。
+
+第⼆步：建映射表。         启动时，按     application.yaml ⾥ providers  列表逐条创建对应的
+ChatModel，把   name 和  ChatModel 存进⼀个     Map<String, ChatModel>。这就是前⾯说的
+坑⼀的解法    ——显式建表，不靠类型扫描            。⽤  Spring 的 @Qualifier 也⾏、⾃⼰⼿动       put 进
+Map 也⾏，原则就⼀条：谁对谁必须写死、看得⻅。
+
+第三步：写     chat ⽅法。   这是整个    Provider 的核⼼，⻣架⻓这样：
+
+
+ public Response chat(String sessionId, Profile profile, Prompt prompt) {
+     ChatModel model = providerMap.get(profile.getProvider());   // 按名字取模
+ 型
+     if (model == null) {
+         throw new ProviderNotFoundException(profile.getProvider());
+     }
+
+--- PAGE 5 ---
+     var tools = adapter.toSpringAiTools(prompt.getAvailableTools());  // 只翻
+ 译，不执⾏
+     long startedAt = System.currentTimeMillis();
+     try {
+         Response resp = model.call(request(prompt, tools, /*
+ autoExecuteTools */ false));  // 关掉⾃动执⾏
+         audit.record(sessionId, profile.getProvider(), profile.getModel(),
+ resp.usage(),
+                      true, null, System.currentTimeMillis() - startedAt);
+         return resp;
+     } catch (RuntimeException e) {
+         audit.record(sessionId, profile.getProvider(), profile.getModel(),
+ null,
+                      false, e.getMessage(), System.currentTimeMillis() -
+ startedAt);
+         throw e;   // 调⽤失败也留痕，再把错误抛给上层处理
+     }
+ }
+
+
+⼀⾏⾏看它在⼲嘛：
+
+   chat(String sessionId, ...) ——多传⼀个       sessionId，是因为审计记录要落到
+   llm_calls  表，那张表按      session 关联，⽅法签名不带这个参数，审计那⼀步就没法写。
+   providerMap.get(profile.getProvider()) ——拿着     Profile ⾥写的 provider 名字，去表
+   ⾥取对应的模型。取不到就直接抛异常，别让它悄悄⽤了个错的。
+   adapter.toSpringAiTools(...) ——把这次能⽤的⼯具翻译成             Spring AI 的格式（只⽣成
+   schema，也就是⼯具说明，不执⾏）                       。
+   model.call(request(..., false)) ——发起真正的调⽤。最后那个              false  就是关掉⾃动
+   执⾏，对应坑⼆。
+   audit.record(..., true, null, ...) ——调⽤    成功  ，把⽤了哪个      provider、哪个
+   model、花了多少      token、耗时多久记⼀笔，        success 记  true。
+   catch (RuntimeException e) { audit.record(..., false, e.getMessage(), ...);
+   throw e; } ——调⽤    失败 （超时、限流、模型报错）同样要记⼀笔，                   success 记
+   false 、把错误信息存进        error_message ，再把异常继续往上抛。          这⼀步很容易漏       ：只记
+   成功不记失败，⼀次真实事故在系统⾥就完全没留下痕迹。
+   最后返回    Response 。响应⾥可能带着模型         "想调某个⼯具      "的请求，但执⾏不在这⼉         ——原
+   样交回上层。
+
+   model.call  和关闭⾃动执⾏的确切写法跟            Spring AI 版本有关，动⼿前先核⼀下你⽤的版本
+   怎么写。
+
+第四步：⼯具适配和审计。            适配器负责把我们⾃⼰的          OryxTool  的参数说明
+（ getInputSchema() ）转成   Spring AI 的⼯具描述   ——注意，还是只翻译、不执⾏。
+
+--- PAGE 6 ---
+审计要记两种情况：调⽤       成功 ，把   provider、model、token ⽤量写进 llm_calls；调⽤ 失败
+（超时、限流、模型报错）                     ，也要写⼀条，success 记 false、error_message 记原因。所以
+llm_calls 表本身得有   success/error_message 这两列——不然模型调⽤失败时，这次事故
+在数据库⾥完全没有痕迹，跟⼯具那边的             tool_invocations 表⽐就不对称，   "可审计 "这个卖点
+就打了折扣。这张表的       JPA 实体、 Repository 和建表脚本也归这节交付；注意        SQLite 的 ALTER
+TABLE 很弱，建表⽤⼿⼯维护的脚本，别指望            hibernate.ddl-auto=update 做迁移。
+
+有⼏样先别做。     fallback（⼀家挂了换另⼀家）                 、hedge racing（同时发⼏家抢最快的）                   、熔断，
+这些都放到扩展阶段；现在故障就直接把错误抛给上层。成本看板也放后⾯，眼下只落
+llm_calls 这张表，够审计⽤就够了。核⼼阶段的⽬标是             "能稳定调通⼀次    "，别⼀上来就求全。
+
+本节交付物   （Spec-Kit 拆解锚点）       ：
+
+  代码：   Profile、 ProfileLoader、ProfileRegistry、ProviderService（含
+   chat(sessionId, Profile, Prompt)）、⼯具格式适配器、   LlmCall 实体  +
+   LlmCallRepository
+  测试：   ProfileLoaderTest、ProviderServiceTest、ToolSchemaAdapterTest、
+   LlmCallRepositoryTest、ProviderSmokeIT（⻅第四部分的验收     harness）
+  配置：   application.yaml 的 oryxos.providers 全局层；Profile YAML 的 provider 段
+  表：  llm_calls（含  success/error_message 列，⼿⼯建表脚本）
+
+
+四、验收 harness：把验收标准变成可执⾏的测试
+
+第 6 节讲过：  SDD 给⽬标，   Harness 给边界 。这⼀节的    Harness 就是⼀套测试  ——AI 写的实现
+对不对，不靠⼈盯着代码看，靠这套测试跑绿。所以测试清单要在实现之前（或同时）定下
+来， /speckit-implement 产出的代码必须让它们全绿，这就是         "验收 "的⼯程化形态。
+
+先定分层：什么⽤单测，什么⽤集成冒烟。             判断标准就⼀条     ——要不要碰真实⽹络：
+
+  单测（默认全跑）     ：路由、校验、审计、翻译，全部把            ChatModel mock 掉，不花⼀分钱、
+  不依赖⽹络，秒级跑完。这是          harness 的主体。
+  集成冒烟（打     @Tag("integration")，本地⼿动跑）   ：真调⼀次模型，验证      "key 对、依赖
+  对、真的通    "。CI ⾥默认跳过   ——不能让外部     API 的可⽤性变成⾃⼰流⽔线的可⽤性。
+
+四个单测类，逐条对应验收标准：
+
+
+测试类                   覆盖的验收点
+
+ ProfileLoaderTest    合法  YAML 全字段解析；引⽤不存在的         provider 报错清晰；坏⽂
+                      件不阻断其余加载；      ${ENV} 占位从环境变量解析
+
+--- PAGE 7 ---
+ 测试类                        覆盖的验收点
+
+ ProviderServiceTest        双 provider 按名路由不串台；未知名抛异常；成功                   /失败都落审
+                            计；⾃动执⾏关闭
+
+ ToolSchemaAdapterTest      OryxTool   的 schema 翻译成     Spring AI 格式后字段⼀⼀对⻬；
+                            只翻译、产物⾥不含任何执⾏逻辑
+
+ LlmCallRepositoryTest      ⼿⼯建表脚本建出的           llm_calls  能存能读，
+                            success / error_message   两列真实存在
+
+
+最值钱的三个测试⽅法，写出来看。                  都在   ProviderServiceTest    ⾥，  mock 两个    ChatModel
+就能测：
+
+
+  @Test
+  void 按名路由    _两个provider不串台     () {
+      var deepseek = mock(ChatModel.class);
+      var kimi = mock(ChatModel.class);
+      var service = new ProviderService(Map.of("deepseek", deepseek, "kimi",
+  kimi), adapter, audit);
+
+
+      service.chat("s-1", profileUsing("kimi"), prompt);
+
+      verify(kimi, times(1)).call(any());       // 调的是         kimi
+      verify(deepseek, never()).call(any());    // deepseek ⼀次都没被碰            ——"不串
+  台"的直接证据
+  }
+
+  @Test
+  void 调⽤失败    _审计必须留下     success为false的记录     () {
+      when(chatModel.call(any())).thenThrow(new RuntimeException("connect
+  timeout"));
+
+      assertThrows(RuntimeException.class,
+          () -> service.chat("s-1", profileUsing("deepseek"), prompt));   //
+  异常继续上抛
+
+
+      verify(audit).record(eq("s-1"), eq("deepseek"), any(), isNull(),
+          eq(false), contains("timeout"), anyLong());   // 但审计先落了：
+  success=false + 原因
+  }
+
+
+  @Test
+  void 带⼯具   schema调⽤  _请求⾥关闭了⾃动执⾏         () {
+      service.chat("s-1", profileUsing("deepseek"),
+  promptWithTools(httpGetTool));
+
+--- PAGE 8 ---
+     var captor = ArgumentCaptor.forClass(Request.class);
+     verify(chatModel).call(captor.capture());
+     assertFalse(captor.getValue().autoExecuteTools());   // 坑⼆的回归测试：⼀旦
+ 有⼈改回⾃动执⾏，这⾥⽴刻红
+     assertNotNull(captor.getValue().tools());            // 翻译过的 schema 确
+ 实带上了
+ }
+
+
+第⼀个测的是坑⼀（显式映射）                         ，第三个测的是坑⼆（关⾃动执⾏）——每个"想清楚 "阶段点过
+名的坑，都应该有⼀个对应的回归测试            ，这样坑就被永久钉死了，后来的⼈改不回去。第⼆个测
+的是最容易漏的失败审计路径：注意断⾔的不是               "没抛异常  "，⽽是  "抛了异常   并且 审计先落了
+账"。
+
+LlmCallRepositoryTest 的⼀个讲究  ：建表要⾛那份⼿⼯脚本（测试⾥执⾏             schema.sql），
+不要让   Hibernate ⾃动建——不然测试绿了、⽣产上跑真脚本时列名对不上，⽩测。
+
+集成冒烟   ProviderSmokeIT：⼀个⽅法，读环境变量⾥的真           key、真调⼀次、断⾔拿到⾮空响
+应且  llm_calls 多了⼀条   success=true。跑法：
+
+
+ mvn test                                    # ⽇常：只跑单测，全绿才算实现完成
+ DEEPSEEK_API_KEY=xxx mvn test -Dgroups=integration   # ⼿动：冒烟验真连通
+
+
+
+五、做完怎么验
+
+harness 全绿之后，剩下这⼏条需要⼈⼯确认（⾃动化覆盖不到或不值得⾃动化的部分）                                                                   ：
+
+  ⽤到的    provider，对应的 Spring AI（Alibaba）starter 依赖已确认在项⽬锁定的     BOM ⾥能下
+  载、能解析    ——不是照着教程的名字就假设⼀定能⽤（              mvn dependency:tree 看⼀眼）     。
+  集成冒烟真跑过⼀次：配真          key， ProviderSmokeIT 通过，拿到过真实响应。
+  key ⾛环境变量：    grep -r "sk-"（或你的    key 前缀）在代码和配置⾥搜不到明⽂。
+  其余验收点    ——双 provider 路由、错误名报错、成功        /失败审计、⾃动执⾏关闭、只翻译不执
+  ⾏——已由第四部分的单测覆盖，            mvn test 绿就等于打勾。
+
+Provider ⾃⼰没有独⽴⼊⼝，它要和下⼀节的          ReAct ⼀起，才能撑起     Demo ⼀（每⽇天⽓）的
+对话版（问天⽓、给穿搭建议）                         。所以这块跑通的标准很直接：能撑住 Demo ⼀⾥的那次⼤模型
+调⽤。

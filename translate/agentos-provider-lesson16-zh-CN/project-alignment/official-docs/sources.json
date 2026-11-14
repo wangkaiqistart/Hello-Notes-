@@ -1,0 +1,42 @@
+[
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html",
+    "resolved": "https://docs.spring.io/spring-ai/reference/api/tools/chatmodel-tool-calling.html",
+    "title": "ChatModel Tool Calling :: Spring AI Reference",
+    "file": "api-tools-chatmodel-tool-calling.txt",
+    "sha256": "b13beffe3be068e283df2742e7bdbd3d62b90fd10ede95b8ed52fefdb85a3ec4",
+    "chars": 9380
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+    "resolved": "https://docs.spring.io/spring-ai/reference/api/chatmodel.html",
+    "title": "Chat Model API :: Spring AI Reference",
+    "file": "api-chatmodel.txt",
+    "sha256": "afe4e5770b140d90addb16bd336192066af12e754a3e9b801b020d2585f16bd7",
+    "chars": 9488
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+    "resolved": "https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html",
+    "title": "OpenAI Chat :: Spring AI Reference",
+    "file": "api-chat-openai-chat.txt",
+    "sha256": "10dd061ab959f47b298fbc555ed538dd80a0d2ece0ec07ceb33c70270522c6fd",
+    "chars": 55401
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+    "resolved": "https://docs.spring.io/spring-ai/reference/api/tools.html",
+    "title": "Tool Calling :: Spring AI Reference",
+    "file": "api-tools.txt",
+    "sha256": "8a57789c9cc2df4bef0e460b8999e932e2eb21aa041d959addfa770f4741aca6",
+    "chars": 47108
+  },
+  {
+    "url": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+    "resolved": "https://docs.spring.io/spring-ai/reference/api/embeddings.html",
+    "title": "Embeddings Model API :: Spring AI Reference",
+    "file": "api-embeddings.txt",
+    "sha256": "b2fbfce6a85efa77a10b4556352b88a5b05c42007b57fc48ef3d34b86db32b32",
+    "chars": 7985
+  }
+]
