@@ -1,80 +1,103 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 760" role="img" aria-labelledby="title desc">
-  <title id="title">Agent ReAct 运行循环</title>
-  <desc id="desc">用户消息经过 Reason、Act、Observe 循环，工具结果回填 Session，达到停止条件后输出响应。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 860" role="img" aria-labelledby="title desc">
+  <title id="title">AgentOS ReAct 执行闭环</title>
+  <desc id="desc">用户请求经过上下文组装、模型决策、工具执行和结果观察；结果回到下一轮上下文，直到完成或触发运行边界。</desc>
   <style>
-    .bg { fill: #171717; }
-    .panel { fill: #232323; stroke: #3a3a3a; stroke-width: 2; }
-    .accent { fill: #ff8a3d; }
-    .soft { fill: #2d2d2d; }
-    .title { fill: #f3f4f6; font: 700 42px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
-    .subtitle { fill: #9ca3af; font: 400 21px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
-    .label { fill: #ff9b52; font: 700 24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
-    .body { fill: #e5e7eb; font: 400 18px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .bg { fill: #111827; }
+    .panel { fill: #1f2937; stroke: #374151; stroke-width: 2; }
+    .panel-soft { fill: #182235; stroke: #334155; stroke-width: 2; }
+    .accent { fill: #5eead4; }
+    .accent-text { fill: #99f6e4; }
+    .text { fill: #f8fafc; font: 600 25px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .body { fill: #cbd5e1; font: 400 18px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
     .small { fill: #cbd5e1; font: 400 17px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
-    .line { stroke: #ff8a3d; stroke-width: 4; fill: none; marker-end: url(#arrow); }
-    .rule { fill: #3a3a3a; }
+    .heading { fill: #f8fafc; font: 700 42px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .subheading { fill: #94a3b8; font: 400 21px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .step { fill: #0f172a; font: 700 22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .line { stroke: #5eead4; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+    .guide { stroke: #334155; stroke-width: 2; stroke-dasharray: 8 8; fill: none; }
+    .rule { fill: #334155; }
   </style>
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" class="accent"/></marker>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="accent"/>
+    </marker>
   </defs>
-  <rect class="bg" width="1440" height="760" rx="8"/>
-  <text class="title" x="56" y="68">ReAct Loop：Agent 的最小运行内核</text>
-  <rect class="rule" x="56" y="101" width="1328" height="2"/>
-  <text class="subtitle" x="56" y="143">Reason → Act → Observe；每轮结果都回填 Session，直到完成或触发停止条件</text>
 
-  <g transform="translate(70 220)">
-    <rect class="panel" width="230" height="170" rx="6"/>
-    <circle class="accent" cx="115" cy="48" r="28"/>
-    <text class="body" x="115" y="55" fill="#111827">输入</text>
-    <text class="label" x="115" y="105">用户消息</text>
-    <text class="body" x="115" y="140">任务与上下文</text>
-  </g>
-  <g transform="translate(365 220)">
-    <rect class="panel" width="230" height="170" rx="6"/>
-    <circle class="accent" cx="115" cy="48" r="28"/>
-    <text class="body" x="115" y="55" fill="#111827">R</text>
-    <text class="label" x="115" y="105">Reason</text>
-    <text class="body" x="115" y="140">是否调用工具？参数是什么？</text>
-  </g>
-  <g transform="translate(660 220)">
-    <rect class="panel" width="230" height="170" rx="6"/>
-    <circle class="accent" cx="115" cy="48" r="28"/>
-    <text class="body" x="115" y="55" fill="#111827">A</text>
-    <text class="label" x="115" y="105">Act</text>
-    <text class="body" x="115" y="140">鉴权后执行 Tool</text>
-  </g>
-  <g transform="translate(955 220)">
-    <rect class="panel" width="230" height="170" rx="6"/>
-    <circle class="accent" cx="115" cy="48" r="28"/>
-    <text class="body" x="115" y="55" fill="#111827">O</text>
-    <text class="label" x="115" y="105">Observe</text>
-    <text class="body" x="115" y="140">结果回填 Session</text>
-  </g>
-  <g transform="translate(1250 220)">
-    <rect class="soft" width="120" height="170" rx="6"/>
-    <text class="label" x="60" y="72">结束？</text>
-    <text class="body" x="60" y="112">是：响应</text>
-    <text class="body" x="60" y="142">否：下一轮</text>
-  </g>
-  <path class="line" d="M300 305 H355"/>
-  <path class="line" d="M595 305 H650"/>
-  <path class="line" d="M890 305 H945"/>
-  <path class="line" d="M1185 305 H1240"/>
-  <path class="line" d="M1310 390 C1310 525 480 530 480 400"/>
+  <rect class="bg" width="1440" height="860" rx="12"/>
+  <text class="heading" x="56" y="70">AgentOS ReAct 执行闭环</text>
+  <rect class="rule" x="56" y="104" width="1328" height="2"/>
+  <text class="subheading" x="56" y="145">模型决定下一步，工具产生可观察结果；每一轮都受上下文、时间和次数约束</text>
 
-  <g transform="translate(70 590)">
-    <rect class="panel" width="400" height="100" rx="6"/>
-    <text class="label" x="200" y="38">Session</text>
-    <text class="small" x="22" y="70">消息、LLM 响应、Tool 结果持续累积</text>
+  <path class="guide" d="M80 206 H1360"/>
+  <text class="accent-text" x="80" y="190" font-size="18" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif">一次 Turn</text>
+
+  <g transform="translate(70 245)">
+    <rect class="panel" width="220" height="176" rx="14"/>
+    <circle class="accent" cx="110" cy="48" r="28"/>
+    <text class="step" x="110" y="56">1</text>
+    <text class="text" x="110" y="106">用户请求</text>
+    <text class="body" x="110" y="140">消息与任务目标</text>
   </g>
-  <g transform="translate(520 590)">
-    <rect class="panel" width="400" height="100" rx="6"/>
-    <text class="label" x="200" y="38">运行边界</text>
-    <text class="small" x="22" y="70">MAX_ITER、超时、失败、转人工</text>
+
+  <g transform="translate(330 245)">
+    <rect class="panel" width="220" height="176" rx="14"/>
+    <circle class="accent" cx="110" cy="48" r="28"/>
+    <text class="step" x="110" y="56">2</text>
+    <text class="text" x="110" y="106">上下文组装</text>
+    <text class="body" x="110" y="140">PromptBuilder</text>
   </g>
-  <g transform="translate(970 590)">
-    <rect class="panel" width="400" height="100" rx="6"/>
-    <text class="label" x="200" y="38">可观测性</text>
-    <text class="small" x="22" y="70">调用链、参数摘要和结果可审计</text>
+
+  <g transform="translate(590 245)">
+    <rect class="panel" width="220" height="176" rx="14"/>
+    <circle class="accent" cx="110" cy="48" r="28"/>
+    <text class="step" x="110" y="56">3</text>
+    <text class="text" x="110" y="106">模型决策</text>
+    <text class="body" x="110" y="140">Provider → ChatModel</text>
+  </g>
+
+  <g transform="translate(850 245)">
+    <rect class="panel" width="220" height="176" rx="14"/>
+    <circle class="accent" cx="110" cy="48" r="28"/>
+    <text class="step" x="110" y="56">4</text>
+    <text class="text" x="110" y="106">工具执行</text>
+    <text class="body" x="110" y="140">ToolExecutor</text>
+  </g>
+
+  <g transform="translate(1110 245)">
+    <rect class="panel" width="220" height="176" rx="14"/>
+    <circle class="accent" cx="110" cy="48" r="28"/>
+    <text class="step" x="110" y="56">5</text>
+    <text class="text" x="110" y="106">结果观察</text>
+    <text class="body" x="110" y="140">写回会话上下文</text>
+  </g>
+
+  <path class="line" d="M290 333 H320"/>
+  <path class="line" d="M550 333 H580"/>
+  <path class="line" d="M810 333 H840"/>
+  <path class="line" d="M1070 333 H1100"/>
+
+  <g transform="translate(1070 455)">
+    <rect class="panel-soft" width="260" height="92" rx="14"/>
+    <text class="text" x="130" y="39">继续还是完成？</text>
+    <text class="body" x="130" y="70">有工具请求 → 下一轮</text>
+  </g>
+  <path class="line" d="M1220 421 V445"/>
+  <path class="line" d="M1070 501 C910 590 450 590 440 433"/>
+  <text class="accent-text" x="735" y="578" font-size="18" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" text-anchor="middle">工具结果回填后继续推理</text>
+
+  <g transform="translate(70 675)">
+    <rect class="panel-soft" width="400" height="108" rx="14"/>
+    <text class="text" x="200" y="40">Session</text>
+    <text class="small" x="24" y="74">消息、模型响应和工具结果按顺序保存</text>
+  </g>
+  <g transform="translate(520 675)">
+    <rect class="panel-soft" width="400" height="108" rx="14"/>
+    <text class="text" x="200" y="40">ToolContext</text>
+    <text class="small" x="24" y="74">TurnContext 随请求传给工具</text>
+  </g>
+  <g transform="translate(970 675)">
+    <rect class="panel-soft" width="400" height="108" rx="14"/>
+    <text class="text" x="200" y="40">运行边界</text>
+    <text class="small" x="24" y="74">轮数、工具次数、超时和会话租约</text>
   </g>
 </svg>
