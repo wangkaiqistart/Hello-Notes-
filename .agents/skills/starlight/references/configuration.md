@@ -28,14 +28,22 @@ export default defineConfig({
 starlight({
   logo: {
     src: './src/assets/my-logo.svg',
+    alt: '我的文档站 Logo',
     replacesTitle: true, // 隐藏文字标题
   },
-  // 或明暗模式分别设置
+});
+```
+
+也可以为明暗主题分别提供图片；此时使用 `light` 与 `dark`，不要再同时设置 `src`：
+
+```javascript
+starlight({
   logo: {
     light: './src/assets/logo-light.svg',
     dark: './src/assets/logo-dark.svg',
+    alt: '我的文档站 Logo',
   },
-})
+});
 ```
 
 ## 社交链接
@@ -46,7 +54,7 @@ starlight({
     { icon: 'github', label: 'GitHub', href: 'https://github.com/...' },
     { icon: 'discord', label: 'Discord', href: 'https://...' },
   ],
-})
+});
 ```
 
 ## 编辑链接
@@ -56,7 +64,7 @@ starlight({
   editLink: {
     baseUrl: 'https://github.com/user/repo/edit/main/',
   },
-})
+});
 ```
 
 ## 目录
@@ -65,7 +73,7 @@ starlight({
 starlight({
   tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
   // 或禁用: tableOfContents: false
-})
+});
 ```
 
 ## 自定义 Head
@@ -82,7 +90,7 @@ starlight({
       attrs: { property: 'og:image', content: 'https://example.com/og.png' },
     },
   ],
-})
+});
 ```
 
 ## 国际化（i18n）
@@ -95,10 +103,10 @@ starlight({
     en: { label: 'English' },
     ar: { label: 'العربية', dir: 'rtl' },
   },
-})
+});
 ```
 
-Root locale（默认语言无路径前缀）：
+Root locale（默认语言无路径前缀；使用 `root` 时可省略 `defaultLocale`）：
 
 ```javascript
 locales: {
@@ -112,18 +120,15 @@ locales: {
 ```javascript
 starlight({
   titleDelimiter: '—', // 默认 '|'，页面标题格式：Page Title | Site Title
-})
+});
 ```
 
 ## 自定义 CSS
 
 ```javascript
 starlight({
-  customCss: [
-    './src/styles/custom.css',
-    '@fontsource/ibm-plex-serif/400.css',
-  ],
-})
+  customCss: ['./src/styles/custom.css', '@fontsource/ibm-plex-serif/400.css'],
+});
 ```
 
 ## Sitemap

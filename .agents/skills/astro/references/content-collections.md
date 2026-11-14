@@ -64,6 +64,9 @@ const { Content, headings } = await render(post);
 ```typescript
 // src/live.config.ts
 import { defineLiveCollection } from 'astro:content';
+import { z } from 'astro/zod';
+// 这里使用第三方 loader 作为示例；实际项目需安装并替换为自己的 loader。
+import { storeLoader } from '@mystore/astro-loader';
 
 const products = defineLiveCollection({
   loader: storeLoader({ endpoint: process.env.API_URL }),
@@ -76,6 +79,8 @@ const products = defineLiveCollection({
 
 export const collections = { products };
 ```
+
+Live Collections 没有内置 loader，必须提供自定义或第三方 loader，并配置支持按需渲染的适配器；不能把上面的 `storeLoader` 当作 Astro 内置 API。
 
 ```astro
 ---

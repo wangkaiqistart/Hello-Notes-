@@ -6,7 +6,7 @@
 
 ```yaml
 ---
-title: 页面标题  # 必填，显示在页面顶部和浏览器标签
+title: 页面标题 # 必填，显示在页面顶部和浏览器标签
 ---
 ```
 
@@ -16,11 +16,12 @@ title: 页面标题  # 必填，显示在页面顶部和浏览器标签
 ---
 title: 页面标题
 description: 页面描述（用于 SEO 和社交分享）
-slug: custom-slug           # 自定义 URL slug
-template: doc               # 'doc'（默认）| 'splash'（无侧边栏落地页）
-editUrl: false              # 禁用编辑链接，或提供自定义 URL
-draft: true                 # 标记为草稿，生产构建时排除
-tableOfContents: false      # 禁用目录，或 { minHeadingLevel: 2, maxHeadingLevel: 3 }
+slug: custom-slug # 自定义 URL slug
+template: doc # 'doc'（默认）| 'splash'（无侧边栏落地页）
+editUrl: false # 禁用编辑链接，或提供自定义 URL
+draft: true # 标记为草稿，生产构建时排除
+tableOfContents: false # 禁用目录，或 { minHeadingLevel: 2, maxHeadingLevel: 3 }
+pagefind: false # 从 Pagefind 搜索索引中排除
 ---
 ```
 
@@ -32,14 +33,14 @@ tableOfContents: false      # 禁用目录，或 { minHeadingLevel: 2, maxHeadin
 ---
 title: 我的页面
 sidebar:
-  label: 自定义标签         # 覆盖标题
-  order: 1                  # 排序（越小越靠前）
-  hidden: true              # 从自动生成的侧边栏隐藏
+  label: 自定义标签 # 覆盖标题
+  order: 1 # 排序（越小越靠前）
+  hidden: true # 从自动生成的侧边栏隐藏
   badge:
     text: 新
-    variant: tip            # note | tip | caution | danger | success
+    variant: tip # note | tip | caution | danger | success
   attrs:
-    target: _blank          # HTML 属性
+    target: _blank # HTML 属性
 ---
 ```
 
@@ -101,7 +102,7 @@ head:
 ```yaml
 ---
 title: 页面标题
-prev: false                 # 隐藏上一页
+prev: false # 隐藏上一页
 next:
   link: /advanced/
   label: 进阶指南
@@ -110,11 +111,13 @@ next:
 
 ## 扩展 Schema
 
-在 `src/content.config.ts` 中添加自定义字段：
+在 `src/content.config.ts` 中添加自定义字段。保留 Starlight 的 loader 和 schema，再通过 `extend` 扩展：
 
 ```typescript
-import { docsSchema } from '@astrojs/starlight/schema';
+import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
+import { docsLoader } from '@astrojs/starlight/loaders';
+import { docsSchema } from '@astrojs/starlight/schema';
 
 export const collections = {
   docs: defineCollection({
