@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">AgentOS ReActLoop 控制流</title>
+  <desc id="desc">用户消息进入 PromptBuilder 和 ProviderService，模型返回后判断是否有工具调用；没有工具调用则保存助手响应，有工具调用则执行工具、保存结果并在边界检查后进入下一轮。</desc>
+  <style>
+    .bg { fill: #111827; }
+    .card { fill: #1f2937; stroke: #374151; stroke-width: 2; }
+    .decision { fill: #182235; stroke: #5eead4; stroke-width: 2; }
+    .accent { fill: #5eead4; }
+    .heading { fill: #f8fafc; font: 700 40px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .subheading { fill: #94a3b8; font: 400 20px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .label { fill: #f8fafc; font: 600 24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .body { fill: #cbd5e1; font: 400 18px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .branch { fill: #99f6e4; font: 600 18px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .line { stroke: #5eead4; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+    .rule { fill: #334155; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="accent"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1440" height="900" rx="12"/>
+  <text class="heading" x="56" y="68">ReActLoop 控制流</text>
+  <rect class="rule" x="56" y="101" width="1328" height="2"/>
+  <text class="subheading" x="56" y="140">每次迭代只做一次模型调用；工具结果回填后，再由循环决定是否继续</text>
+
+  <g transform="translate(555 180)">
+    <rect class="card" width="330" height="84" rx="14"/>
+    <text class="label" x="165" y="36">用户消息</text>
+    <text class="body" x="165" y="65">开始一次 Turn</text>
+  </g>
+  <path class="line" d="M720 264 V296"/>
+
+  <g transform="translate(555 300)">
+    <rect class="card" width="330" height="84" rx="14"/>
+    <text class="label" x="165" y="36">组装本轮 Prompt</text>
+    <text class="body" x="165" y="65">PromptBuilder</text>
+  </g>
+  <path class="line" d="M720 384 V416"/>
+
+  <g transform="translate(555 420)">
+    <rect class="card" width="330" height="84" rx="14"/>
+    <text class="label" x="165" y="36">调用 ChatModel</text>
+    <text class="body" x="165" y="65">ProviderService</text>
+  </g>
+  <path class="line" d="M720 504 V536"/>
+
+  <g transform="translate(720 585)">
+    <polygon class="decision" points="0,-48 145,0 0,48 -145,0"/>
+    <text class="label" x="0" y="-4">有工具调用？</text>
+    <text class="body" x="0" y="25">检查 ChatResponse</text>
+  </g>
+
+  <path class="line" d="M575 585 H425 V690"/>
+  <text class="branch" x="438" y="570" text-anchor="end">否</text>
+  <g transform="translate(245 690)">
+    <rect class="card" width="360" height="84" rx="14"/>
+    <text class="label" x="180" y="36">保存助手响应并结束</text>
+    <text class="body" x="180" y="65">Turn 完成</text>
+  </g>
+
+  <path class="line" d="M865 585 H1015 V620"/>
+  <text class="branch" x="900" y="570">是</text>
+  <g transform="translate(835 620)">
+    <rect class="card" width="360" height="84" rx="14"/>
+    <text class="label" x="180" y="36">ToolExecutor 执行工具</text>
+    <text class="body" x="180" y="65">受治理的工具调用</text>
+  </g>
+  <path class="line" d="M1015 704 V736"/>
+
+  <g transform="translate(835 740)">
+    <rect class="card" width="360" height="84" rx="14"/>
+    <text class="label" x="180" y="36">保存请求和工具结果</text>
+    <text class="body" x="180" y="65">回填 conversationHistory</text>
+  </g>
+
+  <path class="line" d="M835 782 H670 C560 782 500 730 500 650 V470 H555"/>
+  <text class="branch" x="675" y="808" text-anchor="middle">检查轮数、截止时间和会话租约后继续</text>
+  <path class="line" d="M1195 782 H1330 V300 H885"/>
+  <text class="branch" x="1342" y="520" writing-mode="tb">达到边界：停止并收口</text>
+</svg>

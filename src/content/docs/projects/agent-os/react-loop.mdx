@@ -18,20 +18,7 @@ sidebar:
 
 一次循环可以抽象为：
 
-```text
-用户消息
-  → 组装本轮 Prompt
-  → ProviderService 调用 ChatModel
-  → 有工具调用？──否──→ 保存助手响应并结束
-        │
-        是
-        ↓
-  ToolExecutor 执行工具
-        ↓
-  保存工具请求和工具结果
-        ↓
-  检查轮数、截止时间和会话租约后继续
-```
+![ReActLoop 控制流：模型调用后的工具判断、结果保存、边界检查和下一轮回环](/images/projects/agent-os/react-control-flow.svg)
 
 AgentOS 的 ReAct 图示如下，重点看循环回边、工具结果回填和终止出口；图中没有展开审计和超时分支，它们仍是实现的一部分。
 
@@ -61,14 +48,7 @@ ReActLoop 的代码可以很短，难点在于不能把所有职责塞进一个 
 
 因此 AgentOS 主链路不使用 `ChatClient` 的 `ToolCallingAdvisor` 来驱动第二套循环。它直接调用 `ChatModel`，由自己的 `ReActLoop` 控制迭代；工具只走一条路径：
 
-```text
-ReActLoop
-  → ProviderService
-  → ChatModel 返回 ChatResponse
-  → ToolExecutor
-  → 注入的 ToolCallingManager.executeToolCalls(...)
-  → GovernedToolCallback
-```
+![工具调用链：ReActLoop 经过 ProviderService 和 ChatModel，再由 ToolExecutor 调用注入的 ToolCallingManager，最终执行受治理工具](/images/projects/agent-os/react-tool-chain.svg)
 
 `ToolCallingManager` 必须使用容器注入的实例，不能在 `ToolExecutor` 内调用 `ToolCallingManager.builder().build()` 自建实例，否则项目配置的工具次数限制、异常处理和观测不会统一生效。Spring AI 2.0 的手动工具循环可参考[ChatModel 工具调用](/frameworks/spring-ai/tools/chatmodel-tool-calling/)。
 
