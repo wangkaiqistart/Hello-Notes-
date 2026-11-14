@@ -94,10 +94,16 @@ class PublishTests(unittest.TestCase):
 
     def test_copy_reads_legacy_error_reports(self):
         def legacy_copy(args, **kwargs):
-            Path(args[-1], "ossutil_report_fixture.report").write_text("StatusCode=404, ErrorCode=NoSuchKey")
+            # Older and newer ossutil builds use different report names and
+            # may serialize the response as JSON.
+            Path(args[-1], "ossutil_output").write_text('{"StatusCode": 404, "ErrorCode": "NoSuchKey"}')
             return subprocess.CompletedProcess(args, 1, "FinishWithError: Error num: 1", "")
         with patch("deploy_oss.subprocess.run", side_effect=legacy_copy):
             self.assertFalse(checked_oss(run_oss, ["cp", "oss://example/missing", "local.json"], allow_missing=True))
+
+    def test_plain_missing_key_detail_is_accepted(self):
+        runner = lambda args: subprocess.CompletedProcess(args, 1, "FinishWithError: NoSuchKey", "")
+        self.assertFalse(checked_oss(runner, ["cp"], allow_missing=True))
 
     def test_head_404_without_xml_is_missing_object(self):
         runner = lambda args: subprocess.CompletedProcess(args, 1, "StatusCode=404, ErrorCode=, ErrorMessage=", "")

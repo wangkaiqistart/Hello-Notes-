@@ -40,8 +40,15 @@ def run_oss(args):
     with tempfile.TemporaryDirectory(prefix="oss-report-") as report_dir:
         result = subprocess.run(["ossutil", *args, "--output-dir", report_dir], capture_output=True, text=True)
         if result.returncode:
-            for report in Path(report_dir).rglob("*.report"):
-                result.stderr += "\n" + report.read_text(errors="replace")
+            # Report names differ between ossutil releases (some have no
+            # extension), so inspect every small regular file in the temporary
+            # output directory instead of assuming a *.report suffix.
+            for report in sorted(Path(report_dir).rglob("*")):
+                if not report.is_file() or report.stat().st_size > 2 * 1024 * 1024:
+                    continue
+                content = report.read_text(errors="replace")
+                if content.strip():
+                    result.stderr += "\n" + content
         return result
 
 
@@ -59,10 +66,14 @@ def checked_oss(runner, args, *, allow_missing=False):
     if result.returncode:
         # Only a missing object is acceptable; authentication/network errors stop deployment.
         detail = result.stdout + result.stderr
-        code = re.search(r"ErrorCode\s*[:=]\s*([A-Za-z0-9]+)", detail)
+        code = re.search(r"[\"']?ErrorCode[\"']?\s*[:=]\s*[\"']?([A-Za-z0-9]+)", detail, re.I)
         # A failed HEAD request may have HTTP 404 without an XML error code.
-        missing = (code is not None and code[1] == "NoSuchKey") or (
-            code is None and re.search(r"(?:StatusCode|status code)\s*[:=]?\s*404\b", detail, re.I)
+        missing = (code is not None and code[1].lower() == "nosuchkey") or (
+            code is None
+            and (
+                re.search(r"\bNoSuchKey\b", detail, re.I)
+                or re.search(r"[\"']?Status[_ ]?Code[\"']?\s*[:=]?\s*404\b", detail, re.I)
+            )
         )
         if allow_missing and missing:
             return False
