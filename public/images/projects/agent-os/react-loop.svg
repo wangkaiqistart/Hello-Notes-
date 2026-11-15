@@ -3,32 +3,33 @@
   <desc id="desc">用户请求进入 AgentOS，模型在 Reason、Act、Observe 三个阶段之间循环；工具结果回到上下文，达到边界后输出响应。</desc>
   <style>
     .bg{fill:#0b1220}.surface{fill:#111c2e;stroke:#263750;stroke-width:2}.surface2{fill:#15243a;stroke:#30445f;stroke-width:2}.ink{fill:#f8fafc}.muted{fill:#9fb0c7}.accent{fill:#a7f3d0}.accent2{fill:#a5b4fc}.line{stroke:#a7f3d0;stroke-width:3;fill:none;marker-end:url(#arrow)}.thin{stroke:#31435d;stroke-width:1}.kicker{font:600 15px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;letter-spacing:2px}.title{font:700 42px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.subtitle{font:400 20px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.label{font:650 24px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.body{font:400 17px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.small{font:400 15px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+    @media (prefers-color-scheme: light){.bg{fill:#f7f8fc}.surface{fill:#fff;stroke:#d6deeb}.surface2{fill:#eef2ff;stroke:#c7d2e5}.ink{fill:#172033}.muted{fill:#5b6980}.accent{fill:#087f68}.accent2{fill:#4f46a5}.line{stroke:#087f68}.thin{stroke:#c7d2e5}}
   </style>
   <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10Z" class="accent"/></marker></defs>
   <rect width="1400" height="760" rx="18" class="bg"/>
   <text x="68" y="58" class="kicker accent">AGENTOS / EXECUTION MODEL</text>
   <text x="68" y="108" class="title ink">ReAct 执行循环</text>
-  <text x="68" y="143" class="subtitle muted">模型决定下一步，工具产生观察结果；结果回到上下文，循环直到完成或触发边界。</text>
+  <text x="68" y="143" class="subtitle muted">模型决策 → 工具执行 → 回填结果；循环直到完成或触发边界。</text>
   <line x1="68" y1="178" x2="1332" y2="178" class="thin"/>
 
-  <g transform="translate(68 238)"><rect width="220" height="158" rx="12" class="surface"/><text x="28" y="38" class="kicker accent2">01 / INPUT</text><text x="28" y="84" class="label ink">用户请求</text><text x="28" y="119" class="body muted">任务目标与当前消息</text><circle cx="183" cy="118" r="20" fill="#a5b4fc" opacity=".18"/><path d="M176 118h14M183 111v14" stroke="#a5b4fc" stroke-width="2"/></g>
+  <g transform="translate(68 238)"><rect width="220" height="158" rx="12" class="surface"/><text x="28" y="38" class="kicker accent2">01 / INPUT</text><text x="28" y="84" class="label ink">用户请求</text><text x="28" y="119" class="body muted">消息 / 目标</text><circle cx="183" cy="118" r="20" fill="#a5b4fc" opacity=".18"/><path d="M176 118h14M183 111v14" stroke="#a5b4fc" stroke-width="2"/></g>
   <path d="M288 317h54" class="line"/>
 
-  <g transform="translate(342 214)"><rect width="650" height="206" rx="16" class="surface2"/><text x="34" y="39" class="kicker accent">CONTROLLED LOOP</text><text x="34" y="76" class="label ink">一次 Turn 的核心循环</text>
-    <g transform="translate(34 106)"><circle cx="24" cy="24" r="24" fill="#a5b4fc" opacity=".18"/><text x="24" y="31" text-anchor="middle" class="label accent2">R</text><text x="68" y="20" class="label ink">Reason</text><text x="68" y="49" class="body muted">读取上下文，判断工具</text></g>
+  <g transform="translate(342 214)"><rect width="650" height="206" rx="16" class="surface2"/><text x="34" y="39" class="kicker accent">CONTROLLED LOOP</text><text x="34" y="76" class="label ink">Turn 核心循环</text>
+    <g transform="translate(34 106)"><circle cx="24" cy="24" r="24" fill="#a5b4fc" opacity=".18"/><text x="24" y="31" text-anchor="middle" class="label accent2">R</text><text x="68" y="20" class="label ink">Reason</text><text x="68" y="49" class="body muted">读上下文</text></g>
     <path d="M218 130h30" class="line"/>
     <g transform="translate(250 106)"><circle cx="24" cy="24" r="24" fill="#a7f3d0" opacity=".16"/><text x="24" y="31" text-anchor="middle" class="label accent">A</text><text x="66" y="20" class="label ink">Act</text><text x="66" y="49" class="body muted">执行工具</text></g>
     <path d="M426 130h30" class="line"/>
-    <g transform="translate(458 106)"><circle cx="24" cy="24" r="24" fill="#fcd34d" opacity=".15"/><text x="24" y="31" text-anchor="middle" class="label" fill="#fcd34d">O</text><text x="66" y="20" class="label ink">Observe</text><text x="66" y="49" class="body muted">结果回填</text></g>
+    <g transform="translate(458 106)"><circle cx="24" cy="24" r="24" fill="#fcd34d" opacity=".15"/><text x="24" y="31" text-anchor="middle" class="label" fill="#fcd34d">O</text><text x="66" y="20" class="label ink">Observe</text><text x="66" y="49" class="body muted">回填结果</text></g>
     <path d="M594 174C520 196 280 196 198 174" stroke="#a7f3d0" stroke-width="2" fill="none" stroke-dasharray="5 6"/>
   </g>
   <path d="M992 317h54" class="line"/>
 
-  <g transform="translate(1046 238)"><rect width="286" height="158" rx="12" class="surface"/><text x="28" y="38" class="kicker accent2">02 / OUTPUT</text><text x="28" y="84" class="label ink">最终响应</text><text x="28" y="119" class="body muted">无工具请求，完成当前 Turn</text><path d="M230 105l12 12 22-27" fill="none" stroke="#a7f3d0" stroke-width="4"/></g>
+  <g transform="translate(1046 238)"><rect width="286" height="158" rx="12" class="surface"/><text x="28" y="38" class="kicker accent2">02 / OUTPUT</text><text x="28" y="84" class="label ink">最终响应</text><text x="28" y="119" class="body muted">无工具请求 → 完成</text><path d="M230 105l12 12 22-27" fill="none" stroke="#a7f3d0" stroke-width="4"/></g>
 
   <g transform="translate(68 500)"><text x="0" y="0" class="kicker muted">BOUNDARIES / 每一轮都检查</text><line x1="0" y1="22" x2="1264" y2="22" class="thin"/>
-    <g transform="translate(0 56)"><rect width="384" height="92" rx="10" class="surface"/><text x="24" y="35" class="label ink">Session</text><text x="24" y="66" class="body muted">消息、模型响应、工具结果按序保存</text></g>
-    <g transform="translate(440 56)"><rect width="384" height="92" rx="10" class="surface"/><text x="24" y="35" class="label ink">ToolContext</text><text x="24" y="66" class="body muted">TurnContext 随请求传给工具</text></g>
-    <g transform="translate(880 56)"><rect width="384" height="92" rx="10" class="surface"/><text x="24" y="35" class="label ink">运行边界</text><text x="24" y="66" class="body muted">迭代、工具次数、超时、会话租约</text></g>
+    <g transform="translate(0 56)"><rect width="384" height="92" rx="10" class="surface"/><text x="24" y="35" class="label ink">Session</text><text x="24" y="66" class="body muted">消息 / 响应 / 结果</text></g>
+    <g transform="translate(440 56)"><rect width="384" height="92" rx="10" class="surface"/><text x="24" y="35" class="label ink">ToolContext</text><text x="24" y="66" class="body muted">TurnContext → 工具</text></g>
+    <g transform="translate(880 56)"><rect width="384" height="92" rx="10" class="surface"/><text x="24" y="35" class="label ink">运行边界</text><text x="24" y="66" class="body muted">迭代 / 次数 / 超时 / 租约</text></g>
   </g>
 </svg>
