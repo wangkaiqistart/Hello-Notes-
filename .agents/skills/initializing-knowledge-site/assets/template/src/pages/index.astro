@@ -1,0 +1,325 @@
+---
+import { getCollection } from 'astro:content';
+import config from '../../site.config.json';
+import '../styles/home.css';
+
+const docs = await getCollection('docs', ({ data }) => !data.draft);
+const urlFor = (id: string) => '/' + id.replace(/\/index$/, '') + '/';
+const published = new Set(docs.map((doc) => urlFor(doc.id)));
+for (const topic of config.topics) {
+  if (!published.has(topic.href))
+    throw new Error(`专题入口不存在：${topic.href}`);
+}
+const articles = docs.filter(
+  (doc) =>
+    doc.id !== 'start' &&
+    !config.topics.some((topic) => urlFor(doc.id) === topic.href),
+);
+const nodes = config.topics.flatMap((topic) =>
+  topic.nodes.map((label) => ({ label, href: topic.href })),
+);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={config.description} />
+    <meta name="theme-color" content="#f7f4ee" />
+    <title>{config.title} · 原理与实践</title>
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="canonical" href={new URL('/', Astro.site)} />
+    <meta property="og:title" content={config.title} />
+    <meta property="og:description" content={config.description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={new URL('/', Astro.site)} />
+    <script>
+      import '../scripts/home';
+      import '../scripts/scene';
+    </script>
+  </head>
+  <body data-pagefind-ignore="all">
+    <a class="skip" href="#main">
+      跳到正文
+    </a>
+    <header class="shell header">
+      <a class="brand" href="/" aria-label={`${config.title} 首页`}>
+        <img src="/favicon.svg" width="36" height="36" alt="" />
+        <span>
+          {config.title}
+          <small>原理 / 实践 / 工程笔记</small>
+        </span>
+      </a>
+      <nav aria-label="主导航">
+        <a href="#topics">知识地图</a>
+        <a href="#reading">开始阅读</a>
+        <a href="/start/" class="nav-cta">
+          进入文档{' '}
+          <svg
+            class="icon"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <use href="/images/icons.svg#arrow" />
+          </svg>
+        </a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="shell hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">把问题记下来，把原理弄明白</p>
+          <h1 id="hero-title">
+            {config.profile === 'java'
+              ? 'Java 原理与工程'
+              : config.profile === 'frontend'
+                ? '前端原理与工程'
+                : '从 Java 到前端'}
+            <br />
+            <span>写进同一本笔记</span>
+          </h1>
+          <p class="intro">{config.description}</p>
+          <div class="actions">
+            <a class="button primary" href="/start/">
+              开始探索{' '}
+              <svg
+                class="icon"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <use href="/images/icons.svg#arrow" />
+              </svg>
+            </a>
+            <a class="button subtle" href="#topics">
+              展开知识地图{' '}
+              <svg
+                class="icon"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <use href="/images/icons.svg#down" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div
+          class="scene"
+          data-scene-state="loading"
+          aria-label="可拖动的分层知识页与专题入口"
+        >
+          <img
+            class="scene-fallback"
+            src="/images/knowledge-folio.svg"
+            width="600"
+            height="600"
+            alt=""
+            aria-hidden="true"
+            fetchpriority="high"
+          />
+          <canvas aria-hidden="true"></canvas>
+          <div class="scene-top" aria-hidden="true">
+            <span>知识索引 / 分层阅读</span>
+            <span>01</span>
+          </div>
+          <div class="index-labels">
+            {nodes.map((node, index) => (
+              <a
+                href={node.href}
+                style={`--i:${index};--total:${nodes.length}`}
+              >
+                {node.label}
+              </a>
+            ))}
+          </div>
+          <div class="scene-bottom">
+            <span>拖动查看知识层次</span>
+            <button id="motion" type="button" hidden aria-pressed="false">
+              暂停动画
+            </button>
+          </div>
+        </div>
+      </section>
+      <div class="manifesto">
+        <div class="shell">
+          <span>有问题，就有下一篇笔记</span>
+          <p>按专题阅读，也按问题查找</p>
+          <a href="#reading">
+            向下发现{' '}
+            <svg
+              class="icon"
+              aria-hidden="true"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <use href="/images/icons.svg#down" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <section id="topics" class="shell section" aria-labelledby="topics-title">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">01 / 知识目录</p>
+            <h2 id="topics-title">按技术栈，找到入口</h2>
+          </div>
+          <p>
+            {articles.length} 篇起始笔记 · {config.topics.length} 个领域
+          </p>
+        </div>
+        <div class="topic-grid">
+          {config.topics.map((topic, index) => (
+            <a class="topic-card" href={topic.href}>
+              <span class="card-number">{index + 1} / 专题</span>
+              <img
+                class="card-art"
+                src={`/images/${topic.id}-index.svg`}
+                width="200"
+                height="120"
+                alt={
+                  topic.id === 'java'
+                    ? 'Java 类型与运行时的关联结构'
+                    : '浏览器与组件的布局结构'
+                }
+                loading="lazy"
+              />
+              <h3>{topic.label}</h3>
+              <p>{topic.description}</p>
+              <span class="card-link">
+                进入专题{' '}
+                <svg
+                  class="icon"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <use href="/images/icons.svg#arrow" />
+                </svg>
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+      <section
+        id="reading"
+        class="shell section reading"
+        aria-labelledby="reading-title"
+      >
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">02 / 起始笔记</p>
+            <h2 id="reading-title">从这些问题开始</h2>
+          </div>
+          <a href="/start/">
+            浏览全部笔记{' '}
+            <svg
+              class="icon"
+              aria-hidden="true"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <use href="/images/icons.svg#arrow" />
+            </svg>
+          </a>
+        </div>
+        <form role="search" class="search" action="/start/">
+          <label for="query">找一个你感兴趣的问题</label>
+          <div class="search-field">
+            <svg
+              class="icon"
+              aria-hidden="true"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <use href="/images/icons.svg#search" />
+            </svg>
+            <input
+              id="query"
+              name="q"
+              type="search"
+              placeholder="搜索笔记，例如：类型、并发、浏览器…"
+              autocomplete="off"
+              aria-controls="results"
+              aria-describedby="search-status"
+            />
+            <button type="submit">
+              搜索{' '}
+              <svg
+                class="icon"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <use href="/images/icons.svg#arrow" />
+              </svg>
+            </button>
+          </div>
+          <p id="search-status" role="status" aria-live="polite">
+            输入关键词，发现相关笔记。
+          </p>
+          <ul id="results" hidden></ul>
+          <noscript>
+            <p>搜索需要 JavaScript，也可直接浏览下方笔记或知识目录。</p>
+          </noscript>
+        </form>
+        <div class="article-grid">
+          {articles.slice(0, 6).map((doc, index) => (
+            <a class="article" href={urlFor(doc.id)}>
+              <span class="card-number">笔记 / {index + 1}</span>
+              <h3>{doc.data.title}</h3>
+              <p>{doc.data.description}</p>
+              <span class="read-link">
+                阅读笔记{' '}
+                <svg
+                  class="icon"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <use href="/images/icons.svg#arrow" />
+                </svg>
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+      <section class="shell closing">
+        <p class="eyebrow">把理解变成可以复用的经验</p>
+        <h2>
+          读懂一个问题，
+          <br />
+          再写下你的实践
+        </h2>
+        <a class="button primary" href="/start/">
+          从一篇笔记开始{' '}
+          <svg
+            class="icon"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <use href="/images/icons.svg#arrow" />
+          </svg>
+        </a>
+      </section>
+    </main>
+    <footer class="shell footer">
+      <a href="/">{config.title}</a>
+      <span>记录 · 连接 · 实践</span>
+      <a href="/start/">知识目录</a>
+    </footer>
+  </body>
+</html>

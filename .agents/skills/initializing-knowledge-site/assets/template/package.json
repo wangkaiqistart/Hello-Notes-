@@ -1,0 +1,30 @@
+{
+  "name": "knowledge-site",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro build",
+    "preview": "astro preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "astro": "7.4.12",
+    "@astrojs/starlight": "0.43.1",
+    "sharp": "0.34.5",
+    "three": "0.187.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "typescript": "5.9.3",
+    "@types/three": "0.187.0",
+    "prettier": "3.8.1",
+    "prettier-plugin-astro": "1.1.2"
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "知识站初始化"
+  short_description: "在空目录创建 Java、前端知识站与 Three.js 交互首页"
+  default_prompt: "使用 $initializing-knowledge-site 在指定空目录创建独立域名的 Java 或前端知识库，并生成 Three.js 交互首页。"
