@@ -1,24 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 860" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 900" role="img" aria-labelledby="title desc">
   <title id="title">ReActLoop 控制流</title>
-  <desc id="desc">用户消息经过 PromptBuilder 和 ProviderService，判断 ChatResponse 是否包含工具调用；无工具调用则结束，有工具调用则执行、保存并在边界检查后继续。</desc>
+  <desc id="desc">用户消息经过 PromptBuilder 和 ProviderService，判断 ChatResponse 是否包含工具调用；无工具调用则保存响应并结束，有工具调用则执行、保存结果，检查边界后继续或收口。</desc>
   <style>
-    .bg{fill:#0b1220}.card{fill:#111c2e;stroke:#263750;stroke-width:2}.decision{fill:#14263b;stroke:#a7f3d0;stroke-width:2}.ink{fill:#f8fafc}.muted{fill:#9fb0c7}.accent{fill:#a7f3d0}.accent2{fill:#a5b4fc}.line{stroke:#a7f3d0;stroke-width:3;fill:none;marker-end:url(#arrow)}.thin{stroke:#31435d;stroke-width:1}.kicker{font:600 14px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;letter-spacing:2px}.title{font:700 40px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.subtitle{font:400 19px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.label{font:650 23px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;text-anchor:middle}.body{font:400 16px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;text-anchor:middle}.branch{font:650 15px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
-    @media (prefers-color-scheme: light){.bg{fill:#f7f8fc}.card{fill:#fff;stroke:#d6deeb}.decision{fill:#eefaf5;stroke:#087f68}.ink{fill:#172033}.muted{fill:#5b6980}.accent{fill:#087f68}.accent2{fill:#4f46a5}.line{stroke:#087f68}.thin{stroke:#d6deeb}}
+    .bg{fill:#0b1220}.card{fill:#111c2e;stroke:#263750;stroke-width:2}.decision{fill:#14263b;stroke:#a7f3d0;stroke-width:2}.guard{fill:#132b2d;stroke:#2d5d5a;stroke-width:2}.stop{fill:#1b2035;stroke:#3b4770;stroke-width:2}.ink{fill:#f8fafc}.muted{fill:#9fb0c7}.accent{fill:#a7f3d0}.accent2{fill:#a5b4fc}.line{stroke:#a7f3d0;stroke-width:3;fill:none;marker-end:url(#arrow)}.thin{stroke:#31435d;stroke-width:1}.kicker{font:600 14px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;letter-spacing:2px}.title{font:700 40px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.subtitle{font:400 19px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.label{font:650 23px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;text-anchor:middle}.body{font:400 16px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;text-anchor:middle}.branch{font:650 15px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+    @media (prefers-color-scheme: light){.bg{fill:#f7f8fc}.card{fill:#fff;stroke:#d6deeb}.decision{fill:#eefaf5;stroke:#087f68}.guard{fill:#e7f6f1;stroke:#9fd6c7}.stop{fill:#f0f1fa;stroke:#c7cbe5}.ink{fill:#172033}.muted{fill:#5b6980}.accent{fill:#087f68}.accent2{fill:#4f46a5}.line{stroke:#087f68}.thin{stroke:#d6deeb}}
   </style>
   <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10Z" class="accent"/></marker></defs>
-  <rect width="1280" height="860" rx="18" class="bg"/>
-  <text x="62" y="58" class="kicker accent">AGENTOS / TURN CONTROL</text><text x="62" y="106" class="title ink">ReActLoop 控制流</text><text x="62" y="140" class="subtitle muted">一次迭代一次模型调用；结果回填后决定是否继续。</text><line x1="62" y1="174" x2="1218" y2="174" class="thin"/>
+  <rect width="1280" height="900" rx="18" class="bg"/>
+  <text x="62" y="58" class="kicker accent">AGENTOS / TURN CONTROL</text>
+  <text x="62" y="106" class="title ink">ReActLoop 控制流</text>
+  <text x="62" y="140" class="subtitle muted">一次迭代一次模型调用；结果回填后决定继续或收口。</text>
+  <line x1="62" y1="174" x2="1218" y2="174" class="thin"/>
 
-  <g transform="translate(450 210)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">用户消息</text><text x="190" y="59" class="body muted">开始 Turn</text></g><path d="M640 286v28" class="line"/>
-  <g transform="translate(450 314)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">组装 Prompt</text><text x="190" y="59" class="body muted">PromptBuilder</text></g><path d="M640 390v28" class="line"/>
-  <g transform="translate(450 418)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">调用 ChatModel</text><text x="190" y="59" class="body muted">ProviderService</text></g><path d="M640 494v30" class="line"/>
+  <g transform="translate(450 210)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">用户消息</text><text x="190" y="59" class="body muted">开始 Turn</text></g>
+  <path d="M640 286v28" class="line"/>
+  <g transform="translate(450 314)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">组装 Prompt</text><text x="190" y="59" class="body muted">PromptBuilder</text></g>
+  <path d="M640 390v28" class="line"/>
+  <g transform="translate(450 418)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">调用 ChatModel</text><text x="190" y="59" class="body muted">ProviderService</text></g>
+  <path d="M640 494v28" class="line"/>
 
-  <g transform="translate(640 575)"><polygon points="0,-50 150,0 0,50 -150,0" class="decision"/><text x="0" y="-4" class="label ink">有工具调用？</text><text x="0" y="24" class="body muted">检查 ChatResponse</text></g>
-  <path d="M490 575H300v50" class="line"/><text x="376" y="562" class="branch accent2">否</text>
-  <g transform="translate(110 625)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">保存助手响应</text><text x="190" y="59" class="body muted">结束 Turn</text></g>
-  <path d="M790 575H980v50" class="line"/><text x="850" y="562" class="branch accent">是</text>
-  <g transform="translate(790 625)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">ToolExecutor 执行工具</text><text x="190" y="59" class="body muted">受治理调用</text></g><path d="M980 701v28" class="line"/>
-  <g transform="translate(790 729)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">保存请求 + 结果</text><text x="190" y="59" class="body muted">回填历史</text></g>
-  <path d="M790 767H670C590 767 540 730 540 665V474H450" class="line"/><text x="666" y="825" class="branch accent" text-anchor="middle">检查迭代 / 截止时间 / 租约 → 下一轮</text>
-  <path d="M1170 767H1200V350H830" class="line"/><text x="1110" y="334" class="branch accent2">触发边界 → 收口</text>
+  <g transform="translate(640 570)"><polygon points="0,-48 145,0 0,48 -145,0" class="decision"/><text x="0" y="-4" class="label ink">有工具调用？</text><text x="0" y="23" class="body muted">检查 ChatResponse</text></g>
+
+  <path d="M495 570H280v48" class="line"/><text x="382" y="557" class="branch accent2">否</text>
+  <g transform="translate(90 618)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">保存助手响应</text><text x="190" y="59" class="body muted">结束 Turn</text></g>
+
+  <path d="M785 570H1000v48" class="line"/><text x="852" y="557" class="branch accent">是</text>
+  <g transform="translate(810 618)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">ToolExecutor 执行工具</text><text x="190" y="59" class="body muted">受治理调用</text></g>
+  <path d="M1000 694v28" class="line"/>
+  <g transform="translate(810 722)"><rect width="380" height="76" rx="10" class="card"/><text x="190" y="34" class="label ink">保存请求 + 结果</text><text x="190" y="59" class="body muted">回填历史</text></g>
+
+  <path d="M1000 798v22" class="line"/>
+  <g transform="translate(360 820)"><rect width="620" height="58" rx="10" class="guard"/><text x="310" y="25" class="label accent">边界检查</text><text x="310" y="47" class="body muted">迭代 · 截止时间 · 会话租约</text></g>
+
+  <path d="M360 849H150V350H450" class="line"/><text x="178" y="835" class="branch accent">继续下一轮</text>
+  <path d="M980 849h62" class="line"/>
+  <g transform="translate(1042 820)"><rect width="150" height="58" rx="10" class="stop"/><text x="75" y="25" class="label accent2">收口</text><text x="75" y="47" class="body muted">停止 Turn</text></g>
 </svg>
