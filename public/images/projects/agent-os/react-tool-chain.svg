@@ -1,57 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 560" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 520" role="img" aria-labelledby="title desc">
   <title id="title">AgentOS 工具调用链</title>
-  <desc id="desc">ReActLoop 调用 ProviderService，由 ChatModel 返回 ChatResponse，再由 ToolExecutor 调用注入的 ToolCallingManager，最终执行 GovernedToolCallback。</desc>
+  <desc id="desc">ReActLoop 调用 ProviderService，ChatModel 返回 ChatResponse，ToolExecutor 调用注入的 ToolCallingManager，最终执行 GovernedToolCallback。</desc>
   <style>
-    .bg { fill: #111827; }
-    .card { fill: #1f2937; stroke: #374151; stroke-width: 2; }
-    .accent { fill: #5eead4; }
-    .heading { fill: #f8fafc; font: 700 40px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
-    .subheading { fill: #94a3b8; font: 400 20px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
-    .label { fill: #f8fafc; font: 600 23px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
-    .body { fill: #cbd5e1; font: 400 17px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; text-anchor: middle; }
-    .line { stroke: #5eead4; stroke-width: 4; fill: none; marker-end: url(#arrow); }
-    .rule { fill: #334155; }
+    .bg{fill:#0b1220}.card{fill:#111c2e;stroke:#263750;stroke-width:2}.ink{fill:#f8fafc}.muted{fill:#9fb0c7}.accent{fill:#a7f3d0}.accent2{fill:#a5b4fc}.line{stroke:#a7f3d0;stroke-width:3;fill:none;marker-end:url(#arrow)}.thin{stroke:#31435d;stroke-width:1}.kicker{font:600 14px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;letter-spacing:2px}.title{font:700 40px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.subtitle{font:400 19px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}.label{font:650 21px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;text-anchor:middle}.body{font:400 16px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;text-anchor:middle}.small{font:400 15px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
   </style>
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
-      <path d="M 0 0 L 10 5 L 0 10 z" class="accent"/>
-    </marker>
-  </defs>
-  <rect class="bg" width="1440" height="560" rx="12"/>
-  <text class="heading" x="56" y="68">工具调用链</text>
-  <rect class="rule" x="56" y="101" width="1328" height="2"/>
-  <text class="subheading" x="56" y="140">模型只返回工具请求，应用通过唯一执行入口完成工具调用</text>
-
-  <g transform="translate(55 235)">
-    <rect class="card" width="230" height="130" rx="14"/>
-    <text class="label" x="115" y="49">ReActLoop</text>
-    <text class="body" x="115" y="84">迭代调度</text>
-  </g>
-  <g transform="translate(335 235)">
-    <rect class="card" width="230" height="130" rx="14"/>
-    <text class="label" x="115" y="49">ProviderService</text>
-    <text class="body" x="115" y="84">一次模型调用</text>
-  </g>
-  <g transform="translate(615 235)">
-    <rect class="card" width="230" height="130" rx="14"/>
-    <text class="label" x="115" y="49">ChatModel</text>
-    <text class="body" x="115" y="84">返回 ChatResponse</text>
-  </g>
-  <g transform="translate(895 235)">
-    <rect class="card" width="230" height="130" rx="14"/>
-    <text class="label" x="115" y="49">ToolExecutor</text>
-    <text class="body" x="115" y="84">统一执行入口</text>
-  </g>
-  <g transform="translate(1175 235)">
-    <rect class="card" width="230" height="130" rx="14"/>
-    <text class="label" x="115" y="49">ToolCallingManager</text>
-    <text class="body" x="115" y="84">executeToolCalls(...)</text>
-  </g>
-
-  <path class="line" d="M285 300 H325"/>
-  <path class="line" d="M565 300 H605"/>
-  <path class="line" d="M845 300 H885"/>
-  <path class="line" d="M1125 300 H1165"/>
-  <path class="line" d="M1290 365 V445 H150 V365"/>
-  <text class="body" x="720" y="466">GovernedToolCallback：鉴权、次数限制、异常处理和观测在同一条路径生效</text>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10Z" class="accent"/></marker></defs>
+  <rect width="1360" height="520" rx="18" class="bg"/>
+  <text x="62" y="58" class="kicker accent">AGENTOS / TOOL EXECUTION</text><text x="62" y="106" class="title ink">工具调用链</text><text x="62" y="140" class="subtitle muted">模型只返回工具请求，应用通过唯一执行入口完成工具调用。</text><line x1="62" y1="174" x2="1298" y2="174" class="thin"/>
+  <g transform="translate(62 244)"><rect width="216" height="112" rx="10" class="card"/><text x="108" y="47" class="label ink">ReActLoop</text><text x="108" y="77" class="body muted">迭代调度</text><circle cx="28" cy="28" r="5" class="accent2"/></g>
+  <g transform="translate(318 244)"><rect width="216" height="112" rx="10" class="card"/><text x="108" y="47" class="label ink">ProviderService</text><text x="108" y="77" class="body muted">一次模型调用</text><circle cx="28" cy="28" r="5" class="accent2"/></g>
+  <g transform="translate(574 244)"><rect width="216" height="112" rx="10" class="card"/><text x="108" y="47" class="label ink">ChatModel</text><text x="108" y="77" class="body muted">返回 ChatResponse</text><circle cx="28" cy="28" r="5" class="accent2"/></g>
+  <g transform="translate(830 244)"><rect width="216" height="112" rx="10" class="card"/><text x="108" y="47" class="label ink">ToolExecutor</text><text x="108" y="77" class="body muted">唯一执行入口</text><circle cx="28" cy="28" r="5" class="accent2"/></g>
+  <g transform="translate(1086 244)"><rect width="216" height="112" rx="10" class="card"/><text x="108" y="47" class="label ink">ToolCallingManager</text><text x="108" y="77" class="body muted">executeToolCalls(...)</text><circle cx="28" cy="28" r="5" class="accent"/></g>
+  <path d="M278 300h32M534 300h32M790 300h32M1046 300h32" class="line"/>
+  <rect x="62" y="414" width="1240" height="48" rx="8" fill="#132b2d" stroke="#2d5d5a"/>
+  <text x="682" y="444" class="small accent" text-anchor="middle">GovernedToolCallback · 鉴权 · 次数限制 · 异常处理 · 观测</text>
 </svg>

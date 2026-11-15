@@ -18,11 +18,11 @@ sidebar:
 
 一次循环可以抽象为：
 
-![ReActLoop 控制流：模型调用后的工具判断、结果保存、边界检查和下一轮回环](/images/projects/agent-os/react-control-flow.svg)
+![ReActLoop 控制流：模型调用后判断工具请求，分别进入完成分支或工具执行、结果保存与下一轮](/images/projects/agent-os/react-control-flow.svg)
 
 AgentOS 的 ReAct 图示如下，重点看循环回边、工具结果回填和终止出口；图中没有展开审计和超时分支，它们仍是实现的一部分。
 
-[![Agent ReAct 运行循环：用户消息进入 Reason、Act、Observe，工具结果回填 Session，达到停止条件后输出响应](/images/projects/agent-os/react-loop.svg)](/images/projects/agent-os/react-loop.svg)
+[![AgentOS ReAct 执行循环：输入进入 Reason、Act、Observe，工具结果回到上下文，边界检查后完成或继续](/images/projects/agent-os/react-loop.svg)](/images/projects/agent-os/react-loop.svg)
 
 ## 二、先冻结职责边界
 
@@ -48,7 +48,7 @@ ReActLoop 的代码可以很短，难点在于不能把所有职责塞进一个 
 
 因此 AgentOS 主链路不使用 `ChatClient` 的 `ToolCallingAdvisor` 来驱动第二套循环。它直接调用 `ChatModel`，由自己的 `ReActLoop` 控制迭代；工具只走一条路径：
 
-![工具调用链：ReActLoop 经过 ProviderService 和 ChatModel，再由 ToolExecutor 调用注入的 ToolCallingManager，最终执行受治理工具](/images/projects/agent-os/react-tool-chain.svg)
+![AgentOS 工具调用链：ReActLoop 经 ProviderService 和 ChatModel，由 ToolExecutor 调用注入的 ToolCallingManager，进入受治理回调](/images/projects/agent-os/react-tool-chain.svg)
 
 `ToolCallingManager` 必须使用容器注入的实例，不能在 `ToolExecutor` 内调用 `ToolCallingManager.builder().build()` 自建实例，否则项目配置的工具次数限制、异常处理和观测不会统一生效。Spring AI 2.0 的手动工具循环可参考[ChatModel 工具调用](/frameworks/spring-ai/tools/chatmodel-tool-calling/)。
 
