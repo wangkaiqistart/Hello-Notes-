@@ -6,7 +6,9 @@ sidebar:
   order: 5.2
 ---
 
-ReAct 是 AgentOS 的第二块核心能力，也是整个 Agent 最关键的一段代码。这节讲四件事：ReAct 是什么、动手前该想清楚什么、代码怎么写、做完怎么验。它依赖上一节的 Provider——每转一圈都要通过 Provider 调一次大模型。当前项目的技术栈是 JDK 21、Spring Boot 4.1.2 和 Spring AI 2.0.2；下面只在接口和上下文机制不同的地方按 AgentOS 进行替换。
+ReAct 是 AgentOS 的第二块核心能力，也是整个 Agent 最关键的一段代码。这节讲四件事：ReAct 是什么、动手前该想清楚什么、代码怎么写、做完怎么验。它依赖上一节的 Provider——每转一圈都要通过 Provider 调一次大模型。当前项目的技术栈是 JDK 21、Spring Boot 4.1.2 和 Spring AI 2.0.2。
+
+正文尽量沿用第 17 节 PDF 的讲解顺序和表达。需要区分的是：PDF 讲的是一个可以用单测和天气 Demo 验收的最小闭环；AgentOS 的交付标准还要求会话持久化、工具治理、租约、超时、审计、CLI 和数据库证据。下面的代码骨架和验收口径以当前项目的 `specs/002-react-loop/spec.md`、`docs/TechnicalSolution.md` 和 `specs/002-react-loop/quickstart.md` 为准；这些文档描述的是目标和验收契约，不代表当前 Java 仓库已经全部实现。
 
 ## 一、ReAct 是什么，干嘛用的
 
@@ -36,11 +38,11 @@ ReAct 干的就是把“想—做—看”串成一个循环：模型想下一�
 
 第一，把职责拆干净。循环本身只该做一件事——调度。它负责转圈、判断该不该停、把每轮的结果攒起来。至于每轮要拼的 Prompt、要调的模型、要执行的工具，全都交出去，让专门的模块干。循环里塞的东西越少，它越好读、越不容易出 bug。
 
-| ReActLoop 负责 | 交给别人 |
-| --- | --- |
-| 一圈圈转（调度） | 拼上下文 → `PromptBuilder` |
-| 判断这轮该不该停 | 调大模型 → `ProviderService` |
-| 把响应和结果累积到 Session | 执行工具 → `ToolExecutor` |
+| ReActLoop 负责             | 交给别人                     |
+| -------------------------- | ---------------------------- |
+| 一圈圈转（调度）           | 拼上下文 → `PromptBuilder`   |
+| 判断这轮该不该停           | 调大模型 → `ProviderService` |
+| 把响应和结果累积到 Session | 执行工具 → `ToolExecutor`    |
 
 第二，为什么自己写，不用框架现成的循环。Spring AI 这类框架都带现成的 Agent / 循环封装，拿来就能跑。但循环恰恰是 Agent 最需要自己掌控的地方——什么时候停、工具失败了怎么办、上下文太长了怎么压、哪几步想换个模型，这些都得能自己调。用框架的黑盒，这些就动不了。所以核心阶段我们自己写这几十行，把控制权攥在手里。当前 AgentOS 直接调用 `ChatModel`，由自己的 `ReActLoop` 控制循环，不再让 `ChatClient` 的另一套 Advisor 循环接管流程。
 
@@ -110,7 +112,7 @@ TurnResult run(TurnContext turn, List<Message> messages) {
 
 注意“长期记忆”和“会话历史”是两码事，别混在一起说：长期记忆是跨会话都在的东西，会话历史只是这一次对话到目前为止的往来记录。拼 Prompt 的逻辑全在这，循环那边不用操心。当前项目还要求按完整 Turn 截断历史，不能把助手的工具请求和对应的工具结果拆开。
 
-配角二：ToolExecutor。从工具表里找到模型要调的那个工具，先过一道沙箱 / 白名单检查，再执行，把结果包成 `ToolExecutionResult` 返回，同时记一条调用日志——成功要记、失败也要记，`tool_invocations` 表本来就有 success / error_message 两列，跟上一节 Provider 的审计是同一个口径：一次工具调用不管成没成，事后都得能查到。
+配角二：ToolExecutor。从工具表里找到模型要调的那个工具，先过一道沙箱 / 白名单检查，再执行，把结果包成 `ToolExecutionResult` 返回。工具执行由 `GovernedToolCallback` 统一治理：执行前写入 `in_progress`，结束后更新为 `success`、`failed`、`timeout`、`sandbox_denied`、`limit_skipped` 或 `interrupted`，并记录脱敏后的参数、结果、耗时和截断信息。一次工具调用不管成没成，事后都得能按 Session、Turn 和迭代查到。
 
 工具执行只在这一个地方发生——这也是上一节为什么要关掉 Spring AI 自动执行的原因：执行权必须收在这里，不能有第二条路。当前 Spring AI 2.0 的实现使用容器注入的 `ToolCallingManager`，由 `ToolExecutor` 调用 `executeToolCalls(...)`，再进入 `GovernedToolCallback`；不能在执行器里自行 `builder().build()` 创建第二个 Manager。
 
@@ -135,30 +137,33 @@ public TurnResult process(AgentRequest request) {
 
 供给者 ContextLoader，也归这节。PromptBuilder 的第一部分（Bootstrap 三件套 + `AGENT.md` / `SKILL.md`）由它提供：按 Agent 配置读取对应文件、拼成文本。两条铁律：每次组装 Prompt 都重新读文件、不缓存（用户改完立即生效）；显式引用的文件缺失要报错、Bootstrap 缺失至少 WARN——静默跳过会造成“人格悄悄丢了”这种最难查的软故障。
 
-有几样先别做。工具并行调用、Agent 之间互相委托、流式输出、上下文压缩，这些核心阶段都先不做。上下文先用“只留最近 N 轮”这种简单办法顶着，够用就行，压缩留到扩展阶段。
+有几样先别做。核心阶段不做工具并行调用、Agent 之间互相委托、正式 SSE 端点和上下文总结压缩；循环本身可以同时支持同步 `ChatModel.call` 与流式 `ChatModel.stream`，正式 SSE 适配器放在扩展阶段。上下文先按完整 Turn 使用 `max_history_turns` 和 `max_history_tokens` 双重限制，压缩留到后续阶段。
 
-本节交付物：
+本节交付物按 AgentOS 项目标准分成四层：
 
-- **代码**：`ReActLoop`、`PromptBuilder`、`ToolExecutor`、`AgentService`、`TurnContext`、`ContextLoader`、`ToolInvocation` 实体与 `ToolInvocationRepository`；
-- **测试**：`ReActLoopTest`、`PromptBuilderTest`、`ToolExecutorTest`、`AgentServiceTest`、`ContextLoaderTest`；
-- **表**：`tool_invocations`（含 `success` / `error_message` 列，手工建表脚本）；
-- **约定**：最大轮数默认 10；历史截断默认 20 轮；Prompt 末尾附当前日期时间。
+- **核心代码**：`ReActLoop`、`PromptBuilder`、`ToolExecutor`、`AgentService`、`TurnContext`、`ContextLoader`，以及 Session、Turn、消息、Provider、工具注册和治理层的端口与实现；
+- **持久化**：通过 Flyway 创建 `sessions`、`agent_turns`、`session_messages`、`llm_calls`、`tool_invocations` 五张 PostgreSQL 表。`llm_calls` 和 `tool_invocations` 从第一天写入，包含 Session、Turn、迭代、状态、失败原因和脱敏后的审计信息；
+- **入口与工具**：CLI 的 `init` / `chat` / `--new`，内置 `http_get` 与域名白名单沙箱，CLI、Web、定时任务统一进入 `AgentService.process(...)`；
+- **约定**：`max_iterations` 默认 10，`max_history_turns` 默认 20，`max_history_tokens` 默认 32000；工具调用还有单工具和总次数上限，整轮默认 300 秒，租约和审计收口必须可验证。
 
-当前 Java 仓库仍是工程骨架，上述清单是本节的实现目标和验收锚点，不表示业务类已经全部完成。
+当前 Java 仓库仍是工程骨架，Provider 基线和部分测试已经存在，完整 ReAct、工具、存储和 CLI 闭环仍属于待实现和待验收内容。不要把规格中的类名、表名或测试名当成已经交付的代码。
 
 ## 四、验收 harness：把验收标准变成可执行的测试
 
-这节的东西全部不碰网络——`ProviderService`、工具、文件系统都能 mock 或用临时目录，所以 harness 全是单测，`mvn test` 秒级跑完。五个测试类对应五个交付物：
+验收分成离线、数据库、真实模型和人工复核四层。离线层不碰网络，Provider 可以用模型替身，工具和文件系统使用 mock、临时目录或本地 HTTP 替身；数据库层使用 PostgreSQL/Testcontainers；真实模型测试和天气 Demo 单独开启，不能把跳过外部依赖的测试当成通过。
 
-| 测试类 | 覆盖的验收点 |
-| --- | --- |
-| `ReActLoopTest` | 无工具调用一轮收尾；有工具调用则执行并回填进下一轮；转满最大轮数强制停；每轮响应和工具结果都累积进 Session |
-| `PromptBuilderTest` | 四部分顺序正确；历史超 N 轮被截断；system prompt 末尾含当前日期时间 |
-| `ToolExecutorTest` | 成功写审计 `success=true`；失败也写 `success=false` 带原因，异常不吞；只调用注入的 `ToolCallingManager` |
-| `AgentServiceTest` | 三种入口共享处理服务；处理结束和异常路径都释放租约；不依赖 `ThreadLocal` |
-| `ContextLoaderTest` | 改文件后下一次 build 立即读到新内容（无缓存回归）；Skill 引用缺失报错、Bootstrap 缺失 WARN |
+| 验收层          | 必须证明的行为                                                                                                | 主要证据                                                                                      |
+| --------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| ReAct 基础闭环  | 无工具调用一轮结束；有工具调用时结果进入下一轮；达到 `max_iterations` 停止；消息按顺序累积                    | `ReActLoopTest`、`SC-002`～`SC-004`                                                           |
+| Prompt 与上下文 | system、Bootstrap、Skill 元数据、记忆、历史和当前用户消息顺序正确；历史按完整 Turn 截断；文件修改后下一轮生效 | `PromptBuilderTest`、`ContextLoaderTest`、`SC-011`、`SC-012`                                  |
+| 工具治理        | 只调用注入的 `ToolCallingManager`；沙箱、工具名单、超时、结果截断、脱敏和限次生效；失败反馈给模型             | `ToolExecutorTest`、`GovernedToolCallbackTest`、`HttpToolsTest`、`SC-005`、`SC-008`、`SC-016` |
+| 会话与租约      | 同一 Session 串行；冲突不写入；每轮和每次工具调用前续租；异常、超时、丢租约和进程恢复能够收口                 | `AgentServiceTest`、契约测试、`TurnReaperTest`、`SC-009`、`SC-010`                            |
+| 持久化与审计    | 五张表由迁移创建；每次模型调用和工具调用都有可关联记录；瞬时数据库故障有限重试，持续故障返回 `UNCONFIRMED`    | `MigrationTest`、审计测试、PostgreSQL 集成测试、`SC-007`、`SC-015`                            |
+| 入口与质量门    | `init` 幂等且不连库；`chat` 支持多轮和 `--new`；不存在第二条工具执行路径，不使用 `ThreadLocal`                | `InitCommandTest`、`ChatCommandTest`、`ArchitectureRulesTest`、`SC-013`、`SC-014`             |
 
-两个最值钱的回归测试写出来：模型一直要调工具，转满最大轮数强制停；以及处理中抛异常时，租约和 Turn 状态都必须正确收口。离线 harness 全绿后，再接一次真实模型 Demo。
+PDF 中的五个测试类仍然是最小单测骨架，但它们不足以覆盖 AgentOS 的数据库、治理、超时、审计和并发要求。当前项目的离线质量门使用 `mvn -B verify`；没有 Docker 时，数据库测试会按标签跳过并明确记录为未运行。
+
+这张表是本页的验收分层摘要；完整 US-2 规格仍以 `FR-001`～`FR-042` 和 `SC-001`～`SC-017` 为准，具体任务和执行顺序以 `specs/002-react-loop/tasks.md` 为准。
 
 第一个测试守住死循环兜底：
 
@@ -189,10 +194,10 @@ void 处理中抛异常_也必须释放租约() {
 
 ## 五、做完怎么验
 
-harness 全绿后，剩下的人工确认：
+先跑离线质量门，再跑数据库验证，最后单独执行真实模型和人工 Demo。每一层都要记录 `PASS`、`PARTIAL` 或 `NOT_RUN`，不能用文档存在、编译通过、模型返回一段合理文本或跳过外部依赖来代替运行证据。
 
-- **Demo 一（每日天气）**的对话版（问天气、给穿搭建议）用真模型跑通一次：多轮对话里，Agent 调了 `http_get` 工具、拿到数据、给出建议；
-- 循环是自己实现的，没用框架现成的 Agent 封装（code review 确认，测不出来）；
-- 其余验收点——死循环兜底、累积、截断、失败审计——已由 harness 覆盖，`mvn test` 绿即打勾。
+阶段 Demo 仍然是每日天气，但通过标准已经按 AgentOS 扩展：在 `AgentOS chat` 中使用真实 `primary` 模型和天气数据源，Agent 调用白名单内的 `http_get`，返回穿衣建议；同时从数据库核对 `agent_turns` 为成功终态，`session_messages` 能还原用户消息、工具调用请求、工具结果和最终回答，`tool_invocations` 与 `llm_calls` 的数量和迭代关联与实际调用一致。模型可能需要多轮调用，不能预先假定一定是两次模型请求。
 
-ReAct 要和上一节的 Provider 一起，才撑得起 Demo 一。所以这块跑通的标准很直接：Demo 一能从头到尾完整走下来。
+还要人工确认循环是 `ReActLoop` 自实现，主链路直接调用 `ChatModel`，工具只经注入的 `ToolCallingManager` 执行，没有 `ChatClient` / `ToolCallingAdvisor` 或自建 Manager 的第二条路径。真实模型测试应单独使用 `@Tag("llm")` 或项目约定的 profile，并在缺少凭据时明确记为 `NOT_RUN`。
+
+ReAct 只有和 Provider、工具治理、存储和统一入口一起通过，才算 AgentOS 的阶段交付完成。当前页面描述的是项目标准和验收契约；实现状态仍以 `/Volumes/Data/my_project/agent-os` 的代码、测试结果和数据库回读为准。
